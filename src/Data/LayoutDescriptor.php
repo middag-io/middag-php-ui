@@ -18,13 +18,13 @@ use Middag\Ui\Contract\LayoutDescriptorInterface;
 readonly class LayoutDescriptor implements LayoutDescriptorInterface
 {
     /**
-     * @param  array<string, array<BlockDescriptorInterface>>  $regions
-     * @param  array<string, mixed>                            $meta
+     * @param array<string, array<BlockDescriptorInterface>> $regions
+     * @param array<string, mixed>                           $meta
      */
     public function __construct(
         public string $template,
-        public array  $regions,
-        public array  $meta = [],
+        public array $regions,
+        public array $meta = [],
     ) {}
 
     /** @return array<string, mixed> */
@@ -40,7 +40,7 @@ readonly class LayoutDescriptor implements LayoutDescriptorInterface
 
         $payload = [
             'template' => $this->template,
-            'regions'  => $serializedRegions,
+            'regions' => $serializedRegions,
         ];
 
         if ($this->meta !== []) {

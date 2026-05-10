@@ -17,25 +17,25 @@ use Middag\Ui\Contract\PageResourcesInterface;
 readonly class PageResources implements PageResourcesInterface
 {
     /**
-     * @param  array<string, mixed>   $auth
-     * @param  array<string, bool>    $capabilities
-     * @param  array<string, bool>    $feature_flags
+     * @param array<string, mixed> $auth
+     * @param array<string, bool>  $capabilities
+     * @param array<string, bool>  $feature_flags
      */
     public function __construct(
-        public array  $auth          = [],
-        public array  $capabilities  = [],
-        public array  $feature_flags = [],
-        public string $locale        = 'pt-BR',
+        public array $auth = [],
+        public array $capabilities = [],
+        public array $feature_flags = [],
+        public string $locale = 'pt-BR',
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
         return [
-            'auth'         => $this->auth,
+            'auth' => $this->auth,
             'capabilities' => $this->capabilities,
             'featureFlags' => $this->feature_flags,
-            'locale'       => $this->locale,
+            'locale' => $this->locale,
         ];
     }
 }

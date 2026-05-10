@@ -1,0 +1,101 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.com.br>
+ * @copyright   2026 MIDDAG (https://www.middag.com.br)
+ * @license     proprietary
+ */
+
+namespace Middag\Ui\Tests\Builder;
+
+use Middag\Ui\Builder\RegionBuilder;
+use Middag\Ui\Contract\BlockDescriptorInterface;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegionBuilderTest extends TestCase
+{
+    #[Test]
+    public function testEmptyRegion(): void
+    {
+        $builder = new RegionBuilder();
+
+        self::assertSame([], $builder->all());
+    }
+
+    #[Test]
+    public function testMetricCard(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->metric_card('m', 'Revenue');
+
+        $blocks = $builder->all();
+
+        self::assertCount(1, $blocks);
+        self::assertSame('metric_card', $blocks[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testDenseTable(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->dense_table('t', 'Users');
+
+        $blocks = $builder->all();
+
+        self::assertCount(1, $blocks);
+        self::assertSame('dense_table', $blocks[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testFluentChain(): void
+    {
+        $builder = new RegionBuilder();
+        $builder
+            ->metric_card('m1')
+            ->metric_card('m2')
+            ->dense_table('t1');
+
+        self::assertCount(3, $builder->all());
+    }
+
+    #[Test]
+    public function testGenericBlock(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->block('custom_type', 'k', ['foo' => 'bar']);
+
+        $blocks = $builder->all();
+
+        self::assertCount(1, $blocks);
+
+        $payload = $blocks[0]->jsonSerialize();
+
+        self::assertSame('custom_type', $payload['type']);
+        self::assertSame('k', $payload['key']);
+        self::assertSame(['foo' => 'bar'], $payload['data']);
+    }
+
+    #[Test]
+    public function testAllReturnsBlockDescriptorInterfaces(): void
+    {
+        $builder = new RegionBuilder();
+        $builder
+            ->metric_card('m')
+            ->dense_table('t')
+            ->block('custom', 'c');
+
+        foreach ($builder->all() as $block) {
+            self::assertInstanceOf(BlockDescriptorInterface::class, $block);
+        }
+    }
+}

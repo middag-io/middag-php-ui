@@ -19,22 +19,22 @@ use Middag\Ui\Contract\PageMetaInterface;
 readonly class PageMeta implements PageMetaInterface
 {
     /**
-     * @param  array<BreadcrumbInterface>  $breadcrumbs
-     * @param  array<PageActionInterface>  $actions
+     * @param array<BreadcrumbInterface> $breadcrumbs
+     * @param array<PageActionInterface> $actions
      */
     public function __construct(
-        public string  $key,
-        public string  $title,
-        public ?string $subtitle    = null,
-        public array   $breadcrumbs = [],
-        public array   $actions     = [],
+        public string $key,
+        public string $title,
+        public ?string $subtitle = null,
+        public array $breadcrumbs = [],
+        public array $actions = [],
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
         $payload = [
-            'key'   => $this->key,
+            'key' => $this->key,
             'title' => $this->title,
         ];
 

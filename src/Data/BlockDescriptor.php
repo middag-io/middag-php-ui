@@ -18,19 +18,19 @@ use Middag\Ui\Contract\PageActionInterface;
 readonly class BlockDescriptor implements BlockDescriptorInterface
 {
     /**
-     * @param  array<string, mixed>            $data
-     * @param  array<PageActionInterface>      $actions
-     * @param  array<string, mixed>            $meta
+     * @param array<string, mixed>       $data
+     * @param array<PageActionInterface> $actions
+     * @param array<string, mixed>       $meta
      */
     public function __construct(
-        public string  $type,
-        public string  $key,
-        public array   $data,
-        public ?string $variant  = null,
-        public ?string $title    = null,
+        public string $type,
+        public string $key,
+        public array $data,
+        public ?string $variant = null,
+        public ?string $title = null,
         public ?string $subtitle = null,
-        public array   $actions  = [],
-        public array   $meta     = [],
+        public array $actions = [],
+        public array $meta = [],
     ) {}
 
     /** @return array<string, mixed> */
@@ -38,7 +38,7 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
     {
         $payload = [
             'type' => $this->type,
-            'key'  => $this->key,
+            'key' => $this->key,
             'data' => $this->data,
         ];
 

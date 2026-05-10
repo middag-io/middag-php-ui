@@ -19,10 +19,10 @@ readonly class PageContractData implements PageContractInterface
     public const VERSION = '1';
 
     public function __construct(
-        public string          $shell,
-        public PageMeta        $page,
+        public string $shell,
+        public PageMeta $page,
         public LayoutDescriptor $layout,
-        public ?PageResources  $resources = null,
+        public ?PageResources $resources = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -30,12 +30,12 @@ readonly class PageContractData implements PageContractInterface
     {
         $payload = [
             'version' => self::VERSION,
-            'shell'   => $this->shell,
-            'page'    => $this->page->jsonSerialize(),
-            'layout'  => $this->layout->jsonSerialize(),
+            'shell' => $this->shell,
+            'page' => $this->page->jsonSerialize(),
+            'layout' => $this->layout->jsonSerialize(),
         ];
 
-        if ($this->resources !== null) {
+        if ($this->resources instanceof PageResources) {
             $payload['resources'] = $this->resources->jsonSerialize();
         }
 

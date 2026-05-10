@@ -1,0 +1,67 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.com.br>
+ * @copyright   2026 MIDDAG (https://www.middag.com.br)
+ * @license     proprietary
+ */
+
+namespace Middag\Ui\Tests\Data;
+
+use Middag\Ui\Data\Breadcrumb;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class BreadcrumbTest extends TestCase
+{
+    #[Test]
+    public function testSerializesLabelOnly(): void
+    {
+        $breadcrumb = new Breadcrumb(label: 'Home');
+
+        self::assertSame(['label' => 'Home'], $breadcrumb->jsonSerialize());
+    }
+
+    #[Test]
+    public function testSerializesWithHref(): void
+    {
+        $breadcrumb = new Breadcrumb(label: 'Home', href: '/');
+
+        self::assertSame(['label' => 'Home', 'href' => '/'], $breadcrumb->jsonSerialize());
+    }
+
+    #[Test]
+    public function testSerializesExternalLink(): void
+    {
+        $breadcrumb = new Breadcrumb(
+            label: 'Docs',
+            href: 'https://docs.middag.io',
+            external: true,
+        );
+
+        $payload = $breadcrumb->jsonSerialize();
+
+        self::assertSame('Docs', $payload['label']);
+        self::assertSame('https://docs.middag.io', $payload['href']);
+        self::assertTrue($payload['external']);
+    }
+
+    #[Test]
+    public function testOmitsExternalWhenFalse(): void
+    {
+        $breadcrumb = new Breadcrumb(label: 'Home', href: '/', external: false);
+
+        $payload = $breadcrumb->jsonSerialize();
+
+        self::assertArrayNotHasKey('external', $payload);
+    }
+}

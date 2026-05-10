@@ -18,7 +18,7 @@ readonly class InspectorDescriptor implements InspectorDescriptorInterface
 {
     public function __construct(
         public string $endpoint,
-        public int    $width = 440,
+        public int $width = 440,
     ) {}
 
     /** @return array<string, mixed> */
@@ -26,7 +26,7 @@ readonly class InspectorDescriptor implements InspectorDescriptorInterface
     {
         return [
             'endpoint' => $this->endpoint,
-            'width'    => $this->width,
+            'width' => $this->width,
         ];
     }
 }

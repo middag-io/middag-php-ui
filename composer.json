@@ -3,11 +3,20 @@
     "description": "MIDDAG UI contract builders — transport-agnostic PageContract system for contract-driven rendering",
     "type": "library",
     "license": "proprietary",
+    "authors": [
+        {
+            "name": "Michael Meneses",
+            "email": "michael@middag.com.br"
+        }
+    ],
     "require": {
         "php": "^8.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.0"
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.0",
+        "rector/rector": "^2.4"
     },
     "autoload": {
         "psr-4": {
@@ -22,5 +31,23 @@
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-text",
+        "check:style": "php-cs-fixer fix --dry-run --verbose",
+        "check:rector": "rector process --dry-run --config=.php-rector.php",
+        "check:stan": "phpstan analyse --configuration=.phpstan.neon",
+        "check": [
+            "@check:style",
+            "@check:rector",
+            "@check:stan"
+        ],
+        "fix:style": "php-cs-fixer fix --verbose --show-progress=none",
+        "fix:rector": "rector process --config=.php-rector.php --no-progress-bar",
+        "fix": [
+            "@fix:style",
+            "@fix:rector"
+        ]
+    }
 }

@@ -17,23 +17,23 @@ use Middag\Ui\Contract\PageActionInterface;
 readonly class PageAction implements PageActionInterface
 {
     public function __construct(
-        public string  $id,
-        public string  $label,
-        public string  $intent,
-        public ?string $href                  = null,
-        public ?string $method                = null,
-        public ?string $icon                  = null,
-        public bool    $requires_confirmation = false,
-        public bool    $disabled              = false,
-        public bool    $loading               = false,
+        public string $id,
+        public string $label,
+        public string $intent,
+        public ?string $href = null,
+        public ?string $method = null,
+        public ?string $icon = null,
+        public bool $requires_confirmation = false,
+        public bool $disabled = false,
+        public bool $loading = false,
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
         $payload = [
-            'id'     => $this->id,
-            'label'  => $this->label,
+            'id' => $this->id,
+            'label' => $this->label,
             'intent' => $this->intent,
         ];
 
@@ -49,15 +49,15 @@ readonly class PageAction implements PageActionInterface
             $payload['icon'] = $this->icon;
         }
 
-        if ($this->requires_confirmation === true) {
+        if ($this->requires_confirmation) {
             $payload['requires_confirmation'] = true;
         }
 
-        if ($this->disabled === true) {
+        if ($this->disabled) {
             $payload['disabled'] = true;
         }
 
-        if ($this->loading === true) {
+        if ($this->loading) {
             $payload['loading'] = true;
         }
 

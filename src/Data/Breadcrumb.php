@@ -17,9 +17,9 @@ use Middag\Ui\Contract\BreadcrumbInterface;
 readonly class Breadcrumb implements BreadcrumbInterface
 {
     public function __construct(
-        public string  $label,
-        public ?string $href     = null,
-        public bool    $external = false,
+        public string $label,
+        public ?string $href = null,
+        public bool $external = false,
     ) {}
 
     /** @return array<string, mixed> */
@@ -31,7 +31,7 @@ readonly class Breadcrumb implements BreadcrumbInterface
             $payload['href'] = $this->href;
         }
 
-        if ($this->external === true) {
+        if ($this->external) {
             $payload['external'] = true;
         }
 
