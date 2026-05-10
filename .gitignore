@@ -1,0 +1,65 @@
+# Dependencies
+/node_modules/
+/vendor/
+composer.lock
+
+# Environment variables
+.env*
+!.env.example
+!.env.tpl
+
+# UI configuration
+ui*/dist
+ui*/.npmrc
+
+# Tool caches (all in .cache/ — keeps root clean)
+.cache/
+.idea/
+.venv/
+.php-cs-fixer.cache
+.phpunit.result.cache
+.phpunit.cache/
+__pycache__/
+logs/
+
+# VitePress
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+docs-site/.vitepress/dist/
+docs-site/.vitepress/cache/
+docs-site/.vitepress/.temp/
+
+# VIGIM operational state (ADR-925 - local_middag)
+# Versioned: all .vigim/ except data/
+# Ephemeral: .vigim/content/data/ (inventory, snapshots, reports, cache)
+.vigim/content/data/*
+!.vigim/content/data/.gitkeep
+!.vigim/content/data/*.csv
+
+###############################
+#### IA tools and runtimes ####
+###############################
+
+# AIOX Local (AIOX)
+# npx aiox-core install
+.aiox-core/
+.aiox-core/local/
+.claude/settings.local.json
+.aiox/install-log.txt
+
+# Ralph runtime/state artifacts (ralph-loop plugin)
+.ralph/.call_count
+.ralph/.circuit_breaker_history
+.ralph/.circuit_breaker_state
+.ralph/.claude_session_id
+.ralph/.exit_signals
+.ralph/.last_reset
+.ralph/.loop_start_sha
+.ralph/.ralph_session
+.ralph/.ralph_session_history
+.ralph/live.log
+.ralph/logs/
+.ralph/progress.json
+.ralph/status.json
+.ralph/docs/generated/
+.gstack/

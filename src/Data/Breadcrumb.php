@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.com.br>
+ * @copyright   2026 MIDDAG (https://www.middag.com.br)
+ * @license     proprietary
+ */
+
+namespace Middag\Ui\Data;
+
+use Middag\Ui\Contract\BreadcrumbInterface;
+
+readonly class Breadcrumb implements BreadcrumbInterface
+{
+    public function __construct(
+        public string  $label,
+        public ?string $href     = null,
+        public bool    $external = false,
+    ) {}
+
+    /** @return array<string, mixed> */
+    public function jsonSerialize(): array
+    {
+        $payload = ['label' => $this->label];
+
+        if ($this->href !== null) {
+            $payload['href'] = $this->href;
+        }
+
+        if ($this->external === true) {
+            $payload['external'] = true;
+        }
+
+        return $payload;
+    }
+}
