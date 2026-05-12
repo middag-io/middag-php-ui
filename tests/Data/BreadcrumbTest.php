@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\Breadcrumb;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(Breadcrumb::class)]
 final class BreadcrumbTest extends TestCase
 {
     #[Test]

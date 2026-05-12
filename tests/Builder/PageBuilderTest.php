@@ -17,14 +17,14 @@ use Middag\Ui\Builder\CrudBuilder;
 use Middag\Ui\Builder\PageBuilder;
 use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\PageContractData;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(PageBuilder::class)]
 final class PageBuilderTest extends TestCase
 {
     #[Test]

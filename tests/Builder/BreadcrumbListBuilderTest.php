@@ -14,14 +14,14 @@ namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\BreadcrumbListBuilder;
 use Middag\Ui\Contract\BreadcrumbInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(BreadcrumbListBuilder::class)]
 final class BreadcrumbListBuilderTest extends TestCase
 {
     #[Test]

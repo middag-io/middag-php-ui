@@ -17,14 +17,14 @@ use Middag\Ui\Data\LayoutDescriptor;
 use Middag\Ui\Data\PageContractData;
 use Middag\Ui\Data\PageMeta;
 use Middag\Ui\Data\PageResources;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(PageContractData::class)]
 final class PageContractDataTest extends TestCase
 {
     #[Test]

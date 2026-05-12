@@ -15,14 +15,14 @@ namespace Middag\Ui\Tests\Data;
 use Middag\Ui\Data\Breadcrumb;
 use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\PageMeta;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(PageMeta::class)]
 final class PageMetaTest extends TestCase
 {
     #[Test]

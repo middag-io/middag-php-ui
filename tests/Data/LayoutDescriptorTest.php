@@ -14,14 +14,14 @@ namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(LayoutDescriptor::class)]
 final class LayoutDescriptorTest extends TestCase
 {
     #[Test]

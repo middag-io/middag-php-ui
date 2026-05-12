@@ -14,14 +14,14 @@ namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\RegionBuilder;
 use Middag\Ui\Contract\BlockDescriptorInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(RegionBuilder::class)]
 final class RegionBuilderTest extends TestCase
 {
     #[Test]

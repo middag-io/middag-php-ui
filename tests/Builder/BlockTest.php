@@ -14,14 +14,14 @@ namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\Block;
 use Middag\Ui\Data\BlockDescriptor;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(Block::class)]
 final class BlockTest extends TestCase
 {
     #[Test]
