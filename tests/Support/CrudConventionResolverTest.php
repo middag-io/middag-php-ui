@@ -45,7 +45,7 @@ final class CrudConventionResolverTest extends TestCase
     #[Test]
     public function testColumnsReturnsEmptyForMissingClass(): void
     {
-        self::assertSame([], CrudConventionResolver::columns('Nonexistent\\Entity'));
+        self::assertSame([], CrudConventionResolver::columns('Nonexistent\Entity'));
     }
 
     #[Test]
