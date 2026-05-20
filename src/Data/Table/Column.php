@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.com.br>
+ * @copyright   2026 MIDDAG (https://www.middag.com.br)
+ * @license     proprietary
+ */
+
+namespace Middag\Ui\Data\Table;
+
+use JsonSerializable;
+
+/**
+ * Table column DTO.
+ *
+ * Represents a single column definition for a data grid.
+ *
+ * @internal
+ */
+class Column implements JsonSerializable
+{
+    /**
+     * @param string $key        Unique identifier for the column
+     * @param string $label      Display label
+     * @param bool   $sortable   Whether the column can be sorted
+     * @param bool   $searchable Whether the column is searchable
+     * @param string $type       Type of data (text, date, boolean, action, etc)
+     * @param array  $options    Additional display options
+     */
+    public function __construct(
+        public readonly string $key,
+        public readonly string $label,
+        public readonly bool $sortable = false,
+        public readonly bool $searchable = false,
+        public readonly string $type = 'text',
+        public readonly array $options = []
+    ) {}
+
+    /**
+     * Serialize the column definition for JSON consumers.
+     *
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'key' => $this->key,
+            'label' => $this->label,
+            'sortable' => $this->sortable,
+            'searchable' => $this->searchable,
+            'type' => $this->type,
+            'options' => $this->options,
+        ];
+    }
+}
