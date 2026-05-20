@@ -15,7 +15,10 @@ Biblioteca PHP de contract builders para UI contract-driven. Produz PageContract
 | `src/Contract/` | Interfaces (`*Interface.php`) — todas estendem `JsonSerializable` |
 | `src/Builder/` | Implementações fluent (PageBuilder, CrudBuilder, RegionBuilder, Block, BreadcrumbListBuilder) |
 | `src/Data/` | Readonly value objects (PageContractData, PageMeta, BlockDescriptor, etc.) |
+| `src/Infrastructure/Form/` | Form contracts + AbstractForm + Field types + Layout (Group, Section) + FormValidator |
 | `tests/` | PHPUnit tests |
+
+**Nota:** `InertiaRenderer` + `InertiaFieldMapper` movidos para `middag-io/framework` em B-146 (PD-008 C). ui hospeda apenas contracts e Layout primitives.
 
 ## Comandos
 
