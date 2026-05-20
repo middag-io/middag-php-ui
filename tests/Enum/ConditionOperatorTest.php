@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * middag-io/ui — MIDDAG PHP UI contracts + descriptors.
+ * middag-io/ui — MIDDAG UI contract builders.
  *
  * @author      Michael Meneses <michael@middag.com.br>
  * @copyright   2026 MIDDAG (https://www.middag.com.br)
