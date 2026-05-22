@@ -21,7 +21,7 @@ use JsonSerializable;
  *
  * @internal
  */
-class Column implements JsonSerializable
+readonly class Column implements JsonSerializable
 {
     /**
      * @param string $key        Unique identifier for the column
@@ -32,12 +32,12 @@ class Column implements JsonSerializable
      * @param array  $options    Additional display options
      */
     public function __construct(
-        public readonly string $key,
-        public readonly string $label,
-        public readonly bool $sortable = false,
-        public readonly bool $searchable = false,
-        public readonly string $type = 'text',
-        public readonly array $options = []
+        public string $key,
+        public string $label,
+        public bool $sortable = false,
+        public bool $searchable = false,
+        public string $type = 'text',
+        public array $options = []
     ) {}
 
     /**

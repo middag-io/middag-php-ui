@@ -21,7 +21,7 @@ use JsonSerializable;
  *
  * @internal
  */
-class TableConfig implements JsonSerializable
+readonly class TableConfig implements JsonSerializable
 {
     /**
      * @param Column[] $columns
@@ -30,10 +30,10 @@ class TableConfig implements JsonSerializable
      * @param array    $options General table options (pagination, default sort, etc)
      */
     public function __construct(
-        public readonly array $columns,
-        public readonly array $filters = [],
-        public readonly array $actions = [],
-        public readonly array $options = []
+        public array $columns,
+        public array $filters = [],
+        public array $actions = [],
+        public array $options = []
     ) {}
 
     /**

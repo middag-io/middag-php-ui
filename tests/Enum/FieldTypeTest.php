@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Enum;
 
 use Middag\Ui\Enum\FieldType;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversNothing]
 final class FieldTypeTest extends TestCase
 {
     #[Test]
