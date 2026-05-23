@@ -70,7 +70,7 @@ final class SectionTest extends TestCase
     #[Test]
     public function testFieldsReplacesChildren(): void
     {
-        $field = $this->createMock(FieldInterface::class);
+        $field = $this->createStub(FieldInterface::class);
 
         $section = Section::of('s');
         $section->fields($field);
@@ -82,9 +82,9 @@ final class SectionTest extends TestCase
     #[Test]
     public function testFieldsAcceptsMultiple(): void
     {
-        $f1 = $this->createMock(FieldInterface::class);
-        $f2 = $this->createMock(FieldInterface::class);
-        $f3 = $this->createMock(FieldInterface::class);
+        $f1 = $this->createStub(FieldInterface::class);
+        $f2 = $this->createStub(FieldInterface::class);
+        $f3 = $this->createStub(FieldInterface::class);
 
         $section = Section::of('s');
         $section->fields($f1, $f2, $f3);
@@ -106,7 +106,7 @@ final class SectionTest extends TestCase
 
         self::assertSame($section, $result);
 
-        $field = $this->createMock(FieldInterface::class);
+        $field = $this->createStub(FieldInterface::class);
         $result2 = $section->fields($field);
 
         self::assertSame($section, $result2);
