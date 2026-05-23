@@ -12,7 +12,7 @@ middag-io/ui — MIDDAG UI contract builders.
 
 @author      Michael Meneses <michael@middag.com.br>
 @copyright   {$currentYear} MIDDAG (https://www.middag.com.br)
-@license     proprietary
+@license     Apache-2.0
 EOF;
 
 $finder = Finder::create()

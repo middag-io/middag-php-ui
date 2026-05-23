@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * @author      Michael Meneses <michael@middag.com.br>
  * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Data\Form;
@@ -27,7 +27,7 @@ final readonly class FieldDefinition
 {
     /**
      * @param string                                     $name
-     * @param FieldType                                 $type
+     * @param FieldType                                  $type
      * @param null|array{key: string, component: string} $label
      * @param null|array{key: string, component: string} $help
      * @param mixed                                      $default

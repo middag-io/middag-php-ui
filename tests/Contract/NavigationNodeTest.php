@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * @author      Michael Meneses <michael@middag.com.br>
  * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Contract;

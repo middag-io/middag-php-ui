@@ -2,7 +2,7 @@
     "name": "middag-io/ui",
     "description": "MIDDAG UI contract builders — transport-agnostic PageContract system for contract-driven rendering",
     "type": "library",
-    "license": "proprietary",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Michael Meneses",
