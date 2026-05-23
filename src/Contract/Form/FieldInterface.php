@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Contract\Form;
 
-use Middag\Ui\Data\Form\FieldDefinition as field_definition;
+use Middag\Ui\Data\Form\FieldDefinition;
 
 /**
  * Contract for fields. Implemented by abstract_field and all concrete field classes.
  *
- * The fluent DSL builder must be able to produce an immutable field_definition
+ * The fluent DSL builder must be able to produce an immutable FieldDefinition
  * consumed by renderer adapters (ADR-806).
  *
  * @api
@@ -25,7 +25,7 @@ use Middag\Ui\Data\Form\FieldDefinition as field_definition;
 interface FieldInterface
 {
     /** Final immutable representation consumed by renderers. */
-    public function toDefinition(): field_definition;
+    public function toDefinition(): FieldDefinition;
 
     public function name(): string;
 }

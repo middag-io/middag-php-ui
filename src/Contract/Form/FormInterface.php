@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Contract\Form;
 
-use Middag\Ui\Data\Form\FormState as form_state;
+use Middag\Ui\Data\Form\FormState;
 
 /**
  * Contract for forms. Implemented by abstract_form (framework) and base/form (extensions).
@@ -51,5 +51,5 @@ interface FormInterface
     public function errors(): array;
 
     /** Underlying form state value object. */
-    public function state(): form_state;
+    public function state(): FormState;
 }

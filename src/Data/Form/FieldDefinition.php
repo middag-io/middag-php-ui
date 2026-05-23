@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Data\Form;
 
-use Middag\Ui\Enum\FieldType as field_type;
+use Middag\Ui\Enum\FieldType;
 
 /**
  * Neutral, immutable representation of a form field.
@@ -27,7 +27,7 @@ final readonly class FieldDefinition
 {
     /**
      * @param string                                     $name
-     * @param field_type                                 $type
+     * @param FieldType                                 $type
      * @param null|array{key: string, component: string} $label
      * @param null|array{key: string, component: string} $help
      * @param mixed                                      $default
@@ -38,7 +38,7 @@ final readonly class FieldDefinition
      */
     public function __construct(
         public string $name,
-        public field_type $type,
+        public FieldType $type,
         public ?array $label,
         public ?array $help,
         public mixed $default,

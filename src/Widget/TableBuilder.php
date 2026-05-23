@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Widget;
 
 use Middag\Ui\Data\Table\Column as column;
-use Middag\Ui\Data\Table\TableConfig as table_config;
+use Middag\Ui\Data\Table\TableConfig;
 
 /**
  * Table Builder.
@@ -108,9 +108,9 @@ class TableBuilder
     /**
      * Build the final configuration DTO.
      */
-    public function build(): table_config
+    public function build(): TableConfig
     {
-        return new table_config(
+        return new TableConfig(
             columns: $this->columns,
             filters: $this->filters,
             actions: $this->actions,

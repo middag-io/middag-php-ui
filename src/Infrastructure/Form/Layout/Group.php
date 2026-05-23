@@ -12,17 +12,17 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Infrastructure\Form\Layout;
 
-use Middag\Ui\Contract\Form\FieldInterface as field_interface;
-use Middag\Ui\Contract\Form\LayoutElementInterface as layout_element_interface;
+use Middag\Ui\Contract\Form\FieldInterface;
+use Middag\Ui\Contract\Form\LayoutElementInterface;
 
 /**
  * Inline field group (e.g. side-by-side fields within a section).
  *
  * @internal — use base/form/group factory
  */
-final class Group implements layout_element_interface
+final class Group implements LayoutElementInterface
 {
-    /** @var array<int, field_interface|layout_element_interface> */
+    /** @var array<int, FieldInterface|LayoutElementInterface> */
     private array $children = [];
 
     private function __construct(private readonly string $id) {}
@@ -32,7 +32,7 @@ final class Group implements layout_element_interface
         return new self($id);
     }
 
-    public function fields(field_interface|layout_element_interface ...$items): self
+    public function fields(FieldInterface|LayoutElementInterface ...$items): self
     {
         $this->children = $items;
 
@@ -44,7 +44,7 @@ final class Group implements layout_element_interface
         return $this->id;
     }
 
-    /** @return array<int, field_interface|layout_element_interface> */
+    /** @return array<int, FieldInterface|LayoutElementInterface> */
     public function children(): array
     {
         return $this->children;
