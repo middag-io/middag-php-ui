@@ -27,19 +27,19 @@ interface WidgetInterface
      * Set the unique identifier for this widget instance.
      * Needed for DOM ID generation and JS mounting points.
      */
-    public function set_id(string $id): void;
+    public function setId(string $id): void;
 
     /**
      * Get the unique identifier.
      */
-    public function get_id(): string;
+    public function getId(): string;
 
     /**
      * Prepare and return the data structure required by the template/component.
      *
      * @return array<string, mixed>
      */
-    public function get_data(): array;
+    public function getData(): array;
 
     /**
      * Render the widget's HTML output.

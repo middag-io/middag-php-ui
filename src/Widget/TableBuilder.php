@@ -98,7 +98,7 @@ class TableBuilder
     /**
      * Set general table options.
      */
-    public function with_options(array $options): self
+    public function withOptions(array $options): self
     {
         $this->options = array_merge($this->options, $options);
 

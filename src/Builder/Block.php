@@ -27,7 +27,7 @@ class Block
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload
      */
-    public static function dense_table(string $key, array $columns, array $rows = [], array $data = []): BlockDescriptor
+    public static function denseTable(string $key, array $columns, array $rows = [], array $data = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'dense_table',
@@ -39,7 +39,7 @@ class Block
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload
      */
-    public static function form_panel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], array $data = []): BlockDescriptor
+    public static function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], array $data = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'form_panel',
@@ -48,7 +48,7 @@ class Block
         );
     }
 
-    public static function detail_panel(string $key, array $sections, array $data = []): BlockDescriptor
+    public static function detailPanel(string $key, array $sections, array $data = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'detail_panel',
@@ -57,7 +57,7 @@ class Block
         );
     }
 
-    public static function metric_card(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): BlockDescriptor
+    public static function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'metric_card',
@@ -66,7 +66,7 @@ class Block
         );
     }
 
-    public static function empty_state(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): BlockDescriptor
+    public static function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'empty_state',
@@ -75,7 +75,7 @@ class Block
         );
     }
 
-    public static function status_strip(string $key, array $items, ?string $tone = null): BlockDescriptor
+    public static function statusStrip(string $key, array $items, ?string $tone = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'status_strip',
@@ -84,7 +84,7 @@ class Block
         );
     }
 
-    public static function activity_timeline(string $key, array $groups, bool $has_more = false, ?string $load_more_href = null): BlockDescriptor
+    public static function activityTimeline(string $key, array $groups, bool $has_more = false, ?string $load_more_href = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'activity_timeline',
@@ -93,7 +93,7 @@ class Block
         );
     }
 
-    public static function markdown_panel(string $key, string $content, ?int $max_height = null): BlockDescriptor
+    public static function markdownPanel(string $key, string $content, ?int $max_height = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'markdown_panel',
@@ -105,7 +105,7 @@ class Block
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload
      */
-    public static function card_grid(string $key, array $columns, array $rows = [], ?string $variant = null, array $data = []): BlockDescriptor
+    public static function cardGrid(string $key, array $columns, array $rows = [], ?string $variant = null, array $data = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'card_grid',
@@ -122,7 +122,7 @@ class Block
      * @param array<int, array{id: string, icon: string, title: string, description: string, actionUrl: string, actionMethod?: string, confirmText?: string}> $items
      * @param null|array{success: bool, message: string}                                                                                                      $flash
      */
-    public static function action_grid(string $key, array $items, ?array $flash = null): BlockDescriptor
+    public static function actionGrid(string $key, array $items, ?array $flash = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'action_grid',
@@ -134,7 +134,7 @@ class Block
     /**
      * @param array<int, array{label: string, href: null|string, icon?: string, description?: string, external?: bool}> $items
      */
-    public static function link_list(string $key, array $items): BlockDescriptor
+    public static function linkList(string $key, array $items): BlockDescriptor
     {
         return new BlockDescriptor(type: 'link_list', key: $key, data: ['items' => $items]);
     }

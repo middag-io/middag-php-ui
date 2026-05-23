@@ -126,7 +126,7 @@ final class TableBuilderTest extends TestCase
     public function testWithOptions(): void
     {
         $config = TableBuilder::make()
-            ->with_options(['paginated' => true, 'perPage' => 25])
+            ->withOptions(['paginated' => true, 'perPage' => 25])
             ->build();
 
         self::assertSame(['paginated' => true, 'perPage' => 25], $config->options);
@@ -136,8 +136,8 @@ final class TableBuilderTest extends TestCase
     public function testWithOptionsMerges(): void
     {
         $config = TableBuilder::make()
-            ->with_options(['paginated' => true])
-            ->with_options(['perPage' => 50])
+            ->withOptions(['paginated' => true])
+            ->withOptions(['perPage' => 50])
             ->build();
 
         self::assertTrue($config->options['paginated']);
@@ -152,7 +152,7 @@ final class TableBuilderTest extends TestCase
         self::assertSame($builder, $builder->column('a', 'A'));
         self::assertSame($builder, $builder->filter('b', 'B'));
         self::assertSame($builder, $builder->action('c', 'C'));
-        self::assertSame($builder, $builder->with_options([]));
+        self::assertSame($builder, $builder->withOptions([]));
     }
 
     #[Test]

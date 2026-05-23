@@ -34,7 +34,7 @@ interface FormInterface
     public function validate(): void;
 
     /** True when form was submitted (input not empty) AND validate() passed. */
-    public function is_submitted_and_valid(): bool;
+    public function isSubmittedAndValid(): bool;
 
     /**
      * Validated, normalized data ready for the service layer.

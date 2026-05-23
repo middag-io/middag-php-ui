@@ -19,13 +19,13 @@ namespace Middag\Ui\Contract;
  */
 interface DashboardWidgetInterface
 {
-    public function get_slug(): string;
+    public function getSlug(): string;
 
-    public function get_title(): string;
+    public function getTitle(): string;
 
-    public function get_extension(): string;
+    public function getExtension(): string;
 
-    public function get_priority(): int;
+    public function getPriority(): int;
 
     public function render(): string;
 }

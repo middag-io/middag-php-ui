@@ -38,7 +38,7 @@ final class SectionTest extends TestCase
     {
         $section = Section::of('s');
 
-        self::assertNull($section->label_data());
+        self::assertNull($section->labelData());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class SectionTest extends TestCase
         $section = Section::of('s');
         $section->label('section_title', 'MyComponent');
 
-        self::assertSame(['key' => 'section_title', 'component' => 'MyComponent'], $section->label_data());
+        self::assertSame(['key' => 'section_title', 'component' => 'MyComponent'], $section->labelData());
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class SectionTest extends TestCase
         $section = Section::of('s');
         $section->label('section_title');
 
-        self::assertSame(['key' => 'section_title', 'component' => ''], $section->label_data());
+        self::assertSame(['key' => 'section_title', 'component' => ''], $section->labelData());
     }
 
     #[Test]

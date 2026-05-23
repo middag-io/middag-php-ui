@@ -42,13 +42,13 @@ final class FormState
         return $this->errors;
     }
 
-    public function is_submitted(): bool
+    public function isSubmitted(): bool
     {
         return $this->submitted;
     }
 
     /** @param array<string, mixed> $values */
-    public function with_values(array $values): self
+    public function withValues(array $values): self
     {
         $clone = clone $this;
         $clone->values = $values;
@@ -58,7 +58,7 @@ final class FormState
     }
 
     /** @param array<string, string|string[]> $errors */
-    public function with_errors(array $errors): self
+    public function withErrors(array $errors): self
     {
         $clone = clone $this;
         $clone->errors = $errors;

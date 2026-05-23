@@ -34,7 +34,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Additional data merged with title
      */
-    public function metric_card(string $key, string $title = '', array $data = []): static
+    public function metricCard(string $key, string $title = '', array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'metric_card',
@@ -50,7 +50,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Block payload
      */
-    public function status_strip(string $key, array $data = []): static
+    public function statusStrip(string $key, array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'status_strip',
@@ -66,7 +66,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Additional data merged with title
      */
-    public function dense_table(string $key, string $title = '', array $data = []): static
+    public function denseTable(string $key, string $title = '', array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'dense_table',
@@ -82,7 +82,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Block payload
      */
-    public function detail_panel(string $key, array $data = []): static
+    public function detailPanel(string $key, array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'detail_panel',
@@ -98,7 +98,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Additional data merged with title
      */
-    public function activity_timeline(string $key, string $title = '', array $data = []): static
+    public function activityTimeline(string $key, string $title = '', array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'activity_timeline',
@@ -114,7 +114,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Block payload (title, description, action, variant)
      */
-    public function empty_state(string $key, array $data = []): static
+    public function emptyState(string $key, array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'empty_state',
@@ -130,7 +130,7 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<string, mixed> $data Block payload
      */
-    public function form_panel(string $key, string $title = '', array $data = []): static
+    public function formPanel(string $key, string $title = '', array $data = []): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'form_panel',
@@ -144,7 +144,7 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a markdown panel block.
      */
-    public function markdown_panel(string $key, string $content = ''): static
+    public function markdownPanel(string $key, string $content = ''): static
     {
         $this->blocks[] = new BlockDescriptor(
             type: 'markdown_panel',

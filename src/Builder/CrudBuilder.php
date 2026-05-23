@@ -37,29 +37,29 @@ class CrudBuilder implements CrudBuilderInterface
     private array $actions = ['index', 'create', 'edit', 'show'];
 
     /** @var null|string[] Explicit columns (null = convention) */
-    private ?array $columns_list = null;
+    private ?array $columnsList = null;
 
     /** @var array<string, Closure> Column configurators */
-    private array $column_configs = [];
+    private array $columnConfigs = [];
 
     /** @var null|string[] Row actions (null = default ['edit', 'delete']) */
-    private ?array $row_actions_list = null;
+    private ?array $rowActionsList = null;
 
     /** @var null|string[] Bulk actions */
-    private ?array $bulk_actions_list = null;
+    private ?array $bulkActionsList = null;
 
     /** @var null|PageActionInterface[] Page actions (null = default ['create']) */
-    private ?array $page_actions_list = null;
+    private ?array $pageActionsList = null;
 
-    private int $per_page = 25;
+    private int $perPage = 25;
 
-    private string $sort_column = 'created_at';
+    private string $sortColumn = 'created_at';
 
-    private string $sort_direction = 'desc';
+    private string $sortDirection = 'desc';
 
-    private ?string $custom_title = null;
+    private ?string $customTitle = null;
 
-    private ?string $custom_layout = null;
+    private ?string $customLayout = null;
 
     private function __construct(private readonly string $entity_class)
     {
@@ -95,7 +95,7 @@ class CrudBuilder implements CrudBuilderInterface
      */
     public function columns(array $columns): static
     {
-        $this->columns_list = $columns;
+        $this->columnsList = $columns;
 
         return $this;
     }
@@ -107,7 +107,7 @@ class CrudBuilder implements CrudBuilderInterface
      */
     public function column(string $name, Closure $configurator): static
     {
-        $this->column_configs[$name] = $configurator;
+        $this->columnConfigs[$name] = $configurator;
 
         return $this;
     }
@@ -117,9 +117,9 @@ class CrudBuilder implements CrudBuilderInterface
      *
      * @param string[] $actions
      */
-    public function row_actions(array $actions): static
+    public function rowActions(array $actions): static
     {
-        $this->row_actions_list = $actions;
+        $this->rowActionsList = $actions;
 
         return $this;
     }
@@ -129,9 +129,9 @@ class CrudBuilder implements CrudBuilderInterface
      *
      * @param string[] $actions
      */
-    public function bulk_actions(array $actions): static
+    public function bulkActions(array $actions): static
     {
-        $this->bulk_actions_list = $actions;
+        $this->bulkActionsList = $actions;
 
         return $this;
     }
@@ -141,9 +141,9 @@ class CrudBuilder implements CrudBuilderInterface
      *
      * @param PageActionInterface[] $actions
      */
-    public function page_actions(array $actions): static
+    public function pageActions(array $actions): static
     {
-        $this->page_actions_list = $actions;
+        $this->pageActionsList = $actions;
 
         return $this;
     }
@@ -161,9 +161,9 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Set items per page for index table.
      */
-    public function per_page(int $count): static
+    public function perPage(int $count): static
     {
-        $this->per_page = $count;
+        $this->perPage = $count;
 
         return $this;
     }
@@ -173,8 +173,8 @@ class CrudBuilder implements CrudBuilderInterface
      */
     public function sort(string $column, string $direction = 'desc'): static
     {
-        $this->sort_column = $column;
-        $this->sort_direction = $direction;
+        $this->sortColumn = $column;
+        $this->sortDirection = $direction;
 
         return $this;
     }
@@ -184,7 +184,7 @@ class CrudBuilder implements CrudBuilderInterface
      */
     public function title(string $title): static
     {
-        $this->custom_title = $title;
+        $this->customTitle = $title;
 
         return $this;
     }
@@ -194,7 +194,7 @@ class CrudBuilder implements CrudBuilderInterface
      */
     public function layout(string $template): static
     {
-        $this->custom_layout = $template;
+        $this->customLayout = $template;
 
         return $this;
     }
@@ -220,10 +220,10 @@ class CrudBuilder implements CrudBuilderInterface
     public function build(string $action = 'index', array $data = []): PageContractData
     {
         return match ($action) {
-            'index' => $this->build_index($data),
-            'create' => $this->build_create($data),
-            'edit' => $this->build_edit($data),
-            'show' => $this->build_show($data),
+            'index' => $this->buildIndex($data),
+            'create' => $this->buildCreate($data),
+            'edit' => $this->buildEdit($data),
+            'show' => $this->buildShow($data),
             default => throw new InvalidArgumentException('Unknown CRUD action: ' . $action),
         };
     }
@@ -231,7 +231,7 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Check if a given action is enabled.
      */
-    public function has_action(string $action): bool
+    public function hasAction(string $action): bool
     {
         return in_array($action, $this->actions, true);
     }
@@ -239,45 +239,45 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Get the entity slug.
      */
-    public function get_slug(): string
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    private function build_index(array $data): PageContractData
+    private function buildIndex(array $data): PageContractData
     {
-        $title = $this->custom_title ?? ucfirst($this->slug);
-        $columns = $this->columns_list ?? ['name', 'status', 'created_at'];
-        $row_actions = $this->row_actions_list ?? ['edit', 'delete'];
-        $page_actions = $this->page_actions_list ?? [
+        $title = $this->customTitle ?? ucfirst($this->slug);
+        $columns = $this->columnsList ?? ['name', 'status', 'created_at'];
+        $row_actions = $this->rowActionsList ?? ['edit', 'delete'];
+        $page_actions = $this->pageActionsList ?? [
             new PageAction(id: 'create', label: 'Create', intent: 'primary', href: sprintf('/%s/create', $this->slug)),
         ];
 
         $table_data = [
-            'columns' => $this->build_column_descriptors($columns),
+            'columns' => $this->buildColumnDescriptors($columns),
             'rows' => $data['rows'] ?? [],
             'pagination' => $data['pagination'] ?? [
                 'page' => 1,
-                'perPage' => $this->per_page,
+                'perPage' => $this->perPage,
                 'total' => 0,
                 'lastPage' => 1,
             ],
             'sort' => [
-                'column' => $this->sort_column,
-                'direction' => $this->sort_direction,
+                'column' => $this->sortColumn,
+                'direction' => $this->sortDirection,
             ],
             'rowActions' => array_map(
                 fn (string $a): array => ['id' => $a, 'label' => ucfirst($a)],
                 $row_actions,
             ),
-            'bulkActions' => $this->bulk_actions_list !== null
-                ? array_map(fn (string $a): array => ['id' => $a, 'label' => ucfirst($a)], $this->bulk_actions_list)
+            'bulkActions' => $this->bulkActionsList !== null
+                ? array_map(fn (string $a): array => ['id' => $a, 'label' => ucfirst($a)], $this->bulkActionsList)
                 : [],
         ];
 
         return PageBuilder::page($this->slug . '.index')
             ->title($title)
-            ->layout($this->custom_layout ?? 'stack')
+            ->layout($this->customLayout ?? 'stack')
             ->actions($page_actions)
             ->region('content', [
                 new BlockDescriptor(type: 'dense_table', key: $this->slug . '.table', data: $table_data),
@@ -285,10 +285,10 @@ class CrudBuilder implements CrudBuilderInterface
             ->build();
     }
 
-    private function build_create(array $data): PageContractData
+    private function buildCreate(array $data): PageContractData
     {
-        $title = $this->custom_title
-            ? 'Create ' . $this->custom_title
+        $title = $this->customTitle
+            ? 'Create ' . $this->customTitle
             : 'Create ' . rtrim(ucfirst($this->slug), 's');
 
         $form_data = [
@@ -305,18 +305,18 @@ class CrudBuilder implements CrudBuilderInterface
 
         return PageBuilder::page($this->slug . '.create')
             ->title($title)
-            ->layout($this->custom_layout ?? 'stack')
+            ->layout($this->customLayout ?? 'stack')
             ->region('content', [
                 new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $form_data),
             ])
             ->build();
     }
 
-    private function build_edit(array $data): PageContractData
+    private function buildEdit(array $data): PageContractData
     {
         $id = $data['id'] ?? 0;
-        $title = $this->custom_title
-            ? 'Edit ' . $this->custom_title
+        $title = $this->customTitle
+            ? 'Edit ' . $this->customTitle
             : 'Edit ' . rtrim(ucfirst($this->slug), 's');
 
         $form_data = [
@@ -333,20 +333,20 @@ class CrudBuilder implements CrudBuilderInterface
 
         return PageBuilder::page($this->slug . '.edit')
             ->title($title)
-            ->layout($this->custom_layout ?? 'stack')
+            ->layout($this->customLayout ?? 'stack')
             ->region('content', [
                 new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $form_data),
             ])
             ->build();
     }
 
-    private function build_show(array $data): PageContractData
+    private function buildShow(array $data): PageContractData
     {
-        $title = $this->custom_title ?? rtrim(ucfirst($this->slug), 's');
+        $title = $this->customTitle ?? rtrim(ucfirst($this->slug), 's');
 
         return PageBuilder::page($this->slug . '.show')
             ->title($title)
-            ->layout($this->custom_layout ?? 'split')
+            ->layout($this->customLayout ?? 'split')
             ->region('content', [
                 new BlockDescriptor(type: 'detail_panel', key: $this->slug . '.detail', data: $data['detail'] ?? []),
             ])
@@ -361,7 +361,7 @@ class CrudBuilder implements CrudBuilderInterface
      *
      * @return array<int, array<string, mixed>>
      */
-    private function build_column_descriptors(array $columns): array
+    private function buildColumnDescriptors(array $columns): array
     {
         return array_map(function (string $col): array {
             $descriptor = [
@@ -370,8 +370,8 @@ class CrudBuilder implements CrudBuilderInterface
                 'sortable' => in_array($col, ['name', 'created_at', 'updated_at', 'status'], true),
             ];
 
-            if (isset($this->column_configs[$col])) {
-                ($this->column_configs[$col])($descriptor);
+            if (isset($this->columnConfigs[$col])) {
+                ($this->columnConfigs[$col])($descriptor);
             }
 
             return $descriptor;

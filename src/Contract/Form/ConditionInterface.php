@@ -24,5 +24,5 @@ use Middag\Ui\Data\Form\Condition as condition;
  */
 interface ConditionInterface
 {
-    public function to_condition(): condition;
+    public function toCondition(): condition;
 }

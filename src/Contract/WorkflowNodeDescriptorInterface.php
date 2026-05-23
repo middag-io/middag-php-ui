@@ -29,27 +29,27 @@ interface WorkflowNodeDescriptorInterface
     /**
      * Returns the node category: 'trigger', 'action', or 'logic'.
      */
-    public function get_category(): string;
+    public function getCategory(): string;
 
     /**
      * Returns the node type identifier (matches action_type or trigger_type).
      */
-    public function get_node_type(): string;
+    public function getNodeType(): string;
 
     /**
      * Returns human-readable label for the palette.
      */
-    public function get_label(): string;
+    public function getLabel(): string;
 
     /**
      * Returns icon identifier for the palette (Lucide icon name).
      */
-    public function get_icon(): string;
+    public function getIcon(): string;
 
     /**
      * Returns configurable fields for the NodeConfigPanel.
      *
      * @return list<array{key: string, label: string, type: string, required: bool, options?: list<array{value: string, label: string}>, placeholder?: string, help?: string}>
      */
-    public function get_config_schema(): array;
+    public function getConfigSchema(): array;
 }

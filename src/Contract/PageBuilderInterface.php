@@ -39,5 +39,5 @@ interface PageBuilderInterface
 
     public function build(): PageContractInterface;
 
-    public function to_props(): array;
+    public function toProps(): array;
 }

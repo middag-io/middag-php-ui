@@ -64,7 +64,7 @@ final class CrudConventionResolverTest extends TestCase
     #[Test]
     public function testFormClassReturnsNullWhenNoExtensionsSegment(): void
     {
-        self::assertNull(CrudConventionResolver::form_class('App\Entity\Invoice'));
+        self::assertNull(CrudConventionResolver::formClass('App\Entity\Invoice'));
     }
 
     #[Test]
@@ -76,7 +76,7 @@ final class CrudConventionResolverTest extends TestCase
     #[Test]
     public function testRoutePrefixEqualsSlug(): void
     {
-        self::assertSame('invoices', CrudConventionResolver::route_prefix('App\Entity\Invoice'));
+        self::assertSame('invoices', CrudConventionResolver::routePrefix('App\Entity\Invoice'));
     }
 }
 

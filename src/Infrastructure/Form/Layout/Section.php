@@ -55,7 +55,7 @@ final class Section implements layout_element_interface
     }
 
     /** @return null|array{key: string, component: string} */
-    public function label_data(): ?array
+    public function labelData(): ?array
     {
         return $this->label;
     }

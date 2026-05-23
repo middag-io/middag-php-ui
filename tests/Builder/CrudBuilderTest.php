@@ -30,7 +30,7 @@ final class CrudBuilderTest extends TestCase
     {
         $crud = CrudBuilder::for('App\Entity\Invoice');
 
-        self::assertSame('invoices', $crud->get_slug());
+        self::assertSame('invoices', $crud->getSlug());
     }
 
     #[Test]
@@ -70,8 +70,8 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $crud->without('show');
 
-        self::assertFalse($crud->has_action('show'));
-        self::assertTrue($crud->has_action('index'));
+        self::assertFalse($crud->hasAction('show'));
+        self::assertTrue($crud->hasAction('index'));
     }
 
     #[Test]
@@ -111,7 +111,7 @@ final class CrudBuilderTest extends TestCase
     public function testPerPage(): void
     {
         $crud = CrudBuilder::for('App\Entity\Invoice');
-        $crud->per_page(50);
+        $crud->perPage(50);
 
         $contract = $crud->build('index');
 

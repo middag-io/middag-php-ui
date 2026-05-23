@@ -26,7 +26,7 @@ interface BlockInterface
     /**
      * Compute and store the block title.
      */
-    public function set_title(): void;
+    public function setTitle(): void;
 
     /**
      * Returns the human-readable title of the block.
@@ -34,7 +34,7 @@ interface BlockInterface
      *
      * @return string
      */
-    public function get_title(): string;
+    public function getTitle(): string;
 
     /**
      * Main computation function.
@@ -42,14 +42,14 @@ interface BlockInterface
      *
      * @return array<string, mixed>
      */
-    public function process_content(): array;
+    public function processContent(): array;
 
     /**
      * Returns the processed block data, with memoization.
      *
      * @return array<string, mixed>
      */
-    public function get_content(): array;
+    public function getContent(): array;
 
     /**
      * Defines an HTML attribute for the block output wrapper.
@@ -57,7 +57,7 @@ interface BlockInterface
      * @param string $key
      * @param string $value
      */
-    public function set_attribute(string $key, string $value): void;
+    public function setAttribute(string $key, string $value): void;
 
     /**
      * Render the block using the associated widget + template system.

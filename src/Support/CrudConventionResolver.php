@@ -85,7 +85,7 @@ final class CrudConventionResolver
      *
      * @return null|string FQCN if found, null otherwise
      */
-    public static function form_class(string $entity_class): ?string
+    public static function formClass(string $entity_class): ?string
     {
         $parts = explode('\\', $entity_class);
         $basename = end($parts);
@@ -114,7 +114,7 @@ final class CrudConventionResolver
     /**
      * Resolve route prefix by convention.
      */
-    public static function route_prefix(string $entity_class): string
+    public static function routePrefix(string $entity_class): string
     {
         return self::slug($entity_class);
     }

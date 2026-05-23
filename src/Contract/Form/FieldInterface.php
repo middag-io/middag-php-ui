@@ -25,7 +25,7 @@ use Middag\Ui\Data\Form\FieldDefinition as field_definition;
 interface FieldInterface
 {
     /** Final immutable representation consumed by renderers. */
-    public function to_definition(): field_definition;
+    public function toDefinition(): field_definition;
 
     public function name(): string;
 }

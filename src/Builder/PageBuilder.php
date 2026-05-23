@@ -46,10 +46,10 @@ class PageBuilder implements PageBuilderInterface
 
     private string $shell = 'product';
 
-    private string $layout_template = 'stack';
+    private string $layoutTemplate = 'stack';
 
     /** @var array<string, mixed> */
-    private array $layout_meta = [];
+    private array $layoutMeta = [];
 
     /** @var array<string, BlockDescriptorInterface[]> */
     private array $regions = [];
@@ -60,9 +60,9 @@ class PageBuilder implements PageBuilderInterface
     /** @var PageActionInterface[] */
     private array $actions = [];
 
-    private bool $is_overlay = false;
+    private bool $isOverlay = false;
 
-    private ?array $help_data = null;
+    private ?array $helpData = null;
 
     private ?InspectorDescriptor $inspector = null;
 
@@ -133,7 +133,7 @@ class PageBuilder implements PageBuilderInterface
 
     public function layout(string $template): static
     {
-        $this->layout_template = $template;
+        $this->layoutTemplate = $template;
 
         return $this;
     }
@@ -145,7 +145,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function meta(array $meta): static
     {
-        $this->layout_meta = $meta;
+        $this->layoutMeta = $meta;
 
         return $this;
     }
@@ -203,7 +203,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function overlay(): static
     {
-        $this->is_overlay = true;
+        $this->isOverlay = true;
 
         return $this;
     }
@@ -213,7 +213,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function help(string $title, string $body, ?string $learn_more = null): static
     {
-        $this->help_data = [
+        $this->helpData = [
             'title' => $title,
             'body' => $body,
             'learnMore' => $learn_more,
@@ -256,9 +256,9 @@ class PageBuilder implements PageBuilderInterface
                 actions: $this->actions,
             ),
             layout: new LayoutDescriptor(
-                template: $this->layout_template,
+                template: $this->layoutTemplate,
                 regions: $this->regions,
-                meta: $this->layout_meta,
+                meta: $this->layoutMeta,
             ),
         );
     }
@@ -271,18 +271,18 @@ class PageBuilder implements PageBuilderInterface
      *
      * @return array{contract: PageContractData, overlay?: bool, help?: array, inspector?: InspectorDescriptorInterface}
      */
-    public function to_props(): array
+    public function toProps(): array
     {
         $props = [
             'contract' => $this->build(),
         ];
 
-        if ($this->is_overlay) {
+        if ($this->isOverlay) {
             $props['overlay'] = true;
         }
 
-        if ($this->help_data !== null) {
-            $props['help'] = $this->help_data;
+        if ($this->helpData !== null) {
+            $props['help'] = $this->helpData;
         }
 
         if ($this->inspector instanceof InspectorDescriptorInterface) {
