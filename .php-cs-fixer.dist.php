@@ -10,8 +10,8 @@ $currentYear = date('Y');
 $header = <<<"EOF"
 middag-io/ui — MIDDAG UI contract builders.
 
-@author      Michael Meneses <michael@middag.com.br>
-@copyright   {$currentYear} MIDDAG (https://www.middag.com.br)
+@author      Michael Meneses <michael@middag.io>
+@copyright   {$currentYear} MIDDAG (https://middag.io)
 @license     Apache-2.0
 EOF;
 
