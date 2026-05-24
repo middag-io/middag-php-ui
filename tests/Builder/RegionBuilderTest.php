@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Builder;
@@ -36,7 +36,7 @@ final class RegionBuilderTest extends TestCase
     public function testMetricCard(): void
     {
         $builder = new RegionBuilder();
-        $builder->metric_card('m', 'Revenue');
+        $builder->metricCard('m', 'Revenue');
 
         $blocks = $builder->all();
 
@@ -48,7 +48,7 @@ final class RegionBuilderTest extends TestCase
     public function testDenseTable(): void
     {
         $builder = new RegionBuilder();
-        $builder->dense_table('t', 'Users');
+        $builder->denseTable('t', 'Users');
 
         $blocks = $builder->all();
 
@@ -61,9 +61,9 @@ final class RegionBuilderTest extends TestCase
     {
         $builder = new RegionBuilder();
         $builder
-            ->metric_card('m1')
-            ->metric_card('m2')
-            ->dense_table('t1');
+            ->metricCard('m1')
+            ->metricCard('m2')
+            ->denseTable('t1');
 
         self::assertCount(3, $builder->all());
     }
@@ -90,8 +90,8 @@ final class RegionBuilderTest extends TestCase
     {
         $builder = new RegionBuilder();
         $builder
-            ->metric_card('m')
-            ->dense_table('t')
+            ->metricCard('m')
+            ->denseTable('t')
             ->block('custom', 'c');
 
         foreach ($builder->all() as $block) {

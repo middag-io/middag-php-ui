@@ -5,14 +5,14 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Data\Form;
 
-use Middag\Ui\Enum\FieldType as field_type;
+use Middag\Ui\Enum\FieldType;
 
 /**
  * Neutral, immutable representation of a form field.
@@ -27,7 +27,7 @@ final readonly class FieldDefinition
 {
     /**
      * @param string                                     $name
-     * @param field_type                                 $type
+     * @param FieldType                                  $type
      * @param null|array{key: string, component: string} $label
      * @param null|array{key: string, component: string} $help
      * @param mixed                                      $default
@@ -38,7 +38,7 @@ final readonly class FieldDefinition
      */
     public function __construct(
         public string $name,
-        public field_type $type,
+        public FieldType $type,
         public ?array $label,
         public ?array $help,
         public mixed $default,

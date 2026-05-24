@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Contract;
@@ -15,21 +15,21 @@ namespace Middag\Ui\Contract;
 /** @api */
 interface RegionBuilderInterface
 {
-    public function metric_card(string $key, string $title = '', array $data = []): static;
+    public function metricCard(string $key, string $title = '', array $data = []): static;
 
-    public function status_strip(string $key, array $data = []): static;
+    public function statusStrip(string $key, array $data = []): static;
 
-    public function dense_table(string $key, string $title = '', array $data = []): static;
+    public function denseTable(string $key, string $title = '', array $data = []): static;
 
-    public function detail_panel(string $key, array $data = []): static;
+    public function detailPanel(string $key, array $data = []): static;
 
-    public function activity_timeline(string $key, string $title = '', array $data = []): static;
+    public function activityTimeline(string $key, string $title = '', array $data = []): static;
 
-    public function empty_state(string $key, array $data = []): static;
+    public function emptyState(string $key, array $data = []): static;
 
-    public function form_panel(string $key, string $title = '', array $data = []): static;
+    public function formPanel(string $key, string $title = '', array $data = []): static;
 
-    public function markdown_panel(string $key, string $content = ''): static;
+    public function markdownPanel(string $key, string $content = ''): static;
 
     public function block(string $type, string $key, array $data = []): static;
 

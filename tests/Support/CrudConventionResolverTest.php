@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Support;
@@ -64,7 +64,7 @@ final class CrudConventionResolverTest extends TestCase
     #[Test]
     public function testFormClassReturnsNullWhenNoExtensionsSegment(): void
     {
-        self::assertNull(CrudConventionResolver::form_class('App\Entity\Invoice'));
+        self::assertNull(CrudConventionResolver::formClass('App\Entity\Invoice'));
     }
 
     #[Test]
@@ -76,7 +76,7 @@ final class CrudConventionResolverTest extends TestCase
     #[Test]
     public function testRoutePrefixEqualsSlug(): void
     {
-        self::assertSame('invoices', CrudConventionResolver::route_prefix('App\Entity\Invoice'));
+        self::assertSame('invoices', CrudConventionResolver::routePrefix('App\Entity\Invoice'));
     }
 }
 

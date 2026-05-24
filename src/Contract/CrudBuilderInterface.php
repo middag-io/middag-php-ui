@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Contract;
@@ -23,15 +23,15 @@ interface CrudBuilderInterface
 
     public function column(string $name, Closure $configurator): static;
 
-    public function row_actions(array $actions): static;
+    public function rowActions(array $actions): static;
 
-    public function bulk_actions(array $actions): static;
+    public function bulkActions(array $actions): static;
 
-    public function page_actions(array $actions): static;
+    public function pageActions(array $actions): static;
 
     public function form(string $form_class): static;
 
-    public function per_page(int $count): static;
+    public function perPage(int $count): static;
 
     public function sort(string $column, string $direction = 'desc'): static;
 
@@ -43,7 +43,7 @@ interface CrudBuilderInterface
 
     public function build(string $action = 'index', array $data = []): PageContractInterface;
 
-    public function has_action(string $action): bool;
+    public function hasAction(string $action): bool;
 
-    public function get_slug(): string;
+    public function getSlug(): string;
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Infrastructure\Form\Layout;
@@ -44,7 +44,7 @@ final class GroupTest extends TestCase
     #[Test]
     public function testFieldsReplacesChildren(): void
     {
-        $field = $this->createMock(FieldInterface::class);
+        $field = $this->createStub(FieldInterface::class);
 
         $group = Group::of('g');
         $group->fields($field);
@@ -56,8 +56,8 @@ final class GroupTest extends TestCase
     #[Test]
     public function testFieldsAcceptsMultiple(): void
     {
-        $f1 = $this->createMock(FieldInterface::class);
-        $f2 = $this->createMock(FieldInterface::class);
+        $f1 = $this->createStub(FieldInterface::class);
+        $f2 = $this->createStub(FieldInterface::class);
 
         $group = Group::of('g');
         $group->fields($f1, $f2);
@@ -68,7 +68,7 @@ final class GroupTest extends TestCase
     #[Test]
     public function testFieldsAcceptsLayoutElements(): void
     {
-        $nested = $this->createMock(LayoutElementInterface::class);
+        $nested = $this->createStub(LayoutElementInterface::class);
 
         $group = Group::of('g');
         $group->fields($nested);

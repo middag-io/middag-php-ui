@@ -1,5 +1,8 @@
 # middag-io/ui
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![PHP](https://img.shields.io/badge/php-%5E8.2-777BB4.svg)](https://www.php.net/)
+
 Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. Produces `PageContractData` (JSON) consumed by `@middag-io/react` via Inertia or any transport layer.
 
 **Zero external dependencies.** PHP 8.2+ only.
@@ -208,7 +211,7 @@ Add the MIDDAG Private Satis repository to your `composer.json`:
     "repositories": [
         {
             "type": "composer",
-            "url": "https://privatesatis.middag.com.br"
+            "url": "https://privatesatis.middag.io"
         }
     ]
 }
@@ -243,4 +246,18 @@ Releases managed by [release-please](https://github.com/googleapis/release-pleas
 
 ## License
 
-Proprietary — MIDDAG (https://www.middag.com.br)
+Licensed under the Apache License, Version 2.0. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
+
+```
+Copyright 2026 MIDDAG
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+```
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).

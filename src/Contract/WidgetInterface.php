@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Contract;
@@ -27,19 +27,19 @@ interface WidgetInterface
      * Set the unique identifier for this widget instance.
      * Needed for DOM ID generation and JS mounting points.
      */
-    public function set_id(string $id): void;
+    public function setId(string $id): void;
 
     /**
      * Get the unique identifier.
      */
-    public function get_id(): string;
+    public function getId(): string;
 
     /**
      * Prepare and return the data structure required by the template/component.
      *
      * @return array<string, mixed>
      */
-    public function get_data(): array;
+    public function getData(): array;
 
     /**
      * Render the widget's HTML output.

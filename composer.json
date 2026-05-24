@@ -2,13 +2,22 @@
     "name": "middag-io/ui",
     "description": "MIDDAG UI contract builders — transport-agnostic PageContract system for contract-driven rendering",
     "type": "library",
-    "license": "proprietary",
+    "license": "Apache-2.0",
+    "keywords": ["ui", "contract-builder", "inertia", "form", "page-contract", "transport-agnostic"],
+    "homepage": "https://github.com/middag-io/middag-php-ui",
     "authors": [
         {
             "name": "Michael Meneses",
-            "email": "michael@middag.com.br"
+            "email": "michael@middag.io",
+            "homepage": "https://middag.io",
+            "role": "Lead Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/middag-io/middag-php-ui/issues",
+        "source": "https://github.com/middag-io/middag-php-ui",
+        "security": "https://github.com/middag-io/middag-php-ui/security/policy"
+    },
     "require": {
         "php": "^8.2"
     },
@@ -35,7 +44,7 @@
     "scripts": {
         "test": "phpunit",
         "test:coverage": "phpunit --coverage-text",
-        "check:style": "php-cs-fixer fix --dry-run --verbose",
+        "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
         "check:rector": "rector process --dry-run --config=.php-rector.php",
         "check:stan": "phpstan analyse --configuration=.phpstan.neon",
         "check": [
@@ -43,11 +52,16 @@
             "@check:rector",
             "@check:stan"
         ],
-        "fix:style": "php-cs-fixer fix --verbose --show-progress=none",
+        "fix:style": "php-cs-fixer fix --verbose --show-progress=none --config=.php-cs-fixer.dist.php",
         "fix:rector": "rector process --config=.php-rector.php --no-progress-bar",
         "fix": [
             "@fix:style",
             "@fix:rector"
+        ],
+        "fix:all": [
+            "@fix:style",
+            "@fix:rector",
+            "@fix:style"
         ],
         "post-install-cmd": "git config core.hooksPath .githooks 2>/dev/null || true",
         "post-update-cmd": "git config core.hooksPath .githooks 2>/dev/null || true"

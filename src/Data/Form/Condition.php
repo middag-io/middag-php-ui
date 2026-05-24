@@ -5,14 +5,14 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Data\Form;
 
-use Middag\Ui\Enum\ConditionOperator as condition_operator;
+use Middag\Ui\Enum\ConditionOperator;
 
 /**
  * Conditional rule attached to a field (visible_when, required_when, etc.).
@@ -31,7 +31,7 @@ final readonly class Condition
 
     public function __construct(
         public string $field,
-        public condition_operator $operator,
+        public ConditionOperator $operator,
         public mixed $value,
         public string $kind = self::KIND_VISIBLE_WHEN,
     ) {}

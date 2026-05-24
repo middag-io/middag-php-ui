@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Builder;
@@ -100,7 +100,7 @@ final class PageBuilderTest extends TestCase
     public function testRegionWithArray(): void
     {
         $contract = PageBuilder::page('test')
-            ->region('content', [Block::empty_state('e')])
+            ->region('content', [Block::emptyState('e')])
             ->build();
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -113,7 +113,7 @@ final class PageBuilderTest extends TestCase
     public function testRegionWithClosure(): void
     {
         $contract = PageBuilder::page('test')
-            ->region('content', fn ($r) => $r->metric_card('m'))
+            ->region('content', fn ($r) => $r->metricCard('m'))
             ->build();
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -156,7 +156,7 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testToPropsMinimal(): void
     {
-        $props = PageBuilder::page('test')->to_props();
+        $props = PageBuilder::page('test')->toProps();
 
         self::assertArrayHasKey('contract', $props);
         self::assertInstanceOf(PageContractData::class, $props['contract']);
@@ -170,7 +170,7 @@ final class PageBuilderTest extends TestCase
     {
         $props = PageBuilder::page('test')
             ->overlay()
-            ->to_props();
+            ->toProps();
 
         self::assertArrayHasKey('overlay', $props);
         self::assertTrue($props['overlay']);
@@ -181,7 +181,7 @@ final class PageBuilderTest extends TestCase
     {
         $props = PageBuilder::page('test')
             ->help('T', 'B', 'url')
-            ->to_props();
+            ->toProps();
 
         self::assertArrayHasKey('help', $props);
         self::assertSame('T', $props['help']['title']);
@@ -194,7 +194,7 @@ final class PageBuilderTest extends TestCase
     {
         $props = PageBuilder::page('test')
             ->inspector('/api/{id}', 500)
-            ->to_props();
+            ->toProps();
 
         self::assertArrayHasKey('inspector', $props);
         self::assertSame('/api/{id}', $props['inspector']->endpoint);

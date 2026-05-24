@@ -5,15 +5,15 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Widget;
 
 use Middag\Ui\Data\Table\Column as column;
-use Middag\Ui\Data\Table\TableConfig as table_config;
+use Middag\Ui\Data\Table\TableConfig;
 
 /**
  * Table Builder.
@@ -98,7 +98,7 @@ class TableBuilder
     /**
      * Set general table options.
      */
-    public function with_options(array $options): self
+    public function withOptions(array $options): self
     {
         $this->options = array_merge($this->options, $options);
 
@@ -108,9 +108,9 @@ class TableBuilder
     /**
      * Build the final configuration DTO.
      */
-    public function build(): table_config
+    public function build(): TableConfig
     {
-        return new table_config(
+        return new TableConfig(
             columns: $this->columns,
             filters: $this->filters,
             actions: $this->actions,

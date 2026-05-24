@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Support;
@@ -85,7 +85,7 @@ final class CrudConventionResolver
      *
      * @return null|string FQCN if found, null otherwise
      */
-    public static function form_class(string $entity_class): ?string
+    public static function formClass(string $entity_class): ?string
     {
         $parts = explode('\\', $entity_class);
         $basename = end($parts);
@@ -114,7 +114,7 @@ final class CrudConventionResolver
     /**
      * Resolve route prefix by convention.
      */
-    public static function route_prefix(string $entity_class): string
+    public static function routePrefix(string $entity_class): string
     {
         return self::slug($entity_class);
     }

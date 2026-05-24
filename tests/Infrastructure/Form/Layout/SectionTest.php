@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Infrastructure\Form\Layout;
@@ -38,7 +38,7 @@ final class SectionTest extends TestCase
     {
         $section = Section::of('s');
 
-        self::assertNull($section->label_data());
+        self::assertNull($section->labelData());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class SectionTest extends TestCase
         $section = Section::of('s');
         $section->label('section_title', 'MyComponent');
 
-        self::assertSame(['key' => 'section_title', 'component' => 'MyComponent'], $section->label_data());
+        self::assertSame(['key' => 'section_title', 'component' => 'MyComponent'], $section->labelData());
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class SectionTest extends TestCase
         $section = Section::of('s');
         $section->label('section_title');
 
-        self::assertSame(['key' => 'section_title', 'component' => ''], $section->label_data());
+        self::assertSame(['key' => 'section_title', 'component' => ''], $section->labelData());
     }
 
     #[Test]
@@ -70,7 +70,7 @@ final class SectionTest extends TestCase
     #[Test]
     public function testFieldsReplacesChildren(): void
     {
-        $field = $this->createMock(FieldInterface::class);
+        $field = $this->createStub(FieldInterface::class);
 
         $section = Section::of('s');
         $section->fields($field);
@@ -82,9 +82,9 @@ final class SectionTest extends TestCase
     #[Test]
     public function testFieldsAcceptsMultiple(): void
     {
-        $f1 = $this->createMock(FieldInterface::class);
-        $f2 = $this->createMock(FieldInterface::class);
-        $f3 = $this->createMock(FieldInterface::class);
+        $f1 = $this->createStub(FieldInterface::class);
+        $f2 = $this->createStub(FieldInterface::class);
+        $f3 = $this->createStub(FieldInterface::class);
 
         $section = Section::of('s');
         $section->fields($f1, $f2, $f3);
@@ -106,7 +106,7 @@ final class SectionTest extends TestCase
 
         self::assertSame($section, $result);
 
-        $field = $this->createMock(FieldInterface::class);
+        $field = $this->createStub(FieldInterface::class);
         $result2 = $section->fields($field);
 
         self::assertSame($section, $result2);

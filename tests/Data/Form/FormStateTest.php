@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Tests\Data\Form;
@@ -30,14 +30,14 @@ final class FormStateTest extends TestCase
 
         self::assertSame([], $state->values());
         self::assertSame([], $state->errors());
-        self::assertFalse($state->is_submitted());
+        self::assertFalse($state->isSubmitted());
     }
 
     #[Test]
     public function testWithValuesUpdatesValues(): void
     {
         $state = new FormState();
-        $next = $state->with_values(['name' => 'Alice', 'email' => 'alice@example.com']);
+        $next = $state->withValues(['name' => 'Alice', 'email' => 'alice@example.com']);
 
         self::assertSame(['name' => 'Alice', 'email' => 'alice@example.com'], $next->values());
     }
@@ -46,16 +46,16 @@ final class FormStateTest extends TestCase
     public function testWithValuesMarksSubmitted(): void
     {
         $state = new FormState();
-        $next = $state->with_values(['name' => 'Alice']);
+        $next = $state->withValues(['name' => 'Alice']);
 
-        self::assertTrue($next->is_submitted());
+        self::assertTrue($next->isSubmitted());
     }
 
     #[Test]
     public function testWithErrorsUpdatesErrors(): void
     {
         $state = new FormState();
-        $next = $state->with_errors(['email' => 'Invalid email']);
+        $next = $state->withErrors(['email' => 'Invalid email']);
 
         self::assertSame(['email' => 'Invalid email'], $next->errors());
     }
@@ -64,17 +64,17 @@ final class FormStateTest extends TestCase
     public function testWithValuesIsImmutable(): void
     {
         $original = new FormState();
-        $original->with_values(['name' => 'Alice']);
+        $original->withValues(['name' => 'Alice']);
 
         self::assertSame([], $original->values());
-        self::assertFalse($original->is_submitted());
+        self::assertFalse($original->isSubmitted());
     }
 
     #[Test]
     public function testWithErrorsIsImmutable(): void
     {
         $original = new FormState();
-        $original->with_errors(['email' => 'Invalid']);
+        $original->withErrors(['email' => 'Invalid']);
 
         self::assertSame([], $original->errors());
     }
@@ -82,8 +82,8 @@ final class FormStateTest extends TestCase
     #[Test]
     public function testWithValuesDoesNotClearExistingErrors(): void
     {
-        $state = (new FormState())->with_errors(['email' => 'Invalid']);
-        $next = $state->with_values(['name' => 'Alice']);
+        $state = (new FormState())->withErrors(['email' => 'Invalid']);
+        $next = $state->withValues(['name' => 'Alice']);
 
         self::assertSame(['email' => 'Invalid'], $next->errors());
         self::assertSame(['name' => 'Alice'], $next->values());
@@ -92,8 +92,8 @@ final class FormStateTest extends TestCase
     #[Test]
     public function testWithErrorsDoesNotClearValues(): void
     {
-        $state = (new FormState())->with_values(['name' => 'Alice']);
-        $next = $state->with_errors(['name' => 'Required']);
+        $state = (new FormState())->withValues(['name' => 'Alice']);
+        $next = $state->withErrors(['name' => 'Required']);
 
         self::assertSame(['name' => 'Alice'], $next->values());
         self::assertSame(['name' => 'Required'], $next->errors());
@@ -110,13 +110,13 @@ final class FormStateTest extends TestCase
 
         self::assertSame(['name' => 'Bob'], $state->values());
         self::assertSame(['email' => 'Required'], $state->errors());
-        self::assertTrue($state->is_submitted());
+        self::assertTrue($state->isSubmitted());
     }
 
     #[Test]
     public function testErrorsCanBeMultiple(): void
     {
-        $state = (new FormState())->with_errors([
+        $state = (new FormState())->withErrors([
             'email' => ['Invalid format', 'Already in use'],
             'name' => 'Required',
         ]);

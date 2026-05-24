@@ -5,9 +5,9 @@ declare(strict_types=1);
 /**
  * middag-io/ui — MIDDAG UI contract builders.
  *
- * @author      Michael Meneses <michael@middag.com.br>
- * @copyright   2026 MIDDAG (https://www.middag.com.br)
- * @license     proprietary
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
  */
 
 namespace Middag\Ui\Contract;
@@ -19,13 +19,13 @@ namespace Middag\Ui\Contract;
  */
 interface DashboardWidgetInterface
 {
-    public function get_slug(): string;
+    public function getSlug(): string;
 
-    public function get_title(): string;
+    public function getTitle(): string;
 
-    public function get_extension(): string;
+    public function getExtension(): string;
 
-    public function get_priority(): int;
+    public function getPriority(): int;
 
     public function render(): string;
 }
