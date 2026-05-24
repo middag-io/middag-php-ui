@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/middag-io/middag-php-ui/compare/v0.2.0...v0.3.0) (2026-05-24)
+
+
+### Miscellaneous Chores
+
+* release 0.3.0 ([68f10d9](https://github.com/middag-io/middag-php-ui/commit/68f10d9750c56626f978e85aad46d290413e50c9))
+
 ## [0.2.0](https://github.com/middag-io/middag-php-ui/compare/v0.1.0...v0.2.0) (2026-05-23)
 
 
