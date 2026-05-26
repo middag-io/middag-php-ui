@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui;
 
+use LogicException;
 use Middag\Ui\Contract\PageContractInterface;
 use Middag\Ui\Contract\PageInterface;
 
@@ -46,13 +47,23 @@ abstract class AbstractPage implements PageInterface
     /**
      * Build the page contract.
      *
-     * Implementations typically compose the contract through a PageBuilder:
+     * Single-page implementations compose the contract through a PageBuilder:
      *
      *   return PageBuilder::page(static::SLUG)
      *       ->title(...)
      *       ->layout(...)
      *       ->region('content', [...])
      *       ->build();
+     *
+     * Multi-method pages (one method per route, dispatched by the controller)
+     * do not use this entry point and inherit this default, which throws if
+     * invoked. Override only when the page has a single canonical contract.
      */
-    abstract public function build(): PageContractInterface;
+    public function build(): PageContractInterface
+    {
+        throw new LogicException(sprintf(
+            '%s does not implement build(); it is a multi-method page dispatched by named controller methods.',
+            static::class,
+        ));
+    }
 }
