@@ -36,7 +36,7 @@ use Middag\Ui\Data\PageMeta;
  *       ->region('content', [Block::dense_table(...)])
  *       ->build();
  *
- * @internal
+ * @api
  */
 class PageBuilder implements PageBuilderInterface
 {

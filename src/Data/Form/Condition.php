@@ -17,7 +17,7 @@ use Middag\Ui\Enum\ConditionOperator;
 /**
  * Conditional rule attached to a field (visible_when, required_when, etc.).
  *
- * @internal
+ * @api
  */
 final readonly class Condition
 {
