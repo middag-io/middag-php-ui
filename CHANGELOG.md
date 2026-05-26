@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/middag-io/middag-php-ui/compare/v0.3.0...v0.4.0) (2026-05-26)
+
+
+### Features
+
+* **page:** port PageContract impl from local_middag ([#5](https://github.com/middag-io/middag-php-ui/issues/5)) ([66bca6b](https://github.com/middag-io/middag-php-ui/commit/66bca6b1c3ccb601c9fb790934a8d224ba6382cf))
+
 ## [0.3.0](https://github.com/middag-io/middag-php-ui/compare/v0.2.0...v0.3.0) (2026-05-24)
 
 
