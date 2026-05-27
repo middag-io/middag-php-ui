@@ -19,7 +19,7 @@ use Middag\Ui\Data\Breadcrumb;
 /**
  * Fluent builder for breadcrumb arrays.
  *
- * @internal
+ * @api
  */
 class BreadcrumbListBuilder implements BreadcrumbListBuilderInterface
 {

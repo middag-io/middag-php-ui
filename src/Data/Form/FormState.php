@@ -17,7 +17,7 @@ namespace Middag\Ui\Data\Form;
  *
  * Produced by abstract_form after hydration; consumed by renderers and validators.
  *
- * @internal
+ * @api
  */
 final class FormState
 {

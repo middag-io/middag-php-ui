@@ -20,7 +20,7 @@ use Middag\Ui\Enum\RenderTarget;
  * Produced exclusively by form_renderer_interface implementations.
  * Consumed by abstract_controller::render_form() to produce the HTTP response.
  *
- * @internal
+ * @api
  */
 final readonly class RendererOutput
 {

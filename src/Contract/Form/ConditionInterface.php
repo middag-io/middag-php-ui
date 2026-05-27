@@ -20,7 +20,7 @@ use Middag\Ui\Data\Form\Condition as condition;
  * Implemented by fluent DSL builders in the field layer that expose
  * conditional visibility/requirement/disability rules (ADR-806).
  *
- * @internal
+ * @api
  */
 interface ConditionInterface
 {

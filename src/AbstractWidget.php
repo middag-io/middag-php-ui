@@ -23,6 +23,6 @@ use Middag\Ui\Contract\WidgetInterface;
  *
  * @see WidgetInterface
  *
- * @internal
+ * @api
  */
 abstract class AbstractWidget implements WidgetInterface {}

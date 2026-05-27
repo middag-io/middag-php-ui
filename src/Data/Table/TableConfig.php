@@ -19,7 +19,7 @@ use JsonSerializable;
  *
  * Full definition of a table's structure and behavior.
  *
- * @internal
+ * @api
  */
 readonly class TableConfig implements JsonSerializable
 {

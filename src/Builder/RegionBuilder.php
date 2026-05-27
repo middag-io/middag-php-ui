@@ -22,7 +22,7 @@ use Middag\Ui\Data\BlockDescriptor;
  * Provides shorthand methods for common block types. Used via callback
  * in PageBuilder::region().
  *
- * @internal
+ * @api
  */
 class RegionBuilder implements RegionBuilderInterface
 {

@@ -21,7 +21,7 @@ use Middag\Ui\Enum\FieldType;
  * — never the fluent DSL builder. This is the boundary between the
  * public DSL (base/form/field) and the infrastructure renderers.
  *
- * @internal
+ * @api
  */
 final readonly class FieldDefinition
 {

@@ -19,7 +19,7 @@ use JsonSerializable;
  *
  * Represents a single column definition for a data grid.
  *
- * @internal
+ * @api
  */
 readonly class Column implements JsonSerializable
 {

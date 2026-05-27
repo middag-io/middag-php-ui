@@ -20,7 +20,7 @@ use Middag\Ui\Data\BlockDescriptor;
  * Provides named constructors for each standard block type,
  * avoiding the need to remember block type strings and data shapes.
  *
- * @internal
+ * @api
  */
 class Block
 {

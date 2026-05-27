@@ -21,7 +21,7 @@ use Middag\Ui\Enum\RenderTarget;
  * Implementations (mform_renderer, inertia_renderer) are registered in the
  * renderer_registry, which selects the correct adapter at render time.
  *
- * @internal
+ * @api
  */
 interface FormRendererInterface
 {

@@ -20,7 +20,7 @@ use Middag\Ui\Data\Table\TableConfig;
  *
  * Fluid API to define data tables that can be consumed by client components.
  *
- * @internal
+ * @api
  */
 class TableBuilder
 {

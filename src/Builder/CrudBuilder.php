@@ -27,7 +27,7 @@ use Middag\Ui\Data\PageContractData;
  * following convention-over-configuration. Override methods allow point-of-use
  * customization without dropping to Level 3 composable.
  *
- * @internal
+ * @api
  */
 class CrudBuilder implements CrudBuilderInterface
 {
