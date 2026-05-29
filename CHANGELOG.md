@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.6.0](https://github.com/middag-io/middag-php-ui/compare/v0.5.0...v0.6.0) (2026-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* every Middag\Ui\* FQN changes (stereotype-first layout replaced by concern-first). Pre-1.0, no compatibility shims. Consumers must update imports to the new namespaces.
+
+### Features
+
+* emit JSON Schema from value objects ([4948765](https://github.com/middag-io/middag-php-ui/commit/4948765b24f05a3c6f6e3f03ffdf1b48acbf86a4))
+
+
+### Refactoring
+
+* reorganize ui to concern-first ([51d35dd](https://github.com/middag-io/middag-php-ui/commit/51d35dd6e98481d8251ec27f5be8816769e2c9a8))
+* reorganize ui to concern-first (BREAKING → 0.6.0) ([87b01cc](https://github.com/middag-io/middag-php-ui/commit/87b01cc549900225c8eda8830b76b2943050a77d))
+
 ## [0.5.0](https://github.com/middag-io/middag-php-ui/compare/v0.4.0...v0.5.0) (2026-05-29)
 
 
