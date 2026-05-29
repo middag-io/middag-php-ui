@@ -55,20 +55,46 @@ readonly class NavigationNode implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return [
+        $payload = [
             'key' => $this->key,
             'label' => Label::serialize($this->label),
-            'icon' => $this->icon,
-            'href' => $this->href,
-            'badge' => $this->badge,
-            'active' => $this->active,
-            'drilldown' => $this->drilldown,
-            'collapsible' => $this->collapsible,
-            'defaultOpen' => $this->default_open,
-            'children' => array_map(
+        ];
+
+        if ($this->icon !== null) {
+            $payload['icon'] = $this->icon;
+        }
+
+        if ($this->href !== null) {
+            $payload['href'] = $this->href;
+        }
+
+        if ($this->badge !== null) {
+            $payload['badge'] = $this->badge;
+        }
+
+        if ($this->active) {
+            $payload['active'] = true;
+        }
+
+        if ($this->drilldown) {
+            $payload['drilldown'] = true;
+        }
+
+        if ($this->collapsible) {
+            $payload['collapsible'] = true;
+        }
+
+        if ($this->default_open) {
+            $payload['defaultOpen'] = true;
+        }
+
+        if ($this->children !== []) {
+            $payload['children'] = array_map(
                 static fn (self $child): array => $child->jsonSerialize(),
                 $this->children,
-            ),
-        ];
+            );
+        }
+
+        return $payload;
     }
 }

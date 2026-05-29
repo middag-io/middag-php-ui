@@ -43,22 +43,18 @@ final class NavigationNodeTest extends TestCase
     }
 
     #[Test]
-    public function testJsonSerializeMinimal(): void
+    public function testJsonSerializeMinimalOmitsEmptyKeys(): void
     {
         $node = new NavigationNode(key: 'home', label: 'Home');
 
         $payload = $node->jsonSerialize();
 
-        self::assertSame('home', $payload['key']);
-        self::assertSame('Home', $payload['label']);
-        self::assertNull($payload['icon']);
-        self::assertNull($payload['href']);
-        self::assertNull($payload['badge']);
-        self::assertFalse($payload['active']);
-        self::assertFalse($payload['drilldown']);
-        self::assertFalse($payload['collapsible']);
-        self::assertFalse($payload['defaultOpen']);
-        self::assertSame([], $payload['children']);
+        // Consistent with every other VO: null/false/empty keys are omitted.
+        self::assertSame(['key' => 'home', 'label' => 'Home'], $payload);
+        self::assertArrayNotHasKey('icon', $payload);
+        self::assertArrayNotHasKey('active', $payload);
+        self::assertArrayNotHasKey('defaultOpen', $payload);
+        self::assertArrayNotHasKey('children', $payload);
     }
 
     #[Test]

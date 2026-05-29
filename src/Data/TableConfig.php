@@ -46,24 +46,36 @@ readonly class TableConfig implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return [
+        $payload = [
             'columns' => array_map(
                 static fn (Column $column): array => $column->jsonSerialize(),
                 $this->columns,
             ),
-            'filters' => array_map(
+        ];
+
+        if ($this->filters !== []) {
+            $payload['filters'] = array_map(
                 static fn (FilterDefinition $filter): array => $filter->jsonSerialize(),
                 $this->filters,
-            ),
-            'rowActions' => array_map(
+            );
+        }
+
+        if ($this->rowActions !== []) {
+            $payload['rowActions'] = array_map(
                 static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->rowActions,
-            ),
-            'bulkActions' => array_map(
+            );
+        }
+
+        if ($this->bulkActions !== []) {
+            $payload['bulkActions'] = array_map(
                 static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->bulkActions,
-            ),
-            'options' => $this->options->jsonSerialize(),
-        ];
+            );
+        }
+
+        $payload['options'] = $this->options->jsonSerialize();
+
+        return $payload;
     }
 }

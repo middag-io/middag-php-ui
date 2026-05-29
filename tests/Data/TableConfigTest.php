@@ -52,17 +52,19 @@ final class TableConfigTest extends TestCase
     }
 
     #[Test]
-    public function testJsonSerializeKeysPresent(): void
+    public function testJsonSerializeOmitsEmptyCollections(): void
     {
         $config = new TableConfig(columns: []);
 
         $payload = $config->jsonSerialize();
 
+        // columns + options are structural and always present; the action/filter
+        // collections follow the omit-empty convention like every other VO.
         self::assertArrayHasKey('columns', $payload);
-        self::assertArrayHasKey('filters', $payload);
-        self::assertArrayHasKey('rowActions', $payload);
-        self::assertArrayHasKey('bulkActions', $payload);
         self::assertArrayHasKey('options', $payload);
+        self::assertArrayNotHasKey('filters', $payload);
+        self::assertArrayNotHasKey('rowActions', $payload);
+        self::assertArrayNotHasKey('bulkActions', $payload);
     }
 
     #[Test]
