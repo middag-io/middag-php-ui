@@ -17,6 +17,25 @@ This means PHP never renders HTML for pages — it declares structure, and React
 
 ---
 
+## Features
+
+| Feature | What you get |
+|---------|--------------|
+| **Transport-agnostic contracts** | Builders produce `JsonSerializable` → `PageContract` (JSON). No Inertia/transport dependency; works with any wire. |
+| **Zero dependencies** | PHP `^8.2` only. Consumers inherit no transitive packages. |
+| **Host-agnostic** | No Moodle / WordPress / `mform` / capability coupling. Host-specifics live in the adapter, never here. |
+| **3 levels of composition** | Convention (`CrudBuilder`) → convention + overrides → free composition (`PageBuilder`). ADR-807. |
+| **CRUD convention builder** | `index`/`create`/`edit`/`show` pages from an entity class: i18n titles, filters, search, per-action `capability` gating. |
+| **13 block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
+| **Typed value objects** | `final readonly` + `JsonSerializable`. camelCase wire keys, omit-empty payloads, immutable witters. |
+| **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull), `ResourcePatch`. |
+| **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible. |
+| **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters (ADR-806). |
+| **i18n intents** | `Translatable` `{key, domain, params}`. The library never resolves translations — the client does. |
+| **Quality gates** | 322 tests · 100% coverage · PHPStan L6 · php-cs-fixer · Rector — enforced per commit. |
+
+---
+
 ## Three Levels of Composition (ADR-807)
 
 ### Level 1 — Convention (CrudBuilder)
@@ -208,9 +227,13 @@ The form system follows ADR-806. This library provides contracts and value objec
 
 ```php
 $section = Section::of('personal')
-    ->label('personal_info_section')
+    ->label(Translatable::of('personal_info_section', 'forms')) // or a literal string
     ->fields($nameField, $emailField, Group::of('phone')->fields($countryCode, $number));
 ```
+
+`Section::label()` takes a `string|Translatable` like every other label in the
+contract; `labelData()` serializes it via `Label` (a `{key, domain}` payload for
+an intent, a raw string for a literal).
 
 ### Field Types (FieldType enum)
 
