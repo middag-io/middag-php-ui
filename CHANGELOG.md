@@ -1,5 +1,51 @@
 # Changelog
 
+## [0.5.0](https://github.com/middag-io/middag-php-ui/compare/v0.4.0...v0.5.0) (2026-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** BlockBuilder::activityTimeline() / markdownPanel() parameters and their wire keys (hasMore, loadMoreHref, maxHeight) are renamed; PageBuilder::help() parameter learn_more -> learnMore. Downstream reconciled in cascade.
+
+### Features
+
+* **ui:** add partial fragment contracts for client-owned pages (Fase 3) ([eb86e94](https://github.com/middag-io/middag-php-ui/commit/eb86e94b6a3bb2e1047a30b4a2ee13f83125b445))
+* **ui:** close contract gaps for class-admin parity (i18n, prefs, tables, actions) ([a6b9288](https://github.com/middag-io/middag-php-ui/commit/a6b92889cffc282ebd445a55586479ebf3464c2b))
+* **ui:** CrudBuilder filter controls and searchable index ([39e4ac1](https://github.com/middag-io/middag-php-ui/commit/39e4ac1b932f4277d3cc1f5ee5f87271e529e37f))
+* **ui:** typed Tab and ChartSeries block VOs ([d996d0b](https://github.com/middag-io/middag-php-ui/commit/d996d0b4f432373ff3ccdb753cd2480aa68b4fdf))
+* **ui:** wire CrudBuilder capability; remove dead form() ([8bd16b7](https://github.com/middag-io/middag-php-ui/commit/8bd16b7a6d27a250c479c019226d2da8611ad94a))
+
+
+### Bug Fixes
+
+* **ci:** php-cs-fixer config parse error on PHP 8.2/8.3 ([db9ab3b](https://github.com/middag-io/middag-php-ui/commit/db9ab3b52aa542b1c8258f9fca5cede79ad9702e))
+* **ui:** honest CrudBuilder naming + i18n titles; FormStep fields string-only ([f98ccb3](https://github.com/middag-io/middag-php-ui/commit/f98ccb35f195ec6379792f6bf34d659c1f4aeab9))
+
+
+### Refactoring
+
+* **form:** move layout VOs out of Infrastructure into Data/Form/Layout ([4af118e](https://github.com/middag-io/middag-php-ui/commit/4af118eaf3e43a235cd32f7d228c8b0c7811e306))
+* **page:** make AbstractPage::build() a default-throw instead of abstract ([9640a47](https://github.com/middag-io/middag-php-ui/commit/9640a47da56842613eb7c4cf6e776f2df9adda13))
+* **ui:** apply omit-empty to NavigationNode and TableConfig ([c38ce6e](https://github.com/middag-io/middag-php-ui/commit/c38ce6e55cd3301734047c88a36173133b1800e0))
+* **ui:** camelCase internal props and named-args ([409a4b4](https://github.com/middag-io/middag-php-ui/commit/409a4b4ffd657764523287d509a16bd3c9801ab7))
+* **ui:** camelCase the last snake_case wire keys and params ([3df91af](https://github.com/middag-io/middag-php-ui/commit/3df91af568e2c699c9bb709fb5eb21f9f88d3629))
+* **ui:** consolidate layer structure and decouple host resolver ([92df7b8](https://github.com/middag-io/middag-php-ui/commit/92df7b80fd81fe1d12bacda7718550fc0b8c5219))
+* **ui:** flatten Contract and Data into single per-role dirs ([4f68705](https://github.com/middag-io/middag-php-ui/commit/4f68705c3dc16df16de49764e55ebe8cf635d545))
+* **ui:** make Group, Section, FormState immutable readonly VOs ([d18c6c9](https://github.com/middag-io/middag-php-ui/commit/d18c6c99c88e5ef8e06069f61acd29401f7dba21))
+* **ui:** RegionBuilder delegates to BlockBuilder factories ([ca88ed2](https://github.com/middag-io/middag-php-ui/commit/ca88ed23b4ae6f14643adc1e857d9e11aace8800))
+* **ui:** remove host-specific leaks and add CI ([c91f39d](https://github.com/middag-io/middag-php-ui/commit/c91f39de281e27c103a3ded70c1c0f007e85ca65))
+* **ui:** remove redundant CrudControllerSupport and dissolve Support/ layer ([83f3582](https://github.com/middag-io/middag-php-ui/commit/83f3582896bc142ab485847ba664abda6362e883))
+* **ui:** Section.label aligns with the canonical label shape ([bbc32af](https://github.com/middag-io/middag-php-ui/commit/bbc32af19596b6b191cf43e01344a9f6307dee58))
+* **ui:** tighten public surface and enforce conventions ([d349304](https://github.com/middag-io/middag-php-ui/commit/d349304bdec3d5381f9db5ff5dda0aa2be7364bb))
+* **ui:** unify actions into one canonical Action VO with discriminated target ([384e1e3](https://github.com/middag-io/middag-php-ui/commit/384e1e36061ae092f48fc05e2ddd02a923f7a684))
+
+
+### Documentation
+
+* **api:** reclassify public surface [@internal](https://github.com/internal) -&gt; [@api](https://github.com/api) ([d3e6c14](https://github.com/middag-io/middag-php-ui/commit/d3e6c140f8c357b3ab01df4803f8e548e6c55bd1))
+* **ui:** add Features overview table; fix Section.label example ([1669eee](https://github.com/middag-io/middag-php-ui/commit/1669eeef60fe41b3c40229bae8294e07afc90837))
+* **ui:** fix stale README examples, strip host/framework names from docblocks, pin boundary invariant ([198f85a](https://github.com/middag-io/middag-php-ui/commit/198f85a6896956f622473b20c186b681ccf110bc))
+
 ## [0.4.0](https://github.com/middag-io/middag-php-ui/compare/v0.3.0...v0.4.0) (2026-05-26)
 
 
