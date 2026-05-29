@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Bin;
 
-use Middag\Ui\Schema\SchemaRegistry;
+use Middag\Ui\Shared\Schema\SchemaRegistry;
 
 $autoload = __DIR__ . '/../vendor/autoload.php';
 if (! is_file($autoload)) {
