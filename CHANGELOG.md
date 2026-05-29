@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.0.0](https://github.com/middag-io/middag-php-ui/compare/v0.4.0...v1.0.0) (2026-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** BlockBuilder::activityTimeline() / markdownPanel() parameters and their wire keys (hasMore, loadMoreHref, maxHeight) are renamed; PageBuilder::help() parameter learn_more -> learnMore. Downstream reconciled in cascade.
+
+### Features
+
+* **ui:** add partial fragment contracts for client-owned pages (Fase 3) ([eb86e94](https://github.com/middag-io/middag-php-ui/commit/eb86e94b6a3bb2e1047a30b4a2ee13f83125b445))
+* **ui:** close contract gaps for class-admin parity (i18n, prefs, tables, actions) ([a6b9288](https://github.com/middag-io/middag-php-ui/commit/a6b92889cffc282ebd445a55586479ebf3464c2b))
+* **ui:** CrudBuilder filter controls and searchable index ([39e4ac1](https://github.com/middag-io/middag-php-ui/commit/39e4ac1b932f4277d3cc1f5ee5f87271e529e37f))
+* **ui:** typed Tab and ChartSeries block VOs ([d996d0b](https://github.com/middag-io/middag-php-ui/commit/d996d0b4f432373ff3ccdb753cd2480aa68b4fdf))
+* **ui:** wire CrudBuilder capability; remove dead form() ([8bd16b7](https://github.com/middag-io/middag-php-ui/commit/8bd16b7a6d27a250c479c019226d2da8611ad94a))
+
+
+### Bug Fixes
+
+* **ci:** php-cs-fixer config parse error on PHP 8.2/8.3 ([db9ab3b](https://github.com/middag-io/middag-php-ui/commit/db9ab3b52aa542b1c8258f9fca5cede79ad9702e))
+* **ui:** honest CrudBuilder naming + i18n titles; FormStep fields string-only ([f98ccb3](https://github.com/middag-io/middag-php-ui/commit/f98ccb35f195ec6379792f6bf34d659c1f4aeab9))
+
+
+### Code Refactoring
+
+* **ui:** camelCase the last snake_case wire keys and params ([3df91af](https://github.com/middag-io/middag-php-ui/commit/3df91af568e2c699c9bb709fb5eb21f9f88d3629))
+
 ## [0.4.0](https://github.com/middag-io/middag-php-ui/compare/v0.3.0...v0.4.0) (2026-05-26)
 
 
