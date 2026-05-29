@@ -63,4 +63,32 @@ final readonly class FilterDefinition implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'required' => ['key', 'label', 'type'],
+            'properties' => [
+                'key' => ['type' => 'string'],
+                'label' => ['$ref' => '#/$defs/Label'],
+                'type' => ['$ref' => '#/$defs/FilterType'],
+                'options' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'required' => ['value', 'label'],
+                        // value is mixed (any JSON value): `true` = accept-anything schema.
+                        'properties' => ['value' => true, 'label' => ['$ref' => '#/$defs/Label']],
+                        'additionalProperties' => false,
+                    ],
+                ],
+                'placeholder' => ['$ref' => '#/$defs/Label'],
+                // default is mixed (any JSON value).
+                'default' => true,
+            ],
+            'additionalProperties' => false,
+        ];
+    }
 }

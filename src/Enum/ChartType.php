@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Closed catalog of chart block render types.
  *
@@ -19,6 +21,8 @@ namespace Middag\Ui\Enum;
  */
 enum ChartType: string
 {
+    use ProvidesJsonSchema;
+
     case LINE = 'line';
 
     case BAR = 'bar';

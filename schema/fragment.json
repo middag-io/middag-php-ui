@@ -1,0 +1,1136 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://ui-docs.middag.io/schemas/fragment.json",
+    "title": "MIDDAG Fragment Contract",
+    "description": "Wire contract for a server-push fragment (partial update). Generated from middag-io/ui PHP value objects (jsonSchema()).",
+    "x-contract-version": "1",
+    "$ref": "#/$defs/Fragment",
+    "$defs": {
+        "PageContract": {
+            "type": "object",
+            "required": [
+                "version",
+                "shell",
+                "page",
+                "layout"
+            ],
+            "properties": {
+                "version": {
+                    "const": "1"
+                },
+                "shell": {
+                    "type": "string"
+                },
+                "page": {
+                    "$ref": "#/$defs/PageMeta"
+                },
+                "layout": {
+                    "$ref": "#/$defs/LayoutDescriptor"
+                },
+                "resources": {
+                    "$ref": "#/$defs/PageResources"
+                },
+                "notifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Notification"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "Fragment": {
+            "type": "object",
+            "required": [
+                "version",
+                "kind"
+            ],
+            "properties": {
+                "version": {
+                    "const": "1"
+                },
+                "kind": {
+                    "$ref": "#/$defs/FragmentKind"
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "notifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Notification"
+                    }
+                },
+                "resources": {
+                    "$ref": "#/$defs/ResourcePatch"
+                },
+                "customType": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Label": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "#/$defs/Translatable"
+                }
+            ]
+        },
+        "Translatable": {
+            "type": "object",
+            "required": [
+                "key",
+                "domain"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "PageMeta": {
+            "type": "object",
+            "required": [
+                "key",
+                "title"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "title": {
+                    "$ref": "#/$defs/Label"
+                },
+                "subtitle": {
+                    "$ref": "#/$defs/Label"
+                },
+                "breadcrumbs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Breadcrumb"
+                    }
+                },
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Action"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "LayoutDescriptor": {
+            "type": "object",
+            "required": [
+                "template",
+                "regions"
+            ],
+            "properties": {
+                "template": {
+                    "type": "string"
+                },
+                "regions": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/$defs/BlockDescriptor"
+                                }
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
+                },
+                "meta": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "BlockDescriptor": {
+            "type": "object",
+            "required": [
+                "type",
+                "key",
+                "data"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "data": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
+                },
+                "variant": {
+                    "type": "string"
+                },
+                "title": {
+                    "$ref": "#/$defs/Label"
+                },
+                "subtitle": {
+                    "$ref": "#/$defs/Label"
+                },
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Action"
+                    }
+                },
+                "meta": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "poll": {
+                    "$ref": "#/$defs/PollConfig"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Breadcrumb": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "external": {
+                    "const": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "InspectorDescriptor": {
+            "type": "object",
+            "required": [
+                "endpoint",
+                "width"
+            ],
+            "properties": {
+                "endpoint": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "integer"
+                },
+                "poll": {
+                    "$ref": "#/$defs/PollConfig"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Action": {
+            "type": "object",
+            "required": [
+                "id",
+                "label",
+                "target",
+                "intent"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "target": {
+                    "$ref": "#/$defs/ActionTarget"
+                },
+                "intent": {
+                    "$ref": "#/$defs/ActionIntent"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "confirmation": {
+                    "$ref": "#/$defs/Confirmation"
+                },
+                "capability": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "const": true
+                },
+                "loading": {
+                    "const": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "ActionTarget": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "href"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "link"
+                        },
+                        "href": {
+                            "type": "string"
+                        },
+                        "external": {
+                            "const": true
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "route"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "route"
+                        },
+                        "route": {
+                            "type": "string"
+                        },
+                        "params": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "endpoint",
+                        "method"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "request"
+                        },
+                        "endpoint": {
+                            "type": "string"
+                        },
+                        "method": {
+                            "$ref": "#/$defs/HttpMethod"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "Confirmation": {
+            "type": "object",
+            "required": [
+                "title",
+                "message",
+                "variant"
+            ],
+            "properties": {
+                "title": {
+                    "$ref": "#/$defs/Label"
+                },
+                "message": {
+                    "$ref": "#/$defs/Label"
+                },
+                "variant": {
+                    "type": "string"
+                },
+                "confirmLabel": {
+                    "$ref": "#/$defs/Label"
+                },
+                "cancelLabel": {
+                    "$ref": "#/$defs/Label"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Notification": {
+            "type": "object",
+            "required": [
+                "level",
+                "message",
+                "dismissible"
+            ],
+            "properties": {
+                "level": {
+                    "$ref": "#/$defs/NotificationLevel"
+                },
+                "message": {
+                    "$ref": "#/$defs/Label"
+                },
+                "dismissible": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "$ref": "#/$defs/Label"
+                },
+                "timeout": {
+                    "type": "integer"
+                },
+                "action": {
+                    "$ref": "#/$defs/Action"
+                }
+            },
+            "additionalProperties": false
+        },
+        "PageResources": {
+            "type": "object",
+            "required": [
+                "preferences",
+                "capabilities",
+                "featureFlags"
+            ],
+            "properties": {
+                "preferences": {
+                    "$ref": "#/$defs/UserPreferences"
+                },
+                "capabilities": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
+                },
+                "featureFlags": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
+                },
+                "user": {
+                    "$ref": "#/$defs/Identity"
+                },
+                "branding": {
+                    "$ref": "#/$defs/Branding"
+                }
+            },
+            "additionalProperties": false
+        },
+        "UserPreferences": {
+            "type": "object",
+            "required": [
+                "theme",
+                "locale"
+            ],
+            "properties": {
+                "theme": {
+                    "$ref": "#/$defs/ThemeMode"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "timezone": {
+                    "type": "string"
+                },
+                "dateFormat": {
+                    "type": "string"
+                },
+                "numberFormat": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true
+        },
+        "Identity": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "avatarUrl": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "Branding": {
+            "type": "object",
+            "required": [
+                "appName"
+            ],
+            "properties": {
+                "appName": {
+                    "type": "string"
+                },
+                "logoUrl": {
+                    "type": "string"
+                },
+                "logoCompactUrl": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "NavigationNode": {
+            "type": "object",
+            "required": [
+                "key",
+                "label"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "badge": {
+                    "type": "string"
+                },
+                "active": {
+                    "const": true
+                },
+                "drilldown": {
+                    "const": true
+                },
+                "collapsible": {
+                    "const": true
+                },
+                "defaultOpen": {
+                    "const": true
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/NavigationNode"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "TableConfig": {
+            "type": "object",
+            "required": [
+                "columns",
+                "options"
+            ],
+            "properties": {
+                "columns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Column"
+                    }
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/FilterDefinition"
+                    }
+                },
+                "rowActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Action"
+                    }
+                },
+                "bulkActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Action"
+                    }
+                },
+                "options": {
+                    "$ref": "#/$defs/TableOptions"
+                }
+            },
+            "additionalProperties": false
+        },
+        "TableOptions": {
+            "type": "object",
+            "required": [
+                "perPage",
+                "sortDirection",
+                "selectable",
+                "searchable"
+            ],
+            "properties": {
+                "perPage": {
+                    "type": "integer"
+                },
+                "sortDirection": {
+                    "type": "string"
+                },
+                "selectable": {
+                    "type": "boolean"
+                },
+                "searchable": {
+                    "type": "boolean"
+                },
+                "sortColumn": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Column": {
+            "type": "object",
+            "required": [
+                "key",
+                "label",
+                "sortable",
+                "searchable",
+                "format"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "sortable": {
+                    "type": "boolean"
+                },
+                "searchable": {
+                    "type": "boolean"
+                },
+                "format": {
+                    "$ref": "#/$defs/ValueFormat"
+                },
+                "formatOptions": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "options": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "FilterDefinition": {
+            "type": "object",
+            "required": [
+                "key",
+                "label",
+                "type"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "type": {
+                    "$ref": "#/$defs/FilterType"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "value",
+                            "label"
+                        ],
+                        "properties": {
+                            "value": true,
+                            "label": {
+                                "$ref": "#/$defs/Label"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "placeholder": {
+                    "$ref": "#/$defs/Label"
+                },
+                "default": true
+            },
+            "additionalProperties": false
+        },
+        "Pagination": {
+            "type": "object",
+            "required": [
+                "page",
+                "perPage",
+                "total",
+                "lastPage"
+            ],
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "lastPage": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "PollConfig": {
+            "type": "object",
+            "required": [
+                "endpoint",
+                "intervalMs",
+                "pauseWhenHidden"
+            ],
+            "properties": {
+                "endpoint": {
+                    "type": "string"
+                },
+                "intervalMs": {
+                    "type": "integer"
+                },
+                "pauseWhenHidden": {
+                    "type": "boolean"
+                },
+                "stopAfterMs": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ChartSeries": {
+            "type": "object",
+            "required": [
+                "name",
+                "data"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "Tab": {
+            "type": "object",
+            "required": [
+                "id",
+                "label",
+                "blocks"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/BlockDescriptor"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "FormStep": {
+            "type": "object",
+            "required": [
+                "id",
+                "label",
+                "fields"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "help": {
+                    "$ref": "#/$defs/Label"
+                }
+            },
+            "additionalProperties": false
+        },
+        "FieldConstraints": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "required": {
+                            "const": true
+                        },
+                        "min": {
+                            "type": "integer"
+                        },
+                        "max": {
+                            "type": "integer"
+                        },
+                        "minLength": {
+                            "type": "integer"
+                        },
+                        "maxLength": {
+                            "type": "integer"
+                        },
+                        "pattern": {
+                            "type": "string"
+                        },
+                        "step": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "array",
+                    "maxItems": 0
+                }
+            ]
+        },
+        "RegionUpdate": {
+            "type": "object",
+            "required": [
+                "region",
+                "mode"
+            ],
+            "properties": {
+                "region": {
+                    "type": "string"
+                },
+                "mode": {
+                    "$ref": "#/$defs/RegionUpdateMode"
+                },
+                "blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/BlockDescriptor"
+                    }
+                },
+                "keys": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "ActionResult": {
+            "type": "object",
+            "required": [
+                "success"
+            ],
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "notifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Notification"
+                    }
+                },
+                "redirect": {
+                    "type": "string"
+                },
+                "refreshBlocks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "fragments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Fragment"
+                    }
+                },
+                "resources": {
+                    "$ref": "#/$defs/ResourcePatch"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ResourcePatch": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "preferences": {
+                            "$ref": "#/$defs/UserPreferences"
+                        },
+                        "capabilities": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        },
+                        "featureFlags": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "array",
+                    "maxItems": 0
+                }
+            ]
+        },
+        "ActionIntent": {
+            "type": "string",
+            "enum": [
+                "primary",
+                "secondary",
+                "danger",
+                "success",
+                "warning",
+                "info",
+                "link",
+                "ghost"
+            ]
+        },
+        "ActionTargetKind": {
+            "type": "string",
+            "enum": [
+                "link",
+                "route",
+                "request"
+            ]
+        },
+        "ChartType": {
+            "type": "string",
+            "enum": [
+                "line",
+                "bar",
+                "area",
+                "pie",
+                "donut"
+            ]
+        },
+        "ConditionOperator": {
+            "type": "string",
+            "enum": [
+                "eq",
+                "neq",
+                "in",
+                "not_in",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "truthy",
+                "falsy",
+                "exists",
+                "empty",
+                "matches"
+            ]
+        },
+        "FieldType": {
+            "type": "string",
+            "enum": [
+                "text",
+                "textarea",
+                "richtext",
+                "password",
+                "email",
+                "url",
+                "int",
+                "float",
+                "select",
+                "multiselect",
+                "radio",
+                "checkbox",
+                "switch",
+                "date",
+                "datetime",
+                "time",
+                "duration",
+                "file",
+                "entity_picker",
+                "autocomplete",
+                "tags",
+                "hidden",
+                "static",
+                "header"
+            ]
+        },
+        "FilterType": {
+            "type": "string",
+            "enum": [
+                "select",
+                "text",
+                "date",
+                "date_range",
+                "boolean",
+                "number_range"
+            ]
+        },
+        "FragmentKind": {
+            "type": "string",
+            "enum": [
+                "block",
+                "region",
+                "table",
+                "form",
+                "detail",
+                "inspector",
+                "notifications",
+                "custom"
+            ]
+        },
+        "HttpMethod": {
+            "type": "string",
+            "enum": [
+                "get",
+                "post",
+                "put",
+                "patch",
+                "delete"
+            ]
+        },
+        "NotificationLevel": {
+            "type": "string",
+            "enum": [
+                "success",
+                "info",
+                "warning",
+                "error"
+            ]
+        },
+        "RegionUpdateMode": {
+            "type": "string",
+            "enum": [
+                "replace",
+                "append",
+                "prepend",
+                "remove",
+                "update"
+            ]
+        },
+        "RenderTarget": {
+            "type": "string",
+            "enum": [
+                "html",
+                "props"
+            ]
+        },
+        "ThemeMode": {
+            "type": "string",
+            "enum": [
+                "light",
+                "dark",
+                "system"
+            ]
+        },
+        "ValueFormat": {
+            "type": "string",
+            "enum": [
+                "text",
+                "date",
+                "datetime",
+                "time",
+                "number",
+                "currency",
+                "boolean",
+                "badge"
+            ]
+        }
+    }
+}

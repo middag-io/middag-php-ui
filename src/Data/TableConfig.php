@@ -78,4 +78,12 @@ readonly class TableConfig implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['columns', 'options'],
+            'properties' => ['columns' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Column']], 'filters' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/FilterDefinition']], 'rowActions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'bulkActions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'options' => ['$ref' => '#/$defs/TableOptions']],
+            'additionalProperties' => false];
+    }
 }

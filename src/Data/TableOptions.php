@@ -45,4 +45,12 @@ final readonly class TableOptions implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['perPage', 'sortDirection', 'selectable', 'searchable'],
+            'properties' => ['perPage' => ['type' => 'integer'], 'sortDirection' => ['type' => 'string'], 'selectable' => ['type' => 'boolean'], 'searchable' => ['type' => 'boolean'], 'sortColumn' => ['type' => 'string']],
+            'additionalProperties' => false];
+    }
 }

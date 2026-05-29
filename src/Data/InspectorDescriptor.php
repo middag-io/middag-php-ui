@@ -42,4 +42,12 @@ readonly class InspectorDescriptor implements InspectorDescriptorInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['endpoint', 'width'],
+            'properties' => ['endpoint' => ['type' => 'string'], 'width' => ['type' => 'integer'], 'poll' => ['$ref' => '#/$defs/PollConfig']],
+            'additionalProperties' => false];
+    }
 }

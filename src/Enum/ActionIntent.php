@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Visual/semantic intent of an action control.
  *
@@ -23,6 +25,8 @@ namespace Middag\Ui\Enum;
  */
 enum ActionIntent: string
 {
+    use ProvidesJsonSchema;
+
     case PRIMARY = 'primary';
 
     case SECONDARY = 'secondary';

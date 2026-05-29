@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Identity token for form renderer adapters (ADR-805).
  *
@@ -23,6 +25,8 @@ namespace Middag\Ui\Enum;
  */
 enum RenderTarget: string
 {
+    use ProvidesJsonSchema;
+
     case HTML = 'html';
 
     case PROPS = 'props';

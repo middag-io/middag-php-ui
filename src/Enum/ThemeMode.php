@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * User theme preference.
  *
@@ -22,6 +24,8 @@ namespace Middag\Ui\Enum;
  */
 enum ThemeMode: string
 {
+    use ProvidesJsonSchema;
+
     case LIGHT = 'light';
 
     case DARK = 'dark';

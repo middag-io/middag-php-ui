@@ -68,4 +68,12 @@ readonly class Column implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['key', 'label', 'sortable', 'searchable', 'format'],
+            'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'sortable' => ['type' => 'boolean'], 'searchable' => ['type' => 'boolean'], 'format' => ['$ref' => '#/$defs/ValueFormat'], 'formatOptions' => ['type' => 'object', 'additionalProperties' => true], 'options' => ['type' => 'object', 'additionalProperties' => true]],
+            'additionalProperties' => false];
+    }
 }

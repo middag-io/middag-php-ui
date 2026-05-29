@@ -48,4 +48,12 @@ final readonly class Confirmation implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['title', 'message', 'variant'],
+            'properties' => ['title' => ['$ref' => '#/$defs/Label'], 'message' => ['$ref' => '#/$defs/Label'], 'variant' => ['type' => 'string'], 'confirmLabel' => ['$ref' => '#/$defs/Label'], 'cancelLabel' => ['$ref' => '#/$defs/Label']],
+            'additionalProperties' => false];
+    }
 }

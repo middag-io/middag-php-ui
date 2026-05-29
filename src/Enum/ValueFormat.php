@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Formatting intent for a displayed value.
  *
@@ -23,6 +25,8 @@ namespace Middag\Ui\Enum;
  */
 enum ValueFormat: string
 {
+    use ProvidesJsonSchema;
+
     case TEXT = 'text';
 
     case DATE = 'date';

@@ -55,4 +55,24 @@ final readonly class ResourcePatch implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return [
+            'oneOf' => [
+                [
+                    'type' => 'object',
+                    'properties' => [
+                        'preferences' => ['$ref' => '#/$defs/UserPreferences'],
+                        'capabilities' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
+                        'featureFlags' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
+                    ],
+                    'additionalProperties' => false,
+                ],
+                // An empty patch serializes to an empty PHP array → JSON [].
+                ['type' => 'array', 'maxItems' => 0],
+            ],
+        ];
+    }
 }

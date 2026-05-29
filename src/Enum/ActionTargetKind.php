@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Discriminator for an ActionTarget value object.
  *
@@ -23,6 +25,8 @@ namespace Middag\Ui\Enum;
  */
 enum ActionTargetKind: string
 {
+    use ProvidesJsonSchema;
+
     case LINK = 'link';
 
     case ROUTE = 'route';

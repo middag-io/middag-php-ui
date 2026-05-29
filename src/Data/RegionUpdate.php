@@ -86,4 +86,14 @@ final readonly class RegionUpdate implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['region', 'mode'],
+            'properties' => ['region' => ['type' => 'string'], 'mode' => ['$ref' => '#/$defs/RegionUpdateMode'],
+                'blocks' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/BlockDescriptor']],
+                'keys' => ['type' => 'array', 'items' => ['type' => 'string']]],
+            'additionalProperties' => false];
+    }
 }

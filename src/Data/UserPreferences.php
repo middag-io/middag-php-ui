@@ -61,4 +61,12 @@ final readonly class UserPreferences implements JsonSerializable
         // Typed keys take precedence over the open bag.
         return array_merge($this->extra, $typed);
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['theme', 'locale'],
+            'properties' => ['theme' => ['$ref' => '#/$defs/ThemeMode'], 'locale' => ['type' => 'string'], 'timezone' => ['type' => 'string'], 'dateFormat' => ['type' => 'string'], 'numberFormat' => ['type' => 'string']],
+            'additionalProperties' => true];
+    }
 }

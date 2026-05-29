@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
+        "opis/json-schema": "^2.4",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.0",
         "rector/rector": "^2.4"
@@ -50,11 +51,15 @@
         "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
         "check:rector": "rector process --dry-run --config=.php-rector.php",
         "check:stan": "phpstan analyse --configuration=.phpstan.neon",
+        "check:schemas": "@php bin/emit-schemas.php --check",
         "lint:php82": "bin/lint-php82.sh",
+        "emit:schemas": "@php bin/emit-schemas.php",
+        "verify:schemas": "@php bin/emit-schemas.php --check",
         "check": [
             "@check:style",
             "@check:rector",
-            "@check:stan"
+            "@check:stan",
+            "@check:schemas"
         ],
         "fix:style": "php-cs-fixer fix --verbose --show-progress=none --config=.php-cs-fixer.dist.php",
         "fix:rector": "rector process --config=.php-rector.php --no-progress-bar",

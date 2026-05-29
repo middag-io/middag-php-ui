@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Severity level of a user-facing notification (flash / toast).
  *
@@ -19,6 +21,8 @@ namespace Middag\Ui\Enum;
  */
 enum NotificationLevel: string
 {
+    use ProvidesJsonSchema;
+
     case SUCCESS = 'success';
 
     case INFO = 'info';

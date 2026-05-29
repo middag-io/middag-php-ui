@@ -54,4 +54,12 @@ readonly class LayoutDescriptor implements LayoutDescriptorInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['template', 'regions'],
+            'properties' => ['template' => ['type' => 'string'], 'regions' => ['oneOf' => [['type' => 'object', 'additionalProperties' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/BlockDescriptor']]], ['type' => 'array', 'maxItems' => 0]]], 'meta' => ['type' => 'object', 'additionalProperties' => true]],
+            'additionalProperties' => false];
+    }
 }

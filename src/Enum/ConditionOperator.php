@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Closed catalog of condition operators for form field visibility rules (ADR-806).
  *
@@ -22,6 +24,8 @@ namespace Middag\Ui\Enum;
  */
 enum ConditionOperator: string
 {
+    use ProvidesJsonSchema;
+
     // ── Equality ──────────────────────────────
     case EQ = 'eq';
 

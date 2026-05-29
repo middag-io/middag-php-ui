@@ -46,4 +46,12 @@ final readonly class Tab implements JsonSerializable
             ),
         ];
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['id', 'label', 'blocks'],
+            'properties' => ['id' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'blocks' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/BlockDescriptor']]],
+            'additionalProperties' => false];
+    }
 }

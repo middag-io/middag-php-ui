@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Closed catalog of MVP form field types (ADR-806).
  *
@@ -22,6 +24,8 @@ namespace Middag\Ui\Enum;
  */
 enum FieldType: string
 {
+    use ProvidesJsonSchema;
+
     case TEXT = 'text';
 
     case TEXTAREA = 'textarea';

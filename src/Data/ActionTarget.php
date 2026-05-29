@@ -80,4 +80,52 @@ final readonly class ActionTarget implements JsonSerializable
             ],
         };
     }
+
+    /**
+     * Discriminated union on `kind` — exactly mirrors the per-branch key sets
+     * emitted by {@see self::jsonSerialize()}. Each branch is closed; only the
+     * fields relevant to its kind appear.
+     *
+     * @return array<string, mixed>
+     */
+    public static function jsonSchema(): array
+    {
+        return [
+            'oneOf' => [
+                // link: {kind:'link', href} (+ external:true only when external).
+                [
+                    'type' => 'object',
+                    'required' => ['kind', 'href'],
+                    'properties' => [
+                        'kind' => ['const' => 'link'],
+                        'href' => ['type' => 'string'],
+                        'external' => ['const' => true],
+                    ],
+                    'additionalProperties' => false,
+                ],
+                // route: {kind:'route', route} (+ params map, omit-empty).
+                [
+                    'type' => 'object',
+                    'required' => ['kind', 'route'],
+                    'properties' => [
+                        'kind' => ['const' => 'route'],
+                        'route' => ['type' => 'string'],
+                        'params' => ['type' => 'object', 'additionalProperties' => true],
+                    ],
+                    'additionalProperties' => false,
+                ],
+                // request: {kind:'request', endpoint, method}.
+                [
+                    'type' => 'object',
+                    'required' => ['kind', 'endpoint', 'method'],
+                    'properties' => [
+                        'kind' => ['const' => 'request'],
+                        'endpoint' => ['type' => 'string'],
+                        'method' => ['$ref' => '#/$defs/HttpMethod'],
+                    ],
+                    'additionalProperties' => false,
+                ],
+            ],
+        ];
+    }
 }

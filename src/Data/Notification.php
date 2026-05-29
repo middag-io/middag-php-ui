@@ -54,4 +54,12 @@ final readonly class Notification implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['level', 'message', 'dismissible'],
+            'properties' => ['level' => ['$ref' => '#/$defs/NotificationLevel'], 'message' => ['$ref' => '#/$defs/Label'], 'dismissible' => ['type' => 'boolean'], 'title' => ['$ref' => '#/$defs/Label'], 'timeout' => ['type' => 'integer'], 'action' => ['$ref' => '#/$defs/Action']],
+            'additionalProperties' => false];
+    }
 }

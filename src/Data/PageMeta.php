@@ -63,4 +63,12 @@ readonly class PageMeta implements PageMetaInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['key', 'title'],
+            'properties' => ['key' => ['type' => 'string'], 'title' => ['$ref' => '#/$defs/Label'], 'subtitle' => ['$ref' => '#/$defs/Label'], 'breadcrumbs' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Breadcrumb']], 'actions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']]],
+            'additionalProperties' => false];
+    }
 }

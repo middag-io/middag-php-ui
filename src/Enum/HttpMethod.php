@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * HTTP method for a request-target action.
  *
@@ -19,6 +21,8 @@ namespace Middag\Ui\Enum;
  */
 enum HttpMethod: string
 {
+    use ProvidesJsonSchema;
+
     case GET = 'get';
 
     case POST = 'post';

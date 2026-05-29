@@ -53,4 +53,15 @@ readonly class PageResources implements PageResourcesInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['preferences', 'capabilities', 'featureFlags'],
+            'properties' => ['preferences' => ['$ref' => '#/$defs/UserPreferences'],
+                'capabilities' => ['oneOf' => [['type' => 'object', 'additionalProperties' => ['type' => 'boolean']], ['type' => 'array', 'maxItems' => 0]]],
+                'featureFlags' => ['oneOf' => [['type' => 'object', 'additionalProperties' => ['type' => 'boolean']], ['type' => 'array', 'maxItems' => 0]]],
+                'user' => ['$ref' => '#/$defs/Identity'], 'branding' => ['$ref' => '#/$defs/Branding']],
+            'additionalProperties' => false];
+    }
 }

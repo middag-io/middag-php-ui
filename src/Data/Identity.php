@@ -56,4 +56,12 @@ final readonly class Identity implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['id', 'name'],
+            'properties' => ['id' => ['type' => 'string'], 'name' => ['type' => 'string'], 'email' => ['type' => 'string'], 'avatarUrl' => ['type' => 'string'], 'roles' => ['type' => 'array', 'items' => ['type' => 'string']]],
+            'additionalProperties' => false];
+    }
 }

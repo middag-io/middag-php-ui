@@ -37,4 +37,12 @@ final readonly class ChartSeries implements JsonSerializable
             'data' => $this->data,
         ];
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['name', 'data'],
+            'properties' => ['name' => ['type' => 'string'], 'data' => ['type' => 'array', 'items' => ['type' => 'number']]],
+            'additionalProperties' => false];
+    }
 }

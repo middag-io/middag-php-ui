@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * Closed catalog of table filter control types.
  *
@@ -22,6 +24,8 @@ namespace Middag\Ui\Enum;
  */
 enum FilterType: string
 {
+    use ProvidesJsonSchema;
+
     case SELECT = 'select';
 
     case TEXT = 'text';

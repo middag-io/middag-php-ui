@@ -71,4 +71,12 @@ final readonly class Action implements ActionInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['id', 'label', 'target', 'intent'],
+            'properties' => ['id' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'target' => ['$ref' => '#/$defs/ActionTarget'], 'intent' => ['$ref' => '#/$defs/ActionIntent'], 'icon' => ['type' => 'string'], 'confirmation' => ['$ref' => '#/$defs/Confirmation'], 'capability' => ['type' => 'string'], 'disabled' => ['const' => true], 'loading' => ['const' => true]],
+            'additionalProperties' => false];
+    }
 }

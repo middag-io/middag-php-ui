@@ -38,4 +38,23 @@ final readonly class Label
     {
         return $label === null ? null : self::serialize($label);
     }
+
+    /**
+     * JSON Schema for a label on the wire: a literal string OR a Translatable.
+     *
+     * Mirrors {@see self::serialize()} exactly: a string passes through, a
+     * Translatable becomes its `{key, domain, params?}` object. Authored as a
+     * shared `$def` referenced by every VO that carries a label.
+     *
+     * @return array<string, mixed>
+     */
+    public static function jsonSchema(): array
+    {
+        return [
+            'oneOf' => [
+                ['type' => 'string'],
+                ['$ref' => '#/$defs/Translatable'],
+            ],
+        ];
+    }
 }

@@ -48,4 +48,20 @@ final readonly class Pagination implements JsonSerializable
             'lastPage' => $this->lastPage,
         ];
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'required' => ['page', 'perPage', 'total', 'lastPage'],
+            'properties' => [
+                'page' => ['type' => 'integer'],
+                'perPage' => ['type' => 'integer'],
+                'total' => ['type' => 'integer'],
+                'lastPage' => ['type' => 'integer'],
+            ],
+            'additionalProperties' => false,
+        ];
+    }
 }

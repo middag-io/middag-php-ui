@@ -90,4 +90,18 @@ final readonly class ActionResult implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['success'],
+            'properties' => ['success' => ['type' => 'boolean'],
+                'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],
+                'redirect' => ['type' => 'string'],
+                'refreshBlocks' => ['type' => 'array', 'items' => ['type' => 'string']],
+                'errors' => ['type' => 'object', 'additionalProperties' => ['oneOf' => [['type' => 'string'], ['type' => 'array', 'items' => ['type' => 'string']]]]],
+                'fragments' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Fragment']],
+                'resources' => ['$ref' => '#/$defs/ResourcePatch']],
+            'additionalProperties' => false];
+    }
 }

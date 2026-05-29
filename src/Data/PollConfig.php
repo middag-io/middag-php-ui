@@ -46,4 +46,12 @@ final readonly class PollConfig implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['endpoint', 'intervalMs', 'pauseWhenHidden'],
+            'properties' => ['endpoint' => ['type' => 'string'], 'intervalMs' => ['type' => 'integer'], 'pauseWhenHidden' => ['type' => 'boolean'], 'stopAfterMs' => ['type' => 'integer']],
+            'additionalProperties' => false];
+    }
 }

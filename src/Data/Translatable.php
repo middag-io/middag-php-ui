@@ -60,4 +60,25 @@ final readonly class Translatable implements JsonSerializable
 
         return $payload;
     }
+
+    /**
+     * JSON Schema for the Translatable object — the structured branch of every
+     * Label-union field on the wire ({@see Label}).
+     *
+     * @return array<string, mixed>
+     */
+    public static function jsonSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'required' => ['key', 'domain'],
+            'properties' => [
+                'key' => ['type' => 'string'],
+                'domain' => ['type' => 'string'],
+                // params: free-form interpolation map, omit-empty.
+                'params' => ['type' => 'object', 'additionalProperties' => true],
+            ],
+            'additionalProperties' => false,
+        ];
+    }
 }

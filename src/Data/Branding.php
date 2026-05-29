@@ -47,4 +47,12 @@ final readonly class Branding implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['appName'],
+            'properties' => ['appName' => ['type' => 'string'], 'logoUrl' => ['type' => 'string'], 'logoCompactUrl' => ['type' => 'string']],
+            'additionalProperties' => false];
+    }
 }

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * How the client applies a RegionUpdate to an existing region.
  *
@@ -27,6 +29,8 @@ namespace Middag\Ui\Enum;
  */
 enum RegionUpdateMode: string
 {
+    use ProvidesJsonSchema;
+
     case REPLACE = 'replace';
 
     case APPEND = 'append';

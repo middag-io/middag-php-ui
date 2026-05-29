@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Enum;
 
+use Middag\Ui\Enum\Concerns\ProvidesJsonSchema;
+
 /**
  * What a partial Fragment carries, so the client routes it without guessing.
  *
@@ -23,6 +25,8 @@ namespace Middag\Ui\Enum;
  */
 enum FragmentKind: string
 {
+    use ProvidesJsonSchema;
+
     case BLOCK = 'block';
 
     case REGION = 'region';

@@ -42,4 +42,12 @@ readonly class Breadcrumb implements BreadcrumbInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['label'],
+            'properties' => ['label' => ['$ref' => '#/$defs/Label'], 'href' => ['type' => 'string'], 'external' => ['const' => true]],
+            'additionalProperties' => false];
+    }
 }

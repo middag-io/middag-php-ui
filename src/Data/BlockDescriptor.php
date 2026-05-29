@@ -78,4 +78,12 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['type', 'key', 'data'],
+            'properties' => ['type' => ['type' => 'string'], 'key' => ['type' => 'string'], 'data' => ['oneOf' => [['type' => 'object', 'additionalProperties' => true], ['type' => 'array', 'maxItems' => 0]]], 'variant' => ['type' => 'string'], 'title' => ['$ref' => '#/$defs/Label'], 'subtitle' => ['$ref' => '#/$defs/Label'], 'actions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'meta' => ['type' => 'object', 'additionalProperties' => true], 'poll' => ['$ref' => '#/$defs/PollConfig']],
+            'additionalProperties' => false];
+    }
 }

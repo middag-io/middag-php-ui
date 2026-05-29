@@ -97,4 +97,12 @@ readonly class NavigationNode implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return ['type' => 'object', 'required' => ['key', 'label'],
+            'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'icon' => ['type' => 'string'], 'href' => ['type' => 'string'], 'badge' => ['type' => 'string'], 'active' => ['const' => true], 'drilldown' => ['const' => true], 'collapsible' => ['const' => true], 'defaultOpen' => ['const' => true], 'children' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/NavigationNode']]],
+            'additionalProperties' => false];
+    }
 }

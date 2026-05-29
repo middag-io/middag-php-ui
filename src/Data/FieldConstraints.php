@@ -66,4 +66,28 @@ final readonly class FieldConstraints implements JsonSerializable
 
         return $payload;
     }
+
+    /** @return array<string, mixed> */
+    public static function jsonSchema(): array
+    {
+        return [
+            'oneOf' => [
+                [
+                    'type' => 'object',
+                    'properties' => [
+                        'required' => ['const' => true],
+                        'min' => ['type' => 'integer'],
+                        'max' => ['type' => 'integer'],
+                        'minLength' => ['type' => 'integer'],
+                        'maxLength' => ['type' => 'integer'],
+                        'pattern' => ['type' => 'string'],
+                        'step' => ['type' => 'string'],
+                    ],
+                    'additionalProperties' => false,
+                ],
+                // All-default constraints serialize to an empty PHP array → JSON [].
+                ['type' => 'array', 'maxItems' => 0],
+            ],
+        ];
+    }
 }
