@@ -186,7 +186,7 @@ final class BlockBuilderTest extends TestCase
     #[Test]
     public function testActivityTimeline(): void
     {
-        $block = BlockBuilder::activityTimeline('a', []);
+        $block = BlockBuilder::activityTimeline('a', [], hasMore: true, loadMoreHref: '/more');
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -195,12 +195,15 @@ final class BlockBuilderTest extends TestCase
         self::assertSame('activity_timeline', $payload['type']);
         self::assertSame('a', $payload['key']);
         self::assertArrayHasKey('groups', $payload['data']);
+        // Wire keys are camelCase, consistent with the rest of the contract.
+        self::assertTrue($payload['data']['hasMore']);
+        self::assertSame('/more', $payload['data']['loadMoreHref']);
     }
 
     #[Test]
     public function testMarkdownPanel(): void
     {
-        $block = BlockBuilder::markdownPanel('md', '# Hello');
+        $block = BlockBuilder::markdownPanel('md', '# Hello', 400);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -209,6 +212,7 @@ final class BlockBuilderTest extends TestCase
         self::assertSame('markdown_panel', $payload['type']);
         self::assertSame('md', $payload['key']);
         self::assertSame('# Hello', $payload['data']['content']);
+        self::assertSame(400, $payload['data']['maxHeight']);
     }
 
     #[Test]

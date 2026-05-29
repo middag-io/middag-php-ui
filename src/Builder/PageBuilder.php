@@ -217,12 +217,12 @@ class PageBuilder implements PageBuilderInterface
     /**
      * Add contextual help data (rendered in the HelpPanel slide-out).
      */
-    public function help(string $title, string $body, ?string $learn_more = null): static
+    public function help(string $title, string $body, ?string $learnMore = null): static
     {
         $this->helpData = [
             'title' => $title,
             'body' => $body,
-            'learnMore' => $learn_more,
+            'learnMore' => $learnMore,
         ];
 
         return $this;

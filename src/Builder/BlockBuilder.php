@@ -95,21 +95,21 @@ class BlockBuilder
         );
     }
 
-    public static function activityTimeline(string $key, array $groups, bool $has_more = false, ?string $load_more_href = null): BlockDescriptor
+    public static function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'activity_timeline',
             key: $key,
-            data: array_filter(['groups' => $groups, 'has_more' => $has_more, 'load_more_href' => $load_more_href], static fn (array|bool|string|null $v): bool => $v !== null),
+            data: array_filter(['groups' => $groups, 'hasMore' => $hasMore, 'loadMoreHref' => $loadMoreHref], static fn (array|bool|string|null $v): bool => $v !== null),
         );
     }
 
-    public static function markdownPanel(string $key, string $content, ?int $max_height = null): BlockDescriptor
+    public static function markdownPanel(string $key, string $content, ?int $maxHeight = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'markdown_panel',
             key: $key,
-            data: array_filter(['content' => $content, 'max_height' => $max_height], static fn (int|string|null $v): bool => $v !== null),
+            data: array_filter(['content' => $content, 'maxHeight' => $maxHeight], static fn (int|string|null $v): bool => $v !== null),
         );
     }
 
