@@ -15,6 +15,7 @@ namespace Middag\Ui\Builder;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\RegionBuilderInterface;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\FormStep;
 use Middag\Ui\Data\Translatable;
 use Middag\Ui\Enum\ChartType;
 
@@ -33,16 +34,10 @@ class RegionBuilder implements RegionBuilderInterface
 
     /**
      * Add a metric card block.
-     *
-     * @param array<string, mixed> $data Additional data merged with title
      */
-    public function metricCard(string $key, string $title = '', array $data = []): static
+    public function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'metric_card',
-            key: $key,
-            data: array_merge(['title' => $title], $data),
-        );
+        $this->blocks[] = BlockBuilder::metricCard($key, $value, $label, $delta, $icon, $href);
 
         return $this;
     }
@@ -50,15 +45,11 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a status strip block.
      *
-     * @param array<string, mixed> $data Block payload
+     * @param array<int, mixed> $items
      */
-    public function statusStrip(string $key, array $data = []): static
+    public function statusStrip(string $key, array $items, ?string $tone = null): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'status_strip',
-            key: $key,
-            data: $data,
-        );
+        $this->blocks[] = BlockBuilder::statusStrip($key, $items, $tone);
 
         return $this;
     }
@@ -66,15 +57,11 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a dense table block.
      *
-     * @param array<string, mixed> $data Additional data merged with title
+     * @param array<string, mixed> $data Extra data merged into the block payload
      */
-    public function denseTable(string $key, string $title = '', array $data = []): static
+    public function denseTable(string $key, array $columns, array $rows = [], array $data = []): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'dense_table',
-            key: $key,
-            data: array_merge(['title' => $title], $data),
-        );
+        $this->blocks[] = BlockBuilder::denseTable($key, $columns, $rows, $data);
 
         return $this;
     }
@@ -82,47 +69,31 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a detail panel block.
      *
-     * @param array<string, mixed> $data Block payload
+     * @param array<string, mixed> $data Extra data merged into the block payload
      */
-    public function detailPanel(string $key, array $data = []): static
+    public function detailPanel(string $key, array $sections, array $data = []): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'detail_panel',
-            key: $key,
-            data: $data,
-        );
+        $this->blocks[] = BlockBuilder::detailPanel($key, $sections, $data);
 
         return $this;
     }
 
     /**
      * Add an activity timeline block.
-     *
-     * @param array<string, mixed> $data Additional data merged with title
      */
-    public function activityTimeline(string $key, string $title = '', array $data = []): static
+    public function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'activity_timeline',
-            key: $key,
-            data: array_merge(['title' => $title], $data),
-        );
+        $this->blocks[] = BlockBuilder::activityTimeline($key, $groups, $hasMore, $loadMoreHref);
 
         return $this;
     }
 
     /**
      * Add an empty state block.
-     *
-     * @param array<string, mixed> $data Block payload (title, description, action, variant)
      */
-    public function emptyState(string $key, array $data = []): static
+    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'empty_state',
-            key: $key,
-            data: $data,
-        );
+        $this->blocks[] = BlockBuilder::emptyState($key, $variant, $description, $cta, $icon);
 
         return $this;
     }
@@ -130,15 +101,14 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a form panel block.
      *
-     * @param array<string, mixed> $data Block payload
+     * @param array<string, mixed>      $schema
+     * @param array<string, mixed>      $values
+     * @param null|array<int, FormStep> $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>      $data   Extra data merged into the block payload
      */
-    public function formPanel(string $key, string $title = '', array $data = []): static
+    public function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'form_panel',
-            key: $key,
-            data: array_merge(['title' => $title], $data),
-        );
+        $this->blocks[] = BlockBuilder::formPanel($key, $action, $method, $schema, $values, $steps, $data);
 
         return $this;
     }
@@ -146,13 +116,46 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a markdown panel block.
      */
-    public function markdownPanel(string $key, string $content = ''): static
+    public function markdownPanel(string $key, string $content, ?int $maxHeight = null): static
     {
-        $this->blocks[] = new BlockDescriptor(
-            type: 'markdown_panel',
-            key: $key,
-            data: ['content' => $content],
-        );
+        $this->blocks[] = BlockBuilder::markdownPanel($key, $content, $maxHeight);
+
+        return $this;
+    }
+
+    /**
+     * Add a card grid block.
+     *
+     * @param array<string, mixed> $data Extra data merged into the block payload
+     */
+    public function cardGrid(string $key, array $columns, array $rows = [], ?string $variant = null, array $data = []): static
+    {
+        $this->blocks[] = BlockBuilder::cardGrid($key, $columns, $rows, $variant, $data);
+
+        return $this;
+    }
+
+    /**
+     * Add an action grid block.
+     *
+     * @param array<int, array{id: string, icon: string, title: string, description: string, actionUrl: string, actionMethod?: string, confirmText?: string}> $items
+     * @param null|array{success: bool, message: string}                                                                                                      $flash
+     */
+    public function actionGrid(string $key, array $items, ?array $flash = null): static
+    {
+        $this->blocks[] = BlockBuilder::actionGrid($key, $items, $flash);
+
+        return $this;
+    }
+
+    /**
+     * Add a link list block.
+     *
+     * @param array<int, array{label: string, href: null|string, icon?: string, description?: string, external?: bool}> $items
+     */
+    public function linkList(string $key, array $items): static
+    {
+        $this->blocks[] = BlockBuilder::linkList($key, $items);
 
         return $this;
     }

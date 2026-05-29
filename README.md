@@ -147,13 +147,15 @@ Static factories in `BlockBuilder::`:
 | `BlockBuilder::chart($key, $type, $series, ...)`                         | Chart (ChartType enum) |
 | `BlockBuilder::tabs($key, $tabs)`                                        | Tabs container         |
 
-Or via `RegionBuilder` fluent API inside a `->region()` closure:
+Or via `RegionBuilder` fluent API inside a `->region()` closure. Each method
+mirrors its `BlockBuilder` factory one-to-one, so the same block type produces
+an identical descriptor whichever entry point you use:
 
 ```php
 ->region('content', function ($r) {
-    $r->metricCard('revenue', 'Revenue', ['value' => 42000])
-      ->denseTable('orders', 'Orders', ['rows' => $rows])
-      ->emptyState('no-results', ['variant' => 'filtered']);
+    $r->metricCard('revenue', 42000, 'Revenue', delta: '+8%')
+      ->denseTable('orders', ['id', 'total'], $rows)
+      ->emptyState('no-results', variant: 'filtered');
 })
 ```
 

@@ -135,7 +135,7 @@ final class PageBuilderTest extends TestCase
     public function testRegionWithClosure(): void
     {
         $contract = PageBuilder::page('test')
-            ->region('content', fn ($r) => $r->metricCard('m'))
+            ->region('content', fn ($r) => $r->metricCard('m', 1, 'A'))
             ->build();
 
         $blocks = $contract->layout->regions['content'] ?? [];
