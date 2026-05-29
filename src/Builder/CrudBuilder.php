@@ -24,6 +24,7 @@ use Middag\Ui\Data\Confirmation;
 use Middag\Ui\Data\Pagination;
 use Middag\Ui\Data\TableConfig;
 use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Data\Translatable;
 use Middag\Ui\Enum\ActionIntent;
 use Middag\Ui\Enum\HttpMethod;
 use Middag\Ui\Enum\ValueFormat;
@@ -40,7 +41,13 @@ use Middag\Ui\PageContract;
  */
 class CrudBuilder implements CrudBuilderInterface
 {
+    /** Default i18n domain for the generic CRUD verb keys (owned by the client UI layer). */
+    private const VERB_DOMAIN = 'ui';
+
     private readonly string $slug;
+
+    /** Singular, lower-cased entity basename used for singular titles. */
+    private readonly string $singular;
 
     /** @var string[] CRUD actions to generate */
     private array $actions = ['index', 'create', 'edit', 'show'];
@@ -66,21 +73,34 @@ class CrudBuilder implements CrudBuilderInterface
 
     private string $sortDirection = 'desc';
 
-    private ?string $customTitle = null;
+    /** Entity-noun i18n domain; null = no i18n (literal-string fallback). */
+    private ?string $i18nDomain = null;
+
+    /** i18n domain for the generic verb keys (crud_create/crud_edit). */
+    private string $verbDomain = self::VERB_DOMAIN;
+
+    /** Explicit singular label override (string literal or i18n intent). */
+    private string|Translatable|null $labelSingular = null;
+
+    /** Explicit plural label override; null = derive (i18n `_plural` or singular fallback). */
+    private string|Translatable|null $labelPlural = null;
 
     private ?string $customLayout = null;
 
-    private function __construct(private readonly string $entity_class)
+    private function __construct(private readonly string $entity_class, ?string $slug = null)
     {
-        // Derive slug from class name: Segment -> segments.
+        // The class basename is treated as a SINGULAR noun. The library never
+        // fabricates a plural (impossible without a locale inflector): the slug
+        // defaults to the singular and the caller overrides it for plural URLs.
         $parts = explode('\\', $this->entity_class);
         $basename = end($parts);
-        $this->slug = strtolower($basename) . 's';
+        $this->singular = strtolower($basename);
+        $this->slug = $slug ?? $this->singular;
     }
 
-    public static function for(string $entity_class): self
+    public static function for(string $entity_class, ?string $slug = null): self
     {
-        return new self($entity_class);
+        return new self($entity_class, $slug);
     }
 
     // --- Level 2 Override API ---
@@ -189,11 +209,33 @@ class CrudBuilder implements CrudBuilderInterface
     }
 
     /**
-     * Override the page title.
+     * Opt into i18n for the generated titles.
+     *
+     * The entity noun is emitted as an i18n intent in `$domain` (keys derived
+     * by convention: `<singular>` and `<singular>_plural`). The create/edit
+     * verbs are emitted in `$verbs` — a shared UI domain the client layer owns
+     * (keys `crud_create`/`crud_edit` with an `entity` placeholder). Without
+     * this call the titles fall back to literal singular strings (no verb).
      */
-    public function title(string $title): static
+    public function i18n(string $domain, string $verbs = self::VERB_DOMAIN): static
     {
-        $this->customTitle = $title;
+        $this->i18nDomain = $domain;
+        $this->verbDomain = $verbs;
+
+        return $this;
+    }
+
+    /**
+     * Override the entity label (singular and, optionally, plural).
+     *
+     * Plural resolution: the explicit `$plural` when given; else, when the
+     * singular is an i18n intent, the `<key>_plural` convention in the same
+     * domain; else the singular itself (no fabricated plural).
+     */
+    public function label(string|Translatable $singular, string|Translatable|null $plural = null): static
+    {
+        $this->labelSingular = $singular;
+        $this->labelPlural = $plural;
 
         return $this;
     }
@@ -253,9 +295,72 @@ class CrudBuilder implements CrudBuilderInterface
         return $this->slug;
     }
 
+    /**
+     * Resolve the default page title for a CRUD action.
+     *
+     * index → plural noun; show → singular noun; create/edit → the verb intent
+     * (i18n) or, in literal fallback, the singular noun without a verb.
+     */
+    private function actionTitle(string $action): string|Translatable
+    {
+        return match ($action) {
+            'index' => $this->pluralLabel(),
+            'create', 'edit' => $this->verbTitle($action),
+            default => $this->singularLabel(),
+        };
+    }
+
+    /** Resolve the singular entity label: explicit override, i18n intent, or literal. */
+    private function singularLabel(): string|Translatable
+    {
+        if ($this->labelSingular !== null) {
+            return $this->labelSingular;
+        }
+
+        if ($this->i18nDomain !== null) {
+            return Translatable::of($this->singular, $this->i18nDomain);
+        }
+
+        return ucfirst($this->singular);
+    }
+
+    /** Resolve the plural entity label: explicit, `<key>_plural` i18n intent, or singular fallback. */
+    private function pluralLabel(): string|Translatable
+    {
+        if ($this->labelPlural !== null) {
+            return $this->labelPlural;
+        }
+
+        $singular = $this->singularLabel();
+
+        if ($singular instanceof Translatable) {
+            return Translatable::of($singular->key . '_plural', $singular->domain, $singular->params);
+        }
+
+        return $singular;
+    }
+
+    /**
+     * Resolve a verb-framed title (create/edit).
+     *
+     * With an i18n singular, emits `crud_<action>` in the verb domain with the
+     * entity intent as the `entity` placeholder; otherwise falls back to the
+     * literal singular noun (no fabricated English verb).
+     */
+    private function verbTitle(string $action): string|Translatable
+    {
+        $singular = $this->singularLabel();
+
+        if ($singular instanceof Translatable) {
+            return Translatable::of('crud_' . $action, $this->verbDomain, ['entity' => $singular]);
+        }
+
+        return $singular;
+    }
+
     private function buildIndex(array $data): PageContract
     {
-        $title = $this->customTitle ?? ucfirst($this->slug);
+        $title = $this->actionTitle('index');
         $columns = $this->columnsList ?? ['name', 'status', 'created_at'];
         $row_actions = $this->rowActionsList ?? ['edit', 'delete'];
         $page_actions = $this->pageActionsList ?? [
@@ -303,9 +408,7 @@ class CrudBuilder implements CrudBuilderInterface
 
     private function buildCreate(array $data): PageContract
     {
-        $title = $this->customTitle
-            ? 'Create ' . $this->customTitle
-            : 'Create ' . rtrim(ucfirst($this->slug), 's');
+        $title = $this->actionTitle('create');
 
         $form_data = [
             'action' => '/' . $this->slug,
@@ -331,9 +434,7 @@ class CrudBuilder implements CrudBuilderInterface
     private function buildEdit(array $data): PageContract
     {
         $id = $data['id'] ?? 0;
-        $title = $this->customTitle
-            ? 'Edit ' . $this->customTitle
-            : 'Edit ' . rtrim(ucfirst($this->slug), 's');
+        $title = $this->actionTitle('edit');
 
         $form_data = [
             'action' => sprintf('/%s/%s', $this->slug, $id),
@@ -358,7 +459,7 @@ class CrudBuilder implements CrudBuilderInterface
 
     private function buildShow(array $data): PageContract
     {
-        $title = $this->customTitle ?? rtrim(ucfirst($this->slug), 's');
+        $title = $this->actionTitle('show');
 
         return PageBuilder::page($this->slug . '.show')
             ->title($title)

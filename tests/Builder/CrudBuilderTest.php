@@ -14,6 +14,7 @@ namespace Middag\Ui\Tests\Builder;
 
 use InvalidArgumentException;
 use Middag\Ui\Builder\CrudBuilder;
+use Middag\Ui\Data\Translatable;
 use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -26,11 +27,16 @@ use PHPUnit\Framework\TestCase;
 final class CrudBuilderTest extends TestCase
 {
     #[Test]
-    public function testDerivesSlugFromClass(): void
+    public function testDerivesSingularSlugByDefault(): void
     {
-        $crud = CrudBuilder::for('App\Entity\Invoice');
+        // The basename is a singular noun; the library never fabricates a plural.
+        self::assertSame('invoice', CrudBuilder::for('App\Entity\Invoice')->getSlug());
+    }
 
-        self::assertSame('invoices', $crud->getSlug());
+    #[Test]
+    public function testExplicitSlugOverride(): void
+    {
+        self::assertSame('invoices', CrudBuilder::for('App\Entity\Invoice', 'invoices')->getSlug());
     }
 
     #[Test]
@@ -40,7 +46,7 @@ final class CrudBuilderTest extends TestCase
         $contract = $crud->build('index');
 
         self::assertInstanceOf(PageContract::class, $contract);
-        self::assertSame('invoices.index', $contract->page->key);
+        self::assertSame('invoice.index', $contract->page->key);
         self::assertSame('stack', $contract->layout->template);
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -143,13 +149,13 @@ final class CrudBuilderTest extends TestCase
         $contract = $crud->build('create');
 
         self::assertInstanceOf(PageContract::class, $contract);
-        self::assertSame('invoices.create', $contract->page->key);
+        self::assertSame('invoice.create', $contract->page->key);
 
         $block = $contract->layout->regions['content'][0];
         $data = $block->jsonSerialize()['data'];
 
         self::assertSame('form_panel', $block->jsonSerialize()['type']);
-        self::assertSame('/invoices', $data['action']);
+        self::assertSame('/invoice', $data['action']);
         self::assertSame('post', $data['method']);
     }
 
@@ -160,7 +166,7 @@ final class CrudBuilderTest extends TestCase
         $contract = $crud->build('edit', ['id' => 42]);
 
         self::assertInstanceOf(PageContract::class, $contract);
-        self::assertSame('invoices.edit', $contract->page->key);
+        self::assertSame('invoice.edit', $contract->page->key);
 
         $block = $contract->layout->regions['content'][0];
         $data = $block->jsonSerialize()['data'];
@@ -177,7 +183,7 @@ final class CrudBuilderTest extends TestCase
         $contract = $crud->build('show');
 
         self::assertInstanceOf(PageContract::class, $contract);
-        self::assertSame('invoices.show', $contract->page->key);
+        self::assertSame('invoice.show', $contract->page->key);
         self::assertSame('split', $contract->layout->template);
 
         $content = $contract->layout->regions['content'] ?? [];
@@ -210,7 +216,7 @@ final class CrudBuilderTest extends TestCase
             ->bulkActions(['delete'])
             ->pageActions([])
             ->form('App\Forms\InvoiceForm')
-            ->title('Faturas')
+            ->label('Fatura', 'Faturas')
             ->layout('custom-shell')
             ->capability('app/invoice:manage');
 
@@ -219,25 +225,97 @@ final class CrudBuilderTest extends TestCase
     }
 
     #[Test]
-    public function testCustomTitleAppearsInContract(): void
+    public function testDefaultTitlesAreSingularNounWithoutVerb(): void
     {
-        $crud = CrudBuilder::for('App\Entity\Invoice')->title('Faturas');
+        // No i18n, no label: literal singular noun for every action; no English verb.
+        $crud = CrudBuilder::for('App\Entity\Invoice');
 
-        $payload = $crud->build('index')->jsonSerialize();
-
-        self::assertStringContainsString('Faturas', (string) json_encode($payload));
+        self::assertSame('Invoice', $crud->build('index')->page->title);
+        self::assertSame('Invoice', $crud->build('show')->page->title);
+        self::assertSame('Invoice', $crud->build('create')->page->title);
+        self::assertSame('Invoice', $crud->build('edit', ['id' => 1])->page->title);
     }
 
     #[Test]
-    public function testCustomTitlePrefixesCreateAndEditTitles(): void
+    public function testSingularTitleDoesNotMangleSEndingNouns(): void
     {
-        $crud = CrudBuilder::for('App\Entity\Invoice')->title('Fatura');
+        // 'Status' previously became 'Statu' (rtrim) and slug 'statuss' (naive +s).
+        $crud = CrudBuilder::for('App\Entity\Status');
 
-        $create = (string) json_encode($crud->build('create')->jsonSerialize());
-        $edit = (string) json_encode($crud->build('edit', ['id' => 1])->jsonSerialize());
+        self::assertSame('status', $crud->getSlug());
+        self::assertSame('Status', $crud->build('create')->page->title);
+        self::assertSame('Status', $crud->build('show')->page->title);
+    }
 
-        self::assertStringContainsString('Create Fatura', $create);
-        self::assertStringContainsString('Edit Fatura', $edit);
+    #[Test]
+    public function testExplicitLabelDrivesSingularAndPlural(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->label('Invoice', 'Invoices');
+
+        self::assertSame('Invoices', $crud->build('index')->page->title);
+        self::assertSame('Invoice', $crud->build('show')->page->title);
+        self::assertSame('Invoice', $crud->build('create')->page->title);
+    }
+
+    #[Test]
+    public function testI18nEmitsEntityNounIntents(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->i18n('local_x');
+
+        $show = $crud->build('show')->page->title;
+        self::assertInstanceOf(Translatable::class, $show);
+        self::assertSame('invoice', $show->key);
+        self::assertSame('local_x', $show->domain);
+
+        $index = $crud->build('index')->page->title;
+        self::assertInstanceOf(Translatable::class, $index);
+        self::assertSame('invoice_plural', $index->key);
+        self::assertSame('local_x', $index->domain);
+    }
+
+    #[Test]
+    public function testI18nCreateEditEmitVerbIntentInVerbDomain(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->i18n('local_x');
+
+        $create = $crud->build('create')->page->title;
+        self::assertInstanceOf(Translatable::class, $create);
+        self::assertSame('crud_create', $create->key);
+        self::assertSame('ui', $create->domain);
+
+        $entity = $create->params['entity'];
+        self::assertInstanceOf(Translatable::class, $entity);
+        self::assertSame('invoice', $entity->key);
+        self::assertSame('local_x', $entity->domain);
+
+        $edit = $crud->build('edit', ['id' => 1])->page->title;
+        self::assertInstanceOf(Translatable::class, $edit);
+        self::assertSame('crud_edit', $edit->key);
+    }
+
+    #[Test]
+    public function testVerbDomainIsOverridable(): void
+    {
+        $create = CrudBuilder::for('App\Entity\Invoice')->i18n('local_x', verbs: 'core')->build('create')->page->title;
+
+        self::assertInstanceOf(Translatable::class, $create);
+        self::assertSame('core', $create->domain);
+    }
+
+    #[Test]
+    public function testTranslatableLabelDerivesPluralAndVerb(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->label(Translatable::of('inv', 'dom'));
+
+        $index = $crud->build('index')->page->title;
+        self::assertInstanceOf(Translatable::class, $index);
+        self::assertSame('inv_plural', $index->key);
+        self::assertSame('dom', $index->domain);
+
+        $create = $crud->build('create')->page->title;
+        self::assertInstanceOf(Translatable::class, $create);
+        self::assertSame('crud_create', $create->key);
+        self::assertSame('inv', $create->params['entity']->key);
     }
 
     #[Test]
@@ -250,11 +328,11 @@ final class CrudBuilderTest extends TestCase
 
         // show -> link to entity
         self::assertSame('link', $show['target']['kind']);
-        self::assertSame('/invoices/{id}', $show['target']['href']);
+        self::assertSame('/invoice/{id}', $show['target']['href']);
 
         // edit -> link to /{slug}/{id}/edit (default branch)
         self::assertSame('link', $edit['target']['kind']);
-        self::assertSame('/invoices/{id}/edit', $edit['target']['href']);
+        self::assertSame('/invoice/{id}/edit', $edit['target']['href']);
 
         // delete -> DELETE request, danger, with confirmation
         self::assertSame('request', $delete['target']['kind']);
@@ -274,7 +352,7 @@ final class CrudBuilderTest extends TestCase
         // non-delete bulk -> POST request, secondary, no confirmation
         self::assertSame('request', $archive['target']['kind']);
         self::assertSame('post', $archive['target']['method']);
-        self::assertSame('/invoices/bulk/archive', $archive['target']['endpoint']);
+        self::assertSame('/invoice/bulk/archive', $archive['target']['endpoint']);
         self::assertSame('secondary', $archive['intent']);
         self::assertArrayNotHasKey('confirmation', $archive);
 

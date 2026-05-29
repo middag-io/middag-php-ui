@@ -17,15 +17,17 @@ use JsonSerializable;
 /**
  * A single step in a multi-step (wizard) form.
  *
- * `fields` may carry field names (referencing schema entries) or full
- * {@see FieldDefinition} instances; the renderer resolves them.
+ * `fields` carries field names referencing schema entries; the renderer
+ * resolves each name to its field. Only names (strings) are accepted: a
+ * field definition is a boundary object that does not serialize to the wire,
+ * so it must not be embedded here.
  *
  * @api
  */
 final readonly class FormStep implements JsonSerializable
 {
     /**
-     * @param array<int, FieldDefinition|string> $fields
+     * @param array<int, string> $fields Field names referencing schema entries
      */
     public function __construct(
         public string $id,
