@@ -45,16 +45,16 @@ final class RendererOutputTest extends TestCase
     public function testPropsFactorySetsTargetAndProps(): void
     {
         $props = ['fields' => ['name', 'email'], 'values' => []];
-        $output = RendererOutput::props(RenderTarget::INERTIA, $props);
+        $output = RendererOutput::props(RenderTarget::PROPS, $props);
 
-        self::assertSame(RenderTarget::INERTIA, $output->target);
+        self::assertSame(RenderTarget::PROPS, $output->target);
         self::assertSame($props, $output->props);
     }
 
     #[Test]
     public function testPropsFactoryHasEmptyBody(): void
     {
-        $output = RendererOutput::props(RenderTarget::INERTIA, []);
+        $output = RendererOutput::props(RenderTarget::PROPS, []);
 
         self::assertSame('', $output->body);
     }
@@ -63,9 +63,9 @@ final class RendererOutputTest extends TestCase
     public function testHtmlAndPropsUseDifferentTargets(): void
     {
         $html = RendererOutput::html(RenderTarget::HTML, '<form/>');
-        $props = RendererOutput::props(RenderTarget::INERTIA, []);
+        $props = RendererOutput::props(RenderTarget::PROPS, []);
 
         self::assertSame(RenderTarget::HTML, $html->target);
-        self::assertSame(RenderTarget::INERTIA, $props->target);
+        self::assertSame(RenderTarget::PROPS, $props->target);
     }
 }

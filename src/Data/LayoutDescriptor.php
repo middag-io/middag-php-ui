@@ -15,6 +15,11 @@ namespace Middag\Ui\Data;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\LayoutDescriptorInterface;
 
+/**
+ * Page layout: a template plus named regions, each holding ordered blocks.
+ *
+ * @api
+ */
 readonly class LayoutDescriptor implements LayoutDescriptorInterface
 {
     /**

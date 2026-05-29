@@ -14,6 +14,12 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\InspectorDescriptorInterface;
 
+/**
+ * Inspector side-panel descriptor: endpoint (with {id} placeholder), width,
+ * and optional poll config.
+ *
+ * @api
+ */
 readonly class InspectorDescriptor implements InspectorDescriptorInterface
 {
     public function __construct(

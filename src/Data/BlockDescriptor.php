@@ -15,6 +15,12 @@ namespace Middag\Ui\Data;
 use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 
+/**
+ * A typed UI block: a `type` discriminator plus its `data` payload and
+ * optional title, actions, meta, and poll config.
+ *
+ * @api
+ */
 readonly class BlockDescriptor implements BlockDescriptorInterface
 {
     /**

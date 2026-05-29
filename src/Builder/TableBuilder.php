@@ -66,7 +66,7 @@ class TableBuilder
      *
      * @param array{sortable?: bool, searchable?: bool, format?: ValueFormat, formatOptions?: array<string, mixed>, options?: array<string, mixed>} $settings
      */
-    public function column(string $key, string|Translatable $label, array $settings = []): self
+    public function column(string $key, string|Translatable $label, array $settings = []): static
     {
         $this->columns[] = new Column(
             key: $key,
@@ -86,7 +86,7 @@ class TableBuilder
      *
      * @param array<int, array{value: mixed, label: string|Translatable}> $options
      */
-    public function filter(string $key, string|Translatable $label, FilterType $type = FilterType::SELECT, array $options = []): self
+    public function filter(string $key, string|Translatable $label, FilterType $type = FilterType::SELECT, array $options = []): static
     {
         $this->filters[] = new FilterDefinition(
             key: $key,
@@ -101,7 +101,7 @@ class TableBuilder
     /**
      * Add a per-row action.
      */
-    public function rowAction(ActionInterface $action): self
+    public function rowAction(ActionInterface $action): static
     {
         $this->rowActions[] = $action;
 
@@ -111,7 +111,7 @@ class TableBuilder
     /**
      * Add a bulk action applied to selected rows.
      */
-    public function bulkAction(ActionInterface $action): self
+    public function bulkAction(ActionInterface $action): static
     {
         $this->bulkActions[] = $action;
 
@@ -121,7 +121,7 @@ class TableBuilder
     /**
      * Set general table behavior options.
      */
-    public function options(TableOptions $options): self
+    public function options(TableOptions $options): static
     {
         $this->options = $options;
 

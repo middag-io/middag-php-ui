@@ -16,6 +16,11 @@ use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BreadcrumbInterface;
 use Middag\Ui\Contract\PageMetaInterface;
 
+/**
+ * Page identity: key, title, subtitle, breadcrumbs, and page-level actions.
+ *
+ * @api
+ */
 readonly class PageMeta implements PageMetaInterface
 {
     /**

@@ -14,6 +14,11 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\BreadcrumbInterface;
 
+/**
+ * A single breadcrumb trail entry: label plus optional href.
+ *
+ * @api
+ */
 readonly class Breadcrumb implements BreadcrumbInterface
 {
     public function __construct(

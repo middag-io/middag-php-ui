@@ -14,6 +14,12 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\PageResourcesInterface;
 
+/**
+ * Shared page resources: user preferences, capabilities, feature flags,
+ * identity, and branding.
+ *
+ * @api
+ */
 readonly class PageResources implements PageResourcesInterface
 {
     /**

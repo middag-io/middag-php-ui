@@ -22,8 +22,10 @@ use Middag\Ui\Data\PageResources;
  * Top-level page contract envelope (ADR-807).
  *
  * Describes a complete server-driven page: shell, page identity,
- * layout with regions and blocks, and shared resources.
- * Serialized as Inertia props for React rendering.
+ * layout with regions and blocks, and shared resources. Serialized to JSON
+ * and consumed by the client renderer.
+ *
+ * @api
  */
 readonly class PageContract implements PageContractInterface
 {
