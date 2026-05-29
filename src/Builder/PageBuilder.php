@@ -21,19 +21,19 @@ use Middag\Ui\Contract\PageBuilderInterface;
 use Middag\Ui\Data\InspectorDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
 use Middag\Ui\Data\PageAction;
-use Middag\Ui\Data\PageContractData;
 use Middag\Ui\Data\PageMeta;
+use Middag\Ui\PageContract;
 
 /**
- * Fluent builder for PageContractData (L3 API — ADR-807).
+ * Fluent builder for PageContract (L3 API — ADR-807).
  *
- * Produces a PageContractData from a chainable API.
+ * Produces a PageContract from a chainable API.
  *
  * Usage:
  *   PageBuilder::page('segments.index')
  *       ->title('Segments')
  *       ->layout('stack')
- *       ->region('content', [Block::dense_table(...)])
+ *       ->region('content', [BlockBuilder::dense_table(...)])
  *       ->build();
  *
  * @api
@@ -242,11 +242,11 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Build the PageContractData.
+     * Build the PageContract.
      */
-    public function build(): PageContractData
+    public function build(): PageContract
     {
-        return new PageContractData(
+        return new PageContract(
             shell: $this->shell,
             page: new PageMeta(
                 key: $this->key,
@@ -267,9 +267,9 @@ class PageBuilder implements PageBuilderInterface
      * Build Inertia props array (contract + overlay + help as separate props).
      *
      * Use this when you need overlay/help metadata alongside the contract.
-     * The PageContractData itself remains unchanged (@api safe).
+     * The PageContract itself remains unchanged (@api safe).
      *
-     * @return array{contract: PageContractData, overlay?: bool, help?: array, inspector?: InspectorDescriptorInterface}
+     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptorInterface}
      */
     public function toProps(): array
     {

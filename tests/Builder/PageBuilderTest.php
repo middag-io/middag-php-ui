@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Builder;
 
-use Middag\Ui\Builder\Block;
+use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Builder\CrudBuilder;
 use Middag\Ui\Builder\PageBuilder;
 use Middag\Ui\Data\PageAction;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +32,7 @@ final class PageBuilderTest extends TestCase
     {
         $contract = PageBuilder::page('test')->build();
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('test', $contract->page->key);
     }
 
@@ -100,7 +100,7 @@ final class PageBuilderTest extends TestCase
     public function testRegionWithArray(): void
     {
         $contract = PageBuilder::page('test')
-            ->region('content', [Block::emptyState('e')])
+            ->region('content', [BlockBuilder::emptyState('e')])
             ->build();
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -146,11 +146,11 @@ final class PageBuilderTest extends TestCase
     }
 
     #[Test]
-    public function testBuildReturnsPageContractData(): void
+    public function testBuildReturnsPageContract(): void
     {
         $contract = PageBuilder::page('test')->build();
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
     }
 
     #[Test]
@@ -159,7 +159,7 @@ final class PageBuilderTest extends TestCase
         $props = PageBuilder::page('test')->toProps();
 
         self::assertArrayHasKey('contract', $props);
-        self::assertInstanceOf(PageContractData::class, $props['contract']);
+        self::assertInstanceOf(PageContract::class, $props['contract']);
         self::assertArrayNotHasKey('overlay', $props);
         self::assertArrayNotHasKey('help', $props);
         self::assertArrayNotHasKey('inspector', $props);
@@ -199,5 +199,16 @@ final class PageBuilderTest extends TestCase
         self::assertArrayHasKey('inspector', $props);
         self::assertSame('/api/{id}', $props['inspector']->endpoint);
         self::assertSame(500, $props['inspector']->width);
+    }
+
+    #[Test]
+    public function testMetaIsFluentAndBuildable(): void
+    {
+        $page = PageBuilder::page('wizard');
+
+        $result = $page->meta(['multiStep' => true, 'steps' => 3]);
+
+        self::assertSame($page, $result);
+        self::assertInstanceOf(PageContract::class, $page->build());
     }
 }

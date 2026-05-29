@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Support;
 
 use Middag\Ui\Builder\CrudBuilder;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\PageContract;
 use Middag\Ui\Support\CrudControllerSupport;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,7 +31,7 @@ final class CrudControllerSupportTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = CrudControllerSupport::index($crud, [['name' => 'INV-001']], ['page' => 1]);
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.index', $contract->page->key);
     }
 
@@ -41,7 +41,7 @@ final class CrudControllerSupportTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = CrudControllerSupport::create($crud, ['fields' => []]);
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.create', $contract->page->key);
     }
 
@@ -51,7 +51,7 @@ final class CrudControllerSupportTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = CrudControllerSupport::edit($crud, 42, ['name' => 'INV-001'], ['fields' => []], []);
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.edit', $contract->page->key);
     }
 
@@ -61,7 +61,7 @@ final class CrudControllerSupportTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = CrudControllerSupport::show($crud, ['id' => 42], []);
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.show', $contract->page->key);
     }
 }

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Builder;
 
-use Middag\Ui\Builder\Block;
+use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Data\BlockDescriptor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -21,13 +21,13 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-#[CoversClass(Block::class)]
-final class BlockTest extends TestCase
+#[CoversClass(BlockBuilder::class)]
+final class BlockBuilderTest extends TestCase
 {
     #[Test]
     public function testDenseTable(): void
     {
-        $block = Block::denseTable('t', [['key' => 'name']], [['name' => 'John']]);
+        $block = BlockBuilder::denseTable('t', [['key' => 'name']], [['name' => 'John']]);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -42,7 +42,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testFormPanel(): void
     {
-        $block = Block::formPanel('f', '/submit', 'POST', [], []);
+        $block = BlockBuilder::formPanel('f', '/submit', 'POST', [], []);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -59,7 +59,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testDetailPanel(): void
     {
-        $block = Block::detailPanel('d', [['title' => 'Info']]);
+        $block = BlockBuilder::detailPanel('d', [['title' => 'Info']]);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -73,7 +73,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testMetricCard(): void
     {
-        $block = Block::metricCard('m', 42, 'Users', '+5%');
+        $block = BlockBuilder::metricCard('m', 42, 'Users', '+5%');
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -91,7 +91,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testEmptyState(): void
     {
-        $block = Block::emptyState('e');
+        $block = BlockBuilder::emptyState('e');
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -105,7 +105,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testStatusStrip(): void
     {
-        $block = Block::statusStrip('s', [['label' => 'Active']]);
+        $block = BlockBuilder::statusStrip('s', [['label' => 'Active']]);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -119,7 +119,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testActivityTimeline(): void
     {
-        $block = Block::activityTimeline('a', []);
+        $block = BlockBuilder::activityTimeline('a', []);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -133,7 +133,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testMarkdownPanel(): void
     {
-        $block = Block::markdownPanel('md', '# Hello');
+        $block = BlockBuilder::markdownPanel('md', '# Hello');
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -147,7 +147,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testCardGrid(): void
     {
-        $block = Block::cardGrid('cg', [], []);
+        $block = BlockBuilder::cardGrid('cg', [], []);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -162,7 +162,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testActionGrid(): void
     {
-        $block = Block::actionGrid('ag', []);
+        $block = BlockBuilder::actionGrid('ag', []);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 
@@ -176,7 +176,7 @@ final class BlockTest extends TestCase
     #[Test]
     public function testLinkList(): void
     {
-        $block = Block::linkList('ll', [['label' => 'Link', 'href' => '/']]);
+        $block = BlockBuilder::linkList('ll', [['label' => 'Link', 'href' => '/']]);
 
         self::assertInstanceOf(BlockDescriptor::class, $block);
 

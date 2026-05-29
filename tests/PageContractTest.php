@@ -10,13 +10,13 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Data;
+namespace Middag\Ui\Tests;
 
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
-use Middag\Ui\Data\PageContractData;
 use Middag\Ui\Data\PageMeta;
 use Middag\Ui\Data\PageResources;
+use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,8 +24,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-#[CoversClass(PageContractData::class)]
-final class PageContractDataTest extends TestCase
+#[CoversClass(PageContract::class)]
+final class PageContractTest extends TestCase
 {
     #[Test]
     public function testSerializesCompleteContract(): void
@@ -43,7 +43,7 @@ final class PageContractDataTest extends TestCase
 
         $page = new PageMeta(key: 'users.index', title: 'Users');
 
-        $contract = new PageContractData(
+        $contract = new PageContract(
             shell: 'product',
             page: $page,
             layout: $layout,
@@ -65,7 +65,7 @@ final class PageContractDataTest extends TestCase
         $layout = new LayoutDescriptor(template: 'stack', regions: ['main' => []]);
         $page = new PageMeta(key: 'home', title: 'Home');
 
-        $contract = new PageContractData(
+        $contract = new PageContract(
             shell: 'product',
             page: $page,
             layout: $layout,
@@ -83,7 +83,7 @@ final class PageContractDataTest extends TestCase
         $page = new PageMeta(key: 'home', title: 'Home');
         $resources = new PageResources();
 
-        $contract = new PageContractData(
+        $contract = new PageContract(
             shell: 'product',
             page: $page,
             layout: $layout,
@@ -99,6 +99,6 @@ final class PageContractDataTest extends TestCase
     #[Test]
     public function testVersionConstant(): void
     {
-        self::assertSame('1', PageContractData::VERSION);
+        self::assertSame('1', PageContract::VERSION);
     }
 }

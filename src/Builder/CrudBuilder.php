@@ -18,12 +18,12 @@ use Middag\Ui\Contract\CrudBuilderInterface;
 use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\PageAction;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\PageContract;
 
 /**
  * CRUD convention builder (ADR-807 Levels 1-2).
  *
- * Generates PageContractData instances for index/create/edit/show actions
+ * Generates PageContract instances for index/create/edit/show actions
  * following convention-over-configuration. Override methods allow point-of-use
  * customization without dropping to Level 3 composable.
  *
@@ -212,12 +212,12 @@ class CrudBuilder implements CrudBuilderInterface
     // --- Build ---
 
     /**
-     * Build PageContractData for the given CRUD action.
+     * Build PageContract for the given CRUD action.
      *
      * @param string $action One of: index, create, edit, show
      * @param array  $data   Context data (e.g. entity instance for edit/show, rows for index)
      */
-    public function build(string $action = 'index', array $data = []): PageContractData
+    public function build(string $action = 'index', array $data = []): PageContract
     {
         return match ($action) {
             'index' => $this->buildIndex($data),
@@ -244,7 +244,7 @@ class CrudBuilder implements CrudBuilderInterface
         return $this->slug;
     }
 
-    private function buildIndex(array $data): PageContractData
+    private function buildIndex(array $data): PageContract
     {
         $title = $this->customTitle ?? ucfirst($this->slug);
         $columns = $this->columnsList ?? ['name', 'status', 'created_at'];
@@ -285,7 +285,7 @@ class CrudBuilder implements CrudBuilderInterface
             ->build();
     }
 
-    private function buildCreate(array $data): PageContractData
+    private function buildCreate(array $data): PageContract
     {
         $title = $this->customTitle
             ? 'Create ' . $this->customTitle
@@ -312,7 +312,7 @@ class CrudBuilder implements CrudBuilderInterface
             ->build();
     }
 
-    private function buildEdit(array $data): PageContractData
+    private function buildEdit(array $data): PageContract
     {
         $id = $data['id'] ?? 0;
         $title = $this->customTitle
@@ -340,7 +340,7 @@ class CrudBuilder implements CrudBuilderInterface
             ->build();
     }
 
-    private function buildShow(array $data): PageContractData
+    private function buildShow(array $data): PageContract
     {
         $title = $this->customTitle ?? rtrim(ucfirst($this->slug), 's');
 

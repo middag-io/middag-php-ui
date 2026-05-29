@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Contract\Form;
 
-use Middag\Ui\Data\Form\Condition as condition;
+use Middag\Ui\Data\Form\Condition;
 
 /**
  * Contract for objects that can produce a condition value object.
@@ -24,5 +24,5 @@ use Middag\Ui\Data\Form\Condition as condition;
  */
 interface ConditionInterface
 {
-    public function toCondition(): condition;
+    public function toCondition(): Condition;
 }

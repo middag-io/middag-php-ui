@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Widget;
+namespace Middag\Ui\Builder;
 
-use Middag\Ui\Data\Table\Column as column;
+use Middag\Ui\Data\Table\Column;
 use Middag\Ui\Data\Table\TableConfig;
 
 /**
@@ -24,7 +24,7 @@ use Middag\Ui\Data\Table\TableConfig;
  */
 class TableBuilder
 {
-    /** @var column[] */
+    /** @var Column[] */
     private array $columns = [];
 
     private array $filters = [];
@@ -51,7 +51,7 @@ class TableBuilder
      */
     public function column(string $key, string $label, array $settings = []): self
     {
-        $this->columns[] = new column(
+        $this->columns[] = new Column(
             key: $key,
             label: $label,
             sortable: $settings['sortable'] ?? false,

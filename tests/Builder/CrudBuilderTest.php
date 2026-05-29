@@ -14,7 +14,7 @@ namespace Middag\Ui\Tests\Builder;
 
 use InvalidArgumentException;
 use Middag\Ui\Builder\CrudBuilder;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('index');
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.index', $contract->page->key);
         self::assertSame('stack', $contract->layout->template);
 
@@ -142,7 +142,7 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('create');
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.create', $contract->page->key);
 
         $block = $contract->layout->regions['content'][0];
@@ -159,7 +159,7 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('edit', ['id' => 42]);
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.edit', $contract->page->key);
 
         $block = $contract->layout->regions['content'][0];
@@ -176,7 +176,7 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('show');
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('invoices.show', $contract->page->key);
         self::assertSame('split', $contract->layout->template);
 
@@ -198,5 +198,45 @@ final class CrudBuilderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $crud->build('invalid');
+    }
+
+    #[Test]
+    public function testOverrideSettersAreFluentAndBuildable(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice');
+
+        $result = $crud
+            ->rowActions(['edit'])
+            ->bulkActions(['delete'])
+            ->pageActions([])
+            ->form('App\Forms\InvoiceForm')
+            ->title('Faturas')
+            ->layout('custom-shell')
+            ->capability('app/invoice:manage');
+
+        self::assertSame($crud, $result);
+        self::assertInstanceOf(PageContract::class, $crud->build('index'));
+    }
+
+    #[Test]
+    public function testCustomTitleAppearsInContract(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->title('Faturas');
+
+        $payload = $crud->build('index')->jsonSerialize();
+
+        self::assertStringContainsString('Faturas', (string) json_encode($payload));
+    }
+
+    #[Test]
+    public function testCustomTitlePrefixesCreateAndEditTitles(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->title('Fatura');
+
+        $create = (string) json_encode($crud->build('create')->jsonSerialize());
+        $edit = (string) json_encode($crud->build('edit', ['id' => 1])->jsonSerialize());
+
+        self::assertStringContainsString('Create Fatura', $create);
+        self::assertStringContainsString('Edit Fatura', $edit);
     }
 }

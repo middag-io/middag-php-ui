@@ -115,4 +115,21 @@ final class PageActionTest extends TestCase
         self::assertArrayNotHasKey('disabled', $payload);
         self::assertArrayNotHasKey('loading', $payload);
     }
+
+    #[Test]
+    public function testIncludesBooleansWhenTrue(): void
+    {
+        $action = new PageAction(
+            id: 'delete',
+            label: 'Delete',
+            intent: 'danger',
+            disabled: true,
+            loading: true,
+        );
+
+        $payload = $action->jsonSerialize();
+
+        self::assertTrue($payload['disabled']);
+        self::assertTrue($payload['loading']);
+    }
 }

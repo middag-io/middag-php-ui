@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Contract;
+namespace Middag\Ui\Tests\Data;
 
-use Middag\Ui\Contract\NavigationNode;
+use Middag\Ui\Data\NavigationNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

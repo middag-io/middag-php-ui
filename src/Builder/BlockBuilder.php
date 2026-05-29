@@ -22,7 +22,7 @@ use Middag\Ui\Data\BlockDescriptor;
  *
  * @api
  */
-class Block
+class BlockBuilder
 {
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload

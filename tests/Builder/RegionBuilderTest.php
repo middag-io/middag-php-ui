@@ -98,4 +98,58 @@ final class RegionBuilderTest extends TestCase
             self::assertInstanceOf(BlockDescriptorInterface::class, $block);
         }
     }
+
+    #[Test]
+    public function testStatusStrip(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->statusStrip('s', ['items' => []]);
+
+        self::assertSame('status_strip', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testDetailPanel(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->detailPanel('d', ['fields' => []]);
+
+        self::assertSame('detail_panel', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testActivityTimeline(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->activityTimeline('a', 'History');
+
+        self::assertSame('activity_timeline', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testEmptyState(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->emptyState('e', ['title' => 'Nothing here']);
+
+        self::assertSame('empty_state', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testFormPanel(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->formPanel('f', 'Edit');
+
+        self::assertSame('form_panel', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testMarkdownPanel(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->markdownPanel('md', '# Title');
+
+        self::assertSame('markdown_panel', $builder->all()[0]->jsonSerialize()['type']);
+    }
 }
