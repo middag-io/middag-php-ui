@@ -14,7 +14,6 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BlockDescriptorInterface;
-use Middag\Ui\Support\Label;
 
 readonly class BlockDescriptor implements BlockDescriptorInterface
 {

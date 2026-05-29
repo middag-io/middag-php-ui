@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Support;
+namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\Label;
 use Middag\Ui\Data\Translatable;
-use Middag\Ui\Support\Label;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use JsonSerializable;
-use Middag\Ui\Support\Label;
 
 /**
  * A single step in a multi-step (wizard) form.

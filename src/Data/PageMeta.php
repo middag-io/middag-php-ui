@@ -15,7 +15,6 @@ namespace Middag\Ui\Data;
 use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BreadcrumbInterface;
 use Middag\Ui\Contract\PageMetaInterface;
-use Middag\Ui\Support\Label;
 
 readonly class PageMeta implements PageMetaInterface
 {

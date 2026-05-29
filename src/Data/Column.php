@@ -14,7 +14,6 @@ namespace Middag\Ui\Data;
 
 use JsonSerializable;
 use Middag\Ui\Enum\ValueFormat;
-use Middag\Ui\Support\Label;
 
 /**
  * Table column DTO.

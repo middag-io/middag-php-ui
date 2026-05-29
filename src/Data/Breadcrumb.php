@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\BreadcrumbInterface;
-use Middag\Ui\Support\Label;
 
 readonly class Breadcrumb implements BreadcrumbInterface
 {

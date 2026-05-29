@@ -17,9 +17,8 @@ Pacote pequeno e single-purpose → organizado por **papel técnico**, não por 
 - `src/` (raiz) — entrypoints públicos do contrato de página (bases abstratas + envelope raiz)
 - `Contract/` — **apenas interfaces** `@api`. Nada concreto aqui (VOs concretos vão em `Data/`)
 - `Builder/` — builders fluentes; retornam `static`; produzem objetos de `Data/`
-- `Data/` — value objects de contrato, `readonly`, serializáveis
+- `Data/` — value objects de contrato (`readonly`, serializáveis) + o helper stateless `Label` (serializa label `Translatable|string`)
 - `Enum/` — enums backed, catálogos fechados
-- `Support/` — helpers stateless genéricos (sem estado de host)
 
 ## Invariantes de Design
 

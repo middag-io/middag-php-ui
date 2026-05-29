@@ -14,7 +14,6 @@ namespace Middag\Ui\Data;
 
 use JsonSerializable;
 use Middag\Ui\Enum\NotificationLevel;
-use Middag\Ui\Support\Label;
 
 /**
  * User-facing feedback message (flash / toast).

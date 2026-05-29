@@ -14,7 +14,6 @@ namespace Middag\Ui\Data;
 
 use JsonSerializable;
 use Middag\Ui\Enum\FilterType;
-use Middag\Ui\Support\Label;
 
 /**
  * Typed definition of a single table filter control.

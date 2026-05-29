@@ -10,20 +10,18 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Support;
-
-use Middag\Ui\Data\Translatable;
+namespace Middag\Ui\Data;
 
 /**
  * Stateless helper to serialize a UI label that may be either an i18n intent
- * ({@see Translatable}) or a raw literal string.
+ * (Translatable) or a raw literal string.
  *
  * A Translatable serializes to its `{key, domain, params?}` payload; a string
  * passes through unchanged. The client distinguishes by type at render time.
  *
  * @api
  */
-final class Label
+final readonly class Label
 {
     /**
      * @return array<string, mixed>|string

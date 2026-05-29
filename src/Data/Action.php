@@ -14,7 +14,6 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Enum\ActionIntent;
-use Middag\Ui\Support\Label;
 
 /**
  * The single, canonical action value object.
