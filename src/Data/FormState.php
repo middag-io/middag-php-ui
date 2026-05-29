@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Data\Form;
+namespace Middag\Ui\Data;
 
 /**
  * Captures hydrated values, validation errors, and entity binding for a form lifecycle.

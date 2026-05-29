@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Contract\Form;
+namespace Middag\Ui\Contract;
 
-use Middag\Ui\Data\Form\RendererOutput;
+use Middag\Ui\Data\RendererOutput;
 use Middag\Ui\Enum\RenderTarget;
 
 /**

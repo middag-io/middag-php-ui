@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Data\Form;
+namespace Middag\Ui\Tests\Data;
 
-use Middag\Ui\Data\Form\FormState;
+use Middag\Ui\Data\FormState;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

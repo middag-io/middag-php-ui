@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\TableBuilder;
-use Middag\Ui\Data\Table\Column;
-use Middag\Ui\Data\Table\TableConfig;
+use Middag\Ui\Data\Column;
+use Middag\Ui\Data\TableConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

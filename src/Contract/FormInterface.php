@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Contract\Form;
+namespace Middag\Ui\Contract;
 
-use Middag\Ui\Data\Form\FormState;
+use Middag\Ui\Data\FormState;
 
 /**
  * Contract for forms. Implemented by abstract_form (framework) and base/form (extensions).

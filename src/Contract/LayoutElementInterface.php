@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Contract\Form;
+namespace Middag\Ui\Contract;
 
 /**
  * Layout primitive (section, group). Wraps a list of fields or nested elements.

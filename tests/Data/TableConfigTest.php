@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Data\Table;
+namespace Middag\Ui\Tests\Data;
 
-use Middag\Ui\Data\Table\Column;
-use Middag\Ui\Data\Table\TableConfig;
+use Middag\Ui\Data\Column;
+use Middag\Ui\Data\TableConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

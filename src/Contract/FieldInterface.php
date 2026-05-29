@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Contract\Form;
+namespace Middag\Ui\Contract;
 
-use Middag\Ui\Data\Form\FieldDefinition;
+use Middag\Ui\Data\FieldDefinition;
 
 /**
  * Contract for fields. Implemented by abstract_field and all concrete field classes.

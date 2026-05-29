@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Builder;
 
-use Middag\Ui\Data\Table\Column;
-use Middag\Ui\Data\Table\TableConfig;
+use Middag\Ui\Data\Column;
+use Middag\Ui\Data\TableConfig;
 
 /**
  * Table Builder.

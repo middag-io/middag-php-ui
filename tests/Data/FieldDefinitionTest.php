@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Data\Form;
+namespace Middag\Ui\Tests\Data;
 
-use Middag\Ui\Data\Form\Condition;
-use Middag\Ui\Data\Form\FieldDefinition;
+use Middag\Ui\Data\Condition;
+use Middag\Ui\Data\FieldDefinition;
 use Middag\Ui\Enum\ConditionOperator;
 use Middag\Ui\Enum\FieldType;
 use PHPUnit\Framework\Attributes\CoversClass;
