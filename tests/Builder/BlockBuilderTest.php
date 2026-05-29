@@ -14,7 +14,10 @@ namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\ChartSeries;
 use Middag\Ui\Data\FormStep;
+use Middag\Ui\Data\Tab;
+use Middag\Ui\Data\Translatable;
 use Middag\Ui\Enum\ChartType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -44,10 +47,11 @@ final class BlockBuilderTest extends TestCase
     #[Test]
     public function testChartMinimal(): void
     {
-        $payload = BlockBuilder::chart('c', ChartType::LINE, [['name' => 'A', 'data' => [1.0, 2.0]]])->jsonSerialize();
+        $payload = BlockBuilder::chart('c', ChartType::LINE, [new ChartSeries('A', [1.0, 2.0])])->jsonSerialize();
 
         self::assertSame('chart', $payload['type']);
         self::assertSame('line', $payload['data']['chartType']);
+        // Series VOs are serialized to a pure array tree.
         self::assertSame([['name' => 'A', 'data' => [1.0, 2.0]]], $payload['data']['series']);
         self::assertArrayNotHasKey('categories', $payload['data']);
         self::assertArrayNotHasKey('options', $payload['data']);
@@ -59,7 +63,7 @@ final class BlockBuilderTest extends TestCase
         $payload = BlockBuilder::chart(
             'c',
             ChartType::BAR,
-            [['name' => 'A', 'data' => [1.0]]],
+            [new ChartSeries('A', [1.0])],
             ['Jan', 'Feb'],
             ['stacked' => true],
         )->jsonSerialize();
@@ -72,11 +76,24 @@ final class BlockBuilderTest extends TestCase
     #[Test]
     public function testTabs(): void
     {
-        $tabs = [['id' => 'a', 'label' => 'A', 'blocks' => []]];
-        $payload = BlockBuilder::tabs('tb', $tabs)->jsonSerialize();
+        $payload = BlockBuilder::tabs('tb', [new Tab('a', 'A')])->jsonSerialize();
 
         self::assertSame('tabs', $payload['type']);
-        self::assertSame($tabs, $payload['data']['tabs']);
+        self::assertSame([['id' => 'a', 'label' => 'A', 'blocks' => []]], $payload['data']['tabs']);
+    }
+
+    #[Test]
+    public function testTabsSerializeNestedBlocksAndTranslatableLabelPurely(): void
+    {
+        $tab = new Tab('a', Translatable::of('tab_a', 'forms'), [BlockBuilder::markdownPanel('m', '# Hi')]);
+        $payload = BlockBuilder::tabs('tb', [$tab])->jsonSerialize();
+
+        $serialized = $payload['data']['tabs'][0];
+
+        // Pure array tree: Translatable label and nested block become arrays.
+        self::assertSame(['key' => 'tab_a', 'domain' => 'forms'], $serialized['label']);
+        self::assertIsArray($serialized['blocks'][0]);
+        self::assertSame('markdown_panel', $serialized['blocks'][0]['type']);
     }
 
     #[Test]

@@ -146,8 +146,8 @@ Static factories in `BlockBuilder::`:
 | `BlockBuilder::cardGrid($key, $columns, $rows, $variant)`                | Card grid              |
 | `BlockBuilder::actionGrid($key, $items, $flash)`                         | Action card grid       |
 | `BlockBuilder::linkList($key, $items)`                                   | Link list              |
-| `BlockBuilder::chart($key, $type, $series, ...)`                         | Chart (ChartType enum) |
-| `BlockBuilder::tabs($key, $tabs)`                                        | Tabs container         |
+| `BlockBuilder::chart($key, $type, ChartSeries[], ...)`                   | Chart (ChartType enum) |
+| `BlockBuilder::tabs($key, Tab[])`                                        | Tabs container         |
 
 Or via `RegionBuilder` fluent API inside a `->region()` closure. Each method
 mirrors its `BlockBuilder` factory one-to-one, so the same block type produces

@@ -15,8 +15,9 @@ namespace Middag\Ui\Builder;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\RegionBuilderInterface;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\ChartSeries;
 use Middag\Ui\Data\FormStep;
-use Middag\Ui\Data\Translatable;
+use Middag\Ui\Data\Tab;
 use Middag\Ui\Enum\ChartType;
 
 /**
@@ -163,9 +164,9 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a chart block.
      *
-     * @param array<int, array{name: string, data: float[]}> $series
-     * @param array<int, mixed>                              $categories
-     * @param array<string, mixed>                           $options
+     * @param ChartSeries[]        $series
+     * @param array<int, mixed>    $categories
+     * @param array<string, mixed> $options
      */
     public function chart(string $key, ChartType $type, array $series, array $categories = [], array $options = []): static
     {
@@ -177,7 +178,7 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a tabs container block.
      *
-     * @param array<int, array{id: string, label: string|Translatable, blocks: BlockDescriptorInterface[]}> $tabs
+     * @param Tab[] $tabs
      */
     public function tabs(string $key, array $tabs): static
     {

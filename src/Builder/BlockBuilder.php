@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Builder;
 
-use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\ChartSeries;
 use Middag\Ui\Data\FormStep;
-use Middag\Ui\Data\Translatable;
+use Middag\Ui\Data\Tab;
 use Middag\Ui\Enum\ChartType;
 
 /**
@@ -151,9 +151,9 @@ class BlockBuilder
     }
 
     /**
-     * @param array<int, array{name: string, data: float[]}> $series
-     * @param array<int, mixed>                              $categories
-     * @param array<string, mixed>                           $options
+     * @param ChartSeries[]        $series
+     * @param array<int, mixed>    $categories
+     * @param array<string, mixed> $options
      */
     public static function chart(string $key, ChartType $type, array $series, array $categories = [], array $options = []): BlockDescriptor
     {
@@ -161,7 +161,13 @@ class BlockBuilder
             type: 'chart',
             key: $key,
             data: array_merge(
-                ['chartType' => $type->value, 'series' => $series],
+                [
+                    'chartType' => $type->value,
+                    'series' => array_map(
+                        static fn (ChartSeries $serie): array => $serie->jsonSerialize(),
+                        $series,
+                    ),
+                ],
                 $categories !== [] ? ['categories' => $categories] : [],
                 $options !== [] ? ['options' => $options] : [],
             ),
@@ -169,10 +175,19 @@ class BlockBuilder
     }
 
     /**
-     * @param array<int, array{id: string, label: string|Translatable, blocks: BlockDescriptorInterface[]}> $tabs
+     * @param Tab[] $tabs
      */
     public static function tabs(string $key, array $tabs): BlockDescriptor
     {
-        return new BlockDescriptor(type: 'tabs', key: $key, data: ['tabs' => $tabs]);
+        return new BlockDescriptor(
+            type: 'tabs',
+            key: $key,
+            data: [
+                'tabs' => array_map(
+                    static fn (Tab $tab): array => $tab->jsonSerialize(),
+                    $tabs,
+                ),
+            ],
+        );
     }
 }
