@@ -293,7 +293,17 @@ composer install
 composer test           # PHPUnit
 composer check          # style + rector + stan
 composer fix            # style + rector (apply)
+composer lint:php82     # parse every file (incl. tooling configs) on real PHP 8.2 (Docker)
 ```
+
+The dev toolchain may run a newer PHP than the supported floor (`^8.2`). Newer
+syntax such as `new X()->method()` parses on 8.4 but is a fatal error on 8.2, so
+`composer check` alone will not catch it. Two guards keep the floor honest:
+`composer lint:php82` runs `php -l` under a real PHP 8.2 interpreter over the
+source, tests, and the `.php-cs-fixer.dist.php` / `.php-rector.php` configs; and
+the CI **Static analysis & style** job runs entirely on PHP 8.2. PHPStan is
+configured for the `8.2–8.4` range for version-sensitive type checks (it does
+not catch syntax-level issues — that is the lint's job).
 
 Git hooks configured automatically via `post-install-cmd`. `commit-msg` enforces Conventional Commits.
 

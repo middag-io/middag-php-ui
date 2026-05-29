@@ -38,7 +38,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.0"
+        }
     },
     "minimum-stability": "stable",
     "scripts": {
@@ -47,6 +50,7 @@
         "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
         "check:rector": "rector process --dry-run --config=.php-rector.php",
         "check:stan": "phpstan analyse --configuration=.phpstan.neon",
+        "lint:php82": "bin/lint-php82.sh",
         "check": [
             "@check:style",
             "@check:rector",

@@ -51,6 +51,12 @@ jobs:
       - name: Install dependencies
         uses: ramsey/composer-install@v3
 
+      - name: Lint (PHP 8.2 parse floor)
+        run: |
+          find src tests -name '*.php' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+          php -l .php-cs-fixer.dist.php > /dev/null
+          php -l .php-rector.php > /dev/null
+
       - name: PHPStan
         run: composer check:stan
 
