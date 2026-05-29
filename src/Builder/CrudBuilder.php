@@ -21,6 +21,7 @@ use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\Column;
 use Middag\Ui\Data\Confirmation;
+use Middag\Ui\Data\FilterDefinition;
 use Middag\Ui\Data\Pagination;
 use Middag\Ui\Data\TableConfig;
 use Middag\Ui\Data\TableOptions;
@@ -66,6 +67,12 @@ class CrudBuilder implements CrudBuilderInterface
 
     /** @var null|ActionInterface[] Page actions (null = default ['create']) */
     private ?array $pageActionsList = null;
+
+    /** @var FilterDefinition[] Index table filter controls */
+    private array $filtersList = [];
+
+    /** Whether the index table exposes a search box (also implied by any searchable column). */
+    private bool $searchable = false;
 
     private int $perPage = 25;
 
@@ -173,6 +180,31 @@ class CrudBuilder implements CrudBuilderInterface
     public function pageActions(array $actions): static
     {
         $this->pageActionsList = $actions;
+
+        return $this;
+    }
+
+    /**
+     * Set the filter controls for the index table.
+     *
+     * @param FilterDefinition[] $filters
+     */
+    public function filters(array $filters): static
+    {
+        $this->filtersList = $filters;
+
+        return $this;
+    }
+
+    /**
+     * Toggle the index table search box.
+     *
+     * A searchable column (set via the column configurator) implies a search
+     * box too, so this is only needed to force one on without a typed column.
+     */
+    public function searchable(bool $searchable = true): static
+    {
+        $this->searchable = $searchable;
 
         return $this;
     }
@@ -374,8 +406,22 @@ class CrudBuilder implements CrudBuilderInterface
 
         $pagination = $data['pagination'] ?? Pagination::of(1, $this->perPage, 0);
 
+        $built_columns = $this->buildColumns($columns);
+
+        // A search box appears when forced on, or when any column opted into search.
+        $searchable = $this->searchable;
+
+        foreach ($built_columns as $column) {
+            if ($column->searchable) {
+                $searchable = true;
+
+                break;
+            }
+        }
+
         $table_config = new TableConfig(
-            columns: $this->buildColumns($columns),
+            columns: $built_columns,
+            filters: $this->filtersList,
             rowActions: array_map(fn (string $a): Action => $this->buildRowAction($a), $row_actions),
             bulkActions: $this->bulkActionsList !== null
                 ? array_map(fn (string $a): Action => $this->buildBulkAction($a), $this->bulkActionsList)
@@ -385,6 +431,7 @@ class CrudBuilder implements CrudBuilderInterface
                 sortColumn: $this->sortColumn,
                 sortDirection: $this->sortDirection,
                 selectable: $this->bulkActionsList !== null,
+                searchable: $searchable,
             ),
         );
 

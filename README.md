@@ -36,10 +36,12 @@ $contract = PageBuilder::crud(Invoice::class)->build('index', [
 Customize columns, actions, layout without leaving the convention:
 
 ```php
-$contract = PageBuilder::crud(Invoice::class, slug: 'invoices')
+$contract = CrudBuilder::for(Invoice::class, slug: 'invoices')
     ->without('show')
     ->columns(['number', 'status', 'amount', 'due_date'])
     ->column('status', fn (array &$col) => $col['variant'] = 'badge')
+    ->filters([new FilterDefinition(key: 'status', label: 'Status')])
+    ->searchable()                        // or mark a column searchable in its configurator
     ->sort('due_date', 'asc')
     ->perPage(50)
     ->i18n(domain: 'local_app')          // titles as i18n intent; falls back to literal nouns

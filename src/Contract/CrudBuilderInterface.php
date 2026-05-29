@@ -30,6 +30,10 @@ interface CrudBuilderInterface
 
     public function pageActions(array $actions): static;
 
+    public function filters(array $filters): static;
+
+    public function searchable(bool $searchable = true): static;
+
     public function form(string $formClass): static;
 
     public function perPage(int $count): static;

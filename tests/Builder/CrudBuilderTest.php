@@ -14,7 +14,9 @@ namespace Middag\Ui\Tests\Builder;
 
 use InvalidArgumentException;
 use Middag\Ui\Builder\CrudBuilder;
+use Middag\Ui\Data\FilterDefinition;
 use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\FilterType;
 use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -359,5 +361,61 @@ final class CrudBuilderTest extends TestCase
         // delete bulk -> danger + confirmation
         self::assertSame('danger', $delete['intent']);
         self::assertArrayHasKey('confirmation', $delete);
+    }
+
+    #[Test]
+    public function testFiltersEmitFilterDefinitions(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->filters([
+            new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT),
+        ]);
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertArrayHasKey('filters', $data);
+        self::assertCount(1, $data['filters']);
+        self::assertSame('status', $data['filters'][0]['key']);
+        self::assertSame('select', $data['filters'][0]['type']);
+    }
+
+    #[Test]
+    public function testNoFiltersOmitsFiltersKey(): void
+    {
+        $data = CrudBuilder::for('App\Entity\Invoice')
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertArrayNotHasKey('filters', $data);
+    }
+
+    #[Test]
+    public function testDefaultIndexIsNotSearchable(): void
+    {
+        $options = CrudBuilder::for('App\Entity\Invoice')
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data']['options'];
+
+        self::assertFalse($options['searchable']);
+    }
+
+    #[Test]
+    public function testSearchableFlagSetsOption(): void
+    {
+        $options = CrudBuilder::for('App\Entity\Invoice')->searchable()
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data']['options'];
+
+        self::assertTrue($options['searchable']);
+    }
+
+    #[Test]
+    public function testSearchableColumnImpliesSearchableTable(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->columns(['name']);
+        $crud->column('name', static function (array &$c): void {
+            $c['searchable'] = true;
+        });
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertTrue($data['columns'][0]['searchable']);
+        self::assertTrue($data['options']['searchable']);
     }
 }
