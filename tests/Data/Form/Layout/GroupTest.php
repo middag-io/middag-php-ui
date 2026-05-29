@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Infrastructure\Form\Layout;
+namespace Middag\Ui\Tests\Data\Form\Layout;
 
 use Middag\Ui\Contract\Form\FieldInterface;
 use Middag\Ui\Contract\Form\LayoutElementInterface;
-use Middag\Ui\Infrastructure\Form\Layout\Group;
+use Middag\Ui\Data\Form\Layout\Group;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

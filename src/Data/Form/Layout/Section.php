@@ -10,18 +10,21 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Infrastructure\Form\Layout;
+namespace Middag\Ui\Data\Form\Layout;
 
 use Middag\Ui\Contract\Form\FieldInterface;
 use Middag\Ui\Contract\Form\LayoutElementInterface;
 
 /**
- * Inline field group (e.g. side-by-side fields within a section).
+ * Top-level form layout section grouping fields and nested elements.
  *
- * @internal — use base/form/group factory
+ * @internal — use base/form/section factory
  */
-final class Group implements LayoutElementInterface
+final class Section implements LayoutElementInterface
 {
+    /** @var null|array{key: string, component: string} */
+    private ?array $label = null;
+
     /** @var array<int, FieldInterface|LayoutElementInterface> */
     private array $children = [];
 
@@ -30,6 +33,13 @@ final class Group implements LayoutElementInterface
     public static function of(string $id): self
     {
         return new self($id);
+    }
+
+    public function label(string $key, string $component = ''): self
+    {
+        $this->label = ['key' => $key, 'component' => $component];
+
+        return $this;
     }
 
     public function fields(FieldInterface|LayoutElementInterface ...$items): self
@@ -42,6 +52,12 @@ final class Group implements LayoutElementInterface
     public function id(): string
     {
         return $this->id;
+    }
+
+    /** @return null|array{key: string, component: string} */
+    public function labelData(): ?array
+    {
+        return $this->label;
     }
 
     /** @return array<int, FieldInterface|LayoutElementInterface> */
