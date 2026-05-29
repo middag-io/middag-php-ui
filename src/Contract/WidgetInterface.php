@@ -15,9 +15,8 @@ namespace Middag\Ui\Contract;
 /**
  * Contract for UI widgets.
  *
- * Widgets prepare data for a host template (Moodle Mustache, WordPress, etc.)
- * and optionally a JS mount point, exposing rendering helpers used by
- * controllers and blocks.
+ * Widgets prepare data for a host template and optionally a JS mount point,
+ * exposing rendering helpers used by controllers and blocks.
  *
  * @api
  */

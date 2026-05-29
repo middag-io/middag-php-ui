@@ -17,9 +17,9 @@ use Middag\Ui\Enum\FieldType;
 /**
  * Neutral, immutable representation of a form field.
  *
- * Renderers (mform, inertia, future adapters) consume this value object
- * — never the fluent DSL builder. This is the boundary between the
- * public DSL (base/form/field) and the infrastructure renderers.
+ * Host renderer adapters consume this value object — never the fluent DSL
+ * builder. This is the boundary between the public DSL (base/form/field)
+ * and the infrastructure renderers.
  *
  * @api
  */

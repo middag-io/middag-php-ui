@@ -15,9 +15,8 @@ namespace Middag\Ui\Enum;
 /**
  * Closed catalog of condition operators for form field visibility rules (ADR-806).
  *
- * Used to declare reactive conditions between form fields.
- * MATCHES is intentionally excluded from mform compatibility because
- * mform cannot natively express regex-based conditions.
+ * Used to declare reactive conditions between form fields. Host renderer
+ * adapters decide which operators they can natively express.
  *
  * @api
  */
@@ -53,15 +52,4 @@ enum ConditionOperator: string
 
     // ── Pattern ───────────────────────────────
     case MATCHES = 'matches';
-
-    /**
-     * Whether mform can natively express this operator in a condition.
-     *
-     * Returns false for MATCHES because mform has no built-in regex support.
-     * All other operators map to mform disabledIf / hideIf semantics.
-     */
-    public function is_mform_compatible(): bool
-    {
-        return $this !== self::MATCHES;
-    }
 }

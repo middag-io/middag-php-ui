@@ -43,7 +43,7 @@
     "minimum-stability": "stable",
     "scripts": {
         "test": "phpunit",
-        "test:coverage": "phpunit --coverage-text",
+        "test:coverage": "XDEBUG_MODE=coverage phpunit --coverage-text",
         "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
         "check:rector": "rector process --dry-run --config=.php-rector.php",
         "check:stan": "phpstan analyse --configuration=.phpstan.neon",

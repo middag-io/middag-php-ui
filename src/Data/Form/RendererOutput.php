@@ -15,7 +15,7 @@ namespace Middag\Ui\Data\Form;
 use Middag\Ui\Enum\RenderTarget;
 
 /**
- * Output of a form renderer. Carries either HTML body (mform) or props (inertia).
+ * Output of a form renderer. Carries either an HTML body or structured props.
  *
  * Produced exclusively by form_renderer_interface implementations.
  * Consumed by abstract_controller::render_form() to produce the HTTP response.
@@ -31,14 +31,14 @@ final readonly class RendererOutput
         public array $props,
     ) {}
 
-    /** Build an HTML-body output (mform target). */
+    /** Build an HTML-body output. */
     public static function html(RenderTarget $target, string $body): self
     {
         return new self($target, $body, []);
     }
 
     /**
-     * Build a props output (inertia target).
+     * Build a structured-props output.
      *
      * @param array<string, mixed> $props
      */

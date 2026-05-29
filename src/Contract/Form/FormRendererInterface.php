@@ -18,8 +18,8 @@ use Middag\Ui\Enum\RenderTarget;
 /**
  * Adapter contract — produces a RendererOutput for one RenderTarget (ADR-805).
  *
- * Implementations (mform_renderer, inertia_renderer) are registered in the
- * renderer_registry, which selects the correct adapter at render time.
+ * Host adapter implementations are registered in the renderer_registry,
+ * which selects the correct adapter at render time.
  *
  * @api
  */

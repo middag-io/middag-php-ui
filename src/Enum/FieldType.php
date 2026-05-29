@@ -16,7 +16,7 @@ namespace Middag\Ui\Enum;
  * Closed catalog of MVP form field types (ADR-806).
  *
  * Adding a value requires: ADR amendment + matching field class +
- * mform_field_mapper case + inertia_field_mapper case + Vue component.
+ * a renderer-mapper case per host adapter + a client component.
  *
  * @api
  */

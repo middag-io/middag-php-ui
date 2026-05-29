@@ -22,7 +22,7 @@ namespace Middag\Ui\Enum;
  */
 enum RenderTarget: string
 {
-    case MFORM = 'mform';
+    case HTML = 'html';
 
     case INERTIA = 'inertia';
 }

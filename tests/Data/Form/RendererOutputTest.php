@@ -27,16 +27,16 @@ final class RendererOutputTest extends TestCase
     #[Test]
     public function testHtmlFactorySetstargetAndBody(): void
     {
-        $output = RendererOutput::html(RenderTarget::MFORM, '<form>...</form>');
+        $output = RendererOutput::html(RenderTarget::HTML, '<form>...</form>');
 
-        self::assertSame(RenderTarget::MFORM, $output->target);
+        self::assertSame(RenderTarget::HTML, $output->target);
         self::assertSame('<form>...</form>', $output->body);
     }
 
     #[Test]
     public function testHtmlFactoryHasEmptyProps(): void
     {
-        $output = RendererOutput::html(RenderTarget::MFORM, '<form/>');
+        $output = RendererOutput::html(RenderTarget::HTML, '<form/>');
 
         self::assertSame([], $output->props);
     }
@@ -62,10 +62,10 @@ final class RendererOutputTest extends TestCase
     #[Test]
     public function testHtmlAndPropsUseDifferentTargets(): void
     {
-        $html = RendererOutput::html(RenderTarget::MFORM, '<form/>');
+        $html = RendererOutput::html(RenderTarget::HTML, '<form/>');
         $props = RendererOutput::props(RenderTarget::INERTIA, []);
 
-        self::assertSame(RenderTarget::MFORM, $html->target);
+        self::assertSame(RenderTarget::HTML, $html->target);
         self::assertSame(RenderTarget::INERTIA, $props->target);
     }
 }
