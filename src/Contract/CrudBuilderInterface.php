@@ -34,8 +34,6 @@ interface CrudBuilderInterface
 
     public function searchable(bool $searchable = true): static;
 
-    public function form(string $formClass): static;
-
     public function perPage(int $count): static;
 
     public function sort(string $column, string $direction = 'desc'): static;

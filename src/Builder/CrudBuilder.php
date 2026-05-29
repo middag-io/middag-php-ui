@@ -74,6 +74,9 @@ class CrudBuilder implements CrudBuilderInterface
     /** Whether the index table exposes a search box (also implied by any searchable column). */
     private bool $searchable = false;
 
+    /** Capability stamped on every action this builder fabricates; null = no gate. */
+    private ?string $capability = null;
+
     private int $perPage = 25;
 
     private string $sortColumn = 'created_at';
@@ -210,16 +213,6 @@ class CrudBuilder implements CrudBuilderInterface
     }
 
     /**
-     * Set the form class for create/edit actions.
-     *
-     * Reserved for future use — stores no state yet.
-     */
-    public function form(string $formClass): static
-    {
-        return $this;
-    }
-
-    /**
      * Set items per page for index table.
      */
     public function perPage(int $count): static
@@ -283,12 +276,16 @@ class CrudBuilder implements CrudBuilderInterface
     }
 
     /**
-     * Set a required capability.
+     * Set a required capability for the generated actions.
      *
-     * Reserved for future use — stores no state yet.
+     * The capability is stamped onto every action this builder fabricates
+     * (the default create action, row actions, bulk actions). Caller-supplied
+     * pageActions() carry their own capability and are left untouched.
      */
     public function capability(string $cap): static
     {
+        $this->capability = $cap;
+
         return $this;
     }
 
@@ -401,6 +398,7 @@ class CrudBuilder implements CrudBuilderInterface
                 label: 'Create',
                 target: ActionTarget::link(sprintf('/%s/create', $this->slug)),
                 intent: ActionIntent::PRIMARY,
+                capability: $this->capability,
             ),
         ];
 
@@ -582,16 +580,19 @@ class CrudBuilder implements CrudBuilderInterface
                 target: ActionTarget::request(sprintf('/%s/{id}', $this->slug), HttpMethod::DELETE),
                 intent: ActionIntent::DANGER,
                 confirmation: new Confirmation(title: 'Delete', message: 'Are you sure?', variant: 'danger'),
+                capability: $this->capability,
             ),
             'show' => new Action(
                 id: 'show',
                 label: $label,
                 target: ActionTarget::link(sprintf('/%s/{id}', $this->slug)),
+                capability: $this->capability,
             ),
             default => new Action(
                 id: $action,
                 label: $label,
                 target: ActionTarget::link(sprintf('/%s/{id}/%s', $this->slug, $action)),
+                capability: $this->capability,
             ),
         };
     }
@@ -611,6 +612,7 @@ class CrudBuilder implements CrudBuilderInterface
             confirmation: $action === 'delete'
                 ? new Confirmation(title: 'Delete', message: 'Are you sure?', variant: 'danger')
                 : null,
+            capability: $this->capability,
         );
     }
 }

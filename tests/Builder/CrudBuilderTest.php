@@ -217,7 +217,8 @@ final class CrudBuilderTest extends TestCase
             ->rowActions(['edit'])
             ->bulkActions(['delete'])
             ->pageActions([])
-            ->form('App\Forms\InvoiceForm')
+            ->filters([])
+            ->searchable(false)
             ->label('Fatura', 'Faturas')
             ->layout('custom-shell')
             ->capability('app/invoice:manage');
@@ -403,6 +404,32 @@ final class CrudBuilderTest extends TestCase
             ->build('index')->layout->regions['content'][0]->jsonSerialize()['data']['options'];
 
         self::assertTrue($options['searchable']);
+    }
+
+    #[Test]
+    public function testCapabilityStampsGeneratedActions(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')
+            ->rowActions(['edit', 'delete'])
+            ->bulkActions(['delete'])
+            ->capability('app/invoice:manage');
+
+        $contract = $crud->build('index');
+        $page = $contract->page->actions[0]->jsonSerialize();
+        $data = $contract->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertSame('app/invoice:manage', $page['capability']);
+        self::assertSame('app/invoice:manage', $data['rowActions'][0]['capability']);
+        self::assertSame('app/invoice:manage', $data['bulkActions'][0]['capability']);
+    }
+
+    #[Test]
+    public function testGeneratedActionsOmitCapabilityByDefault(): void
+    {
+        $data = CrudBuilder::for('App\Entity\Invoice')->rowActions(['edit'])
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertArrayNotHasKey('capability', $data['rowActions'][0]);
     }
 
     #[Test]
