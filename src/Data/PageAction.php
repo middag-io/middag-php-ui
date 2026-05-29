@@ -13,19 +13,21 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\PageActionInterface;
+use Middag\Ui\Support\Label;
 
 readonly class PageAction implements PageActionInterface
 {
     public function __construct(
         public string $id,
-        public string $label,
+        public string|Translatable $label,
         public string $intent,
         public ?string $href = null,
         public ?string $method = null,
         public ?string $icon = null,
-        public bool $requires_confirmation = false,
+        public ?Confirmation $confirmation = null,
         public bool $disabled = false,
         public bool $loading = false,
+        public ?string $capability = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -33,7 +35,7 @@ readonly class PageAction implements PageActionInterface
     {
         $payload = [
             'id' => $this->id,
-            'label' => $this->label,
+            'label' => Label::serialize($this->label),
             'intent' => $this->intent,
         ];
 
@@ -49,8 +51,8 @@ readonly class PageAction implements PageActionInterface
             $payload['icon'] = $this->icon;
         }
 
-        if ($this->requires_confirmation) {
-            $payload['requires_confirmation'] = true;
+        if ($this->confirmation instanceof Confirmation) {
+            $payload['confirmation'] = $this->confirmation->jsonSerialize();
         }
 
         if ($this->disabled) {
@@ -59,6 +61,10 @@ readonly class PageAction implements PageActionInterface
 
         if ($this->loading) {
             $payload['loading'] = true;
+        }
+
+        if ($this->capability !== null) {
+            $payload['capability'] = $this->capability;
         }
 
         return $payload;

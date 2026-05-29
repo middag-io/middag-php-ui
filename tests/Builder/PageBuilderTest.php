@@ -37,6 +37,26 @@ final class PageBuilderTest extends TestCase
     }
 
     #[Test]
+    public function testNotifyShortcutsAttachNotifications(): void
+    {
+        $contract = PageBuilder::page('test')
+            ->notifySuccess('Saved')
+            ->notifyInfo('Heads up')
+            ->notifyWarning('Careful')
+            ->notifyError('Failed', 'Oops')
+            ->build();
+
+        $payload = $contract->jsonSerialize();
+
+        self::assertCount(4, $payload['notifications']);
+        self::assertSame('success', $payload['notifications'][0]['level']);
+        self::assertSame('info', $payload['notifications'][1]['level']);
+        self::assertSame('warning', $payload['notifications'][2]['level']);
+        self::assertSame('error', $payload['notifications'][3]['level']);
+        self::assertSame('Oops', $payload['notifications'][3]['title']);
+    }
+
+    #[Test]
     public function testCrudFactory(): void
     {
         $crud = PageBuilder::crud('App\Entity\User');

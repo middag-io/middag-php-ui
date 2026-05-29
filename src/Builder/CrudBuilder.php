@@ -18,6 +18,8 @@ use Middag\Ui\Contract\CrudBuilderInterface;
 use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\PageAction;
+use Middag\Ui\Data\Pagination;
+use Middag\Ui\Data\TableOptions;
 use Middag\Ui\PageContract;
 
 /**
@@ -253,19 +255,20 @@ class CrudBuilder implements CrudBuilderInterface
             new PageAction(id: 'create', label: 'Create', intent: 'primary', href: sprintf('/%s/create', $this->slug)),
         ];
 
+        $pagination = $data['pagination'] ?? Pagination::of(1, $this->perPage, 0);
+
+        $options = new TableOptions(
+            perPage: $this->perPage,
+            sortColumn: $this->sortColumn,
+            sortDirection: $this->sortDirection,
+            selectable: $this->bulkActionsList !== null,
+        );
+
         $table_data = [
             'columns' => $this->buildColumnDescriptors($columns),
             'rows' => $data['rows'] ?? [],
-            'pagination' => $data['pagination'] ?? [
-                'page' => 1,
-                'perPage' => $this->perPage,
-                'total' => 0,
-                'lastPage' => 1,
-            ],
-            'sort' => [
-                'column' => $this->sortColumn,
-                'direction' => $this->sortDirection,
-            ],
+            'pagination' => $pagination instanceof Pagination ? $pagination->jsonSerialize() : $pagination,
+            'options' => $options->jsonSerialize(),
             'rowActions' => array_map(
                 fn (string $a): array => ['id' => $a, 'label' => ucfirst($a)],
                 $row_actions,

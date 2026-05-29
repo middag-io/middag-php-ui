@@ -12,8 +12,13 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\BulkAction;
 use Middag\Ui\Data\Column;
+use Middag\Ui\Data\FilterDefinition;
+use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\TableConfig;
+use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Enum\FilterType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -40,8 +45,9 @@ final class TableConfigTest extends TestCase
 
         self::assertSame([], $config->columns);
         self::assertSame([], $config->filters);
-        self::assertSame([], $config->actions);
-        self::assertSame([], $config->options);
+        self::assertSame([], $config->rowActions);
+        self::assertSame([], $config->bulkActions);
+        self::assertInstanceOf(TableOptions::class, $config->options);
     }
 
     #[Test]
@@ -53,7 +59,8 @@ final class TableConfigTest extends TestCase
 
         self::assertArrayHasKey('columns', $payload);
         self::assertArrayHasKey('filters', $payload);
-        self::assertArrayHasKey('actions', $payload);
+        self::assertArrayHasKey('rowActions', $payload);
+        self::assertArrayHasKey('bulkActions', $payload);
         self::assertArrayHasKey('options', $payload);
     }
 
@@ -73,23 +80,27 @@ final class TableConfigTest extends TestCase
     }
 
     #[Test]
-    public function testFiltersAndActionsAndOptions(): void
+    public function testFiltersRowActionsBulkActionsAndOptions(): void
     {
-        $filter = ['key' => 'status', 'label' => 'Status', 'type' => 'select', 'options' => []];
-        $action = ['key' => 'delete', 'label' => 'Delete', 'icon' => 'trash', 'props' => []];
-        $options = ['paginated' => true, 'perPage' => 25];
+        $filter = new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT);
+        $rowAction = new PageAction(id: 'edit', label: 'Edit', intent: 'secondary', href: '/x/{id}');
+        $bulkAction = new BulkAction(id: 'delete', label: 'Delete', intent: 'danger', endpoint: '/x/bulk-delete');
+        $options = new TableOptions(perPage: 50, selectable: true);
 
         $config = new TableConfig(
             columns: [],
             filters: [$filter],
-            actions: [$action],
+            rowActions: [$rowAction],
+            bulkActions: [$bulkAction],
             options: $options,
         );
 
         $payload = $config->jsonSerialize();
 
-        self::assertSame([$filter], $payload['filters']);
-        self::assertSame([$action], $payload['actions']);
-        self::assertSame($options, $payload['options']);
+        self::assertSame([$filter->jsonSerialize()], $payload['filters']);
+        self::assertSame([$rowAction->jsonSerialize()], $payload['rowActions']);
+        self::assertSame([$bulkAction->jsonSerialize()], $payload['bulkActions']);
+        self::assertSame($options->jsonSerialize(), $payload['options']);
+        self::assertSame(50, $payload['options']['perPage']);
     }
 }

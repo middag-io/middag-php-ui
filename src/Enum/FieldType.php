@@ -26,6 +26,8 @@ enum FieldType: string
 
     case TEXTAREA = 'textarea';
 
+    case RICHTEXT = 'richtext';
+
     case PASSWORD = 'password';
 
     case EMAIL = 'email';
@@ -50,11 +52,17 @@ enum FieldType: string
 
     case DATETIME = 'datetime';
 
+    case TIME = 'time';
+
     case DURATION = 'duration';
 
     case FILE = 'file';
 
     case ENTITY_PICKER = 'entity_picker';
+
+    case AUTOCOMPLETE = 'autocomplete';
+
+    case TAGS = 'tags';
 
     case HIDDEN = 'hidden';
 

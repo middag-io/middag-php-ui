@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\InspectorDescriptor;
+use Middag\Ui\Data\PollConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -42,5 +43,19 @@ final class InspectorDescriptorTest extends TestCase
         $payload = $inspector->jsonSerialize();
 
         self::assertSame(600, $payload['width']);
+    }
+
+    #[Test]
+    public function testSerializesPollWhenSet(): void
+    {
+        $inspector = new InspectorDescriptor(
+            endpoint: '/api/{id}',
+            poll: new PollConfig(endpoint: '/poll', intervalMs: 3000),
+        );
+
+        $payload = $inspector->jsonSerialize();
+
+        self::assertArrayHasKey('poll', $payload);
+        self::assertSame('/poll', $payload['poll']['endpoint']);
     }
 }

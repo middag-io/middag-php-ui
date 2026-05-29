@@ -26,23 +26,23 @@ use Middag\Ui\Enum\FieldType;
 final readonly class FieldDefinition
 {
     /**
-     * @param string                                     $name
-     * @param FieldType                                  $type
-     * @param null|array{key: string, component: string} $label
-     * @param null|array{key: string, component: string} $help
-     * @param mixed                                      $default
-     * @param bool                                       $required
-     * @param array<string, mixed>                       $attributes
-     * @param array<int, Condition>                      $conditions
-     * @param array<int|string, mixed>                   $options
+     * @param string                   $name
+     * @param FieldType                $type
+     * @param null|string|Translatable $label       UI label (i18n intent or raw literal)
+     * @param null|string|Translatable $help        UI help text (i18n intent or raw literal)
+     * @param mixed                    $default
+     * @param FieldConstraints         $constraints Typed client-side validation constraints
+     * @param array<string, mixed>     $attributes
+     * @param array<int, Condition>    $conditions
+     * @param array<int|string, mixed> $options
      */
     public function __construct(
         public string $name,
         public FieldType $type,
-        public ?array $label,
-        public ?array $help,
+        public string|Translatable|null $label,
+        public string|Translatable|null $help,
         public mixed $default,
-        public bool $required,
+        public FieldConstraints $constraints,
         public array $attributes,
         public array $conditions,
         public array $options,

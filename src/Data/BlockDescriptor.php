@@ -14,6 +14,7 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\PageActionInterface;
+use Middag\Ui\Support\Label;
 
 readonly class BlockDescriptor implements BlockDescriptorInterface
 {
@@ -27,10 +28,11 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
         public string $key,
         public array $data,
         public ?string $variant = null,
-        public ?string $title = null,
-        public ?string $subtitle = null,
+        public string|Translatable|null $title = null,
+        public string|Translatable|null $subtitle = null,
         public array $actions = [],
         public array $meta = [],
+        public ?PollConfig $poll = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -47,11 +49,11 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
         }
 
         if ($this->title !== null) {
-            $payload['title'] = $this->title;
+            $payload['title'] = Label::serializeNullable($this->title);
         }
 
         if ($this->subtitle !== null) {
-            $payload['subtitle'] = $this->subtitle;
+            $payload['subtitle'] = Label::serializeNullable($this->subtitle);
         }
 
         if ($this->actions !== []) {
@@ -63,6 +65,10 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
 
         if ($this->meta !== []) {
             $payload['meta'] = $this->meta;
+        }
+
+        if ($this->poll instanceof PollConfig) {
+            $payload['poll'] = $this->poll->jsonSerialize();
         }
 
         return $payload;

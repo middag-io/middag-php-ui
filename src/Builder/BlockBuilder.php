@@ -12,7 +12,11 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Builder;
 
+use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\FormStep;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\ChartType;
 
 /**
  * Static factory for creating BlockDescriptor instances (ADR-807).
@@ -37,14 +41,21 @@ class BlockBuilder
     }
 
     /**
-     * @param array<string, mixed> $data Extra data merged into the block payload
+     * @param array<string, mixed>      $schema
+     * @param array<string, mixed>      $values
+     * @param null|array<int, FormStep> $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>      $data   Extra data merged into the block payload
      */
-    public static function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], array $data = []): BlockDescriptor
+    public static function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'form_panel',
             key: $key,
-            data: array_merge(['action' => $action, 'method' => $method, 'schema' => $schema, 'values' => $values], $data),
+            data: array_merge(
+                ['action' => $action, 'method' => $method, 'schema' => $schema, 'values' => $values],
+                $steps !== null ? ['steps' => $steps, 'multiStep' => true] : [],
+                $data,
+            ),
         );
     }
 
@@ -137,5 +148,31 @@ class BlockBuilder
     public static function linkList(string $key, array $items): BlockDescriptor
     {
         return new BlockDescriptor(type: 'link_list', key: $key, data: ['items' => $items]);
+    }
+
+    /**
+     * @param array<int, array{name: string, data: float[]}> $series
+     * @param array<int, mixed>                              $categories
+     * @param array<string, mixed>                           $options
+     */
+    public static function chart(string $key, ChartType $type, array $series, array $categories = [], array $options = []): BlockDescriptor
+    {
+        return new BlockDescriptor(
+            type: 'chart',
+            key: $key,
+            data: array_merge(
+                ['chartType' => $type->value, 'series' => $series],
+                $categories !== [] ? ['categories' => $categories] : [],
+                $options !== [] ? ['options' => $options] : [],
+            ),
+        );
+    }
+
+    /**
+     * @param array<int, array{id: string, label: string|Translatable, blocks: BlockDescriptorInterface[]}> $tabs
+     */
+    public static function tabs(string $key, array $tabs): BlockDescriptor
+    {
+        return new BlockDescriptor(type: 'tabs', key: $key, data: ['tabs' => $tabs]);
     }
 }

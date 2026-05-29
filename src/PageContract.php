@@ -14,6 +14,7 @@ namespace Middag\Ui;
 
 use Middag\Ui\Contract\PageContractInterface;
 use Middag\Ui\Data\LayoutDescriptor;
+use Middag\Ui\Data\Notification;
 use Middag\Ui\Data\PageMeta;
 use Middag\Ui\Data\PageResources;
 
@@ -28,11 +29,15 @@ readonly class PageContract implements PageContractInterface
 {
     public const VERSION = '1';
 
+    /**
+     * @param Notification[] $notifications
+     */
     public function __construct(
         public string $shell,
         public PageMeta $page,
         public LayoutDescriptor $layout,
         public ?PageResources $resources = null,
+        public array $notifications = [],
     ) {}
 
     /** @return array<string, mixed> */
@@ -47,6 +52,13 @@ readonly class PageContract implements PageContractInterface
 
         if ($this->resources instanceof PageResources) {
             $data['resources'] = $this->resources->jsonSerialize();
+        }
+
+        if ($this->notifications !== []) {
+            $data['notifications'] = array_map(
+                static fn (Notification $notification): array => $notification->jsonSerialize(),
+                $this->notifications,
+            );
         }
 
         return $data;

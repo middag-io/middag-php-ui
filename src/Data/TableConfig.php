@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use JsonSerializable;
+use Middag\Ui\Contract\PageActionInterface;
 
 /**
  * Table configuration DTO.
@@ -24,16 +25,18 @@ use JsonSerializable;
 readonly class TableConfig implements JsonSerializable
 {
     /**
-     * @param Column[] $columns
-     * @param array    $filters List of filter definitions
-     * @param array    $actions List of bulk actions or row actions
-     * @param array    $options General table options (pagination, default sort, etc)
+     * @param Column[]              $columns
+     * @param FilterDefinition[]    $filters
+     * @param PageActionInterface[] $rowActions  Per-row actions (href templates with {id})
+     * @param BulkAction[]          $bulkActions Actions applied to selected rows
+     * @param TableOptions          $options     General table behavior options
      */
     public function __construct(
         public array $columns,
         public array $filters = [],
-        public array $actions = [],
-        public array $options = []
+        public array $rowActions = [],
+        public array $bulkActions = [],
+        public TableOptions $options = new TableOptions(),
     ) {}
 
     /**
@@ -44,10 +47,23 @@ readonly class TableConfig implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'columns' => $this->columns,
-            'filters' => $this->filters,
-            'actions' => $this->actions,
-            'options' => $this->options,
+            'columns' => array_map(
+                static fn (Column $column): array => $column->jsonSerialize(),
+                $this->columns,
+            ),
+            'filters' => array_map(
+                static fn (FilterDefinition $filter): array => $filter->jsonSerialize(),
+                $this->filters,
+            ),
+            'rowActions' => array_map(
+                static fn (PageActionInterface $action): array => $action->jsonSerialize(),
+                $this->rowActions,
+            ),
+            'bulkActions' => array_map(
+                static fn (BulkAction $action): array => $action->jsonSerialize(),
+                $this->bulkActions,
+            ),
+            'options' => $this->options->jsonSerialize(),
         ];
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use JsonSerializable;
+use Middag\Ui\Support\Label;
 
 /**
  * A node in the navigation tree (ADR-807).
@@ -40,7 +41,7 @@ readonly class NavigationNode implements JsonSerializable
      */
     public function __construct(
         public string $key,
-        public string $label,
+        public string|Translatable $label,
         public ?string $icon = null,
         public ?string $href = null,
         public ?string $badge = null,
@@ -57,7 +58,7 @@ readonly class NavigationNode implements JsonSerializable
     {
         return [
             'key' => $this->key,
-            'label' => $this->label,
+            'label' => Label::serialize($this->label),
             'icon' => $this->icon,
             'href' => $this->href,
             'badge' => $this->badge,

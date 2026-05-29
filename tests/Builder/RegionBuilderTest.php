@@ -14,6 +14,7 @@ namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\RegionBuilder;
 use Middag\Ui\Contract\BlockDescriptorInterface;
+use Middag\Ui\Enum\ChartType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +31,30 @@ final class RegionBuilderTest extends TestCase
         $builder = new RegionBuilder();
 
         self::assertSame([], $builder->all());
+    }
+
+    #[Test]
+    public function testChartReturnsSelfAndAppendsBlock(): void
+    {
+        $builder = new RegionBuilder();
+
+        self::assertSame($builder, $builder->chart('c', ChartType::AREA, [['name' => 'A', 'data' => [1.0]]]));
+
+        $blocks = $builder->all();
+        self::assertCount(1, $blocks);
+        self::assertSame('chart', $blocks[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testTabsReturnsSelfAndAppendsBlock(): void
+    {
+        $builder = new RegionBuilder();
+
+        self::assertSame($builder, $builder->tabs('tb', [['id' => 'a', 'label' => 'A', 'blocks' => []]]));
+
+        $blocks = $builder->all();
+        self::assertCount(1, $blocks);
+        self::assertSame('tabs', $blocks[0]->jsonSerialize()['type']);
     }
 
     #[Test]

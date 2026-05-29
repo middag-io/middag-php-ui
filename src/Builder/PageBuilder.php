@@ -20,8 +20,11 @@ use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Contract\PageBuilderInterface;
 use Middag\Ui\Data\InspectorDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
+use Middag\Ui\Data\Notification;
 use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\PageMeta;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\NotificationLevel;
 use Middag\Ui\PageContract;
 
 /**
@@ -40,9 +43,9 @@ use Middag\Ui\PageContract;
  */
 class PageBuilder implements PageBuilderInterface
 {
-    private string $title = '';
+    private string|Translatable $title = '';
 
-    private ?string $subtitle = null;
+    private string|Translatable|null $subtitle = null;
 
     private string $shell = 'product';
 
@@ -65,6 +68,9 @@ class PageBuilder implements PageBuilderInterface
     private ?array $helpData = null;
 
     private ?InspectorDescriptor $inspector = null;
+
+    /** @var Notification[] */
+    private array $notifications = [];
 
     private function __construct(
         private readonly string $key,
@@ -94,7 +100,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public static function action(
         string $id,
-        string $label,
+        string|Translatable $label,
         string $intent = 'secondary',
         ?string $href = null,
         ?string $method = null,
@@ -110,14 +116,14 @@ class PageBuilder implements PageBuilderInterface
         );
     }
 
-    public function title(string $title): static
+    public function title(string|Translatable $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function subtitle(string $subtitle): static
+    public function subtitle(string|Translatable $subtitle): static
     {
         $this->subtitle = $subtitle;
 
@@ -242,6 +248,48 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
+     * Attach a notification (flash / toast) to the page.
+     */
+    public function notify(Notification $notification): static
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Attach a success notification.
+     */
+    public function notifySuccess(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::SUCCESS, $message, $title));
+    }
+
+    /**
+     * Attach an info notification.
+     */
+    public function notifyInfo(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::INFO, $message, $title));
+    }
+
+    /**
+     * Attach a warning notification.
+     */
+    public function notifyWarning(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::WARNING, $message, $title));
+    }
+
+    /**
+     * Attach an error notification.
+     */
+    public function notifyError(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::ERROR, $message, $title));
+    }
+
+    /**
      * Build the PageContract.
      */
     public function build(): PageContract
@@ -260,6 +308,7 @@ class PageBuilder implements PageBuilderInterface
                 regions: $this->regions,
                 meta: $this->layoutMeta,
             ),
+            notifications: $this->notifications,
         );
     }
 

@@ -13,11 +13,12 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\BreadcrumbInterface;
+use Middag\Ui\Support\Label;
 
 readonly class Breadcrumb implements BreadcrumbInterface
 {
     public function __construct(
-        public string $label,
+        public string|Translatable $label,
         public ?string $href = null,
         public bool $external = false,
     ) {}
@@ -25,7 +26,7 @@ readonly class Breadcrumb implements BreadcrumbInterface
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        $payload = ['label' => $this->label];
+        $payload = ['label' => Label::serialize($this->label)];
 
         if ($this->href !== null) {
             $payload['href'] = $this->href;

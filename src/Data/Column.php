@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use JsonSerializable;
+use Middag\Ui\Enum\ValueFormat;
+use Middag\Ui\Support\Label;
 
 /**
  * Table column DTO.
@@ -24,19 +26,21 @@ use JsonSerializable;
 readonly class Column implements JsonSerializable
 {
     /**
-     * @param string $key        Unique identifier for the column
-     * @param string $label      Display label
-     * @param bool   $sortable   Whether the column can be sorted
-     * @param bool   $searchable Whether the column is searchable
-     * @param string $type       Type of data (text, date, boolean, action, etc)
-     * @param array  $options    Additional display options
+     * @param string               $key           Unique identifier for the column
+     * @param string|Translatable  $label         Display label (i18n intent or raw literal)
+     * @param bool                 $sortable      Whether the column can be sorted
+     * @param bool                 $searchable    Whether the column is searchable
+     * @param ValueFormat          $format        Client-side formatting intent for the cell value
+     * @param array<string, mixed> $formatOptions Format options (e.g. {currency:'BRL', decimals:2})
+     * @param array<string, mixed> $options       Additional display options
      */
     public function __construct(
         public string $key,
-        public string $label,
+        public string|Translatable $label,
         public bool $sortable = false,
         public bool $searchable = false,
-        public string $type = 'text',
+        public ValueFormat $format = ValueFormat::TEXT,
+        public array $formatOptions = [],
         public array $options = []
     ) {}
 
@@ -47,13 +51,22 @@ readonly class Column implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return [
+        $payload = [
             'key' => $this->key,
-            'label' => $this->label,
+            'label' => Label::serialize($this->label),
             'sortable' => $this->sortable,
             'searchable' => $this->searchable,
-            'type' => $this->type,
-            'options' => $this->options,
+            'format' => $this->format->value,
         ];
+
+        if ($this->formatOptions !== []) {
+            $payload['formatOptions'] = $this->formatOptions;
+        }
+
+        if ($this->options !== []) {
+            $payload['options'] = $this->options;
+        }
+
+        return $payload;
     }
 }

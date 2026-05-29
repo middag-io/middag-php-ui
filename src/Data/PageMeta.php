@@ -15,6 +15,7 @@ namespace Middag\Ui\Data;
 use Middag\Ui\Contract\BreadcrumbInterface;
 use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Contract\PageMetaInterface;
+use Middag\Ui\Support\Label;
 
 readonly class PageMeta implements PageMetaInterface
 {
@@ -24,8 +25,8 @@ readonly class PageMeta implements PageMetaInterface
      */
     public function __construct(
         public string $key,
-        public string $title,
-        public ?string $subtitle = null,
+        public string|Translatable $title,
+        public string|Translatable|null $subtitle = null,
         public array $breadcrumbs = [],
         public array $actions = [],
     ) {}
@@ -35,11 +36,11 @@ readonly class PageMeta implements PageMetaInterface
     {
         $payload = [
             'key' => $this->key,
-            'title' => $this->title,
+            'title' => Label::serialize($this->title),
         ];
 
         if ($this->subtitle !== null) {
-            $payload['subtitle'] = $this->subtitle;
+            $payload['subtitle'] = Label::serializeNullable($this->subtitle);
         }
 
         if ($this->breadcrumbs !== []) {

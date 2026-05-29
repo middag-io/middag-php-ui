@@ -19,14 +19,21 @@ readonly class InspectorDescriptor implements InspectorDescriptorInterface
     public function __construct(
         public string $endpoint,
         public int $width = 440,
+        public ?PollConfig $poll = null,
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        return [
+        $payload = [
             'endpoint' => $this->endpoint,
             'width' => $this->width,
         ];
+
+        if ($this->poll instanceof PollConfig) {
+            $payload['poll'] = $this->poll->jsonSerialize();
+        }
+
+        return $payload;
     }
 }

@@ -14,6 +14,8 @@ namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\FormStep;
+use Middag\Ui\Enum\ChartType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +39,54 @@ final class BlockBuilderTest extends TestCase
         self::assertSame('t', $payload['key']);
         self::assertSame([['key' => 'name']], $payload['data']['columns']);
         self::assertSame([['name' => 'John']], $payload['data']['rows']);
+    }
+
+    #[Test]
+    public function testChartMinimal(): void
+    {
+        $payload = BlockBuilder::chart('c', ChartType::LINE, [['name' => 'A', 'data' => [1.0, 2.0]]])->jsonSerialize();
+
+        self::assertSame('chart', $payload['type']);
+        self::assertSame('line', $payload['data']['chartType']);
+        self::assertSame([['name' => 'A', 'data' => [1.0, 2.0]]], $payload['data']['series']);
+        self::assertArrayNotHasKey('categories', $payload['data']);
+        self::assertArrayNotHasKey('options', $payload['data']);
+    }
+
+    #[Test]
+    public function testChartWithCategoriesAndOptions(): void
+    {
+        $payload = BlockBuilder::chart(
+            'c',
+            ChartType::BAR,
+            [['name' => 'A', 'data' => [1.0]]],
+            ['Jan', 'Feb'],
+            ['stacked' => true],
+        )->jsonSerialize();
+
+        self::assertSame('bar', $payload['data']['chartType']);
+        self::assertSame(['Jan', 'Feb'], $payload['data']['categories']);
+        self::assertSame(['stacked' => true], $payload['data']['options']);
+    }
+
+    #[Test]
+    public function testTabs(): void
+    {
+        $tabs = [['id' => 'a', 'label' => 'A', 'blocks' => []]];
+        $payload = BlockBuilder::tabs('tb', $tabs)->jsonSerialize();
+
+        self::assertSame('tabs', $payload['type']);
+        self::assertSame($tabs, $payload['data']['tabs']);
+    }
+
+    #[Test]
+    public function testFormPanelWithSteps(): void
+    {
+        $steps = [new FormStep(id: 's1', label: 'Step 1', fields: ['name'])];
+        $payload = BlockBuilder::formPanel('f', '/submit', 'POST', [], [], $steps)->jsonSerialize();
+
+        self::assertTrue($payload['data']['multiStep']);
+        self::assertSame($steps, $payload['data']['steps']);
     }
 
     #[Test]

@@ -14,8 +14,10 @@ namespace Middag\Ui\Tests;
 
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
+use Middag\Ui\Data\Notification;
 use Middag\Ui\Data\PageMeta;
 use Middag\Ui\Data\PageResources;
+use Middag\Ui\Enum\NotificationLevel;
 use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -94,6 +96,34 @@ final class PageContractTest extends TestCase
 
         self::assertArrayHasKey('resources', $payload);
         self::assertIsArray($payload['resources']);
+    }
+
+    #[Test]
+    public function testOmitsNotificationsWhenEmpty(): void
+    {
+        $contract = new PageContract(
+            shell: 'product',
+            page: new PageMeta(key: 'home', title: 'Home'),
+            layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
+        );
+
+        self::assertArrayNotHasKey('notifications', $contract->jsonSerialize());
+    }
+
+    #[Test]
+    public function testIncludesNotificationsWhenSet(): void
+    {
+        $contract = new PageContract(
+            shell: 'product',
+            page: new PageMeta(key: 'home', title: 'Home'),
+            layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
+            notifications: [new Notification(NotificationLevel::SUCCESS, 'Saved')],
+        );
+
+        $payload = $contract->jsonSerialize();
+
+        self::assertCount(1, $payload['notifications']);
+        self::assertSame('success', $payload['notifications'][0]['level']);
     }
 
     #[Test]

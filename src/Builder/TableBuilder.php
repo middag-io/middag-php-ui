@@ -12,8 +12,15 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Builder;
 
+use Middag\Ui\Contract\PageActionInterface;
+use Middag\Ui\Data\BulkAction;
 use Middag\Ui\Data\Column;
+use Middag\Ui\Data\FilterDefinition;
 use Middag\Ui\Data\TableConfig;
+use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\FilterType;
+use Middag\Ui\Enum\ValueFormat;
 
 /**
  * Table Builder.
@@ -27,11 +34,21 @@ class TableBuilder
     /** @var Column[] */
     private array $columns = [];
 
+    /** @var FilterDefinition[] */
     private array $filters = [];
 
-    private array $actions = [];
+    /** @var PageActionInterface[] */
+    private array $rowActions = [];
 
-    private array $options = [];
+    /** @var BulkAction[] */
+    private array $bulkActions = [];
+
+    private TableOptions $options;
+
+    public function __construct()
+    {
+        $this->options = new TableOptions();
+    }
 
     /**
      * Start a new table definition.
@@ -45,62 +62,69 @@ class TableBuilder
      * Add a column to the table.
      *
      * Settings keys (all optional): `sortable` (bool), `searchable` (bool),
-     * `type` (string, default 'text'), `options` (array).
+     * `format` (ValueFormat, default TEXT), `formatOptions` (array),
+     * `options` (array).
      *
-     * @param array{sortable?: bool, searchable?: bool, type?: string, options?: array} $settings
+     * @param array{sortable?: bool, searchable?: bool, format?: ValueFormat, formatOptions?: array<string, mixed>, options?: array<string, mixed>} $settings
      */
-    public function column(string $key, string $label, array $settings = []): self
+    public function column(string $key, string|Translatable $label, array $settings = []): self
     {
         $this->columns[] = new Column(
             key: $key,
             label: $label,
             sortable: $settings['sortable'] ?? false,
             searchable: $settings['searchable'] ?? false,
-            type: $settings['type'] ?? 'text',
-            options: $settings['options'] ?? []
+            format: $settings['format'] ?? ValueFormat::TEXT,
+            formatOptions: $settings['formatOptions'] ?? [],
+            options: $settings['options'] ?? [],
         );
 
         return $this;
     }
 
     /**
-     * Add a filter definition.
+     * Add a typed filter definition.
      *
-     * @param string $type select, text, date, etc
+     * @param array<int, array{value: mixed, label: string|Translatable}> $options
      */
-    public function filter(string $key, string $label, string $type = 'select', array $options = []): self
+    public function filter(string $key, string|Translatable $label, FilterType $type = FilterType::SELECT, array $options = []): self
     {
-        $this->filters[] = [
-            'key' => $key,
-            'label' => $label,
-            'type' => $type,
-            'options' => $options,
-        ];
+        $this->filters[] = new FilterDefinition(
+            key: $key,
+            label: $label,
+            type: $type,
+            options: $options,
+        );
 
         return $this;
     }
 
     /**
-     * Add an action button.
+     * Add a per-row action.
      */
-    public function action(string $key, string $label, string $icon = '', array $props = []): self
+    public function rowAction(PageActionInterface $action): self
     {
-        $this->actions[] = [
-            'key' => $key,
-            'label' => $label,
-            'icon' => $icon,
-            'props' => $props,
-        ];
+        $this->rowActions[] = $action;
 
         return $this;
     }
 
     /**
-     * Set general table options.
+     * Add a bulk action applied to selected rows.
      */
-    public function withOptions(array $options): self
+    public function bulkAction(BulkAction $action): self
     {
-        $this->options = array_merge($this->options, $options);
+        $this->bulkActions[] = $action;
+
+        return $this;
+    }
+
+    /**
+     * Set general table behavior options.
+     */
+    public function options(TableOptions $options): self
+    {
+        $this->options = $options;
 
         return $this;
     }
@@ -113,8 +137,9 @@ class TableBuilder
         return new TableConfig(
             columns: $this->columns,
             filters: $this->filters,
-            actions: $this->actions,
-            options: $this->options
+            rowActions: $this->rowActions,
+            bulkActions: $this->bulkActions,
+            options: $this->options,
         );
     }
 }

@@ -13,8 +13,14 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\TableBuilder;
+use Middag\Ui\Data\BulkAction;
 use Middag\Ui\Data\Column;
+use Middag\Ui\Data\FilterDefinition;
+use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\TableConfig;
+use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Enum\FilterType;
+use Middag\Ui\Enum\ValueFormat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -71,7 +77,7 @@ final class TableBuilderTest extends TestCase
 
         self::assertFalse($col->sortable);
         self::assertFalse($col->searchable);
-        self::assertSame('text', $col->type);
+        self::assertSame(ValueFormat::TEXT, $col->format);
         self::assertSame([], $col->options);
     }
 
@@ -79,11 +85,12 @@ final class TableBuilderTest extends TestCase
     public function testColumnWithSettings(): void
     {
         $config = TableBuilder::make()
-            ->column('status', 'Status', [
+            ->column('amount', 'Amount', [
                 'sortable' => true,
                 'searchable' => true,
-                'type' => 'select',
-                'options' => ['a' => 'Active'],
+                'format' => ValueFormat::CURRENCY,
+                'formatOptions' => ['currency' => 'BRL'],
+                'options' => ['align' => 'right'],
             ])
             ->build();
 
@@ -91,57 +98,63 @@ final class TableBuilderTest extends TestCase
 
         self::assertTrue($col->sortable);
         self::assertTrue($col->searchable);
-        self::assertSame('select', $col->type);
-        self::assertSame(['a' => 'Active'], $col->options);
+        self::assertSame(ValueFormat::CURRENCY, $col->format);
+        self::assertSame(['currency' => 'BRL'], $col->formatOptions);
+        self::assertSame(['align' => 'right'], $col->options);
     }
 
     #[Test]
     public function testAddFilter(): void
     {
         $config = TableBuilder::make()
-            ->filter('status', 'Status', 'select', ['active' => 'Active'])
+            ->filter('status', 'Status', FilterType::SELECT, [
+                ['value' => 'active', 'label' => 'Active'],
+            ])
             ->build();
 
         self::assertCount(1, $config->filters);
-        self::assertSame('status', $config->filters[0]['key']);
-        self::assertSame('Status', $config->filters[0]['label']);
-        self::assertSame('select', $config->filters[0]['type']);
-        self::assertSame(['active' => 'Active'], $config->filters[0]['options']);
+        self::assertInstanceOf(FilterDefinition::class, $config->filters[0]);
+        self::assertSame('status', $config->filters[0]->key);
+        self::assertSame(FilterType::SELECT, $config->filters[0]->type);
     }
 
     #[Test]
-    public function testAddAction(): void
+    public function testAddRowAction(): void
     {
+        $action = new PageAction(id: 'edit', label: 'Edit', intent: 'secondary', href: '/x/{id}');
+
         $config = TableBuilder::make()
-            ->action('delete', 'Delete', 'trash')
+            ->rowAction($action)
             ->build();
 
-        self::assertCount(1, $config->actions);
-        self::assertSame('delete', $config->actions[0]['key']);
-        self::assertSame('Delete', $config->actions[0]['label']);
-        self::assertSame('trash', $config->actions[0]['icon']);
+        self::assertCount(1, $config->rowActions);
+        self::assertSame($action, $config->rowActions[0]);
     }
 
     #[Test]
-    public function testWithOptions(): void
+    public function testAddBulkAction(): void
     {
+        $action = new BulkAction(id: 'delete', label: 'Delete', intent: 'danger', endpoint: '/x/bulk-delete');
+
         $config = TableBuilder::make()
-            ->withOptions(['paginated' => true, 'perPage' => 25])
+            ->bulkAction($action)
             ->build();
 
-        self::assertSame(['paginated' => true, 'perPage' => 25], $config->options);
+        self::assertCount(1, $config->bulkActions);
+        self::assertSame($action, $config->bulkActions[0]);
     }
 
     #[Test]
-    public function testWithOptionsMerges(): void
+    public function testOptions(): void
     {
+        $options = new TableOptions(perPage: 50, selectable: true, searchable: true);
+
         $config = TableBuilder::make()
-            ->withOptions(['paginated' => true])
-            ->withOptions(['perPage' => 50])
+            ->options($options)
             ->build();
 
-        self::assertTrue($config->options['paginated']);
-        self::assertSame(50, $config->options['perPage']);
+        self::assertSame($options, $config->options);
+        self::assertSame(50, $config->options->perPage);
     }
 
     #[Test]
@@ -151,8 +164,9 @@ final class TableBuilderTest extends TestCase
 
         self::assertSame($builder, $builder->column('a', 'A'));
         self::assertSame($builder, $builder->filter('b', 'B'));
-        self::assertSame($builder, $builder->action('c', 'C'));
-        self::assertSame($builder, $builder->withOptions([]));
+        self::assertSame($builder, $builder->rowAction(new PageAction(id: 'c', label: 'C', intent: 'secondary')));
+        self::assertSame($builder, $builder->bulkAction(new BulkAction(id: 'd', label: 'D', intent: 'danger', endpoint: '/d')));
+        self::assertSame($builder, $builder->options(new TableOptions()));
     }
 
     #[Test]

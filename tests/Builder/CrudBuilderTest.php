@@ -130,10 +130,10 @@ final class CrudBuilderTest extends TestCase
         $contract = $crud->build('index');
 
         $block = $contract->layout->regions['content'][0];
-        $sort = $block->jsonSerialize()['data']['sort'];
+        $options = $block->jsonSerialize()['data']['options'];
 
-        self::assertSame('name', $sort['column']);
-        self::assertSame('asc', $sort['direction']);
+        self::assertSame('name', $options['sortColumn']);
+        self::assertSame('asc', $options['sortDirection']);
     }
 
     #[Test]

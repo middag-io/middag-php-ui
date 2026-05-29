@@ -12,7 +12,11 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\Branding;
+use Middag\Ui\Data\Identity;
 use Middag\Ui\Data\PageResources;
+use Middag\Ui\Data\UserPreferences;
+use Middag\Ui\Enum\ThemeMode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -30,32 +34,36 @@ final class PageResourcesTest extends TestCase
 
         $payload = $resources->jsonSerialize();
 
-        self::assertArrayHasKey('auth', $payload);
+        self::assertArrayHasKey('preferences', $payload);
         self::assertArrayHasKey('capabilities', $payload);
         self::assertArrayHasKey('featureFlags', $payload);
-        self::assertArrayHasKey('locale', $payload);
-        self::assertSame([], $payload['auth']);
+        self::assertArrayNotHasKey('user', $payload);
+        self::assertArrayNotHasKey('branding', $payload);
         self::assertSame([], $payload['capabilities']);
         self::assertSame([], $payload['featureFlags']);
-        self::assertSame('pt-BR', $payload['locale']);
+        self::assertSame('en', $payload['preferences']['locale']);
+        self::assertSame('system', $payload['preferences']['theme']);
     }
 
     #[Test]
     public function testSerializesCustomValues(): void
     {
         $resources = new PageResources(
-            auth: ['id' => 1, 'name' => 'Admin'],
+            preferences: new UserPreferences(theme: ThemeMode::DARK, locale: 'pt-BR'),
             capabilities: ['manage_users' => true],
             feature_flags: ['dark_mode' => true, 'beta' => false],
-            locale: 'en',
+            user: new Identity(id: '1', name: 'Admin'),
+            branding: new Branding(appName: 'Helico'),
         );
 
         $payload = $resources->jsonSerialize();
 
-        self::assertSame(['id' => 1, 'name' => 'Admin'], $payload['auth']);
+        self::assertSame('dark', $payload['preferences']['theme']);
+        self::assertSame('pt-BR', $payload['preferences']['locale']);
         self::assertSame(['manage_users' => true], $payload['capabilities']);
         self::assertSame(['dark_mode' => true, 'beta' => false], $payload['featureFlags']);
-        self::assertSame('en', $payload['locale']);
+        self::assertSame('Admin', $payload['user']['name']);
+        self::assertSame('Helico', $payload['branding']['appName']);
     }
 
     #[Test]

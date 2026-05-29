@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\Confirmation;
 use Middag\Ui\Data\PageAction;
+use Middag\Ui\Data\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -84,19 +86,46 @@ final class PageActionTest extends TestCase
     }
 
     #[Test]
-    public function testIncludesRequiresConfirmationWhenTrue(): void
+    public function testIncludesConfirmationWhenSet(): void
     {
         $action = new PageAction(
             id: 'delete',
             label: 'Delete',
             intent: 'danger',
-            requires_confirmation: true,
+            confirmation: new Confirmation(title: 'Delete?', message: 'Are you sure?', variant: 'danger'),
         );
 
         $payload = $action->jsonSerialize();
 
-        self::assertArrayHasKey('requires_confirmation', $payload);
-        self::assertTrue($payload['requires_confirmation']);
+        self::assertArrayHasKey('confirmation', $payload);
+        self::assertSame('Delete?', $payload['confirmation']['title']);
+        self::assertSame('danger', $payload['confirmation']['variant']);
+    }
+
+    #[Test]
+    public function testIncludesCapabilityWhenSet(): void
+    {
+        $action = new PageAction(
+            id: 'delete',
+            label: 'Delete',
+            intent: 'danger',
+            capability: 'manage_items',
+        );
+
+        $payload = $action->jsonSerialize();
+
+        self::assertArrayHasKey('capability', $payload);
+        self::assertSame('manage_items', $payload['capability']);
+    }
+
+    #[Test]
+    public function testTranslatableLabelSerializesToIntent(): void
+    {
+        $action = new PageAction(id: 'create', label: Translatable::of('btn_create', 'local_x'), intent: 'primary');
+
+        $payload = $action->jsonSerialize();
+
+        self::assertSame(['key' => 'btn_create', 'domain' => 'local_x'], $payload['label']);
     }
 
     #[Test]

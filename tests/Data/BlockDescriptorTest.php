@@ -14,6 +14,8 @@ namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\PageAction;
+use Middag\Ui\Data\PollConfig;
+use Middag\Ui\Data\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -88,6 +90,37 @@ final class BlockDescriptorTest extends TestCase
 
         self::assertSame('T', $payload['title']);
         self::assertSame('S', $payload['subtitle']);
+    }
+
+    #[Test]
+    public function testIncludesTranslatableTitle(): void
+    {
+        $block = new BlockDescriptor(
+            type: 'dense_table',
+            key: 'test',
+            data: [],
+            title: Translatable::of('block_title', 'local_x'),
+        );
+
+        $payload = $block->jsonSerialize();
+
+        self::assertSame(['key' => 'block_title', 'domain' => 'local_x'], $payload['title']);
+    }
+
+    #[Test]
+    public function testIncludesPollWhenSet(): void
+    {
+        $block = new BlockDescriptor(
+            type: 'dense_table',
+            key: 'test',
+            data: [],
+            poll: new PollConfig(endpoint: '/poll', intervalMs: 2000),
+        );
+
+        $payload = $block->jsonSerialize();
+
+        self::assertArrayHasKey('poll', $payload);
+        self::assertSame(2000, $payload['poll']['intervalMs']);
     }
 
     #[Test]

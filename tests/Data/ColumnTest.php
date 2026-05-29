@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\Column;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\ValueFormat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +43,8 @@ final class ColumnTest extends TestCase
         self::assertSame('Name', $col->label);
         self::assertFalse($col->sortable);
         self::assertFalse($col->searchable);
-        self::assertSame('text', $col->type);
+        self::assertSame(ValueFormat::TEXT, $col->format);
+        self::assertSame([], $col->formatOptions);
         self::assertSame([], $col->options);
     }
 
@@ -55,8 +58,7 @@ final class ColumnTest extends TestCase
             'label' => 'Name',
             'sortable' => false,
             'searchable' => false,
-            'type' => 'text',
-            'options' => [],
+            'format' => 'text',
         ], $col->jsonSerialize());
     }
 
@@ -64,28 +66,40 @@ final class ColumnTest extends TestCase
     public function testJsonSerializeWithAllFields(): void
     {
         $col = new Column(
-            key: 'status',
-            label: 'Status',
+            key: 'amount',
+            label: 'Amount',
             sortable: true,
             searchable: true,
-            type: 'select',
-            options: ['active' => 'Active', 'inactive' => 'Inactive'],
+            format: ValueFormat::CURRENCY,
+            formatOptions: ['currency' => 'BRL', 'decimals' => 2],
+            options: ['align' => 'right'],
         );
 
         $payload = $col->jsonSerialize();
 
-        self::assertSame('status', $payload['key']);
-        self::assertSame('Status', $payload['label']);
+        self::assertSame('amount', $payload['key']);
+        self::assertSame('Amount', $payload['label']);
         self::assertTrue($payload['sortable']);
         self::assertTrue($payload['searchable']);
-        self::assertSame('select', $payload['type']);
-        self::assertSame(['active' => 'Active', 'inactive' => 'Inactive'], $payload['options']);
+        self::assertSame('currency', $payload['format']);
+        self::assertSame(['currency' => 'BRL', 'decimals' => 2], $payload['formatOptions']);
+        self::assertSame(['align' => 'right'], $payload['options']);
+    }
+
+    #[Test]
+    public function testTranslatableLabelSerializesToIntent(): void
+    {
+        $col = new Column(key: 'name', label: Translatable::of('col_name', 'local_x'));
+
+        $payload = $col->jsonSerialize();
+
+        self::assertSame(['key' => 'col_name', 'domain' => 'local_x'], $payload['label']);
     }
 
     #[Test]
     public function testJsonEncodeProducesValidJson(): void
     {
-        $col = new Column(key: 'amount', label: 'Amount', sortable: true, type: 'number');
+        $col = new Column(key: 'amount', label: 'Amount', sortable: true, format: ValueFormat::NUMBER);
 
         $json = json_encode($col, JSON_THROW_ON_ERROR);
 
@@ -96,5 +110,6 @@ final class ColumnTest extends TestCase
         self::assertSame('amount', $decoded['key']);
         self::assertSame('Amount', $decoded['label']);
         self::assertTrue($decoded['sortable']);
+        self::assertSame('number', $decoded['format']);
     }
 }

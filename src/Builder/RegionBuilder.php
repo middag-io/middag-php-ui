@@ -15,6 +15,8 @@ namespace Middag\Ui\Builder;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\RegionBuilderInterface;
 use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\ChartType;
 
 /**
  * Fluent builder for composing blocks within a layout region (ADR-807).
@@ -151,6 +153,32 @@ class RegionBuilder implements RegionBuilderInterface
             key: $key,
             data: ['content' => $content],
         );
+
+        return $this;
+    }
+
+    /**
+     * Add a chart block.
+     *
+     * @param array<int, array{name: string, data: float[]}> $series
+     * @param array<int, mixed>                              $categories
+     * @param array<string, mixed>                           $options
+     */
+    public function chart(string $key, ChartType $type, array $series, array $categories = [], array $options = []): static
+    {
+        $this->blocks[] = BlockBuilder::chart($key, $type, $series, $categories, $options);
+
+        return $this;
+    }
+
+    /**
+     * Add a tabs container block.
+     *
+     * @param array<int, array{id: string, label: string|Translatable, blocks: BlockDescriptorInterface[]}> $tabs
+     */
+    public function tabs(string $key, array $tabs): static
+    {
+        $this->blocks[] = BlockBuilder::tabs($key, $tabs);
 
         return $this;
     }

@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\Condition;
+use Middag\Ui\Data\FieldConstraints;
 use Middag\Ui\Data\FieldDefinition;
+use Middag\Ui\Data\Translatable;
 use Middag\Ui\Enum\ConditionOperator;
 use Middag\Ui\Enum\FieldType;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -38,13 +40,15 @@ final class FieldDefinitionTest extends TestCase
     #[Test]
     public function testConstructsWithScalarValues(): void
     {
+        $constraints = new FieldConstraints(required: true);
+
         $def = new FieldDefinition(
             name: 'email',
             type: FieldType::EMAIL,
-            label: ['key' => 'email_label', 'component' => ''],
+            label: Translatable::of('email_label', 'local_x'),
             help: null,
             default: '',
-            required: true,
+            constraints: $constraints,
             attributes: [],
             conditions: [],
             options: [],
@@ -52,13 +56,35 @@ final class FieldDefinitionTest extends TestCase
 
         self::assertSame('email', $def->name);
         self::assertSame(FieldType::EMAIL, $def->type);
-        self::assertSame(['key' => 'email_label', 'component' => ''], $def->label);
+        self::assertInstanceOf(Translatable::class, $def->label);
+        self::assertSame('email_label', $def->label->key);
         self::assertNull($def->help);
         self::assertSame('', $def->default);
-        self::assertTrue($def->required);
+        self::assertSame($constraints, $def->constraints);
+        self::assertTrue($def->constraints->required);
         self::assertSame([], $def->attributes);
         self::assertSame([], $def->conditions);
         self::assertSame([], $def->options);
+    }
+
+    #[Test]
+    public function testAcceptsRawStringLabel(): void
+    {
+        $def = new FieldDefinition(
+            name: 'note',
+            type: FieldType::TEXT,
+            label: 'Note',
+            help: 'Free text',
+            default: null,
+            constraints: new FieldConstraints(),
+            attributes: [],
+            conditions: [],
+            options: [],
+        );
+
+        self::assertSame('Note', $def->label);
+        self::assertSame('Free text', $def->help);
+        self::assertFalse($def->constraints->required);
     }
 
     #[Test]
@@ -72,7 +98,7 @@ final class FieldDefinitionTest extends TestCase
             label: null,
             help: null,
             default: null,
-            required: false,
+            constraints: new FieldConstraints(),
             attributes: [],
             conditions: [$cond],
             options: [],
@@ -91,7 +117,7 @@ final class FieldDefinitionTest extends TestCase
             label: null,
             help: null,
             default: 'active',
-            required: false,
+            constraints: new FieldConstraints(),
             attributes: [],
             conditions: [],
             options: ['active' => 'Active', 'inactive' => 'Inactive'],

@@ -30,6 +30,7 @@ final class FieldTypeTest extends TestCase
 
         $this->assertContains('text', $values);
         $this->assertContains('textarea', $values);
+        $this->assertContains('richtext', $values);
         $this->assertContains('password', $values);
         $this->assertContains('email', $values);
         $this->assertContains('url', $values);
@@ -42,9 +43,12 @@ final class FieldTypeTest extends TestCase
         $this->assertContains('switch', $values);
         $this->assertContains('date', $values);
         $this->assertContains('datetime', $values);
+        $this->assertContains('time', $values);
         $this->assertContains('duration', $values);
         $this->assertContains('file', $values);
         $this->assertContains('entity_picker', $values);
+        $this->assertContains('autocomplete', $values);
+        $this->assertContains('tags', $values);
         $this->assertContains('hidden', $values);
         $this->assertContains('static', $values);
         $this->assertContains('header', $values);
@@ -53,7 +57,7 @@ final class FieldTypeTest extends TestCase
     #[Test]
     public function totalFieldTypeCount(): void
     {
-        $this->assertCount(20, FieldType::cases());
+        $this->assertCount(24, FieldType::cases());
     }
 
     #[Test]
@@ -61,6 +65,7 @@ final class FieldTypeTest extends TestCase
     {
         $this->assertSame('text', FieldType::TEXT->value);
         $this->assertSame('textarea', FieldType::TEXTAREA->value);
+        $this->assertSame('richtext', FieldType::RICHTEXT->value);
         $this->assertSame('password', FieldType::PASSWORD->value);
         $this->assertSame('email', FieldType::EMAIL->value);
         $this->assertSame('url', FieldType::URL->value);
@@ -73,9 +78,12 @@ final class FieldTypeTest extends TestCase
         $this->assertSame('switch', FieldType::SWITCH->value);
         $this->assertSame('date', FieldType::DATE->value);
         $this->assertSame('datetime', FieldType::DATETIME->value);
+        $this->assertSame('time', FieldType::TIME->value);
         $this->assertSame('duration', FieldType::DURATION->value);
         $this->assertSame('file', FieldType::FILE->value);
         $this->assertSame('entity_picker', FieldType::ENTITY_PICKER->value);
+        $this->assertSame('autocomplete', FieldType::AUTOCOMPLETE->value);
+        $this->assertSame('tags', FieldType::TAGS->value);
         $this->assertSame('hidden', FieldType::HIDDEN->value);
         $this->assertSame('static', FieldType::STATIC->value);
         $this->assertSame('header', FieldType::HEADER->value);
