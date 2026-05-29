@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
+ */
+
+namespace Middag\Ui\Dashboard;
+
+/**
+ * Contract for extension dashboard widgets.
+ *
+ * @api
+ */
+interface DashboardWidgetInterface
+{
+    public function getSlug(): string;
+
+    public function getTitle(): string;
+
+    public function getExtension(): string;
+
+    public function getPriority(): int;
+
+    public function render(): string;
+}

@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
+ */
+
+namespace Middag\Ui\Tests\Table;
+
+use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\Enum\FilterType;
+use Middag\Ui\Table\FilterDefinition;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+
+/**
+ * @internal
+ */
+#[CoversClass(FilterDefinition::class)]
+final class FilterDefinitionTest extends TestCase
+{
+    #[Test]
+    public function testIsReadonlyClass(): void
+    {
+        self::assertTrue((new ReflectionClass(FilterDefinition::class))->isReadOnly());
+    }
+
+    #[Test]
+    public function testSerializesMinimal(): void
+    {
+        $payload = (new FilterDefinition(key: 'status', label: 'Status'))->jsonSerialize();
+
+        self::assertSame([
+            'key' => 'status',
+            'label' => 'Status',
+            'type' => 'select',
+        ], $payload);
+        self::assertArrayNotHasKey('options', $payload);
+    }
+
+    #[Test]
+    public function testSerializesAllFields(): void
+    {
+        $payload = (new FilterDefinition(
+            key: 'status',
+            label: Translatable::of('status', 'local_x'),
+            type: FilterType::SELECT,
+            options: [
+                ['value' => 'active', 'label' => 'Active'],
+                ['value' => 'archived', 'label' => Translatable::of('archived', 'local_x')],
+            ],
+            placeholder: 'Pick one',
+            default: 'active',
+        ))->jsonSerialize();
+
+        self::assertSame(['key' => 'status', 'domain' => 'local_x'], $payload['label']);
+        self::assertSame('active', $payload['options'][0]['value']);
+        self::assertSame('Active', $payload['options'][0]['label']);
+        self::assertSame(['key' => 'archived', 'domain' => 'local_x'], $payload['options'][1]['label']);
+        self::assertSame('Pick one', $payload['placeholder']);
+        self::assertSame('active', $payload['default']);
+    }
+}
