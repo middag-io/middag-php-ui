@@ -1,0 +1,60 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * middag-io/ui — MIDDAG UI contract builders.
+ *
+ * @author      Michael Meneses <michael@middag.io>
+ * @copyright   2026 MIDDAG (https://middag.io)
+ * @license     Apache-2.0
+ */
+
+namespace Middag\Ui\Tests\Data;
+
+use Middag\Ui\Data\FormStep;
+use Middag\Ui\Data\Translatable;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+
+/**
+ * @internal
+ */
+#[CoversClass(FormStep::class)]
+final class FormStepTest extends TestCase
+{
+    #[Test]
+    public function testIsReadonlyClass(): void
+    {
+        self::assertTrue((new ReflectionClass(FormStep::class))->isReadOnly());
+    }
+
+    #[Test]
+    public function testSerializesMinimal(): void
+    {
+        $payload = (new FormStep(id: 'basics', label: 'Basics', fields: ['name', 'email']))->jsonSerialize();
+
+        self::assertSame([
+            'id' => 'basics',
+            'label' => 'Basics',
+            'fields' => ['name', 'email'],
+        ], $payload);
+        self::assertArrayNotHasKey('help', $payload);
+    }
+
+    #[Test]
+    public function testSerializesHelpAndTranslatableLabel(): void
+    {
+        $payload = (new FormStep(
+            id: 'basics',
+            label: Translatable::of('step_basics', 'local_x'),
+            fields: [],
+            help: Translatable::of('step_help', 'local_x'),
+        ))->jsonSerialize();
+
+        self::assertSame(['key' => 'step_basics', 'domain' => 'local_x'], $payload['label']);
+        self::assertSame(['key' => 'step_help', 'domain' => 'local_x'], $payload['help']);
+    }
+}

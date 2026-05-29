@@ -12,11 +12,13 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Builder;
 
-use Middag\Ui\Builder\Block;
+use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Builder\CrudBuilder;
 use Middag\Ui\Builder\PageBuilder;
-use Middag\Ui\Data\PageAction;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
+use Middag\Ui\Enum\ActionIntent;
+use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -32,8 +34,28 @@ final class PageBuilderTest extends TestCase
     {
         $contract = PageBuilder::page('test')->build();
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
         self::assertSame('test', $contract->page->key);
+    }
+
+    #[Test]
+    public function testNotifyShortcutsAttachNotifications(): void
+    {
+        $contract = PageBuilder::page('test')
+            ->notifySuccess('Saved')
+            ->notifyInfo('Heads up')
+            ->notifyWarning('Careful')
+            ->notifyError('Failed', 'Oops')
+            ->build();
+
+        $payload = $contract->jsonSerialize();
+
+        self::assertCount(4, $payload['notifications']);
+        self::assertSame('success', $payload['notifications'][0]['level']);
+        self::assertSame('info', $payload['notifications'][1]['level']);
+        self::assertSame('warning', $payload['notifications'][2]['level']);
+        self::assertSame('error', $payload['notifications'][3]['level']);
+        self::assertSame('Oops', $payload['notifications'][3]['title']);
     }
 
     #[Test]
@@ -47,13 +69,13 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testActionFactory(): void
     {
-        $action = PageBuilder::action('a', 'Label', 'primary', '/href');
+        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::PRIMARY);
 
-        self::assertInstanceOf(PageAction::class, $action);
+        self::assertInstanceOf(Action::class, $action);
         self::assertSame('a', $action->id);
         self::assertSame('Label', $action->label);
-        self::assertSame('primary', $action->intent);
-        self::assertSame('/href', $action->href);
+        self::assertSame(ActionIntent::PRIMARY, $action->intent);
+        self::assertSame('/href', $action->target->href);
     }
 
     #[Test]
@@ -100,7 +122,7 @@ final class PageBuilderTest extends TestCase
     public function testRegionWithArray(): void
     {
         $contract = PageBuilder::page('test')
-            ->region('content', [Block::emptyState('e')])
+            ->region('content', [BlockBuilder::emptyState('e')])
             ->build();
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -113,7 +135,7 @@ final class PageBuilderTest extends TestCase
     public function testRegionWithClosure(): void
     {
         $contract = PageBuilder::page('test')
-            ->region('content', fn ($r) => $r->metricCard('m'))
+            ->region('content', fn ($r) => $r->metricCard('m', 1, 'A'))
             ->build();
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -135,7 +157,7 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testActions(): void
     {
-        $action = PageBuilder::action('a', 'Label', 'primary', '/href');
+        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::PRIMARY);
 
         $contract = PageBuilder::page('test')
             ->actions([$action])
@@ -146,11 +168,11 @@ final class PageBuilderTest extends TestCase
     }
 
     #[Test]
-    public function testBuildReturnsPageContractData(): void
+    public function testBuildReturnsPageContract(): void
     {
         $contract = PageBuilder::page('test')->build();
 
-        self::assertInstanceOf(PageContractData::class, $contract);
+        self::assertInstanceOf(PageContract::class, $contract);
     }
 
     #[Test]
@@ -159,7 +181,7 @@ final class PageBuilderTest extends TestCase
         $props = PageBuilder::page('test')->toProps();
 
         self::assertArrayHasKey('contract', $props);
-        self::assertInstanceOf(PageContractData::class, $props['contract']);
+        self::assertInstanceOf(PageContract::class, $props['contract']);
         self::assertArrayNotHasKey('overlay', $props);
         self::assertArrayNotHasKey('help', $props);
         self::assertArrayNotHasKey('inspector', $props);
@@ -199,5 +221,16 @@ final class PageBuilderTest extends TestCase
         self::assertArrayHasKey('inspector', $props);
         self::assertSame('/api/{id}', $props['inspector']->endpoint);
         self::assertSame(500, $props['inspector']->width);
+    }
+
+    #[Test]
+    public function testMetaIsFluentAndBuildable(): void
+    {
+        $page = PageBuilder::page('wizard');
+
+        $result = $page->meta(['multiStep' => true, 'steps' => 3]);
+
+        self::assertSame($page, $result);
+        self::assertInstanceOf(PageContract::class, $page->build());
     }
 }

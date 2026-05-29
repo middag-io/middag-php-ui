@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Enum;
 
 use Middag\Ui\Enum\ConditionOperator;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-#[CoversNothing]
+#[CoversClass(ConditionOperator::class)]
 final class ConditionOperatorTest extends TestCase
 {
     #[Test]
@@ -74,50 +74,6 @@ final class ConditionOperatorTest extends TestCase
         $this->assertSame('exists', ConditionOperator::EXISTS->value);
         $this->assertSame('empty', ConditionOperator::EMPTY->value);
         $this->assertSame('matches', ConditionOperator::MATCHES->value);
-    }
-
-    #[Test]
-    public function isMformCompatibleReturnsTrueForAllExceptMatches(): void
-    {
-        $compatibleOperators = [
-            ConditionOperator::EQ,
-            ConditionOperator::NEQ,
-            ConditionOperator::IN,
-            ConditionOperator::NOT_IN,
-            ConditionOperator::GT,
-            ConditionOperator::GTE,
-            ConditionOperator::LT,
-            ConditionOperator::LTE,
-            ConditionOperator::TRUTHY,
-            ConditionOperator::FALSY,
-            ConditionOperator::EXISTS,
-            ConditionOperator::EMPTY,
-        ];
-
-        foreach ($compatibleOperators as $operator) {
-            $this->assertTrue(
-                $operator->is_mform_compatible(),
-                sprintf('Expected %s to be mform compatible', $operator->name),
-            );
-        }
-    }
-
-    #[Test]
-    public function isMformCompatibleReturnsFalseForMatches(): void
-    {
-        $this->assertFalse(ConditionOperator::MATCHES->is_mform_compatible());
-    }
-
-    #[Test]
-    public function onlyMatchesIsNotMformCompatible(): void
-    {
-        $incompatible = array_filter(
-            ConditionOperator::cases(),
-            fn (ConditionOperator $op): bool => !$op->is_mform_compatible(),
-        );
-
-        $this->assertCount(1, $incompatible);
-        $this->assertSame(ConditionOperator::MATCHES, array_values($incompatible)[0]);
     }
 
     #[Test]

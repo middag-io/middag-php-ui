@@ -42,12 +42,12 @@ interface WorkflowNodeDescriptorInterface
     public function getLabel(): string;
 
     /**
-     * Returns icon identifier for the palette (Lucide icon name).
+     * Returns icon identifier for the palette (client icon-set name).
      */
     public function getIcon(): string;
 
     /**
-     * Returns configurable fields for the NodeConfigPanel.
+     * Returns configurable fields for the node config panel.
      *
      * @return list<array{key: string, label: string, type: string, required: bool, options?: list<array{value: string, label: string}>, placeholder?: string, help?: string}>
      */

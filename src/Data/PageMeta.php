@@ -12,20 +12,25 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Data;
 
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BreadcrumbInterface;
-use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Contract\PageMetaInterface;
 
+/**
+ * Page identity: key, title, subtitle, breadcrumbs, and page-level actions.
+ *
+ * @api
+ */
 readonly class PageMeta implements PageMetaInterface
 {
     /**
      * @param array<BreadcrumbInterface> $breadcrumbs
-     * @param array<PageActionInterface> $actions
+     * @param array<ActionInterface>     $actions
      */
     public function __construct(
         public string $key,
-        public string $title,
-        public ?string $subtitle = null,
+        public string|Translatable $title,
+        public string|Translatable|null $subtitle = null,
         public array $breadcrumbs = [],
         public array $actions = [],
     ) {}
@@ -35,11 +40,11 @@ readonly class PageMeta implements PageMetaInterface
     {
         $payload = [
             'key' => $this->key,
-            'title' => $this->title,
+            'title' => Label::serialize($this->title),
         ];
 
         if ($this->subtitle !== null) {
-            $payload['subtitle'] = $this->subtitle;
+            $payload['subtitle'] = Label::serializeNullable($this->subtitle);
         }
 
         if ($this->breadcrumbs !== []) {
@@ -51,7 +56,7 @@ readonly class PageMeta implements PageMetaInterface
 
         if ($this->actions !== []) {
             $payload['actions'] = array_map(
-                static fn (PageActionInterface $action): array => $action->jsonSerialize(),
+                static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->actions,
             );
         }

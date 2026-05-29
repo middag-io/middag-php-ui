@@ -14,7 +14,10 @@ namespace Middag\Ui\Tests\Builder;
 
 use InvalidArgumentException;
 use Middag\Ui\Builder\CrudBuilder;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\Data\FilterDefinition;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\FilterType;
+use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -26,11 +29,16 @@ use PHPUnit\Framework\TestCase;
 final class CrudBuilderTest extends TestCase
 {
     #[Test]
-    public function testDerivesSlugFromClass(): void
+    public function testDerivesSingularSlugByDefault(): void
     {
-        $crud = CrudBuilder::for('App\Entity\Invoice');
+        // The basename is a singular noun; the library never fabricates a plural.
+        self::assertSame('invoice', CrudBuilder::for('App\Entity\Invoice')->getSlug());
+    }
 
-        self::assertSame('invoices', $crud->getSlug());
+    #[Test]
+    public function testExplicitSlugOverride(): void
+    {
+        self::assertSame('invoices', CrudBuilder::for('App\Entity\Invoice', 'invoices')->getSlug());
     }
 
     #[Test]
@@ -39,8 +47,8 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('index');
 
-        self::assertInstanceOf(PageContractData::class, $contract);
-        self::assertSame('invoices.index', $contract->page->key);
+        self::assertInstanceOf(PageContract::class, $contract);
+        self::assertSame('invoice.index', $contract->page->key);
         self::assertSame('stack', $contract->layout->template);
 
         $blocks = $contract->layout->regions['content'] ?? [];
@@ -96,7 +104,7 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $crud->columns(['status']);
         $crud->column('status', function (array &$c): void {
-            $c['variant'] = 'badge';
+            $c['options'] = ['variant' => 'badge'];
         });
 
         $contract = $crud->build('index');
@@ -104,7 +112,7 @@ final class CrudBuilderTest extends TestCase
         $block = $contract->layout->regions['content'][0];
         $columns = $block->jsonSerialize()['data']['columns'];
 
-        self::assertSame('badge', $columns[0]['variant']);
+        self::assertSame(['variant' => 'badge'], $columns[0]['options']);
     }
 
     #[Test]
@@ -130,10 +138,10 @@ final class CrudBuilderTest extends TestCase
         $contract = $crud->build('index');
 
         $block = $contract->layout->regions['content'][0];
-        $sort = $block->jsonSerialize()['data']['sort'];
+        $options = $block->jsonSerialize()['data']['options'];
 
-        self::assertSame('name', $sort['column']);
-        self::assertSame('asc', $sort['direction']);
+        self::assertSame('name', $options['sortColumn']);
+        self::assertSame('asc', $options['sortDirection']);
     }
 
     #[Test]
@@ -142,14 +150,14 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('create');
 
-        self::assertInstanceOf(PageContractData::class, $contract);
-        self::assertSame('invoices.create', $contract->page->key);
+        self::assertInstanceOf(PageContract::class, $contract);
+        self::assertSame('invoice.create', $contract->page->key);
 
         $block = $contract->layout->regions['content'][0];
         $data = $block->jsonSerialize()['data'];
 
         self::assertSame('form_panel', $block->jsonSerialize()['type']);
-        self::assertSame('/invoices', $data['action']);
+        self::assertSame('/invoice', $data['action']);
         self::assertSame('post', $data['method']);
     }
 
@@ -159,8 +167,8 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('edit', ['id' => 42]);
 
-        self::assertInstanceOf(PageContractData::class, $contract);
-        self::assertSame('invoices.edit', $contract->page->key);
+        self::assertInstanceOf(PageContract::class, $contract);
+        self::assertSame('invoice.edit', $contract->page->key);
 
         $block = $contract->layout->regions['content'][0];
         $data = $block->jsonSerialize()['data'];
@@ -176,8 +184,8 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $contract = $crud->build('show');
 
-        self::assertInstanceOf(PageContractData::class, $contract);
-        self::assertSame('invoices.show', $contract->page->key);
+        self::assertInstanceOf(PageContract::class, $contract);
+        self::assertSame('invoice.show', $contract->page->key);
         self::assertSame('split', $contract->layout->template);
 
         $content = $contract->layout->regions['content'] ?? [];
@@ -198,5 +206,243 @@ final class CrudBuilderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $crud->build('invalid');
+    }
+
+    #[Test]
+    public function testOverrideSettersAreFluentAndBuildable(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice');
+
+        $result = $crud
+            ->rowActions(['edit'])
+            ->bulkActions(['delete'])
+            ->pageActions([])
+            ->filters([])
+            ->searchable(false)
+            ->label('Fatura', 'Faturas')
+            ->layout('custom-shell')
+            ->capability('app/invoice:manage');
+
+        self::assertSame($crud, $result);
+        self::assertInstanceOf(PageContract::class, $crud->build('index'));
+    }
+
+    #[Test]
+    public function testDefaultTitlesAreSingularNounWithoutVerb(): void
+    {
+        // No i18n, no label: literal singular noun for every action; no English verb.
+        $crud = CrudBuilder::for('App\Entity\Invoice');
+
+        self::assertSame('Invoice', $crud->build('index')->page->title);
+        self::assertSame('Invoice', $crud->build('show')->page->title);
+        self::assertSame('Invoice', $crud->build('create')->page->title);
+        self::assertSame('Invoice', $crud->build('edit', ['id' => 1])->page->title);
+    }
+
+    #[Test]
+    public function testSingularTitleDoesNotMangleSEndingNouns(): void
+    {
+        // 'Status' previously became 'Statu' (rtrim) and slug 'statuss' (naive +s).
+        $crud = CrudBuilder::for('App\Entity\Status');
+
+        self::assertSame('status', $crud->getSlug());
+        self::assertSame('Status', $crud->build('create')->page->title);
+        self::assertSame('Status', $crud->build('show')->page->title);
+    }
+
+    #[Test]
+    public function testExplicitLabelDrivesSingularAndPlural(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->label('Invoice', 'Invoices');
+
+        self::assertSame('Invoices', $crud->build('index')->page->title);
+        self::assertSame('Invoice', $crud->build('show')->page->title);
+        self::assertSame('Invoice', $crud->build('create')->page->title);
+    }
+
+    #[Test]
+    public function testI18nEmitsEntityNounIntents(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->i18n('local_x');
+
+        $show = $crud->build('show')->page->title;
+        self::assertInstanceOf(Translatable::class, $show);
+        self::assertSame('invoice', $show->key);
+        self::assertSame('local_x', $show->domain);
+
+        $index = $crud->build('index')->page->title;
+        self::assertInstanceOf(Translatable::class, $index);
+        self::assertSame('invoice_plural', $index->key);
+        self::assertSame('local_x', $index->domain);
+    }
+
+    #[Test]
+    public function testI18nCreateEditEmitVerbIntentInVerbDomain(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->i18n('local_x');
+
+        $create = $crud->build('create')->page->title;
+        self::assertInstanceOf(Translatable::class, $create);
+        self::assertSame('crud_create', $create->key);
+        self::assertSame('ui', $create->domain);
+
+        $entity = $create->params['entity'];
+        self::assertInstanceOf(Translatable::class, $entity);
+        self::assertSame('invoice', $entity->key);
+        self::assertSame('local_x', $entity->domain);
+
+        $edit = $crud->build('edit', ['id' => 1])->page->title;
+        self::assertInstanceOf(Translatable::class, $edit);
+        self::assertSame('crud_edit', $edit->key);
+    }
+
+    #[Test]
+    public function testVerbDomainIsOverridable(): void
+    {
+        $create = CrudBuilder::for('App\Entity\Invoice')->i18n('local_x', verbs: 'core')->build('create')->page->title;
+
+        self::assertInstanceOf(Translatable::class, $create);
+        self::assertSame('core', $create->domain);
+    }
+
+    #[Test]
+    public function testTranslatableLabelDerivesPluralAndVerb(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->label(Translatable::of('inv', 'dom'));
+
+        $index = $crud->build('index')->page->title;
+        self::assertInstanceOf(Translatable::class, $index);
+        self::assertSame('inv_plural', $index->key);
+        self::assertSame('dom', $index->domain);
+
+        $create = $crud->build('create')->page->title;
+        self::assertInstanceOf(Translatable::class, $create);
+        self::assertSame('crud_create', $create->key);
+        self::assertSame('inv', $create->params['entity']->key);
+    }
+
+    #[Test]
+    public function testRowActionsEmitTypedActionTargets(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->rowActions(['show', 'edit', 'delete']);
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+        [$show, $edit, $delete] = $data['rowActions'];
+
+        // show -> link to entity
+        self::assertSame('link', $show['target']['kind']);
+        self::assertSame('/invoice/{id}', $show['target']['href']);
+
+        // edit -> link to /{slug}/{id}/edit (default branch)
+        self::assertSame('link', $edit['target']['kind']);
+        self::assertSame('/invoice/{id}/edit', $edit['target']['href']);
+
+        // delete -> DELETE request, danger, with confirmation
+        self::assertSame('request', $delete['target']['kind']);
+        self::assertSame('delete', $delete['target']['method']);
+        self::assertSame('danger', $delete['intent']);
+        self::assertArrayHasKey('confirmation', $delete);
+    }
+
+    #[Test]
+    public function testBulkActionsEmitTypedActionTargets(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->bulkActions(['archive', 'delete']);
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+        [$archive, $delete] = $data['bulkActions'];
+
+        // non-delete bulk -> POST request, secondary, no confirmation
+        self::assertSame('request', $archive['target']['kind']);
+        self::assertSame('post', $archive['target']['method']);
+        self::assertSame('/invoice/bulk/archive', $archive['target']['endpoint']);
+        self::assertSame('secondary', $archive['intent']);
+        self::assertArrayNotHasKey('confirmation', $archive);
+
+        // delete bulk -> danger + confirmation
+        self::assertSame('danger', $delete['intent']);
+        self::assertArrayHasKey('confirmation', $delete);
+    }
+
+    #[Test]
+    public function testFiltersEmitFilterDefinitions(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->filters([
+            new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT),
+        ]);
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertArrayHasKey('filters', $data);
+        self::assertCount(1, $data['filters']);
+        self::assertSame('status', $data['filters'][0]['key']);
+        self::assertSame('select', $data['filters'][0]['type']);
+    }
+
+    #[Test]
+    public function testNoFiltersOmitsFiltersKey(): void
+    {
+        $data = CrudBuilder::for('App\Entity\Invoice')
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertArrayNotHasKey('filters', $data);
+    }
+
+    #[Test]
+    public function testDefaultIndexIsNotSearchable(): void
+    {
+        $options = CrudBuilder::for('App\Entity\Invoice')
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data']['options'];
+
+        self::assertFalse($options['searchable']);
+    }
+
+    #[Test]
+    public function testSearchableFlagSetsOption(): void
+    {
+        $options = CrudBuilder::for('App\Entity\Invoice')->searchable()
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data']['options'];
+
+        self::assertTrue($options['searchable']);
+    }
+
+    #[Test]
+    public function testCapabilityStampsGeneratedActions(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')
+            ->rowActions(['edit', 'delete'])
+            ->bulkActions(['delete'])
+            ->capability('app/invoice:manage');
+
+        $contract = $crud->build('index');
+        $page = $contract->page->actions[0]->jsonSerialize();
+        $data = $contract->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertSame('app/invoice:manage', $page['capability']);
+        self::assertSame('app/invoice:manage', $data['rowActions'][0]['capability']);
+        self::assertSame('app/invoice:manage', $data['bulkActions'][0]['capability']);
+    }
+
+    #[Test]
+    public function testGeneratedActionsOmitCapabilityByDefault(): void
+    {
+        $data = CrudBuilder::for('App\Entity\Invoice')->rowActions(['edit'])
+            ->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertArrayNotHasKey('capability', $data['rowActions'][0]);
+    }
+
+    #[Test]
+    public function testSearchableColumnImpliesSearchableTable(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->columns(['name']);
+        $crud->column('name', static function (array &$c): void {
+            $c['searchable'] = true;
+        });
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertTrue($data['columns'][0]['searchable']);
+        self::assertTrue($data['options']['searchable']);
     }
 }

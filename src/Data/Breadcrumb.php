@@ -14,10 +14,15 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\BreadcrumbInterface;
 
+/**
+ * A single breadcrumb trail entry: label plus optional href.
+ *
+ * @api
+ */
 readonly class Breadcrumb implements BreadcrumbInterface
 {
     public function __construct(
-        public string $label,
+        public string|Translatable $label,
         public ?string $href = null,
         public bool $external = false,
     ) {}
@@ -25,7 +30,7 @@ readonly class Breadcrumb implements BreadcrumbInterface
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        $payload = ['label' => $this->label];
+        $payload = ['label' => Label::serialize($this->label)];
 
         if ($this->href !== null) {
             $payload['href'] = $this->href;

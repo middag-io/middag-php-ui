@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\Breadcrumb;
-use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\PageMeta;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -88,7 +89,7 @@ final class PageMetaTest extends TestCase
             key: 'users.index',
             title: 'Users',
             actions: [
-                new PageAction(id: 'create', label: 'Create', intent: 'primary'),
+                new Action(id: 'create', label: 'Create', target: ActionTarget::link('/users/create')),
             ],
         );
 

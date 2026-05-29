@@ -15,14 +15,15 @@ namespace Middag\Ui\Enum;
 /**
  * Identity token for form renderer adapters (ADR-805).
  *
- * Declares which rendering target a form renderer adapter serves.
- * Used by the form model to select the correct adapter at render time.
+ * Declares the output MEDIUM a renderer adapter produces — a rendered HTML
+ * body, or a structured props payload — not a concrete transport. Used by the
+ * form model to select the correct adapter at render time.
  *
  * @api
  */
 enum RenderTarget: string
 {
-    case MFORM = 'mform';
+    case HTML = 'html';
 
-    case INERTIA = 'inertia';
+    case PROPS = 'props';
 }

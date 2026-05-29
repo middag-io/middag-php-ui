@@ -26,7 +26,7 @@ if (!is_dir($cacheDir) && (!mkdir($cacheDir, 0755, true) && !is_dir($cacheDir)))
     throw new RuntimeException(sprintf('Directory "%s" was not created', $cacheDir));
 }
 
-return new Config()
+return (new Config())
     ->setCacheFile($cacheDir . '/php-cs-fixer.cache')
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())

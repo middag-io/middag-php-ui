@@ -13,36 +13,41 @@ declare(strict_types=1);
 namespace Middag\Ui\Builder;
 
 use Closure;
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\BreadcrumbInterface;
 use Middag\Ui\Contract\InspectorDescriptorInterface;
-use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Contract\PageBuilderInterface;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\InspectorDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
-use Middag\Ui\Data\PageAction;
-use Middag\Ui\Data\PageContractData;
+use Middag\Ui\Data\Notification;
 use Middag\Ui\Data\PageMeta;
+use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\ActionIntent;
+use Middag\Ui\Enum\NotificationLevel;
+use Middag\Ui\PageContract;
 
 /**
- * Fluent builder for PageContractData (L3 API — ADR-807).
+ * Fluent builder for PageContract (L3 API — ADR-807).
  *
- * Produces a PageContractData from a chainable API.
+ * Produces a PageContract from a chainable API.
  *
  * Usage:
  *   PageBuilder::page('segments.index')
  *       ->title('Segments')
  *       ->layout('stack')
- *       ->region('content', [Block::dense_table(...)])
+ *       ->region('content', [BlockBuilder::denseTable(...)])
  *       ->build();
  *
  * @api
  */
 class PageBuilder implements PageBuilderInterface
 {
-    private string $title = '';
+    private string|Translatable $title = '';
 
-    private ?string $subtitle = null;
+    private string|Translatable|null $subtitle = null;
 
     private string $shell = 'product';
 
@@ -57,7 +62,7 @@ class PageBuilder implements PageBuilderInterface
     /** @var BreadcrumbInterface[] */
     private array $breadcrumbs = [];
 
-    /** @var PageActionInterface[] */
+    /** @var ActionInterface[] */
     private array $actions = [];
 
     private bool $isOverlay = false;
@@ -65,6 +70,9 @@ class PageBuilder implements PageBuilderInterface
     private ?array $helpData = null;
 
     private ?InspectorDescriptor $inspector = null;
+
+    /** @var Notification[] */
+    private array $notifications = [];
 
     private function __construct(
         private readonly string $key,
@@ -84,40 +92,38 @@ class PageBuilder implements PageBuilderInterface
      * Level 1: PageBuilder::crud(Segment::class)->build('index')
      * Level 2: PageBuilder::crud(Segment::class)->without('show')->columns([...])->build('index')
      */
-    public static function crud(string $entity_class): CrudBuilder
+    public static function crud(string $entityClass): CrudBuilder
     {
-        return CrudBuilder::for($entity_class);
+        return CrudBuilder::for($entityClass);
     }
 
     /**
-     * Create a PageAction (convenience factory, avoids importing PageAction directly).
+     * Create an Action (convenience factory, avoids importing Action directly).
      */
     public static function action(
         string $id,
-        string $label,
-        string $intent = 'secondary',
-        ?string $href = null,
-        ?string $method = null,
+        string|Translatable $label,
+        ActionTarget $target,
+        ActionIntent $intent = ActionIntent::SECONDARY,
         ?string $icon = null,
-    ): PageAction {
-        return new PageAction(
+    ): Action {
+        return new Action(
             id: $id,
             label: $label,
+            target: $target,
             intent: $intent,
-            href: $href,
-            method: $method,
             icon: $icon,
         );
     }
 
-    public function title(string $title): static
+    public function title(string|Translatable $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function subtitle(string $subtitle): static
+    public function subtitle(string|Translatable $subtitle): static
     {
         $this->subtitle = $subtitle;
 
@@ -189,7 +195,7 @@ class PageBuilder implements PageBuilderInterface
     /**
      * Set page-level actions.
      *
-     * @param PageActionInterface[] $actions
+     * @param ActionInterface[] $actions
      */
     public function actions(array $actions): static
     {
@@ -211,12 +217,12 @@ class PageBuilder implements PageBuilderInterface
     /**
      * Add contextual help data (rendered in the HelpPanel slide-out).
      */
-    public function help(string $title, string $body, ?string $learn_more = null): static
+    public function help(string $title, string $body, ?string $learnMore = null): static
     {
         $this->helpData = [
             'title' => $title,
             'body' => $body,
-            'learnMore' => $learn_more,
+            'learnMore' => $learnMore,
         ];
 
         return $this;
@@ -242,11 +248,53 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Build the PageContractData.
+     * Attach a notification (flash / toast) to the page.
      */
-    public function build(): PageContractData
+    public function notify(Notification $notification): static
     {
-        return new PageContractData(
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Attach a success notification.
+     */
+    public function notifySuccess(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::SUCCESS, $message, $title));
+    }
+
+    /**
+     * Attach an info notification.
+     */
+    public function notifyInfo(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::INFO, $message, $title));
+    }
+
+    /**
+     * Attach a warning notification.
+     */
+    public function notifyWarning(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::WARNING, $message, $title));
+    }
+
+    /**
+     * Attach an error notification.
+     */
+    public function notifyError(string|Translatable $message, string|Translatable|null $title = null): static
+    {
+        return $this->notify(new Notification(NotificationLevel::ERROR, $message, $title));
+    }
+
+    /**
+     * Build the PageContract.
+     */
+    public function build(): PageContract
+    {
+        return new PageContract(
             shell: $this->shell,
             page: new PageMeta(
                 key: $this->key,
@@ -260,16 +308,17 @@ class PageBuilder implements PageBuilderInterface
                 regions: $this->regions,
                 meta: $this->layoutMeta,
             ),
+            notifications: $this->notifications,
         );
     }
 
     /**
-     * Build Inertia props array (contract + overlay + help as separate props).
+     * Build a props array (contract + overlay + help as separate props).
      *
      * Use this when you need overlay/help metadata alongside the contract.
-     * The PageContractData itself remains unchanged (@api safe).
+     * The PageContract itself remains unchanged (@api safe).
      *
-     * @return array{contract: PageContractData, overlay?: bool, help?: array, inspector?: InspectorDescriptorInterface}
+     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptorInterface}
      */
     public function toProps(): array
     {

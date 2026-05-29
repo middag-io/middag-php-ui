@@ -12,8 +12,12 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Builder;
 
+use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Builder\RegionBuilder;
 use Middag\Ui\Contract\BlockDescriptorInterface;
+use Middag\Ui\Data\ChartSeries;
+use Middag\Ui\Data\Tab;
+use Middag\Ui\Enum\ChartType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -33,27 +37,60 @@ final class RegionBuilderTest extends TestCase
     }
 
     #[Test]
+    public function testChartReturnsSelfAndAppendsBlock(): void
+    {
+        $builder = new RegionBuilder();
+
+        self::assertSame($builder, $builder->chart('c', ChartType::AREA, [new ChartSeries('A', [1.0])]));
+
+        $blocks = $builder->all();
+        self::assertCount(1, $blocks);
+        self::assertSame('chart', $blocks[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testTabsReturnsSelfAndAppendsBlock(): void
+    {
+        $builder = new RegionBuilder();
+
+        self::assertSame($builder, $builder->tabs('tb', [new Tab('a', 'A')]));
+
+        $blocks = $builder->all();
+        self::assertCount(1, $blocks);
+        self::assertSame('tabs', $blocks[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
     public function testMetricCard(): void
     {
         $builder = new RegionBuilder();
-        $builder->metricCard('m', 'Revenue');
+        $builder->metricCard('m', 1200, 'Revenue');
 
         $blocks = $builder->all();
 
         self::assertCount(1, $blocks);
-        self::assertSame('metric_card', $blocks[0]->jsonSerialize()['type']);
+
+        $payload = $blocks[0]->jsonSerialize();
+        self::assertSame('metric_card', $payload['type']);
+        // Same shape as BlockBuilder::metricCard (value/label), no forced title.
+        self::assertSame(1200, $payload['data']['value']);
+        self::assertSame('Revenue', $payload['data']['label']);
     }
 
     #[Test]
     public function testDenseTable(): void
     {
         $builder = new RegionBuilder();
-        $builder->denseTable('t', 'Users');
+        $builder->denseTable('t', ['name'], [['name' => 'Ada']]);
 
         $blocks = $builder->all();
 
         self::assertCount(1, $blocks);
-        self::assertSame('dense_table', $blocks[0]->jsonSerialize()['type']);
+
+        $payload = $blocks[0]->jsonSerialize();
+        self::assertSame('dense_table', $payload['type']);
+        self::assertSame(['name'], $payload['data']['columns']);
+        self::assertSame([['name' => 'Ada']], $payload['data']['rows']);
     }
 
     #[Test]
@@ -61,11 +98,25 @@ final class RegionBuilderTest extends TestCase
     {
         $builder = new RegionBuilder();
         $builder
-            ->metricCard('m1')
-            ->metricCard('m2')
-            ->denseTable('t1');
+            ->metricCard('m1', 1, 'A')
+            ->metricCard('m2', 2, 'B')
+            ->denseTable('t1', []);
 
         self::assertCount(3, $builder->all());
+    }
+
+    #[Test]
+    public function testRegionBuilderShapeMatchesBlockBuilder(): void
+    {
+        // The whole point of #2: same type via RegionBuilder or BlockBuilder
+        // must produce an identical descriptor (RegionBuilder delegates).
+        $region = (new RegionBuilder())->metricCard('m', 1200, 'Revenue', delta: '+5%');
+        $factory = BlockBuilder::metricCard('m', 1200, 'Revenue', '+5%');
+
+        self::assertSame(
+            $factory->jsonSerialize(),
+            $region->all()[0]->jsonSerialize(),
+        );
     }
 
     #[Test]
@@ -90,12 +141,93 @@ final class RegionBuilderTest extends TestCase
     {
         $builder = new RegionBuilder();
         $builder
-            ->metricCard('m')
-            ->denseTable('t')
+            ->metricCard('m', 1, 'A')
+            ->denseTable('t', [])
             ->block('custom', 'c');
 
         foreach ($builder->all() as $block) {
             self::assertInstanceOf(BlockDescriptorInterface::class, $block);
         }
+    }
+
+    #[Test]
+    public function testStatusStrip(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->statusStrip('s', [], 'positive');
+
+        self::assertSame('status_strip', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testDetailPanel(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->detailPanel('d', []);
+
+        self::assertSame('detail_panel', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testActivityTimeline(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->activityTimeline('a', [], hasMore: true, loadMoreHref: '/more');
+
+        self::assertSame('activity_timeline', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testEmptyState(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->emptyState('e', 'first-use', 'Nothing here');
+
+        self::assertSame('empty_state', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testFormPanel(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->formPanel('f', '/submit', 'PUT', steps: []);
+
+        self::assertSame('form_panel', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testMarkdownPanel(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->markdownPanel('md', '# Title', 400);
+
+        self::assertSame('markdown_panel', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testCardGrid(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->cardGrid('cg', ['name'], [['name' => 'Ada']], 'compact');
+
+        self::assertSame('card_grid', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testActionGrid(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->actionGrid('ag', [], ['success' => true, 'message' => 'Done']);
+
+        self::assertSame('action_grid', $builder->all()[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testLinkList(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->linkList('ll', [['label' => 'Home', 'href' => '/']]);
+
+        self::assertSame('link_list', $builder->all()[0]->jsonSerialize()['type']);
     }
 }

@@ -12,8 +12,11 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\BlockDescriptor;
-use Middag\Ui\Data\PageAction;
+use Middag\Ui\Data\PollConfig;
+use Middag\Ui\Data\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -91,9 +94,40 @@ final class BlockDescriptorTest extends TestCase
     }
 
     #[Test]
+    public function testIncludesTranslatableTitle(): void
+    {
+        $block = new BlockDescriptor(
+            type: 'dense_table',
+            key: 'test',
+            data: [],
+            title: Translatable::of('block_title', 'local_x'),
+        );
+
+        $payload = $block->jsonSerialize();
+
+        self::assertSame(['key' => 'block_title', 'domain' => 'local_x'], $payload['title']);
+    }
+
+    #[Test]
+    public function testIncludesPollWhenSet(): void
+    {
+        $block = new BlockDescriptor(
+            type: 'dense_table',
+            key: 'test',
+            data: [],
+            poll: new PollConfig(endpoint: '/poll', intervalMs: 2000),
+        );
+
+        $payload = $block->jsonSerialize();
+
+        self::assertArrayHasKey('poll', $payload);
+        self::assertSame(2000, $payload['poll']['intervalMs']);
+    }
+
+    #[Test]
     public function testSerializesActions(): void
     {
-        $action = new PageAction(id: 'a', label: 'A', intent: 'primary');
+        $action = new Action(id: 'a', label: 'A', target: ActionTarget::link('/a'));
 
         $block = new BlockDescriptor(
             type: 'dense_table',
@@ -108,7 +142,7 @@ final class BlockDescriptorTest extends TestCase
         self::assertCount(1, $payload['actions']);
         self::assertSame('a', $payload['actions'][0]['id']);
         self::assertSame('A', $payload['actions'][0]['label']);
-        self::assertSame('primary', $payload['actions'][0]['intent']);
+        self::assertSame('link', $payload['actions'][0]['target']['kind']);
     }
 
     #[Test]

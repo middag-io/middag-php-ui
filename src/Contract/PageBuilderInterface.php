@@ -33,7 +33,7 @@ interface PageBuilderInterface
 
     public function overlay(): static;
 
-    public function help(string $title, string $body, ?string $learn_more = null): static;
+    public function help(string $title, string $body, ?string $learnMore = null): static;
 
     public function inspector(string $endpoint, int $width = 440): static;
 

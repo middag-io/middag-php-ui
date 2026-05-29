@@ -12,25 +12,32 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Data;
 
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BlockDescriptorInterface;
-use Middag\Ui\Contract\PageActionInterface;
 
+/**
+ * A typed UI block: a `type` discriminator plus its `data` payload and
+ * optional title, actions, meta, and poll config.
+ *
+ * @api
+ */
 readonly class BlockDescriptor implements BlockDescriptorInterface
 {
     /**
-     * @param array<string, mixed>       $data
-     * @param array<PageActionInterface> $actions
-     * @param array<string, mixed>       $meta
+     * @param array<string, mixed>   $data
+     * @param array<ActionInterface> $actions
+     * @param array<string, mixed>   $meta
      */
     public function __construct(
         public string $type,
         public string $key,
         public array $data,
         public ?string $variant = null,
-        public ?string $title = null,
-        public ?string $subtitle = null,
+        public string|Translatable|null $title = null,
+        public string|Translatable|null $subtitle = null,
         public array $actions = [],
         public array $meta = [],
+        public ?PollConfig $poll = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -47,22 +54,26 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
         }
 
         if ($this->title !== null) {
-            $payload['title'] = $this->title;
+            $payload['title'] = Label::serializeNullable($this->title);
         }
 
         if ($this->subtitle !== null) {
-            $payload['subtitle'] = $this->subtitle;
+            $payload['subtitle'] = Label::serializeNullable($this->subtitle);
         }
 
         if ($this->actions !== []) {
             $payload['actions'] = array_map(
-                static fn (PageActionInterface $action): array => $action->jsonSerialize(),
+                static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->actions,
             );
         }
 
         if ($this->meta !== []) {
             $payload['meta'] = $this->meta;
+        }
+
+        if ($this->poll instanceof PollConfig) {
+            $payload['poll'] = $this->poll->jsonSerialize();
         }
 
         return $payload;

@@ -14,28 +14,43 @@ namespace Middag\Ui\Data;
 
 use Middag\Ui\Contract\PageResourcesInterface;
 
+/**
+ * Shared page resources: user preferences, capabilities, feature flags,
+ * identity, and branding.
+ *
+ * @api
+ */
 readonly class PageResources implements PageResourcesInterface
 {
     /**
-     * @param array<string, mixed> $auth
-     * @param array<string, bool>  $capabilities
-     * @param array<string, bool>  $feature_flags
+     * @param array<string, bool> $capabilities
+     * @param array<string, bool> $featureFlags
      */
     public function __construct(
-        public array $auth = [],
+        public UserPreferences $preferences = new UserPreferences(),
         public array $capabilities = [],
-        public array $feature_flags = [],
-        public string $locale = 'pt-BR',
+        public array $featureFlags = [],
+        public ?Identity $user = null,
+        public ?Branding $branding = null,
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        return [
-            'auth' => $this->auth,
+        $payload = [
+            'preferences' => $this->preferences->jsonSerialize(),
             'capabilities' => $this->capabilities,
-            'featureFlags' => $this->feature_flags,
-            'locale' => $this->locale,
+            'featureFlags' => $this->featureFlags,
         ];
+
+        if ($this->user instanceof Identity) {
+            $payload['user'] = $this->user->jsonSerialize();
+        }
+
+        if ($this->branding instanceof Branding) {
+            $payload['branding'] = $this->branding->jsonSerialize();
+        }
+
+        return $payload;
     }
 }

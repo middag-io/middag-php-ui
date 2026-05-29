@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Contract;
 
 use Closure;
+use Middag\Ui\Data\Translatable;
 
 /** @api */
 interface CrudBuilderInterface
@@ -29,13 +30,17 @@ interface CrudBuilderInterface
 
     public function pageActions(array $actions): static;
 
-    public function form(string $form_class): static;
+    public function filters(array $filters): static;
+
+    public function searchable(bool $searchable = true): static;
 
     public function perPage(int $count): static;
 
     public function sort(string $column, string $direction = 'desc'): static;
 
-    public function title(string $title): static;
+    public function i18n(string $domain, string $verbs = 'ui'): static;
+
+    public function label(string|Translatable $singular, string|Translatable|null $plural = null): static;
 
     public function layout(string $template): static;
 
