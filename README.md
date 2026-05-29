@@ -84,6 +84,39 @@ return $this->inertia('Page', PageBuilder::page('orders.create')
 
 ---
 
+## Partial Fragments (server push)
+
+A page can be served two ways, and both share one envelope contract (`ContractEnvelopeInterface`, carrying the same `version`):
+
+1. **Full page in PHP** — `PageContract` declares the whole page (shell, layout, regions, blocks). The default.
+2. **Page owned by the client, partial props from PHP** — when React owns the layout, the server returns a `Fragment`: one ready, self-describing slice of the contract (a block, a table, a region update, notifications) plus its routing `kind`. A fragment is a node of the contract with its own header, not a smaller page.
+
+```php
+use Middag\Ui\Data\Fragment;
+use Middag\Ui\Data\RegionUpdate;
+
+// after a filter/paginate, swap a region's content without reloading the page
+$fragment = Fragment::region(RegionUpdate::replace('orders', $block1, $block2));
+// {version: '1', kind: 'region', payload: {region: 'orders', mode: 'replace', blocks: [...]}}
+```
+
+`RegionUpdate` modes: `replace` / `append` / `prepend` / `remove` (by key) / `update` (match by key).
+
+Mutations return an `ActionResult`, which carries both update strategies — push and pull:
+
+```php
+use Middag\Ui\Data\ActionResult;
+
+return new ActionResult(
+    fragments: [Fragment::table($tableConfig)],   // push: server already built the fresh piece
+    refreshBlocks: ['sidebar'],                    // pull: client re-fetches these keys itself
+);
+```
+
+A `ResourcePatch` rides along on a `Fragment` or `ActionResult` to push a partial change to preferences / capabilities / feature flags without resending the whole `PageResources`.
+
+---
+
 ## Block Types
 
 Static factories in `Block::`:

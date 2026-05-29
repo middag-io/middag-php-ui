@@ -27,8 +27,6 @@ use Middag\Ui\Data\PageResources;
  */
 readonly class PageContract implements PageContractInterface
 {
-    public const VERSION = '1';
-
     /**
      * @param Notification[] $notifications
      */

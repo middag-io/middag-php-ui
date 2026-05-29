@@ -12,7 +12,5 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Contract;
 
-use JsonSerializable;
-
 /** @api */
-interface PageContractInterface extends JsonSerializable {}
+interface PageContractInterface extends ContractEnvelopeInterface {}

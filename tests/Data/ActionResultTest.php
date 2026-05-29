@@ -13,7 +13,10 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Data;
 
 use Middag\Ui\Data\ActionResult;
+use Middag\Ui\Data\BlockDescriptor;
+use Middag\Ui\Data\Fragment;
 use Middag\Ui\Data\Notification;
+use Middag\Ui\Data\ResourcePatch;
 use Middag\Ui\Enum\NotificationLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -57,5 +60,27 @@ final class ActionResultTest extends TestCase
         self::assertSame('/back', $payload['redirect']);
         self::assertSame(['table'], $payload['refreshBlocks']);
         self::assertSame(['name' => 'Required'], $payload['errors']);
+    }
+
+    #[Test]
+    public function testOmitsPushFieldsByDefault(): void
+    {
+        $payload = (new ActionResult())->jsonSerialize();
+
+        self::assertArrayNotHasKey('fragments', $payload);
+        self::assertArrayNotHasKey('resources', $payload);
+    }
+
+    #[Test]
+    public function testSerializesPushFields(): void
+    {
+        $payload = (new ActionResult(
+            fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
+            resources: new ResourcePatch(capabilities: ['user:edit' => true]),
+        ))->jsonSerialize();
+
+        self::assertCount(1, $payload['fragments']);
+        self::assertSame('block', $payload['fragments'][0]['kind']);
+        self::assertSame(['user:edit' => true], $payload['resources']['capabilities']);
     }
 }

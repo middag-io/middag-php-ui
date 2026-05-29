@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests;
 
+use Middag\Ui\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Data\BlockDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
 use Middag\Ui\Data\Notification;
@@ -130,5 +131,19 @@ final class PageContractTest extends TestCase
     public function testVersionConstant(): void
     {
         self::assertSame('1', PageContract::VERSION);
+    }
+
+    #[Test]
+    public function testSharesEnvelopeVersionWithInterface(): void
+    {
+        self::assertSame(ContractEnvelopeInterface::VERSION, PageContract::VERSION);
+
+        $contract = new PageContract(
+            shell: 'product',
+            page: new PageMeta(key: 'home', title: 'Home'),
+            layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
+        );
+
+        self::assertInstanceOf(ContractEnvelopeInterface::class, $contract);
     }
 }
