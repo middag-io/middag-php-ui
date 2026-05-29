@@ -38,7 +38,7 @@ use Middag\Ui\PageContract;
  *   PageBuilder::page('segments.index')
  *       ->title('Segments')
  *       ->layout('stack')
- *       ->region('content', [BlockBuilder::dense_table(...)])
+ *       ->region('content', [BlockBuilder::denseTable(...)])
  *       ->build();
  *
  * @api
@@ -313,7 +313,7 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Build Inertia props array (contract + overlay + help as separate props).
+     * Build a props array (contract + overlay + help as separate props).
      *
      * Use this when you need overlay/help metadata alongside the contract.
      * The PageContract itself remains unchanged (@api safe).

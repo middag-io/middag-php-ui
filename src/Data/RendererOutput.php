@@ -17,8 +17,8 @@ use Middag\Ui\Enum\RenderTarget;
 /**
  * Output of a form renderer. Carries either an HTML body or structured props.
  *
- * Produced exclusively by form_renderer_interface implementations.
- * Consumed by abstract_controller::render_form() to produce the HTTP response.
+ * Produced by FormRendererInterface implementations and consumed by the host
+ * controller layer to produce its response.
  *
  * @api
  */

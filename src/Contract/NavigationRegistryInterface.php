@@ -19,7 +19,7 @@ use Closure;
  *
  * Extensions register groups (N1), sections (N2), and items (N3) during boot().
  * The registry builds the full tree, filters by capability, resolves the active
- * state from the current route, and serializes for the React SidebarNav.
+ * state from the current route, and serializes for the client navigation component.
  *
  * @api
  */
@@ -30,7 +30,7 @@ interface NavigationRegistryInterface
      *
      * @param string      $key    Unique key (e.g. 'audience', 'automation')
      * @param string      $label  Display label
-     * @param null|string $icon   Lucide icon name
+     * @param null|string $icon   Client icon-set name
      * @param int         $weight Sort order (lower = higher)
      */
     public function group(string $key, string $label, ?string $icon = null, int $weight = 50): static;
@@ -42,7 +42,7 @@ interface NavigationRegistryInterface
      *
      * @param string      $key    Dot-notation key
      * @param string      $label  Display label
-     * @param null|string $icon   Lucide icon name
+     * @param null|string $icon   Client icon-set name
      * @param int         $weight Sort order within parent group
      */
     public function section(string $key, string $label, ?string $icon = null, int $weight = 50): static;
@@ -54,9 +54,9 @@ interface NavigationRegistryInterface
      *
      * @param string      $key          Dot-notation key
      * @param string      $label        Display label
-     * @param string      $route        Route name (resolved to URL via url_generator)
+     * @param string      $route        Route name (resolved to a URL by the host)
      * @param array       $route_params Route parameters
-     * @param null|string $icon         Lucide icon name
+     * @param null|string $icon         Client icon-set name
      * @param int         $weight       Sort order within parent section
      */
     public function item(string $key, string $label, string $route, array $route_params = [], ?string $icon = null, int $weight = 50): static;

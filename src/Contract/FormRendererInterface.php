@@ -18,14 +18,14 @@ use Middag\Ui\Enum\RenderTarget;
 /**
  * Adapter contract — produces a RendererOutput for one RenderTarget (ADR-805).
  *
- * Host adapter implementations are registered in the renderer_registry,
+ * Adapter implementations are registered with the host renderer registry,
  * which selects the correct adapter at render time.
  *
  * @api
  */
 interface FormRendererInterface
 {
-    /** Identity token used by renderer_registry to route form rendering. */
+    /** Identity token used to route form rendering to the matching adapter. */
     public static function target(): RenderTarget;
 
     public function render(FormInterface $form): RendererOutput;

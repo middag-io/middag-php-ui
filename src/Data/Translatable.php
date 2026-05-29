@@ -18,11 +18,10 @@ use JsonSerializable;
  * Structured i18n intent for a UI label/title/message.
  *
  * The library never resolves translations. It carries a translation key plus
- * the host i18n namespace (`domain`); the client resolves it with the host
- * tool (Moodle JS `core/str`, WordPress `wp.i18n`, …) reading user
- * preferences. Entity data (names, numbers) stays a raw `string`, never a
- * Translatable — the client distinguishes by type (object → resolve, string
- * → print literally).
+ * the host i18n namespace (`domain`); the client resolves it with the host's
+ * own i18n tool, reading user preferences. Entity data (names, numbers) stays
+ * a raw `string`, never a Translatable — the client distinguishes by type
+ * (object → resolve, string → print literally).
  *
  * @api
  */
@@ -30,8 +29,8 @@ final readonly class Translatable implements JsonSerializable
 {
     /**
      * @param string               $key    Translation key
-     * @param string               $domain Host i18n namespace (Moodle component / WordPress textdomain)
-     * @param array<string, mixed> $params Placeholder values (Moodle `$a`, WordPress printf args)
+     * @param string               $domain Host i18n namespace (the host's translation grouping)
+     * @param array<string, mixed> $params Placeholder values for interpolation
      */
     public function __construct(
         public string $key,

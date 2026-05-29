@@ -18,7 +18,7 @@ use JsonSerializable;
  * A node in the navigation tree (ADR-807).
  *
  * Can represent any level: group (N1), section (N2), or item (N3).
- * Serialized for the React SidebarNav component via Inertia shared props.
+ * Serialized for the client navigation component.
  *
  * @api
  */
@@ -27,7 +27,7 @@ readonly class NavigationNode implements JsonSerializable
     /**
      * @param string      $key          Unique dot-notation key (e.g. 'audience.segments.index')
      * @param string      $label        Display label
-     * @param null|string $icon         Lucide icon name
+     * @param null|string $icon         Client icon-set name
      * @param null|string $href         URL (leaf nodes only)
      * @param null|string $badge        Badge value (lazy-resolved before serialization)
      * @param bool        $active       Whether this node is active (server-resolved)

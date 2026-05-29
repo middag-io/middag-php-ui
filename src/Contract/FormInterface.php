@@ -15,10 +15,10 @@ namespace Middag\Ui\Contract;
 use Middag\Ui\Data\FormState;
 
 /**
- * Contract for forms. Implemented by abstract_form (framework) and base/form (extensions).
+ * Contract for forms. Implemented by form classes in the framework/adapter layers.
  *
  * Covers the full lifecycle: schema declaration → hydration → validation → submission.
- * The resolver chain hydrates and validates the form before the controller executes (ADR-802).
+ * The host resolver chain hydrates and validates the form before the controller executes (ADR-802).
  *
  * @api
  */

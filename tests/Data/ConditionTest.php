@@ -12,11 +12,13 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use JsonSerializable;
 use Middag\Ui\Data\Condition;
 use Middag\Ui\Enum\ConditionOperator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * @internal
@@ -24,6 +26,15 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Condition::class)]
 final class ConditionTest extends TestCase
 {
+    #[Test]
+    public function testIsNotJsonSerializable(): void
+    {
+        // Boundary object (ADR): renderers map it manually; it must not reach the wire.
+        self::assertFalse(
+            (new ReflectionClass(Condition::class))->implementsInterface(JsonSerializable::class),
+        );
+    }
+
     #[Test]
     public function testConstructWithAllFields(): void
     {

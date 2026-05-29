@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use JsonSerializable;
 use Middag\Ui\Data\Condition;
 use Middag\Ui\Data\FieldConstraints;
 use Middag\Ui\Data\FieldDefinition;
@@ -35,6 +36,16 @@ final class FieldDefinitionTest extends TestCase
         $ref = new ReflectionClass(FieldDefinition::class);
 
         self::assertTrue($ref->isReadOnly());
+    }
+
+    #[Test]
+    public function testIsNotJsonSerializable(): void
+    {
+        // Boundary object (ADR): renderers map it manually. It must NOT serialize
+        // to the wire, or json_encode would leak its raw internal shape.
+        self::assertFalse(
+            (new ReflectionClass(FieldDefinition::class))->implementsInterface(JsonSerializable::class),
+        );
     }
 
     #[Test]

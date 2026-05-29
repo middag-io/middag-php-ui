@@ -3,7 +3,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![PHP](https://img.shields.io/badge/php-%5E8.2-777BB4.svg)](https://www.php.net/)
 
-Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. Produces `PageContractData` (JSON) consumed by `@middag-io/react` via Inertia or any transport layer.
+Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. Produces `PageContract` (JSON) consumed by `@middag-io/react` via Inertia or any transport layer.
 
 **Zero external dependencies.** PHP 8.2+ only.
 
@@ -11,7 +11,7 @@ Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. 
 
 ## What It Does
 
-Pages in the MIDDAG stack are described by a `PageContractData` — a JSON document declaring shell, page metadata, layout template, regions, and blocks. This library provides the PHP side: builders that produce that document. The React side (`@middag-io/react`) consumes it to render the actual UI.
+Pages in the MIDDAG stack are described by a `PageContract` — a JSON document declaring shell, page metadata, layout template, regions, and blocks. This library provides the PHP side: builders that produce that document. The React side (`@middag-io/react`) consumes it to render the actual UI.
 
 This means PHP never renders HTML for pages — it declares structure, and React renders.
 
@@ -36,14 +36,22 @@ $contract = PageBuilder::crud(Invoice::class)->build('index', [
 Customize columns, actions, layout without leaving the convention:
 
 ```php
-$contract = PageBuilder::crud(Invoice::class)
+$contract = PageBuilder::crud(Invoice::class, slug: 'invoices')
     ->without('show')
     ->columns(['number', 'status', 'amount', 'due_date'])
     ->column('status', fn (array &$col) => $col['variant'] = 'badge')
     ->sort('due_date', 'asc')
-    ->per_page(50)
+    ->perPage(50)
+    ->i18n(domain: 'local_app')          // titles as i18n intent; falls back to literal nouns
+    ->label('Invoice', 'Invoices')        // or override the noun explicitly
     ->build('index', ['rows' => $invoices]);
 ```
+
+The class basename is treated as a **singular** noun. The library never
+fabricates a plural: the slug defaults to the singular, and `for(class, slug:)`
+overrides it for a plural URL. Titles resolve via `->label()` (explicit) →
+`<key>_plural` i18n convention → singular fallback; create/edit verbs are
+emitted as `crud_create`/`crud_edit` intents in a shared UI domain.
 
 ### Level 3 — Free Composition (PageBuilder)
 
@@ -56,12 +64,14 @@ $contract = PageBuilder::page('invoices.show')
     ->shell('product')
     ->layout('split')
     ->breadcrumbs(fn ($bc) => $bc->item('Invoices', '/invoices')->current('#1234'))
-    ->actions([PageBuilder::action('pay', 'Mark Paid', 'primary', '/invoices/1234/pay', 'post')])
+    ->actions([
+        PageBuilder::action('pay', 'Mark Paid', ActionTarget::request('/invoices/1234/pay'), ActionIntent::PRIMARY),
+    ])
     ->region('content', [
-        Block::detail_panel('invoice.detail', $sections),
+        BlockBuilder::detailPanel('invoice.detail', $sections),
     ])
     ->region('aside', [
-        Block::activity_timeline('invoice.activity', $groups),
+        BlockBuilder::activityTimeline('invoice.activity', $groups),
     ])
     ->build();
 ```
@@ -78,8 +88,8 @@ return $this->inertia('Page', PageBuilder::page('orders.create')
     ->overlay()
     ->help('Creating an order', 'Fill in the details below.')
     ->inspector('/api/products/{id}')
-    ->to_props());
-// to_props() returns: ['contract' => ..., 'overlay' => true, 'help' => [...], 'inspector' => ...]
+    ->toProps());
+// toProps() returns: ['contract' => ..., 'overlay' => true, 'help' => [...], 'inspector' => ...]
 ```
 
 ---
@@ -119,29 +129,31 @@ A `ResourcePatch` rides along on a `Fragment` or `ActionResult` to push a partia
 
 ## Block Types
 
-Static factories in `Block::`:
+Static factories in `BlockBuilder::`:
 
-| Method | React Component |
-|---|---|
-| `Block::dense_table($key, $columns, $rows)` | Dense data grid |
-| `Block::form_panel($key, $action, $method, $schema, $values)` | Form panel |
-| `Block::detail_panel($key, $sections)` | Read-only detail view |
-| `Block::metric_card($key, $value, $label, $delta, $icon, $href)` | KPI card |
-| `Block::empty_state($key, $variant, $description, $cta)` | Empty state |
-| `Block::status_strip($key, $items, $tone)` | Status bar |
-| `Block::activity_timeline($key, $groups, $has_more, $load_more_href)` | Activity feed |
-| `Block::markdown_panel($key, $content, $max_height)` | Markdown body |
-| `Block::card_grid($key, $columns, $rows, $variant)` | Card grid |
-| `Block::action_grid($key, $items, $flash)` | Action card grid |
-| `Block::link_list($key, $items)` | Link list |
+| Method                                                                   | React Component        |
+|--------------------------------------------------------------------------|------------------------|
+| `BlockBuilder::denseTable($key, $columns, $rows)`                        | Dense data grid        |
+| `BlockBuilder::formPanel($key, $action, $method, $schema, $values)`      | Form panel             |
+| `BlockBuilder::detailPanel($key, $sections)`                             | Read-only detail view  |
+| `BlockBuilder::metricCard($key, $value, $label, $delta, $icon, $href)`   | KPI card               |
+| `BlockBuilder::emptyState($key, $variant, $description, $cta)`           | Empty state            |
+| `BlockBuilder::statusStrip($key, $items, $tone)`                         | Status bar             |
+| `BlockBuilder::activityTimeline($key, $groups, $hasMore, $loadMoreHref)` | Activity feed          |
+| `BlockBuilder::markdownPanel($key, $content, $maxHeight)`                | Markdown body          |
+| `BlockBuilder::cardGrid($key, $columns, $rows, $variant)`                | Card grid              |
+| `BlockBuilder::actionGrid($key, $items, $flash)`                         | Action card grid       |
+| `BlockBuilder::linkList($key, $items)`                                   | Link list              |
+| `BlockBuilder::chart($key, $type, $series, ...)`                         | Chart (ChartType enum) |
+| `BlockBuilder::tabs($key, $tabs)`                                        | Tabs container         |
 
 Or via `RegionBuilder` fluent API inside a `->region()` closure:
 
 ```php
 ->region('content', function ($r) {
-    $r->metric_card('revenue', 'Revenue', ['value' => 42000])
-      ->dense_table('orders', 'Orders', ['rows' => $rows])
-      ->empty_state('no-results', ['variant' => 'filtered']);
+    $r->metricCard('revenue', 'Revenue', ['value' => 42000])
+      ->denseTable('orders', 'Orders', ['rows' => $rows])
+      ->emptyState('no-results', ['variant' => 'filtered']);
 })
 ```
 
@@ -171,22 +183,22 @@ The form system follows ADR-806. This library provides contracts and value objec
 
 ### Contracts
 
-| Interface | Role |
-|---|---|
-| `FormInterface` | `schema()` → `hydrate()` → `validate()` → `validated()` |
-| `FieldInterface` | `to_definition(): FieldDefinition` — produces the boundary object |
-| `FormRendererInterface` | `target(): RenderTarget` + `render(Form): RendererOutput` |
-| `ConditionInterface` | `to_condition(): Condition` |
-| `LayoutElementInterface` | `id()` + `children()` — Section and Group implement this |
+| Interface                | Role                                                             |
+|--------------------------|------------------------------------------------------------------|
+| `FormInterface`          | `schema()` → `hydrate()` → `validate()` → `validated()`          |
+| `FieldInterface`         | `toDefinition(): FieldDefinition` — produces the boundary object |
+| `FormRendererInterface`  | `target(): RenderTarget` + `render(Form): RendererOutput`        |
+| `ConditionInterface`     | `toCondition(): Condition`                                       |
+| `LayoutElementInterface` | `id()` + `children()` — Section and Group implement this         |
 
 ### Value Objects
 
-| Class | Notes |
-|---|---|
-| `FieldDefinition` | Immutable boundary object between DSL and renderers. No `JsonSerializable` — renderers map manually. |
-| `Condition` | `field + operator (ConditionOperator enum) + value + kind`. Kinds: `visible_when`, `hidden_when`, `required_when`, `disabled_when`. |
-| `FormState` | Mutable via clone-based `with_values()` / `with_errors()`. Carries `values`, `errors`, `submitted`. |
-| `RendererOutput` | Static factories `::html()` and `::props()` for the two render targets. |
+| Class             | Notes                                                                                                                               |
+|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `FieldDefinition` | Immutable boundary object between DSL and renderers. No `JsonSerializable` — renderers map manually.                                |
+| `Condition`       | `field + operator (ConditionOperator enum) + value + kind`. Kinds: `visible_when`, `hidden_when`, `required_when`, `disabled_when`. |
+| `FormState`       | Immutable readonly VO. `withValues()` / `withErrors()` return a new instance. Carries `values`, `errors`, `submitted`.              |
+| `RendererOutput`  | Static factories `::html()` and `::props()` for the two render targets.                                                             |
 
 ### Layout Primitives
 
@@ -198,7 +210,9 @@ $section = Section::of('personal')
 
 ### Field Types (FieldType enum)
 
-20 types: `TEXT`, `TEXTAREA`, `PASSWORD`, `EMAIL`, `URL`, `INT`, `FLOAT`, `SELECT`, `MULTISELECT`, `RADIO`, `CHECKBOX`, `SWITCH`, `DATE`, `DATETIME`, `DURATION`, `FILE`, `ENTITY_PICKER`, `HIDDEN`, `STATIC`, `HEADER`.
+A closed backed enum of field types (`TEXT`, `TEXTAREA`, `SELECT`, `DATE`,
+`RICHTEXT`, `TIME`, `AUTOCOMPLETE`, `TAGS`, …) — see `src/Enum/FieldType.php`
+for the full catalogue.
 
 Adding a type requires: ADR amendment + field class + `MformFieldMapper` case + `InertiaFieldMapper` case + Vue component.
 
@@ -211,26 +225,15 @@ Fluent API for producing `TableConfig` consumed by dense table blocks:
 ```php
 $config = TableBuilder::make()
     ->column('name', 'Name', ['sortable' => true, 'searchable' => true])
-    ->column('status', 'Status', ['type' => 'select', 'options' => ['active' => 'Active']])
-    ->column('amount', 'Amount', ['sortable' => true, 'type' => 'number'])
-    ->filter('status', 'Status', 'select', ['active' => 'Active', 'inactive' => 'Inactive'])
-    ->action('export', 'Export CSV', 'download')
-    ->with_options(['defaultSort' => 'name', 'defaultSortDir' => 'asc'])
+    ->column('amount', 'Amount', ['sortable' => true, 'format' => ValueFormat::CURRENCY, 'formatOptions' => ['currency' => 'BRL']])
+    ->filter('status', 'Status', FilterType::SELECT, [
+        ['value' => 'active', 'label' => 'Active'],
+        ['value' => 'inactive', 'label' => 'Inactive'],
+    ])
+    ->rowAction(PageBuilder::action('edit', 'Edit', ActionTarget::link('/invoices/{id}/edit')))
+    ->bulkAction(PageBuilder::action('delete', 'Delete', ActionTarget::request('/invoices/bulk/delete'), ActionIntent::DANGER))
+    ->options(new TableOptions(perPage: 25, sortColumn: 'name', selectable: true))
     ->build();
-```
-
----
-
-## CRUD Convention Resolver
-
-Static helpers for deriving CRUD conventions from entity class names:
-
-```php
-CrudConventionResolver::slug(Invoice::class);        // 'invoices'
-CrudConventionResolver::title(Invoice::class);       // 'Invoices'
-CrudConventionResolver::singular(Invoice::class);    // 'Invoice'
-CrudConventionResolver::columns(Invoice::class);     // public props excl. id, timestamps
-CrudConventionResolver::capability(Invoice::class);  // 'local/middag:manage_invoice'
 ```
 
 ---
