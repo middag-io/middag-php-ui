@@ -60,7 +60,7 @@ interface BlockInterface
     public function setAttribute(string $key, string $value): void;
 
     /**
-     * Render the block using the associated widget + template system.
+     * Render the block using the associated widget and template system.
      *
      * @return string Rendered HTML fragment
      */

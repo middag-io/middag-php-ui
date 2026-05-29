@@ -26,12 +26,11 @@ use Middag\Ui\Contract\LayoutElementInterface;
 final readonly class Section implements LayoutElementInterface
 {
     /**
-     * @param null|array{key: string, component: string}        $label
      * @param array<int, FieldInterface|LayoutElementInterface> $children
      */
     private function __construct(
         private string $id,
-        private ?array $label = null,
+        private string|Translatable|null $label = null,
         private array $children = [],
     ) {}
 
@@ -40,9 +39,9 @@ final readonly class Section implements LayoutElementInterface
         return new self($id);
     }
 
-    public function label(string $key, string $component = ''): self
+    public function label(string|Translatable $label): self
     {
-        return new self($this->id, ['key' => $key, 'component' => $component], $this->children);
+        return new self($this->id, $label, $this->children);
     }
 
     public function fields(FieldInterface|LayoutElementInterface ...$items): self
@@ -55,10 +54,16 @@ final readonly class Section implements LayoutElementInterface
         return $this->id;
     }
 
-    /** @return null|array{key: string, component: string} */
-    public function labelData(): ?array
+    /**
+     * The serialized label: a Translatable's `{key, domain, params?}` payload,
+     * a raw literal string, or null when unset. Aligned with every other VO
+     * label via {@see Label::serialize}.
+     *
+     * @return null|array<string, mixed>|string
+     */
+    public function labelData(): array|string|null
     {
-        return $this->label;
+        return Label::serializeNullable($this->label);
     }
 
     /** @return array<int, FieldInterface|LayoutElementInterface> */

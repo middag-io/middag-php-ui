@@ -15,6 +15,7 @@ namespace Middag\Ui\Tests\Data;
 use Middag\Ui\Contract\FieldInterface;
 use Middag\Ui\Contract\LayoutElementInterface;
 use Middag\Ui\Data\Section;
+use Middag\Ui\Data\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -49,19 +50,20 @@ final class SectionTest extends TestCase
     }
 
     #[Test]
-    public function testLabelSetsKeyAndComponent(): void
+    public function testLabelAcceptsTranslatableAndSerializesWithDomain(): void
     {
-        $section = Section::of('s')->label('section_title', 'MyComponent');
+        $section = Section::of('s')->label(Translatable::of('section_title', 'forms'));
 
-        self::assertSame(['key' => 'section_title', 'component' => 'MyComponent'], $section->labelData());
+        // Aligned with every other VO: a Translatable serializes to {key, domain}.
+        self::assertSame(['key' => 'section_title', 'domain' => 'forms'], $section->labelData());
     }
 
     #[Test]
-    public function testLabelDefaultsComponentToEmptyString(): void
+    public function testLabelAcceptsLiteralString(): void
     {
-        $section = Section::of('s')->label('section_title');
+        $section = Section::of('s')->label('Personal details');
 
-        self::assertSame(['key' => 'section_title', 'component' => ''], $section->labelData());
+        self::assertSame('Personal details', $section->labelData());
     }
 
     #[Test]
@@ -107,7 +109,7 @@ final class SectionTest extends TestCase
         $field = $this->createStub(FieldInterface::class);
         $section = Section::of('s');
 
-        $labelled = $section->label('key');
+        $labelled = $section->label('Title');
         $withFields = $labelled->fields($field);
 
         // Each wither returns a new instance; the original stays untouched.
@@ -117,7 +119,7 @@ final class SectionTest extends TestCase
         self::assertSame([], $section->children());
 
         // The fully-built section carries both the label and the fields.
-        self::assertSame(['key' => 'key', 'component' => ''], $withFields->labelData());
+        self::assertSame('Title', $withFields->labelData());
         self::assertCount(1, $withFields->children());
     }
 }
