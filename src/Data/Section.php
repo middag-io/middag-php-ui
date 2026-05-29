@@ -18,17 +18,22 @@ use Middag\Ui\Contract\LayoutElementInterface;
 /**
  * Top-level form layout section grouping fields and nested elements.
  *
+ * Immutable: `label()` and `fields()` return a new instance rather than
+ * mutating in place.
+ *
  * @internal — use base/form/section factory
  */
-final class Section implements LayoutElementInterface
+final readonly class Section implements LayoutElementInterface
 {
-    /** @var null|array{key: string, component: string} */
-    private ?array $label = null;
-
-    /** @var array<int, FieldInterface|LayoutElementInterface> */
-    private array $children = [];
-
-    private function __construct(private readonly string $id) {}
+    /**
+     * @param null|array{key: string, component: string}        $label
+     * @param array<int, FieldInterface|LayoutElementInterface> $children
+     */
+    private function __construct(
+        private string $id,
+        private ?array $label = null,
+        private array $children = [],
+    ) {}
 
     public static function of(string $id): self
     {
@@ -37,16 +42,12 @@ final class Section implements LayoutElementInterface
 
     public function label(string $key, string $component = ''): self
     {
-        $this->label = ['key' => $key, 'component' => $component];
-
-        return $this;
+        return new self($this->id, ['key' => $key, 'component' => $component], $this->children);
     }
 
     public function fields(FieldInterface|LayoutElementInterface ...$items): self
     {
-        $this->children = $items;
-
-        return $this;
+        return new self($this->id, $this->label, $items);
     }
 
     public function id(): string

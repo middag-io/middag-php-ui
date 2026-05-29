@@ -18,6 +18,7 @@ use Middag\Ui\Data\Group;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * @internal
@@ -46,8 +47,7 @@ final class GroupTest extends TestCase
     {
         $field = $this->createStub(FieldInterface::class);
 
-        $group = Group::of('g');
-        $group->fields($field);
+        $group = Group::of('g')->fields($field);
 
         self::assertCount(1, $group->children());
         self::assertSame($field, $group->children()[0]);
@@ -59,8 +59,7 @@ final class GroupTest extends TestCase
         $f1 = $this->createStub(FieldInterface::class);
         $f2 = $this->createStub(FieldInterface::class);
 
-        $group = Group::of('g');
-        $group->fields($f1, $f2);
+        $group = Group::of('g')->fields($f1, $f2);
 
         self::assertCount(2, $group->children());
     }
@@ -70,8 +69,7 @@ final class GroupTest extends TestCase
     {
         $nested = $this->createStub(LayoutElementInterface::class);
 
-        $group = Group::of('g');
-        $group->fields($nested);
+        $group = Group::of('g')->fields($nested);
 
         self::assertSame($nested, $group->children()[0]);
     }
@@ -80,5 +78,24 @@ final class GroupTest extends TestCase
     public function testImplementsLayoutElementInterface(): void
     {
         self::assertInstanceOf(LayoutElementInterface::class, Group::of('g'));
+    }
+
+    #[Test]
+    public function testIsReadonlyClass(): void
+    {
+        self::assertTrue((new ReflectionClass(Group::class))->isReadOnly());
+    }
+
+    #[Test]
+    public function testFieldsIsImmutable(): void
+    {
+        $field = $this->createStub(FieldInterface::class);
+        $group = Group::of('g');
+
+        $next = $group->fields($field);
+
+        self::assertNotSame($group, $next);
+        self::assertSame([], $group->children());
+        self::assertCount(1, $next->children());
     }
 }

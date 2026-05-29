@@ -18,6 +18,7 @@ use Middag\Ui\Data\Section;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * @internal
@@ -25,6 +26,12 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Section::class)]
 final class SectionTest extends TestCase
 {
+    #[Test]
+    public function testIsReadonlyClass(): void
+    {
+        self::assertTrue((new ReflectionClass(Section::class))->isReadOnly());
+    }
+
     #[Test]
     public function testIdReturnedFromFactory(): void
     {
@@ -44,8 +51,7 @@ final class SectionTest extends TestCase
     #[Test]
     public function testLabelSetsKeyAndComponent(): void
     {
-        $section = Section::of('s');
-        $section->label('section_title', 'MyComponent');
+        $section = Section::of('s')->label('section_title', 'MyComponent');
 
         self::assertSame(['key' => 'section_title', 'component' => 'MyComponent'], $section->labelData());
     }
@@ -53,8 +59,7 @@ final class SectionTest extends TestCase
     #[Test]
     public function testLabelDefaultsComponentToEmptyString(): void
     {
-        $section = Section::of('s');
-        $section->label('section_title');
+        $section = Section::of('s')->label('section_title');
 
         self::assertSame(['key' => 'section_title', 'component' => ''], $section->labelData());
     }
@@ -72,8 +77,7 @@ final class SectionTest extends TestCase
     {
         $field = $this->createStub(FieldInterface::class);
 
-        $section = Section::of('s');
-        $section->fields($field);
+        $section = Section::of('s')->fields($field);
 
         self::assertCount(1, $section->children());
         self::assertSame($field, $section->children()[0]);
@@ -86,8 +90,7 @@ final class SectionTest extends TestCase
         $f2 = $this->createStub(FieldInterface::class);
         $f3 = $this->createStub(FieldInterface::class);
 
-        $section = Section::of('s');
-        $section->fields($f1, $f2, $f3);
+        $section = Section::of('s')->fields($f1, $f2, $f3);
 
         self::assertCount(3, $section->children());
     }
@@ -99,16 +102,22 @@ final class SectionTest extends TestCase
     }
 
     #[Test]
-    public function testFluentChain(): void
+    public function testWithersAreImmutableAndChainable(): void
     {
-        $section = Section::of('s');
-        $result = $section->label('key');
-
-        self::assertSame($section, $result);
-
         $field = $this->createStub(FieldInterface::class);
-        $result2 = $section->fields($field);
+        $section = Section::of('s');
 
-        self::assertSame($section, $result2);
+        $labelled = $section->label('key');
+        $withFields = $labelled->fields($field);
+
+        // Each wither returns a new instance; the original stays untouched.
+        self::assertNotSame($section, $labelled);
+        self::assertNotSame($labelled, $withFields);
+        self::assertNull($section->labelData());
+        self::assertSame([], $section->children());
+
+        // The fully-built section carries both the label and the fields.
+        self::assertSame(['key' => 'key', 'component' => ''], $withFields->labelData());
+        self::assertCount(1, $withFields->children());
     }
 }

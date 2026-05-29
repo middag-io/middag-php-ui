@@ -18,14 +18,20 @@ use Middag\Ui\Contract\LayoutElementInterface;
 /**
  * Inline field group (e.g. side-by-side fields within a section).
  *
+ * Immutable: `fields()` returns a new instance with the given children rather
+ * than mutating in place.
+ *
  * @internal — use base/form/group factory
  */
-final class Group implements LayoutElementInterface
+final readonly class Group implements LayoutElementInterface
 {
-    /** @var array<int, FieldInterface|LayoutElementInterface> */
-    private array $children = [];
-
-    private function __construct(private readonly string $id) {}
+    /**
+     * @param array<int, FieldInterface|LayoutElementInterface> $children
+     */
+    private function __construct(
+        private string $id,
+        private array $children = [],
+    ) {}
 
     public static function of(string $id): self
     {
@@ -34,9 +40,7 @@ final class Group implements LayoutElementInterface
 
     public function fields(FieldInterface|LayoutElementInterface ...$items): self
     {
-        $this->children = $items;
-
-        return $this;
+        return new self($this->id, $items);
     }
 
     public function id(): string

@@ -16,6 +16,7 @@ use Middag\Ui\Data\FormState;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * @internal
@@ -23,6 +24,12 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(FormState::class)]
 final class FormStateTest extends TestCase
 {
+    #[Test]
+    public function testIsReadonlyClass(): void
+    {
+        self::assertTrue((new ReflectionClass(FormState::class))->isReadOnly());
+    }
+
     #[Test]
     public function testInitialStateIsEmpty(): void
     {

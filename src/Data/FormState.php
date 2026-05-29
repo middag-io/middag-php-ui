@@ -13,17 +13,22 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 /**
- * Captures hydrated values, validation errors, and entity binding for a form lifecycle.
+ * Captures hydrated values, validation errors, and submission state for a form
+ * lifecycle.
  *
- * Produced by abstract_form after hydration; consumed by renderers and validators.
+ * Immutable: the `with*` methods return a new instance rather than mutating.
+ * A boundary object (not part of the wire contract) consumed by renderers and
+ * validators, so it does not implement JsonSerializable.
  *
  * @api
  */
-final class FormState
+final readonly class FormState
 {
-    /** @param array<string, mixed>         $values  Hydrated input keyed by field name. */
-    /** @param array<string, string|string[]> $errors  Per-field validation errors. */
-    /** @param bool                         $submitted Whether the form received input. */
+    /**
+     * @param array<string, mixed>           $values    Hydrated input keyed by field name
+     * @param array<string, string|string[]> $errors    Per-field validation errors
+     * @param bool                           $submitted Whether the form received input
+     */
     public function __construct(
         private array $values = [],
         private array $errors = [],
@@ -50,19 +55,12 @@ final class FormState
     /** @param array<string, mixed> $values */
     public function withValues(array $values): self
     {
-        $clone = clone $this;
-        $clone->values = $values;
-        $clone->submitted = true;
-
-        return $clone;
+        return new self($values, $this->errors, true);
     }
 
     /** @param array<string, string|string[]> $errors */
     public function withErrors(array $errors): self
     {
-        $clone = clone $this;
-        $clone->errors = $errors;
-
-        return $clone;
+        return new self($this->values, $errors, $this->submitted);
     }
 }
