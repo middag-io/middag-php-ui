@@ -24,12 +24,12 @@ readonly class PageResources implements PageResourcesInterface
 {
     /**
      * @param array<string, bool> $capabilities
-     * @param array<string, bool> $feature_flags
+     * @param array<string, bool> $featureFlags
      */
     public function __construct(
         public UserPreferences $preferences = new UserPreferences(),
         public array $capabilities = [],
-        public array $feature_flags = [],
+        public array $featureFlags = [],
         public ?Identity $user = null,
         public ?Branding $branding = null,
     ) {}
@@ -40,7 +40,7 @@ readonly class PageResources implements PageResourcesInterface
         $payload = [
             'preferences' => $this->preferences->jsonSerialize(),
             'capabilities' => $this->capabilities,
-            'featureFlags' => $this->feature_flags,
+            'featureFlags' => $this->featureFlags,
         ];
 
         if ($this->user instanceof Identity) {

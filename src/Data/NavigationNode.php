@@ -25,18 +25,18 @@ use JsonSerializable;
 readonly class NavigationNode implements JsonSerializable
 {
     /**
-     * @param string      $key          Unique dot-notation key (e.g. 'audience.segments.index')
-     * @param string      $label        Display label
-     * @param null|string $icon         Client icon-set name
-     * @param null|string $href         URL (leaf nodes only)
-     * @param null|string $badge        Badge value (lazy-resolved before serialization)
-     * @param bool        $active       Whether this node is active (server-resolved)
-     * @param bool        $drilldown    Whether clicking replaces sidebar with children + back
-     * @param bool        $collapsible  Whether the group renders with a toggle to expand/collapse
-     * @param bool        $default_open Whether a collapsible group starts expanded (default: false)
-     * @param self[]      $children     Child nodes
-     * @param int         $weight       Sort order (lower = higher)
-     * @param null|string $capability   Required capability (node hidden if user lacks it)
+     * @param string      $key         Unique dot-notation key (e.g. 'audience.segments.index')
+     * @param string      $label       Display label
+     * @param null|string $icon        Client icon-set name
+     * @param null|string $href        URL (leaf nodes only)
+     * @param null|string $badge       Badge value (lazy-resolved before serialization)
+     * @param bool        $active      Whether this node is active (server-resolved)
+     * @param bool        $drilldown   Whether clicking replaces sidebar with children + back
+     * @param bool        $collapsible Whether the group renders with a toggle to expand/collapse
+     * @param bool        $defaultOpen Whether a collapsible group starts expanded (default: false)
+     * @param self[]      $children    Child nodes
+     * @param int         $weight      Sort order (lower = higher)
+     * @param null|string $capability  Required capability (node hidden if user lacks it)
      */
     public function __construct(
         public string $key,
@@ -47,7 +47,7 @@ readonly class NavigationNode implements JsonSerializable
         public bool $active = false,
         public bool $drilldown = false,
         public bool $collapsible = false,
-        public bool $default_open = false,
+        public bool $defaultOpen = false,
         public array $children = [],
         public int $weight = 50,
         public ?string $capability = null,
@@ -84,7 +84,7 @@ readonly class NavigationNode implements JsonSerializable
             $payload['collapsible'] = true;
         }
 
-        if ($this->default_open) {
+        if ($this->defaultOpen) {
             $payload['defaultOpen'] = true;
         }
 

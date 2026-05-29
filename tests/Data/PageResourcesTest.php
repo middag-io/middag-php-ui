@@ -51,7 +51,7 @@ final class PageResourcesTest extends TestCase
         $resources = new PageResources(
             preferences: new UserPreferences(theme: ThemeMode::DARK, locale: 'pt-BR'),
             capabilities: ['manage_users' => true],
-            feature_flags: ['dark_mode' => true, 'beta' => false],
+            featureFlags: ['dark_mode' => true, 'beta' => false],
             user: new Identity(id: '1', name: 'Admin'),
             branding: new Branding(appName: 'Helico'),
         );
@@ -70,7 +70,7 @@ final class PageResourcesTest extends TestCase
     public function testFeatureFlagsCamelCase(): void
     {
         $resources = new PageResources(
-            feature_flags: ['new_dashboard' => true],
+            featureFlags: ['new_dashboard' => true],
         );
 
         $payload = $resources->jsonSerialize();

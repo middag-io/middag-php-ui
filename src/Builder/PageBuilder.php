@@ -92,9 +92,9 @@ class PageBuilder implements PageBuilderInterface
      * Level 1: PageBuilder::crud(Segment::class)->build('index')
      * Level 2: PageBuilder::crud(Segment::class)->without('show')->columns([...])->build('index')
      */
-    public static function crud(string $entity_class): CrudBuilder
+    public static function crud(string $entityClass): CrudBuilder
     {
-        return CrudBuilder::for($entity_class);
+        return CrudBuilder::for($entityClass);
     }
 
     /**

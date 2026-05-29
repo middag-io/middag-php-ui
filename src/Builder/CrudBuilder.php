@@ -87,20 +87,20 @@ class CrudBuilder implements CrudBuilderInterface
 
     private ?string $customLayout = null;
 
-    private function __construct(private readonly string $entity_class, ?string $slug = null)
+    private function __construct(private readonly string $entityClass, ?string $slug = null)
     {
         // The class basename is treated as a SINGULAR noun. The library never
         // fabricates a plural (impossible without a locale inflector): the slug
         // defaults to the singular and the caller overrides it for plural URLs.
-        $parts = explode('\\', $this->entity_class);
+        $parts = explode('\\', $this->entityClass);
         $basename = end($parts);
         $this->singular = strtolower($basename);
         $this->slug = $slug ?? $this->singular;
     }
 
-    public static function for(string $entity_class, ?string $slug = null): self
+    public static function for(string $entityClass, ?string $slug = null): self
     {
-        return new self($entity_class, $slug);
+        return new self($entityClass, $slug);
     }
 
     // --- Level 2 Override API ---
@@ -182,7 +182,7 @@ class CrudBuilder implements CrudBuilderInterface
      *
      * Reserved for future use — stores no state yet.
      */
-    public function form(string $form_class): static
+    public function form(string $formClass): static
     {
         return $this;
     }

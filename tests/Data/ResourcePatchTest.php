@@ -56,7 +56,7 @@ final class ResourcePatchTest extends TestCase
     {
         $payload = (new ResourcePatch(
             capabilities: ['user:edit' => true],
-            feature_flags: ['beta' => false],
+            featureFlags: ['beta' => false],
         ))->jsonSerialize();
 
         self::assertSame(['user:edit' => true], $payload['capabilities']);

@@ -30,7 +30,7 @@ interface CrudBuilderInterface
 
     public function pageActions(array $actions): static;
 
-    public function form(string $form_class): static;
+    public function form(string $formClass): static;
 
     public function perPage(int $count): static;
 

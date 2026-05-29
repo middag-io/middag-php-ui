@@ -36,7 +36,7 @@ final class NavigationNodeTest extends TestCase
         self::assertFalse($node->active);
         self::assertFalse($node->drilldown);
         self::assertFalse($node->collapsible);
-        self::assertFalse($node->default_open);
+        self::assertFalse($node->defaultOpen);
         self::assertSame([], $node->children);
         self::assertSame(50, $node->weight);
         self::assertNull($node->capability);
@@ -69,7 +69,7 @@ final class NavigationNodeTest extends TestCase
             active: true,
             drilldown: true,
             collapsible: true,
-            default_open: true,
+            defaultOpen: true,
             children: [],
             weight: 10,
             capability: 'local/middag:manage_segment',
@@ -120,7 +120,7 @@ final class NavigationNodeTest extends TestCase
     #[Test]
     public function testDefaultOpenIsSerializedAsCamelCase(): void
     {
-        $node = new NavigationNode(key: 'n', label: 'N', default_open: true);
+        $node = new NavigationNode(key: 'n', label: 'N', defaultOpen: true);
         $payload = $node->jsonSerialize();
 
         self::assertArrayHasKey('defaultOpen', $payload);

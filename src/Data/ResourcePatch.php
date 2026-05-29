@@ -28,12 +28,12 @@ final readonly class ResourcePatch implements JsonSerializable
 {
     /**
      * @param array<string, bool> $capabilities
-     * @param array<string, bool> $feature_flags
+     * @param array<string, bool> $featureFlags
      */
     public function __construct(
         public ?UserPreferences $preferences = null,
         public array $capabilities = [],
-        public array $feature_flags = [],
+        public array $featureFlags = [],
     ) {}
 
     /** @return array<string, mixed> */
@@ -49,8 +49,8 @@ final readonly class ResourcePatch implements JsonSerializable
             $payload['capabilities'] = $this->capabilities;
         }
 
-        if ($this->feature_flags !== []) {
-            $payload['featureFlags'] = $this->feature_flags;
+        if ($this->featureFlags !== []) {
+            $payload['featureFlags'] = $this->featureFlags;
         }
 
         return $payload;
