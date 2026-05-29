@@ -13,17 +13,19 @@ declare(strict_types=1);
 namespace Middag\Ui\Builder;
 
 use Closure;
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BlockDescriptorInterface;
 use Middag\Ui\Contract\BreadcrumbInterface;
 use Middag\Ui\Contract\InspectorDescriptorInterface;
-use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Contract\PageBuilderInterface;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\InspectorDescriptor;
 use Middag\Ui\Data\LayoutDescriptor;
 use Middag\Ui\Data\Notification;
-use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\PageMeta;
 use Middag\Ui\Data\Translatable;
+use Middag\Ui\Enum\ActionIntent;
 use Middag\Ui\Enum\NotificationLevel;
 use Middag\Ui\PageContract;
 
@@ -60,7 +62,7 @@ class PageBuilder implements PageBuilderInterface
     /** @var BreadcrumbInterface[] */
     private array $breadcrumbs = [];
 
-    /** @var PageActionInterface[] */
+    /** @var ActionInterface[] */
     private array $actions = [];
 
     private bool $isOverlay = false;
@@ -96,22 +98,20 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Create a PageAction (convenience factory, avoids importing PageAction directly).
+     * Create an Action (convenience factory, avoids importing Action directly).
      */
     public static function action(
         string $id,
         string|Translatable $label,
-        string $intent = 'secondary',
-        ?string $href = null,
-        ?string $method = null,
+        ActionTarget $target,
+        ActionIntent $intent = ActionIntent::SECONDARY,
         ?string $icon = null,
-    ): PageAction {
-        return new PageAction(
+    ): Action {
+        return new Action(
             id: $id,
             label: $label,
+            target: $target,
             intent: $intent,
-            href: $href,
-            method: $method,
             icon: $icon,
         );
     }
@@ -195,7 +195,7 @@ class PageBuilder implements PageBuilderInterface
     /**
      * Set page-level actions.
      *
-     * @param PageActionInterface[] $actions
+     * @param ActionInterface[] $actions
      */
     public function actions(array $actions): static
     {

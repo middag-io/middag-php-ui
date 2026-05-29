@@ -15,4 +15,4 @@ namespace Middag\Ui\Contract;
 use JsonSerializable;
 
 /** @api */
-interface PageActionInterface extends JsonSerializable {}
+interface ActionInterface extends JsonSerializable {}

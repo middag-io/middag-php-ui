@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\Notification;
 use Middag\Ui\Data\Translatable;
 use Middag\Ui\Enum\NotificationLevel;
@@ -60,5 +62,19 @@ final class NotificationTest extends TestCase
         self::assertSame('Oops', $payload['title']);
         self::assertFalse($payload['dismissible']);
         self::assertSame(5000, $payload['timeout']);
+    }
+
+    #[Test]
+    public function testSerializesActionWhenSet(): void
+    {
+        $payload = (new Notification(
+            level: NotificationLevel::INFO,
+            message: 'Deleted',
+            action: new Action(id: 'undo', label: 'Undo', target: ActionTarget::request('/undo')),
+        ))->jsonSerialize();
+
+        self::assertArrayHasKey('action', $payload);
+        self::assertSame('undo', $payload['action']['id']);
+        self::assertSame('request', $payload['action']['target']['kind']);
     }
 }

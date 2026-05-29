@@ -12,12 +12,13 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Data;
 
-use Middag\Ui\Data\BulkAction;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\Column;
 use Middag\Ui\Data\FilterDefinition;
-use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\TableConfig;
 use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Enum\ActionIntent;
 use Middag\Ui\Enum\FilterType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -83,8 +84,8 @@ final class TableConfigTest extends TestCase
     public function testFiltersRowActionsBulkActionsAndOptions(): void
     {
         $filter = new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT);
-        $rowAction = new PageAction(id: 'edit', label: 'Edit', intent: 'secondary', href: '/x/{id}');
-        $bulkAction = new BulkAction(id: 'delete', label: 'Delete', intent: 'danger', endpoint: '/x/bulk-delete');
+        $rowAction = new Action(id: 'edit', label: 'Edit', target: ActionTarget::link('/x/{id}'));
+        $bulkAction = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::DANGER);
         $options = new TableOptions(perPage: 50, selectable: true);
 
         $config = new TableConfig(

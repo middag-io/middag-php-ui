@@ -12,16 +12,16 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Data;
 
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BlockDescriptorInterface;
-use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Support\Label;
 
 readonly class BlockDescriptor implements BlockDescriptorInterface
 {
     /**
-     * @param array<string, mixed>       $data
-     * @param array<PageActionInterface> $actions
-     * @param array<string, mixed>       $meta
+     * @param array<string, mixed>   $data
+     * @param array<ActionInterface> $actions
+     * @param array<string, mixed>   $meta
      */
     public function __construct(
         public string $type,
@@ -58,7 +58,7 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
 
         if ($this->actions !== []) {
             $payload['actions'] = array_map(
-                static fn (PageActionInterface $action): array => $action->jsonSerialize(),
+                static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->actions,
             );
         }

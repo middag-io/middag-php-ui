@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Builder;
 
-use Middag\Ui\Contract\PageActionInterface;
-use Middag\Ui\Data\BulkAction;
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Data\Column;
 use Middag\Ui\Data\FilterDefinition;
 use Middag\Ui\Data\TableConfig;
@@ -37,10 +36,10 @@ class TableBuilder
     /** @var FilterDefinition[] */
     private array $filters = [];
 
-    /** @var PageActionInterface[] */
+    /** @var ActionInterface[] */
     private array $rowActions = [];
 
-    /** @var BulkAction[] */
+    /** @var ActionInterface[] */
     private array $bulkActions = [];
 
     private TableOptions $options;
@@ -102,7 +101,7 @@ class TableBuilder
     /**
      * Add a per-row action.
      */
-    public function rowAction(PageActionInterface $action): self
+    public function rowAction(ActionInterface $action): self
     {
         $this->rowActions[] = $action;
 
@@ -112,7 +111,7 @@ class TableBuilder
     /**
      * Add a bulk action applied to selected rows.
      */
-    public function bulkAction(BulkAction $action): self
+    public function bulkAction(ActionInterface $action): self
     {
         $this->bulkActions[] = $action;
 

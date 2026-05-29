@@ -13,12 +13,13 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Builder;
 
 use Middag\Ui\Builder\TableBuilder;
-use Middag\Ui\Data\BulkAction;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\Column;
 use Middag\Ui\Data\FilterDefinition;
-use Middag\Ui\Data\PageAction;
 use Middag\Ui\Data\TableConfig;
 use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Enum\ActionIntent;
 use Middag\Ui\Enum\FilterType;
 use Middag\Ui\Enum\ValueFormat;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -121,7 +122,7 @@ final class TableBuilderTest extends TestCase
     #[Test]
     public function testAddRowAction(): void
     {
-        $action = new PageAction(id: 'edit', label: 'Edit', intent: 'secondary', href: '/x/{id}');
+        $action = new Action(id: 'edit', label: 'Edit', target: ActionTarget::link('/x/{id}'));
 
         $config = TableBuilder::make()
             ->rowAction($action)
@@ -134,7 +135,7 @@ final class TableBuilderTest extends TestCase
     #[Test]
     public function testAddBulkAction(): void
     {
-        $action = new BulkAction(id: 'delete', label: 'Delete', intent: 'danger', endpoint: '/x/bulk-delete');
+        $action = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::DANGER);
 
         $config = TableBuilder::make()
             ->bulkAction($action)
@@ -164,8 +165,8 @@ final class TableBuilderTest extends TestCase
 
         self::assertSame($builder, $builder->column('a', 'A'));
         self::assertSame($builder, $builder->filter('b', 'B'));
-        self::assertSame($builder, $builder->rowAction(new PageAction(id: 'c', label: 'C', intent: 'secondary')));
-        self::assertSame($builder, $builder->bulkAction(new BulkAction(id: 'd', label: 'D', intent: 'danger', endpoint: '/d')));
+        self::assertSame($builder, $builder->rowAction(new Action(id: 'c', label: 'C', target: ActionTarget::link('/c'))));
+        self::assertSame($builder, $builder->bulkAction(new Action(id: 'd', label: 'D', target: ActionTarget::request('/d'), intent: ActionIntent::DANGER)));
         self::assertSame($builder, $builder->options(new TableOptions()));
     }
 

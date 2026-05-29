@@ -29,6 +29,7 @@ final readonly class Notification implements JsonSerializable
         public string|Translatable|null $title = null,
         public bool $dismissible = true,
         public ?int $timeout = null,
+        public ?Action $action = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -46,6 +47,10 @@ final readonly class Notification implements JsonSerializable
 
         if ($this->timeout !== null) {
             $payload['timeout'] = $this->timeout;
+        }
+
+        if ($this->action instanceof Action) {
+            $payload['action'] = $this->action->jsonSerialize();
         }
 
         return $payload;

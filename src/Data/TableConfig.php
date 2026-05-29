@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Data;
 
 use JsonSerializable;
-use Middag\Ui\Contract\PageActionInterface;
+use Middag\Ui\Contract\ActionInterface;
 
 /**
  * Table configuration DTO.
@@ -25,11 +25,11 @@ use Middag\Ui\Contract\PageActionInterface;
 readonly class TableConfig implements JsonSerializable
 {
     /**
-     * @param Column[]              $columns
-     * @param FilterDefinition[]    $filters
-     * @param PageActionInterface[] $rowActions  Per-row actions (href templates with {id})
-     * @param BulkAction[]          $bulkActions Actions applied to selected rows
-     * @param TableOptions          $options     General table behavior options
+     * @param Column[]           $columns
+     * @param FilterDefinition[] $filters
+     * @param ActionInterface[]  $rowActions  Per-row actions (link/route/request targets, {id} template)
+     * @param ActionInterface[]  $bulkActions Actions applied to selected rows
+     * @param TableOptions       $options     General table behavior options
      */
     public function __construct(
         public array $columns,
@@ -56,11 +56,11 @@ readonly class TableConfig implements JsonSerializable
                 $this->filters,
             ),
             'rowActions' => array_map(
-                static fn (PageActionInterface $action): array => $action->jsonSerialize(),
+                static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->rowActions,
             ),
             'bulkActions' => array_map(
-                static fn (BulkAction $action): array => $action->jsonSerialize(),
+                static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->bulkActions,
             ),
             'options' => $this->options->jsonSerialize(),

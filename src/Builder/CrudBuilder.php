@@ -14,12 +14,19 @@ namespace Middag\Ui\Builder;
 
 use Closure;
 use InvalidArgumentException;
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\CrudBuilderInterface;
-use Middag\Ui\Contract\PageActionInterface;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
 use Middag\Ui\Data\BlockDescriptor;
-use Middag\Ui\Data\PageAction;
+use Middag\Ui\Data\Column;
+use Middag\Ui\Data\Confirmation;
 use Middag\Ui\Data\Pagination;
+use Middag\Ui\Data\TableConfig;
 use Middag\Ui\Data\TableOptions;
+use Middag\Ui\Enum\ActionIntent;
+use Middag\Ui\Enum\HttpMethod;
+use Middag\Ui\Enum\ValueFormat;
 use Middag\Ui\PageContract;
 
 /**
@@ -50,7 +57,7 @@ class CrudBuilder implements CrudBuilderInterface
     /** @var null|string[] Bulk actions */
     private ?array $bulkActionsList = null;
 
-    /** @var null|PageActionInterface[] Page actions (null = default ['create']) */
+    /** @var null|ActionInterface[] Page actions (null = default ['create']) */
     private ?array $pageActionsList = null;
 
     private int $perPage = 25;
@@ -141,7 +148,7 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Set page-level actions.
      *
-     * @param PageActionInterface[] $actions
+     * @param ActionInterface[] $actions
      */
     public function pageActions(array $actions): static
     {
@@ -252,31 +259,37 @@ class CrudBuilder implements CrudBuilderInterface
         $columns = $this->columnsList ?? ['name', 'status', 'created_at'];
         $row_actions = $this->rowActionsList ?? ['edit', 'delete'];
         $page_actions = $this->pageActionsList ?? [
-            new PageAction(id: 'create', label: 'Create', intent: 'primary', href: sprintf('/%s/create', $this->slug)),
+            new Action(
+                id: 'create',
+                label: 'Create',
+                target: ActionTarget::link(sprintf('/%s/create', $this->slug)),
+                intent: ActionIntent::PRIMARY,
+            ),
         ];
 
         $pagination = $data['pagination'] ?? Pagination::of(1, $this->perPage, 0);
 
-        $options = new TableOptions(
-            perPage: $this->perPage,
-            sortColumn: $this->sortColumn,
-            sortDirection: $this->sortDirection,
-            selectable: $this->bulkActionsList !== null,
+        $table_config = new TableConfig(
+            columns: $this->buildColumns($columns),
+            rowActions: array_map(fn (string $a): Action => $this->buildRowAction($a), $row_actions),
+            bulkActions: $this->bulkActionsList !== null
+                ? array_map(fn (string $a): Action => $this->buildBulkAction($a), $this->bulkActionsList)
+                : [],
+            options: new TableOptions(
+                perPage: $this->perPage,
+                sortColumn: $this->sortColumn,
+                sortDirection: $this->sortDirection,
+                selectable: $this->bulkActionsList !== null,
+            ),
         );
 
-        $table_data = [
-            'columns' => $this->buildColumnDescriptors($columns),
-            'rows' => $data['rows'] ?? [],
-            'pagination' => $pagination instanceof Pagination ? $pagination->jsonSerialize() : $pagination,
-            'options' => $options->jsonSerialize(),
-            'rowActions' => array_map(
-                fn (string $a): array => ['id' => $a, 'label' => ucfirst($a)],
-                $row_actions,
-            ),
-            'bulkActions' => $this->bulkActionsList !== null
-                ? array_map(fn (string $a): array => ['id' => $a, 'label' => ucfirst($a)], $this->bulkActionsList)
-                : [],
-        ];
+        $table_data = array_merge(
+            $table_config->jsonSerialize(),
+            [
+                'rows' => $data['rows'] ?? [],
+                'pagination' => $pagination instanceof Pagination ? $pagination->jsonSerialize() : $pagination,
+            ],
+        );
 
         return PageBuilder::page($this->slug . '.index')
             ->title($title)
@@ -379,5 +392,77 @@ class CrudBuilder implements CrudBuilderInterface
 
             return $descriptor;
         }, $columns);
+    }
+
+    /**
+     * Convert convention column descriptors into typed Column VOs.
+     *
+     * @param string[] $columns
+     *
+     * @return Column[]
+     */
+    private function buildColumns(array $columns): array
+    {
+        return array_map(
+            static fn (array $d): Column => new Column(
+                key: $d['key'],
+                label: $d['label'] ?? '',
+                sortable: $d['sortable'] ?? false,
+                searchable: $d['searchable'] ?? false,
+                format: $d['format'] ?? ValueFormat::TEXT,
+                formatOptions: $d['formatOptions'] ?? [],
+                options: $d['options'] ?? [],
+            ),
+            $this->buildColumnDescriptors($columns),
+        );
+    }
+
+    /**
+     * Derive a typed row Action from a convention name.
+     *
+     * Conventions: `delete` → DELETE request (+ confirmation); `show` → link to
+     * the entity; anything else → link to `/{slug}/{id}/{action}`.
+     */
+    private function buildRowAction(string $action): Action
+    {
+        $label = ucfirst($action);
+
+        return match ($action) {
+            'delete' => new Action(
+                id: 'delete',
+                label: $label,
+                target: ActionTarget::request(sprintf('/%s/{id}', $this->slug), HttpMethod::DELETE),
+                intent: ActionIntent::DANGER,
+                confirmation: new Confirmation(title: 'Delete', message: 'Are you sure?', variant: 'danger'),
+            ),
+            'show' => new Action(
+                id: 'show',
+                label: $label,
+                target: ActionTarget::link(sprintf('/%s/{id}', $this->slug)),
+            ),
+            default => new Action(
+                id: $action,
+                label: $label,
+                target: ActionTarget::link(sprintf('/%s/{id}/%s', $this->slug, $action)),
+            ),
+        };
+    }
+
+    /**
+     * Derive a typed bulk Action from a convention name.
+     *
+     * Bulk actions POST to `/{slug}/bulk/{action}`; `delete` is DANGER + confirmed.
+     */
+    private function buildBulkAction(string $action): Action
+    {
+        return new Action(
+            id: $action,
+            label: ucfirst($action),
+            target: ActionTarget::request(sprintf('/%s/bulk/%s', $this->slug, $action)),
+            intent: $action === 'delete' ? ActionIntent::DANGER : ActionIntent::SECONDARY,
+            confirmation: $action === 'delete'
+                ? new Confirmation(title: 'Delete', message: 'Are you sure?', variant: 'danger')
+                : null,
+        );
     }
 }

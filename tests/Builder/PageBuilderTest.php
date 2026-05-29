@@ -15,7 +15,9 @@ namespace Middag\Ui\Tests\Builder;
 use Middag\Ui\Builder\BlockBuilder;
 use Middag\Ui\Builder\CrudBuilder;
 use Middag\Ui\Builder\PageBuilder;
-use Middag\Ui\Data\PageAction;
+use Middag\Ui\Data\Action;
+use Middag\Ui\Data\ActionTarget;
+use Middag\Ui\Enum\ActionIntent;
 use Middag\Ui\PageContract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -67,13 +69,13 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testActionFactory(): void
     {
-        $action = PageBuilder::action('a', 'Label', 'primary', '/href');
+        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::PRIMARY);
 
-        self::assertInstanceOf(PageAction::class, $action);
+        self::assertInstanceOf(Action::class, $action);
         self::assertSame('a', $action->id);
         self::assertSame('Label', $action->label);
-        self::assertSame('primary', $action->intent);
-        self::assertSame('/href', $action->href);
+        self::assertSame(ActionIntent::PRIMARY, $action->intent);
+        self::assertSame('/href', $action->target->href);
     }
 
     #[Test]
@@ -155,7 +157,7 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testActions(): void
     {
-        $action = PageBuilder::action('a', 'Label', 'primary', '/href');
+        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::PRIMARY);
 
         $contract = PageBuilder::page('test')
             ->actions([$action])

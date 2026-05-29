@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Data;
 
+use Middag\Ui\Contract\ActionInterface;
 use Middag\Ui\Contract\BreadcrumbInterface;
-use Middag\Ui\Contract\PageActionInterface;
 use Middag\Ui\Contract\PageMetaInterface;
 use Middag\Ui\Support\Label;
 
@@ -21,7 +21,7 @@ readonly class PageMeta implements PageMetaInterface
 {
     /**
      * @param array<BreadcrumbInterface> $breadcrumbs
-     * @param array<PageActionInterface> $actions
+     * @param array<ActionInterface>     $actions
      */
     public function __construct(
         public string $key,
@@ -52,7 +52,7 @@ readonly class PageMeta implements PageMetaInterface
 
         if ($this->actions !== []) {
             $payload['actions'] = array_map(
-                static fn (PageActionInterface $action): array => $action->jsonSerialize(),
+                static fn (ActionInterface $action): array => $action->jsonSerialize(),
                 $this->actions,
             );
         }

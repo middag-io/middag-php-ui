@@ -96,7 +96,7 @@ final class CrudBuilderTest extends TestCase
         $crud = CrudBuilder::for('App\Entity\Invoice');
         $crud->columns(['status']);
         $crud->column('status', function (array &$c): void {
-            $c['variant'] = 'badge';
+            $c['options'] = ['variant' => 'badge'];
         });
 
         $contract = $crud->build('index');
@@ -104,7 +104,7 @@ final class CrudBuilderTest extends TestCase
         $block = $contract->layout->regions['content'][0];
         $columns = $block->jsonSerialize()['data']['columns'];
 
-        self::assertSame('badge', $columns[0]['variant']);
+        self::assertSame(['variant' => 'badge'], $columns[0]['options']);
     }
 
     #[Test]
@@ -238,5 +238,48 @@ final class CrudBuilderTest extends TestCase
 
         self::assertStringContainsString('Create Fatura', $create);
         self::assertStringContainsString('Edit Fatura', $edit);
+    }
+
+    #[Test]
+    public function testRowActionsEmitTypedActionTargets(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->rowActions(['show', 'edit', 'delete']);
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+        [$show, $edit, $delete] = $data['rowActions'];
+
+        // show -> link to entity
+        self::assertSame('link', $show['target']['kind']);
+        self::assertSame('/invoices/{id}', $show['target']['href']);
+
+        // edit -> link to /{slug}/{id}/edit (default branch)
+        self::assertSame('link', $edit['target']['kind']);
+        self::assertSame('/invoices/{id}/edit', $edit['target']['href']);
+
+        // delete -> DELETE request, danger, with confirmation
+        self::assertSame('request', $delete['target']['kind']);
+        self::assertSame('delete', $delete['target']['method']);
+        self::assertSame('danger', $delete['intent']);
+        self::assertArrayHasKey('confirmation', $delete);
+    }
+
+    #[Test]
+    public function testBulkActionsEmitTypedActionTargets(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice')->bulkActions(['archive', 'delete']);
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+        [$archive, $delete] = $data['bulkActions'];
+
+        // non-delete bulk -> POST request, secondary, no confirmation
+        self::assertSame('request', $archive['target']['kind']);
+        self::assertSame('post', $archive['target']['method']);
+        self::assertSame('/invoices/bulk/archive', $archive['target']['endpoint']);
+        self::assertSame('secondary', $archive['intent']);
+        self::assertArrayNotHasKey('confirmation', $archive);
+
+        // delete bulk -> danger + confirmation
+        self::assertSame('danger', $delete['intent']);
+        self::assertArrayHasKey('confirmation', $delete);
     }
 }
