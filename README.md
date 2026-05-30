@@ -7,6 +7,16 @@ Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. 
 
 **Zero external dependencies.** PHP 8.2+ only.
 
+**Open source — Apache-2.0.** The foundation layer of the MIDDAG framework stack (`ui` → `framework` → `moodle` / `wordpress` adapters; `@middag-io/react` on the client). Host-agnostic and transport-agnostic by design: this package knows nothing about Moodle, WordPress, or any transport — it only describes pages.
+
+> [!NOTE]
+> **Documentation** — the MIDDAG open-source project lives at **[middag.dev](https://middag.dev)**; full docs will be at **[docs.middag.dev](https://docs.middag.dev)** _(coming soon)_.
+>
+> Until the docs site is live, this README plus the `@api` docblocks in `src/` are the reference.
+
+> [!IMPORTANT]
+> **`0.6.0` — concern-first layout (BREAKING).** Every `Middag\Ui\*` FQN moved from the old stereotype-first layout (`Contract/ Data/ Builder/ Enum/ Schema/`) to **concern-first**: each concern (`Page`, `Form`, `Table`, `Block`, `Region`, `Action`, …) owns its interfaces + value objects + builders, with cross-cutting types under `Shared/{Data,Enum,Schema}`. The **wire JSON is unchanged** — only PHP namespaces moved. Consumers on `^0.5` must update imports (e.g. `Middag\Ui\Data\Fragment` → `Middag\Ui\Region\Fragment`, `Middag\Ui\Enum\FieldType` → `Middag\Ui\Shared\Enum\FieldType`). Pre-1.0, no compatibility shims.
+
 ---
 
 ## What It Does
@@ -32,7 +42,7 @@ This means PHP never renders HTML for pages — it declares structure, and React
 | **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible. |
 | **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters (ADR-806). |
 | **i18n intents** | `Translatable` `{key, domain, params}`. The library never resolves translations — the client does. |
-| **Quality gates** | 322 tests · 100% coverage · PHPStan L6 · php-cs-fixer · Rector — enforced per commit. |
+| **Quality gates** | 345 tests · 100% coverage · PHPStan L6 · php-cs-fixer · Rector — enforced per commit. |
 
 ---
 
@@ -123,8 +133,8 @@ A page can be served two ways, and both share one envelope contract (`ContractEn
 2. **Page owned by the client, partial props from PHP** — when React owns the layout, the server returns a `Fragment`: one ready, self-describing slice of the contract (a block, a table, a region update, notifications) plus its routing `kind`. A fragment is a node of the contract with its own header, not a smaller page.
 
 ```php
-use Middag\Ui\Data\Fragment;
-use Middag\Ui\Data\RegionUpdate;
+use Middag\Ui\Region\Fragment;
+use Middag\Ui\Region\RegionUpdate;
 
 // after a filter/paginate, swap a region's content without reloading the page
 $fragment = Fragment::region(RegionUpdate::replace('orders', $block1, $block2));
@@ -136,7 +146,7 @@ $fragment = Fragment::region(RegionUpdate::replace('orders', $block1, $block2));
 Mutations return an `ActionResult`, which carries both update strategies — push and pull:
 
 ```php
-use Middag\Ui\Data\ActionResult;
+use Middag\Ui\Action\ActionResult;
 
 return new ActionResult(
     fragments: [Fragment::table($tableConfig)],   // push: server already built the fresh piece
@@ -238,7 +248,7 @@ an intent, a raw string for a literal).
 ### Field Types (FieldType enum)
 
 A closed backed enum of field types (`TEXT`, `TEXTAREA`, `SELECT`, `DATE`,
-`RICHTEXT`, `TIME`, `AUTOCOMPLETE`, `TAGS`, …) — see `src/Enum/FieldType.php`
+`RICHTEXT`, `TIME`, `AUTOCOMPLETE`, `TAGS`, …) — see `src/Shared/Enum/FieldType.php`
 for the full catalogue.
 
 Adding a type requires: ADR amendment + field class + `MformFieldMapper` case + `InertiaFieldMapper` case + Vue component.
