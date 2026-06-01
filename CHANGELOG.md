@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/middag-io/middag-php-ui/compare/v0.6.0...v0.6.1) (2026-06-01)
+
+
+### Features
+
+* **block:** deferred flag on BlockDescriptor for Inertia v3 deferred props ([2c0ed72](https://github.com/middag-io/middag-php-ui/commit/2c0ed72f7a7d3c49ef91a67b3d8af703e5c262bf))
+
+
+### Documentation
+
+* refresh README for v0.6.0 + OSS framing ([274a01b](https://github.com/middag-io/middag-php-ui/commit/274a01bbd5f370037c840c1be5d313415376620a))
+
 ## [0.6.0](https://github.com/middag-io/middag-php-ui/compare/v0.5.0...v0.6.0) (2026-05-29)
 
 
