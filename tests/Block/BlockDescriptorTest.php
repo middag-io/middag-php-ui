@@ -60,6 +60,7 @@ final class BlockDescriptorTest extends TestCase
         self::assertArrayNotHasKey('meta', $payload);
         self::assertArrayNotHasKey('poll', $payload);
         self::assertArrayNotHasKey('deferred', $payload);
+        self::assertArrayNotHasKey('remember', $payload);
     }
 
     #[Test]
@@ -148,6 +149,31 @@ final class BlockDescriptorTest extends TestCase
         self::assertSame(
             ['type' => 'boolean'],
             BlockDescriptor::jsonSchema()['properties']['deferred'] ?? null,
+        );
+    }
+
+    #[Test]
+    public function testIncludesRememberWhenTrue(): void
+    {
+        $block = new BlockDescriptor(
+            type: 'dense_table',
+            key: 'test',
+            data: [],
+            remember: true,
+        );
+
+        $payload = $block->jsonSerialize();
+
+        self::assertArrayHasKey('remember', $payload);
+        self::assertTrue($payload['remember']);
+    }
+
+    #[Test]
+    public function testDeclaresRememberInJsonSchema(): void
+    {
+        self::assertSame(
+            ['type' => 'boolean'],
+            BlockDescriptor::jsonSchema()['properties']['remember'] ?? null,
         );
     }
 

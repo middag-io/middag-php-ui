@@ -216,6 +216,9 @@
                 },
                 "deferred": {
                     "type": "boolean"
+                },
+                "remember": {
+                    "type": "boolean"
                 }
             },
             "additionalProperties": false
