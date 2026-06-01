@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/middag-io/middag-php-ui/compare/v0.6.1...v0.6.2) (2026-06-01)
+
+
+### Features
+
+* **block:** remember flag on BlockDescriptor for Inertia v3 useRemember ([943f630](https://github.com/middag-io/middag-php-ui/commit/943f63096cc8cccabeee6780bbb78e8677cb795b))
+
 ## [0.6.1](https://github.com/middag-io/middag-php-ui/compare/v0.6.0...v0.6.1) (2026-06-01)
 
 
