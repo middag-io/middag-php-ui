@@ -19,7 +19,12 @@ use Middag\Ui\Shared\Data\Translatable;
 
 /**
  * A typed UI block: a `type` discriminator plus its `data` payload and
- * optional title, actions, meta, and poll config.
+ * optional title, actions, meta, poll config, and deferral flag.
+ *
+ * `deferred` marks a block whose data the client fetches after the initial
+ * render (Inertia v3 deferred props): the React renderer swaps its hand-rolled
+ * reload-on-mount for `<Deferred>`. Additive + omitted when false, so it does
+ * not change the wire shape of non-deferred blocks.
  *
  * @api
  */
@@ -40,6 +45,7 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
         public array $actions = [],
         public array $meta = [],
         public ?PollConfig $poll = null,
+        public bool $deferred = false,
     ) {}
 
     /** @return array<string, mixed> */
@@ -78,6 +84,10 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
             $payload['poll'] = $this->poll->jsonSerialize();
         }
 
+        if ($this->deferred) {
+            $payload['deferred'] = true;
+        }
+
         return $payload;
     }
 
@@ -85,7 +95,7 @@ readonly class BlockDescriptor implements BlockDescriptorInterface
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['type', 'key', 'data'],
-            'properties' => ['type' => ['type' => 'string'], 'key' => ['type' => 'string'], 'data' => ['oneOf' => [['type' => 'object', 'additionalProperties' => true], ['type' => 'array', 'maxItems' => 0]]], 'variant' => ['type' => 'string'], 'title' => ['$ref' => '#/$defs/Label'], 'subtitle' => ['$ref' => '#/$defs/Label'], 'actions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'meta' => ['type' => 'object', 'additionalProperties' => true], 'poll' => ['$ref' => '#/$defs/PollConfig']],
+            'properties' => ['type' => ['type' => 'string'], 'key' => ['type' => 'string'], 'data' => ['oneOf' => [['type' => 'object', 'additionalProperties' => true], ['type' => 'array', 'maxItems' => 0]]], 'variant' => ['type' => 'string'], 'title' => ['$ref' => '#/$defs/Label'], 'subtitle' => ['$ref' => '#/$defs/Label'], 'actions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'meta' => ['type' => 'object', 'additionalProperties' => true], 'poll' => ['$ref' => '#/$defs/PollConfig'], 'deferred' => ['type' => 'boolean']],
             'additionalProperties' => false];
     }
 }

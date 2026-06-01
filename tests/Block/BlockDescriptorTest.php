@@ -58,6 +58,8 @@ final class BlockDescriptorTest extends TestCase
         self::assertArrayNotHasKey('subtitle', $payload);
         self::assertArrayNotHasKey('actions', $payload);
         self::assertArrayNotHasKey('meta', $payload);
+        self::assertArrayNotHasKey('poll', $payload);
+        self::assertArrayNotHasKey('deferred', $payload);
     }
 
     #[Test]
@@ -122,6 +124,31 @@ final class BlockDescriptorTest extends TestCase
 
         self::assertArrayHasKey('poll', $payload);
         self::assertSame(2000, $payload['poll']['intervalMs']);
+    }
+
+    #[Test]
+    public function testIncludesDeferredWhenTrue(): void
+    {
+        $block = new BlockDescriptor(
+            type: 'dense_table',
+            key: 'test',
+            data: [],
+            deferred: true,
+        );
+
+        $payload = $block->jsonSerialize();
+
+        self::assertArrayHasKey('deferred', $payload);
+        self::assertTrue($payload['deferred']);
+    }
+
+    #[Test]
+    public function testDeclaresDeferredInJsonSchema(): void
+    {
+        self::assertSame(
+            ['type' => 'boolean'],
+            BlockDescriptor::jsonSchema()['properties']['deferred'] ?? null,
+        );
     }
 
     #[Test]

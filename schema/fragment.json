@@ -213,6 +213,9 @@
                 },
                 "poll": {
                     "$ref": "#/$defs/PollConfig"
+                },
+                "deferred": {
+                    "type": "boolean"
                 }
             },
             "additionalProperties": false
