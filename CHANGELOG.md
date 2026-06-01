@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/middag-io/middag-php-ui/compare/v0.6.2...v0.6.3) (2026-06-01)
+
+
+### Features
+
+* **field-type:** add slider, otp, native_select field types ([d7ef372](https://github.com/middag-io/middag-php-ui/commit/d7ef37224d4f73a89124b98f3d107f8f98cbacc2))
+
 ## [0.6.2](https://github.com/middag-io/middag-php-ui/compare/v0.6.1...v0.6.2) (2026-06-01)
 
 
