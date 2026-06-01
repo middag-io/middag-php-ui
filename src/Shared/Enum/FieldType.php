@@ -34,6 +34,8 @@ enum FieldType: string
 
     case PASSWORD = 'password';
 
+    case OTP = 'otp';
+
     case EMAIL = 'email';
 
     case URL = 'url';
@@ -42,9 +44,13 @@ enum FieldType: string
 
     case FLOAT = 'float';
 
+    case SLIDER = 'slider';
+
     case SELECT = 'select';
 
     case MULTISELECT = 'multiselect';
+
+    case NATIVE_SELECT = 'native_select';
 
     case RADIO = 'radio';
 

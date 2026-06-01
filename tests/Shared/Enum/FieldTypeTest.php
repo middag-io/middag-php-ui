@@ -52,12 +52,15 @@ final class FieldTypeTest extends TestCase
         $this->assertContains('hidden', $values);
         $this->assertContains('static', $values);
         $this->assertContains('header', $values);
+        $this->assertContains('slider', $values);
+        $this->assertContains('otp', $values);
+        $this->assertContains('native_select', $values);
     }
 
     #[Test]
     public function totalFieldTypeCount(): void
     {
-        $this->assertCount(24, FieldType::cases());
+        $this->assertCount(27, FieldType::cases());
     }
 
     #[Test]
@@ -87,6 +90,9 @@ final class FieldTypeTest extends TestCase
         $this->assertSame('hidden', FieldType::HIDDEN->value);
         $this->assertSame('static', FieldType::STATIC->value);
         $this->assertSame('header', FieldType::HEADER->value);
+        $this->assertSame('slider', FieldType::SLIDER->value);
+        $this->assertSame('otp', FieldType::OTP->value);
+        $this->assertSame('native_select', FieldType::NATIVE_SELECT->value);
     }
 
     #[Test]
