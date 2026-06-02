@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.4](https://github.com/middag-io/middag-php-ui/compare/v0.6.3...v0.6.4) (2026-06-02)
+
+
+### Bug Fixes
+
+* **form_panel:** emit required errors + meta in the block payload ([122faa0](https://github.com/middag-io/middag-php-ui/commit/122faa0dc0ed15dacd0636653af1ee404ec62adc))
+
+
+### Miscellaneous
+
+* strip stale ADR refs + tag schema-emitter internals + .specify export-ignore ([7478d1f](https://github.com/middag-io/middag-php-ui/commit/7478d1ff1b1ffa894fb2cbeef87847cc4108c1d8))
+
 ## [0.6.3](https://github.com/middag-io/middag-php-ui/compare/v0.6.2...v0.6.3) (2026-06-01)
 
 
