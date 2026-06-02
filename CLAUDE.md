@@ -10,26 +10,30 @@ Biblioteca PHP de contract builders para UI contract-driven. Produz um contrato 
 - **Lib fechada** — não adicionar features sem ADR.
 - **3 níveis de composição** (ADR-807): L1 convenção, L2 convenção + overrides, L3 composição livre.
 
-## Organização (eixo: layer-first por papel)
+## Organização (eixo: feature-first)
 
-Pacote pequeno e single-purpose → organizado por **papel técnico**, não por concern. Cada diretório tem um papel único; respeitar o eixo ao adicionar arquivos.
+Pacote pequeno e single-purpose, organizado por **feature de UI** na raiz de `src/` (ex.: `Action/ Block/ Page/ Table/ Navigation/ Region/ Form/ Inspector/ Shared/ ...`). Não há `Contract/` central — cada papel convive co-localizado dentro da feature:
 
-- `src/` (raiz) — entrypoints públicos do contrato de página (bases abstratas + envelope raiz)
-- `Contract/` — **apenas interfaces** `@api`. Nada concreto aqui (VOs concretos vão em `Data/`)
-- `Builder/` — builders fluentes; retornam `static`; produzem objetos de `Data/`
-- `Data/` — value objects de contrato (`readonly`, serializáveis) + o helper stateless `Label` (serializa label `Translatable|string`)
-- `Enum/` — enums backed, catálogos fechados
+- **interfaces `@api`** vivem no próprio diretório da feature (sufixo `Interface`); nada concreto numa interface
+- **builders fluentes** retornam `static` e produzem value objects
+- **value objects** são `readonly` (serializáveis quando vão pro wire). Um VO pareado com um `*Interface` dedicado pode ser `readonly` não-`final` por design (seam de extensão que o adapter implementa); VO-folha leva `final readonly`
+- **enums backed** (catálogos fechados), VOs e helpers transversais ficam em `Shared/` (`Shared/Enum/`, `Shared/Data/`, `Shared/Schema/`)
+
+`src/` (raiz) hospeda os entrypoints do contrato de página + o envelope raiz.
 
 ## Invariantes de Design
 
-| Regra                                                              | Motivo                                                                     |
-|--------------------------------------------------------------------|----------------------------------------------------------------------------|
-| Zero deps externas                                                 | Consumers não herdam transitividade indesejada                             |
-| `Data/` são `readonly class`                                       | Imutabilidade garantida em compile time                                    |
-| Sem vazamento de host (Moodle/WordPress/mform/etc.)                | Lib agnóstica; host-specifics ficam no adapter                             |
-| Renderers e field-mappers vivem em `framework`/adapters, não aqui  | ui hospeda só contratos + layout primitives                                |
-| `FieldDefinition` e `Condition` NÃO implementam `JsonSerializable` | São boundary objects; renderers mapeiam — evita acoplar ao formato de wire |
-| `Contract/` só interfaces; VO concreto pertence a `Data/`          | Mantém o eixo layer-first coerente                                         |
+| Regra                                                                      | Motivo                                                                                                                                                                                                            |
+|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Zero deps externas                                                         | Consumers não herdam transitividade indesejada                                                                                                                                                                    |
+| `Data/` são `readonly class`                                               | Imutabilidade garantida em compile time                                                                                                                                                                           |
+| Sem vazamento de host (Moodle/WordPress/mform/etc.)                        | Lib agnóstica; host-specifics ficam no adapter                                                                                                                                                                    |
+| Renderers e field-mappers vivem em `framework`/adapters, não aqui          | ui hospeda só contratos + layout primitives                                                                                                                                                                       |
+| Nenhum contrato do ui produz HTML (`render(): string`)                     | Render é de produto/host → vive em core/adapter (ex.: `BlockInterface`/`DashboardWidgetInterface` foram movidos pro core). Contratos do ui produzem **dados/VOs** (ex.: `FormRendererInterface`→`RendererOutput`) |
+| `FieldDefinition` e `Condition` NÃO implementam `JsonSerializable`         | São boundary objects; renderers mapeiam — evita acoplar ao formato de wire                                                                                                                                        |
+| Interfaces `@api` co-localizadas na feature; VO concreto fora de interface | Eixo feature-first (não há `Contract/` central)                                                                                                                                                                   |
+
+> **Autz é dado, não chamada:** tokens opacos de autorização (ex.: o campo `capability` em `Action`/`NavigationNode`/`CrudBuilder`) são **dados** permitidos no contrato — o proibido é **chamar API de host** (`has_capability`/`mform`/`wpdb`). O adapter resolve o token; o ui só o carrega.
 
 ## Comandos
 
