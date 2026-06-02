@@ -137,7 +137,15 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Configure a specific column via callback.
      *
-     * The callback receives the column descriptor array by reference.
+     * The callback receives the column descriptor array **by reference** and
+     * mutates it in place (it returns nothing). The descriptor mirrors the
+     * {@see Column} shape: keys `key`, `label`, `sortable`, `searchable`,
+     * `format` (ValueFormat), `formatOptions`, `options`. The descriptor
+     * `key` is a data-column name and follows the data layer's casing
+     * (snake_case by convention, e.g. `created_at`), distinct from the
+     * camelCase wire keys emitted on serialization.
+     *
+     * @param Closure(array<string, mixed>): void $configurator
      */
     public function column(string $name, Closure $configurator): static
     {
@@ -289,8 +297,14 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Build PageContract for the given CRUD action.
      *
-     * @param string $action One of: index, create, edit, show
-     * @param array  $data   Context data (e.g. entity instance for edit/show, rows for index)
+     * The accepted `$data` keys depend on `$action` (extra keys are ignored):
+     *   - index:        `rows` (list<array>), `pagination` (Pagination|array)
+     *   - create:       `schema`, `values`, `errors` (all array)
+     *   - edit:         `id` (int|string), `schema`, `values`, `errors` (array)
+     *   - show:         `detail` (array), `activity` (array)
+     *
+     * @param string                                                                                                                                                                                                                                                               $action One of: index, create, edit, show
+     * @param array{rows?: list<array<string, mixed>>, pagination?: array<string, mixed>|Pagination, id?: int|string, schema?: array<string, mixed>, values?: array<string, mixed>, errors?: array<string, mixed>, detail?: array<string, mixed>, activity?: array<string, mixed>} $data   Context data keyed by action (see above)
      */
     public function build(string $action = 'index', array $data = []): PageContract
     {
@@ -386,8 +400,8 @@ class CrudBuilder implements CrudBuilderInterface
     {
         $title = $this->actionTitle('index');
         $columns = $this->columnsList ?? ['name', 'status', 'created_at'];
-        $row_actions = $this->rowActionsList ?? ['edit', 'delete'];
-        $page_actions = $this->pageActionsList ?? [
+        $rowActions = $this->rowActionsList ?? ['edit', 'delete'];
+        $pageActions = $this->pageActionsList ?? [
             new Action(
                 id: 'create',
                 label: 'Create',
@@ -399,12 +413,12 @@ class CrudBuilder implements CrudBuilderInterface
 
         $pagination = $data['pagination'] ?? Pagination::of(1, $this->perPage, 0);
 
-        $built_columns = $this->buildColumns($columns);
+        $builtColumns = $this->buildColumns($columns);
 
         // A search box appears when forced on, or when any column opted into search.
         $searchable = $this->searchable;
 
-        foreach ($built_columns as $column) {
+        foreach ($builtColumns as $column) {
             if ($column->searchable) {
                 $searchable = true;
 
@@ -412,10 +426,10 @@ class CrudBuilder implements CrudBuilderInterface
             }
         }
 
-        $table_config = new TableConfig(
-            columns: $built_columns,
+        $tableConfig = new TableConfig(
+            columns: $builtColumns,
             filters: $this->filtersList,
-            rowActions: array_map(fn (string $a): Action => $this->buildRowAction($a), $row_actions),
+            rowActions: array_map(fn (string $a): Action => $this->buildRowAction($a), $rowActions),
             bulkActions: $this->bulkActionsList !== null
                 ? array_map(fn (string $a): Action => $this->buildBulkAction($a), $this->bulkActionsList)
                 : [],
@@ -428,8 +442,8 @@ class CrudBuilder implements CrudBuilderInterface
             ),
         );
 
-        $table_data = array_merge(
-            $table_config->jsonSerialize(),
+        $tableData = array_merge(
+            $tableConfig->jsonSerialize(),
             [
                 'rows' => $data['rows'] ?? [],
                 'pagination' => $pagination instanceof Pagination ? $pagination->jsonSerialize() : $pagination,
@@ -439,9 +453,9 @@ class CrudBuilder implements CrudBuilderInterface
         return PageBuilder::page($this->slug . '.index')
             ->title($title)
             ->layout($this->customLayout ?? 'stack')
-            ->actions($page_actions)
+            ->actions($pageActions)
             ->region('content', [
-                new BlockDescriptor(type: 'dense_table', key: $this->slug . '.table', data: $table_data),
+                new BlockDescriptor(type: 'dense_table', key: $this->slug . '.table', data: $tableData),
             ])
             ->build();
     }
@@ -450,7 +464,7 @@ class CrudBuilder implements CrudBuilderInterface
     {
         $title = $this->actionTitle('create');
 
-        $form_data = [
+        $formData = [
             'action' => '/' . $this->slug,
             'method' => 'post',
             'schema' => $data['schema'] ?? [],
@@ -466,7 +480,7 @@ class CrudBuilder implements CrudBuilderInterface
             ->title($title)
             ->layout($this->customLayout ?? 'stack')
             ->region('content', [
-                new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $form_data),
+                new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $formData),
             ])
             ->build();
     }
@@ -476,7 +490,7 @@ class CrudBuilder implements CrudBuilderInterface
         $id = $data['id'] ?? 0;
         $title = $this->actionTitle('edit');
 
-        $form_data = [
+        $formData = [
             'action' => sprintf('/%s/%s', $this->slug, $id),
             'method' => 'put',
             'schema' => $data['schema'] ?? [],
@@ -492,7 +506,7 @@ class CrudBuilder implements CrudBuilderInterface
             ->title($title)
             ->layout($this->customLayout ?? 'stack')
             ->region('content', [
-                new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $form_data),
+                new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $formData),
             ])
             ->build();
     }

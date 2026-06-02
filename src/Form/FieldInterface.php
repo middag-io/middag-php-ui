@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Form;
 
 /**
- * Contract for fields. Implemented by abstract_field and all concrete field classes.
+ * Contract for fields. Implemented by AbstractField and all concrete field classes.
  *
  * The fluent DSL builder must be able to produce an immutable FieldDefinition
  * consumed by renderer adapters.

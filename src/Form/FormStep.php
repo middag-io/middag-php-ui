@@ -57,8 +57,16 @@ final readonly class FormStep implements JsonSerializable
     /** @return array<string, mixed> */
     public static function jsonSchema(): array
     {
-        return ['type' => 'object', 'required' => ['id', 'label', 'fields'],
-            'properties' => ['id' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'fields' => ['type' => 'array', 'items' => ['type' => 'string']], 'help' => ['$ref' => '#/$defs/Label']],
-            'additionalProperties' => false];
+        return [
+            'type' => 'object',
+            'required' => ['id', 'label', 'fields'],
+            'properties' => [
+                'id' => ['type' => 'string'],
+                'label' => ['$ref' => '#/$defs/Label'],
+                'fields' => ['type' => 'array', 'items' => ['type' => 'string']],
+                'help' => ['$ref' => '#/$defs/Label'],
+            ],
+            'additionalProperties' => false,
+        ];
     }
 }

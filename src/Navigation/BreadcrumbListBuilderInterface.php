@@ -19,5 +19,6 @@ interface BreadcrumbListBuilderInterface
 
     public function current(string $label): static;
 
+    /** @return BreadcrumbInterface[] */
     public function all(): array;
 }

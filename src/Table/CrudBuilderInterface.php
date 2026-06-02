@@ -39,6 +39,11 @@ interface CrudBuilderInterface
 
     public function sort(string $column, string $direction = 'desc'): static;
 
+    /**
+     * The `$verbs` default literal MUST track the implementer's verb domain
+     * (see {@see CrudBuilder::VERB_DOMAIN}); an interface cannot reference the
+     * implementer's private constant, so the value is mirrored here as `'ui'`.
+     */
     public function i18n(string $domain, string $verbs = 'ui'): static;
 
     public function label(string|Translatable $singular, string|Translatable|null $plural = null): static;

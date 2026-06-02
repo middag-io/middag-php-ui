@@ -64,8 +64,9 @@ interface NavigationRegistryInterface
     /**
      * Set a capability requirement on any node.
      *
-     * The node (and its children) is hidden if the current user lacks the capability.
-     * Filtering happens server-side before serialization.
+     * `$capability` is an opaque authorization token mapped by the adapter (not a
+     * host API call). The node (and its children) is hidden if the current user
+     * lacks it. Filtering happens server-side before serialization.
      */
     public function capability(string $nodeKey, string $capability): static;
 
@@ -105,7 +106,13 @@ interface NavigationRegistryInterface
      *
      * @param string $activeRoute Current route name (used to resolve activeKey)
      *
-     * @return array{tree: array, activeKey: string, footer: array}
+     * @return array{
+     *     tree: list<array<string, mixed>>,
+     *     activeKey: string,
+     *     footer: list<array<string, mixed>>
+     * } `tree` and `footer` are serialized {@see NavigationNode} arrays (footer = the
+     *   secondary/bottom node list); `activeKey` is the dot-notation key of the node
+     *   resolved active for `$activeRoute`
      */
     public function build(string $activeRoute): array;
 }

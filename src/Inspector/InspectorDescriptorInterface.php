@@ -14,5 +14,13 @@ namespace Middag\Ui\Inspector;
 
 use JsonSerializable;
 
-/** @api */
+/**
+ * Boundary marker for inspector side-panel descriptors.
+ *
+ * Carries no methods of its own beyond {@see JsonSerializable}: it exists so host
+ * adapters and renderers can type-hint against the contract (an extension seam)
+ * rather than the concrete {@see InspectorDescriptor}.
+ *
+ * @api
+ */
 interface InspectorDescriptorInterface extends JsonSerializable {}

@@ -23,6 +23,14 @@ use Middag\Ui\Shared\Data\Translatable;
  */
 final readonly class Confirmation implements JsonSerializable
 {
+    /**
+     * @param string $variant Visual style of the confirmation modal, interpreted
+     *                        by the React client. Recognized values: `default`
+     *                        (neutral) and `danger` (destructive). Kept as a free
+     *                        string rather than an enum so the client may add
+     *                        variants without a PHP-side release; promoting it to
+     *                        a typed enum would require an ADR.
+     */
     public function __construct(
         public string|Translatable $title,
         public string|Translatable $message,

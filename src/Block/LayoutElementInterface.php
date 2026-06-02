@@ -13,11 +13,12 @@ declare(strict_types=1);
 namespace Middag\Ui\Block;
 
 use Middag\Ui\Form\FieldInterface;
+use Middag\Ui\Form\Group;
 
 /**
  * Layout primitive (section, group). Wraps a list of fields or nested elements.
  *
- * Implemented by section and group in infrastructure/form/layout/.
+ * Implemented by {@see Section} and {@see Group}.
  * Allows renderers to traverse the schema tree uniformly.
  *
  * @api

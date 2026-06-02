@@ -30,7 +30,7 @@ interface FormInterface
     /** Hydrate form with input data (POST/JSON). Resolver chain calls this. */
     public function hydrate(array $input): void;
 
-    /** Run validation (schema-derived + optional form_request). */
+    /** Run validation (schema-derived + optional FormRequestInterface). */
     public function validate(): void;
 
     /** True when form was submitted (input not empty) AND validate() passed. */

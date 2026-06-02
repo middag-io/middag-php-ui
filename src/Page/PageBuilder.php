@@ -319,7 +319,7 @@ class PageBuilder implements PageBuilderInterface
      * Use this when you need overlay/help metadata alongside the contract.
      * The PageContract itself remains unchanged (@api safe).
      *
-     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptorInterface}
+     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor}
      */
     public function toProps(): array
     {

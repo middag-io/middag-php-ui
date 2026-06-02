@@ -20,7 +20,7 @@ use Middag\Ui\Block\LayoutElementInterface;
  * Immutable: `fields()` returns a new instance with the given children rather
  * than mutating in place.
  *
- * @internal — use base/form/group factory
+ * @internal — construct via the {@see Group::of()} factory
  */
 final readonly class Group implements LayoutElementInterface
 {

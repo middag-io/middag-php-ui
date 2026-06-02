@@ -19,9 +19,10 @@ use Middag\Ui\Shared\Enum\FieldType;
 /**
  * Neutral, immutable representation of a form field.
  *
- * Host renderer adapters consume this value object — never the fluent DSL
- * builder. This is the boundary between the public DSL (base/form/field)
- * and the infrastructure renderers.
+ * Host renderer adapters consume this value object — never the fluent field
+ * builder. This is the boundary between the public field builder (the host's
+ * field DSL, which produces this via {@see FieldInterface::toDefinition()}) and
+ * the infrastructure renderers.
  *
  * @api
  */

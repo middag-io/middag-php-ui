@@ -28,6 +28,13 @@ use Middag\Ui\Shared\Enum\ActionIntent;
  */
 final readonly class Action implements ActionInterface
 {
+    /**
+     * @param ?string $capability Opaque authorization token, mapped by the host
+     *                            adapter (e.g. Moodle capability, WP capability).
+     *                            It is NOT a host API call — the framework treats
+     *                            it as a transparent string and forwards it on the
+     *                            wire; the adapter alone interprets/enforces it.
+     */
     public function __construct(
         public string $id,
         public string|Translatable $label,

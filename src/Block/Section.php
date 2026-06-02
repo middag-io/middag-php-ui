@@ -22,7 +22,7 @@ use Middag\Ui\Shared\Data\Translatable;
  * Immutable: `label()` and `fields()` return a new instance rather than
  * mutating in place.
  *
- * @internal — use base/form/section factory
+ * @internal — construct via the {@see Section::of()} named constructor
  */
 final readonly class Section implements LayoutElementInterface
 {

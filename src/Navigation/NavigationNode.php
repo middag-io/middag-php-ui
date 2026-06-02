@@ -27,18 +27,19 @@ use Middag\Ui\Shared\Data\Translatable;
 readonly class NavigationNode implements JsonSerializable
 {
     /**
-     * @param string      $key         Unique dot-notation key (e.g. 'audience.segments.index')
-     * @param string      $label       Display label
-     * @param null|string $icon        Client icon-set name
-     * @param null|string $href        URL (leaf nodes only)
-     * @param null|string $badge       Badge value (lazy-resolved before serialization)
-     * @param bool        $active      Whether this node is active (server-resolved)
-     * @param bool        $drilldown   Whether clicking replaces sidebar with children + back
-     * @param bool        $collapsible Whether the group renders with a toggle to expand/collapse
-     * @param bool        $defaultOpen Whether a collapsible group starts expanded (default: false)
-     * @param self[]      $children    Child nodes
-     * @param int         $weight      Sort order (lower = higher)
-     * @param null|string $capability  Required capability (node hidden if user lacks it)
+     * @param string              $key         Unique dot-notation key (e.g. 'audience.segments.index')
+     * @param string|Translatable $label       Display label (i18n intent or raw literal)
+     * @param null|string         $icon        Client icon-set name
+     * @param null|string         $href        URL (leaf nodes only)
+     * @param null|string         $badge       Badge value (lazy-resolved before serialization)
+     * @param bool                $active      Whether this node is active (server-resolved)
+     * @param bool                $drilldown   Whether clicking replaces sidebar with children + back
+     * @param bool                $collapsible Whether the group renders with a toggle to expand/collapse
+     * @param bool                $defaultOpen Whether a collapsible group starts expanded (default: false)
+     * @param self[]              $children    Child nodes
+     * @param int                 $weight      Sort order (lower = higher)
+     * @param null|string         $capability  Opaque authorization token mapped by the adapter (not a host
+     *                                         API call); node hidden if the current user lacks it
      */
     public function __construct(
         public string $key,

@@ -76,7 +76,10 @@ final readonly class ActionTarget implements JsonSerializable
             ActionTargetKind::REQUEST => [
                 'kind' => 'request',
                 'endpoint' => $this->endpoint,
-                'method' => $this->method?->value,
+                // `method` is always set for the REQUEST kind: the request() named
+                // constructor is the only producer and always passes a non-null
+                // HttpMethod (defaulting to POST). Hence `->`, not `?->`.
+                'method' => $this->method->value,
             ],
         };
     }

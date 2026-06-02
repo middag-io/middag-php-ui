@@ -13,14 +13,13 @@ declare(strict_types=1);
 namespace Middag\Ui\Workflow;
 
 /**
- * Descriptor for workflow node types in the visual editor (CC-03).
+ * Descriptor for a workflow node type in the visual editor.
  *
- * Extensions implement this interface to register custom action/trigger types
- * with their config UI schema. The visual editor renders config forms dynamically
- * from get_config_schema() — no hardcoded forms per type.
- *
- * Registration: extensions call workflow_registry::register_descriptor() in boot().
- * Discovery: workflow_api_controller aggregates all descriptors for the node palette.
+ * Extensions implement this interface to register custom node types (triggers,
+ * actions, logic) along with the config UI schema for each type. The visual
+ * editor renders the config form dynamically from {@see getConfigSchema()},
+ * so no form is hardcoded per node type. How descriptors are registered and
+ * discovered is the host adapter's concern and is not part of this contract.
  *
  * @api
  */
@@ -32,7 +31,7 @@ interface WorkflowNodeDescriptorInterface
     public function getCategory(): string;
 
     /**
-     * Returns the node type identifier (matches action_type or trigger_type).
+     * Returns the node type identifier within its category.
      */
     public function getNodeType(): string;
 
