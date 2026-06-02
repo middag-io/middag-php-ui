@@ -52,7 +52,10 @@ class BlockBuilder
             data: array_merge(
                 [
                     'action' => $action,
-                    'method' => $method,
+                    // FormMethod on the wire is lowercase (post|put|patch); the
+                    // @middag-io/react FormPanelBlock matches `data.method === "put"`
+                    // exactly, so an uppercase "PUT" silently falls back to POST.
+                    'method' => strtolower($method),
                     'schema' => $schema,
                     'values' => $values,
                     // The @middag-io/react FormPanelBlock requires `errors` and
