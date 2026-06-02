@@ -50,7 +50,19 @@ class BlockBuilder
             type: 'form_panel',
             key: $key,
             data: array_merge(
-                ['action' => $action, 'method' => $method, 'schema' => $schema, 'values' => $values],
+                [
+                    'action' => $action,
+                    'method' => $method,
+                    'schema' => $schema,
+                    'values' => $values,
+                    // The @middag-io/react FormPanelBlock requires `errors` and
+                    // `meta` (it reads `data.meta.validation` and iterates
+                    // `data.errors`). Default them so a minimal form_panel payload
+                    // renders; callers override via $data (server validation errors,
+                    // validation mode, submit/cancel labels).
+                    'errors' => (object) [],
+                    'meta' => ['validation' => 'both'],
+                ],
                 $steps !== null ? ['steps' => $steps, 'multiStep' => true] : [],
                 $data,
             ),
