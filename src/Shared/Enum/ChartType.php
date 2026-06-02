@@ -15,7 +15,11 @@ namespace Middag\Ui\Shared\Enum;
 use Middag\Ui\Shared\ProvidesJsonSchema;
 
 /**
- * Closed catalog of chart block render types.
+ * Closed catalog of FREE chart block render types (basic line/bar/area).
+ *
+ * The advanced `pie` variant is PREMIUM and lives in the core premium
+ * ChartType ({@see \Middag\Core\Ui\Shared\Enum\ChartType}). Keep this FREE
+ * enum limited to line/bar/area so the Community wire contract stays clean.
  *
  * @api
  */
@@ -28,8 +32,4 @@ enum ChartType: string
     case BAR = 'bar';
 
     case AREA = 'area';
-
-    case PIE = 'pie';
-
-    case DONUT = 'donut';
 }

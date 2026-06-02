@@ -1005,9 +1005,7 @@
             "enum": [
                 "line",
                 "bar",
-                "area",
-                "pie",
-                "donut"
+                "area"
             ]
         },
         "ConditionOperator": {
