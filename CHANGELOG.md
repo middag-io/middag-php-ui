@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.7.0](https://github.com/middag-io/middag-php-ui/compare/v0.6.4...v0.7.0) (2026-06-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** Middag\Ui\Block\BlockInterface and Middag\Ui\Dashboard\DashboardWidgetInterface are removed; implementers use Middag\Core\Admin\Contract\* instead.
+
+### Bug Fixes
+
+* **form_panel:** lowercase the HTTP method (FormMethod is lowercase) ([977b167](https://github.com/middag-io/middag-php-ui/commit/977b16765d12ada3883dec06ace21a855b6a0e35))
+* **ui:** correct stale formPanel method assertion to lowercase wire value ([a1777b3](https://github.com/middag-io/middag-php-ui/commit/a1777b3ca038b2e479dcc713de82702d98a43cc4))
+
+
+### Refactoring
+
+* **ui:** apply ui-review quality fixes ([2782702](https://github.com/middag-io/middag-php-ui/commit/2782702db6e84d7a11a83286a2e2074e7bd1c14c))
+* **ui:** drop BlockInterface and duplicate DashboardWidgetInterface ([1d0486e](https://github.com/middag-io/middag-php-ui/commit/1d0486e18e32dfbf061309a5fb5e409ae0af603b))
+
+
+### Documentation
+
+* **ui:** align CLAUDE.md on concern-first terminology ([4c52ef9](https://github.com/middag-io/middag-php-ui/commit/4c52ef9d033e7155dac8eef530f5884815403e1d))
+* **ui:** realign CLAUDE.md to feature-first and the render-lives-in-core rule ([81892ba](https://github.com/middag-io/middag-php-ui/commit/81892baff0e76a9dee681328cf42ab342899bc26))
+
 ## [0.6.4](https://github.com/middag-io/middag-php-ui/compare/v0.6.3...v0.6.4) (2026-06-02)
 
 
