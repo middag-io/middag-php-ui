@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Shared\Enum;
 
-use Middag\Ui\Shared\Enum\Concerns\ProvidesJsonSchema;
+use Middag\Ui\Shared\ProvidesJsonSchema;
 
 /**
  * What a partial Fragment carries, so the client routes it without guessing.

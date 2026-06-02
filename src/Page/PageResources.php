@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Page;
 
+use Middag\Ui\Page\Contract\PageResourcesInterface;
 use Middag\Ui\Shared\Data\Identity;
 use Middag\Ui\Shared\Data\UserPreferences;
 

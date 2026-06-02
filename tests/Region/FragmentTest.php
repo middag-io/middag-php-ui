@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Region;
 
 use Middag\Ui\Block\BlockDescriptor;
-use Middag\Ui\Envelope\ContractEnvelopeInterface;
+use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\RegionUpdate;

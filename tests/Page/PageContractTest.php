@@ -14,7 +14,7 @@ namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\LayoutDescriptor;
-use Middag\Ui\Envelope\ContractEnvelopeInterface;
+use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
 use Middag\Ui\Page\PageResources;

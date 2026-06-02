@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Region;
+namespace Middag\Ui\Region\Contract;
 
-use Middag\Ui\Block\BlockDescriptorInterface;
 use Middag\Ui\Block\ChartSeries;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ChartType;

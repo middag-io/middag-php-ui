@@ -19,7 +19,7 @@ use Middag\Ui\Action\Confirmation;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
-use Middag\Ui\Envelope\ContractEnvelopeInterface;
+use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;

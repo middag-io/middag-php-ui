@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Block;
 
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
+use Middag\Ui\Block\Contract\LayoutDescriptorInterface;
+
 /**
  * Page layout: a template plus named regions, each holding ordered blocks.
  *

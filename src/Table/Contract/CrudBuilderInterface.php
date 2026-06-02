@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Table;
+namespace Middag\Ui\Table\Contract;
 
 use Closure;
-use Middag\Ui\Page\PageContractInterface;
+use Middag\Ui\Page\Contract\PageContractInterface;
 use Middag\Ui\Shared\Data\Translatable;
 
 /** @api */

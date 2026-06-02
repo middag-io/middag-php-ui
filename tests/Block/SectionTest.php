@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Block;
 
-use Middag\Ui\Block\LayoutElementInterface;
+use Middag\Ui\Block\Contract\LayoutElementInterface;
 use Middag\Ui\Block\Section;
-use Middag\Ui\Form\FieldInterface;
+use Middag\Ui\Form\Contract\FieldInterface;
 use Middag\Ui\Shared\Data\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Action;
+namespace Middag\Ui\Block\Contract;
 
 use JsonSerializable;
 
 /** @api */
-interface ActionInterface extends JsonSerializable {}
+interface BlockDescriptorInterface extends JsonSerializable {}

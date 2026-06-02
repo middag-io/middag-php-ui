@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Navigation;
 
-use Middag\Ui\Navigation\BreadcrumbInterface;
 use Middag\Ui\Navigation\BreadcrumbListBuilder;
+use Middag\Ui\Navigation\Contract\BreadcrumbInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

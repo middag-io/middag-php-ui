@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Page;
 
-use Middag\Ui\Action\ActionInterface;
-use Middag\Ui\Navigation\BreadcrumbInterface;
+use Middag\Ui\Action\Contract\ActionInterface;
+use Middag\Ui\Navigation\Contract\BreadcrumbInterface;
+use Middag\Ui\Page\Contract\PageMetaInterface;
 use Middag\Ui\Shared\Data\Label;
 use Middag\Ui\Shared\Data\Translatable;
 

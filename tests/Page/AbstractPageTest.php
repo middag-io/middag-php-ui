@@ -14,7 +14,7 @@ namespace Middag\Ui\Tests\Page;
 
 use LogicException;
 use Middag\Ui\Page\AbstractPage;
-use Middag\Ui\Page\PageContractInterface;
+use Middag\Ui\Page\Contract\PageContractInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

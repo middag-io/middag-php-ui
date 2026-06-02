@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Form;
 
-use Middag\Ui\Block\LayoutElementInterface;
+use Middag\Ui\Block\Contract\LayoutElementInterface;
+use Middag\Ui\Form\Contract\FieldInterface;
 
 /**
  * Inline field group (e.g. side-by-side fields within a section).

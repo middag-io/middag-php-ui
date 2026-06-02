@@ -15,9 +15,9 @@ namespace Middag\Ui\Table;
 use Closure;
 use InvalidArgumentException;
 use Middag\Ui\Action\Action;
-use Middag\Ui\Action\ActionInterface;
 use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Action\Confirmation;
+use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\PageContract;
@@ -25,6 +25,7 @@ use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Table\Contract\CrudBuilderInterface;
 
 /**
  * CRUD convention builder (Levels 1-2).

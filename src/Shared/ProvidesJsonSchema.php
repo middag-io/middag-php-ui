@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Shared\Enum\Concerns;
+namespace Middag\Ui\Shared;
 
 /**
  * Emits the JSON Schema fragment for a string-backed enum.

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Page;
 
 use Middag\Ui\Block\LayoutDescriptor;
+use Middag\Ui\Page\Contract\PageContractInterface;
 use Middag\Ui\Shared\Data\Notification;
 
 /**

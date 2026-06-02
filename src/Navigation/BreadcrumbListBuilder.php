@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Navigation;
 
+use Middag\Ui\Navigation\Contract\BreadcrumbInterface;
+use Middag\Ui\Navigation\Contract\BreadcrumbListBuilderInterface;
+
 /**
  * Fluent builder for breadcrumb arrays.
  *

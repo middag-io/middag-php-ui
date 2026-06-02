@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Region;
 
 use JsonSerializable;
-use Middag\Ui\Block\BlockDescriptorInterface;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Shared\Enum\RegionUpdateMode;
 
 /**

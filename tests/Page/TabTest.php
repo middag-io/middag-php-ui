@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Page;
 
-use Middag\Ui\Block\BlockDescriptorInterface;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Data\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;

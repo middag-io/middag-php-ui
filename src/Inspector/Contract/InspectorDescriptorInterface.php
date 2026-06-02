@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Inspector;
+namespace Middag\Ui\Inspector\Contract;
 
 use JsonSerializable;
 

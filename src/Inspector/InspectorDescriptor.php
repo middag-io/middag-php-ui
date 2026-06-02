@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Inspector;
 
+use Middag\Ui\Inspector\Contract\InspectorDescriptorInterface;
 use Middag\Ui\Region\PollConfig;
 
 /**

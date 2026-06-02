@@ -10,7 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Condition;
+namespace Middag\Ui\Condition\Contract;
+
+use Middag\Ui\Condition\Condition;
 
 /**
  * Contract for objects that can produce a condition value object.

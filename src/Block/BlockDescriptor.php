@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Block;
 
-use Middag\Ui\Action\ActionInterface;
+use Middag\Ui\Action\Contract\ActionInterface;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Region\PollConfig;
 use Middag\Ui\Shared\Data\Label;
 use Middag\Ui\Shared\Data\Translatable;

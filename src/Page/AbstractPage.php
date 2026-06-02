@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Page;
 
 use LogicException;
+use Middag\Ui\Page\Contract\PageContractInterface;
+use Middag\Ui\Page\Contract\PageInterface;
 
 /**
  * Base class for pages composed via the page contract pipeline.

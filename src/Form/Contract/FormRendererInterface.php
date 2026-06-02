@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Form;
+namespace Middag\Ui\Form\Contract;
 
 use Middag\Ui\Shared\Data\RendererOutput;
 use Middag\Ui\Shared\Enum\RenderTarget;

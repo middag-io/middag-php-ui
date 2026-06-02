@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Table;
 
 use JsonSerializable;
-use Middag\Ui\Action\ActionInterface;
+use Middag\Ui\Action\Contract\ActionInterface;
 
 /**
  * Table configuration DTO.

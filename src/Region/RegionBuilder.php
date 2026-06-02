@@ -14,11 +14,12 @@ namespace Middag\Ui\Region;
 
 use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\BlockDescriptor;
-use Middag\Ui\Block\BlockDescriptorInterface;
 use Middag\Ui\Block\ChartSeries;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\Tab;
+use Middag\Ui\Region\Contract\RegionBuilderInterface;
 use Middag\Ui\Shared\Enum\ChartType;
 
 /**

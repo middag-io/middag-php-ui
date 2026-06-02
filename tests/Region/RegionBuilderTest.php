@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Region;
 
 use Middag\Ui\Block\BlockBuilder;
-use Middag\Ui\Block\BlockDescriptorInterface;
 use Middag\Ui\Block\ChartSeries;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\RegionBuilder;
 use Middag\Ui\Shared\Enum\ChartType;

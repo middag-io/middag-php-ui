@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Shared\Enum;
 
-use Middag\Ui\Shared\Enum\Concerns\ProvidesJsonSchema;
+use Middag\Ui\Shared\ProvidesJsonSchema;
 
 /**
  * HTTP method for a request-target action.

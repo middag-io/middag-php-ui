@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Page;
+namespace Middag\Ui\Page\Contract;
 
-use JsonSerializable;
+use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 
 /** @api */
-interface PageMetaInterface extends JsonSerializable {}
+interface PageContractInterface extends ContractEnvelopeInterface {}

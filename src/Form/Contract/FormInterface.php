@@ -10,9 +10,10 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Form;
+namespace Middag\Ui\Form\Contract;
 
-use Middag\Ui\Block\LayoutElementInterface;
+use Middag\Ui\Block\Contract\LayoutElementInterface;
+use Middag\Ui\Form\FormState;
 
 /**
  * Contract for forms. Implemented by form classes in the framework/adapter layers.

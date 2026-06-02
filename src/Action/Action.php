@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Action;
 
+use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Shared\Data\Label;
 use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\ActionIntent;

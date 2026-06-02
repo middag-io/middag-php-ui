@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Region;
 
 use JsonSerializable;
-use Middag\Ui\Block\BlockDescriptorInterface;
-use Middag\Ui\Envelope\ContractEnvelopeInterface;
+use Middag\Ui\Block\Contract\BlockDescriptorInterface;
+use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Shared\Data\Notification;
 use Middag\Ui\Shared\Enum\FragmentKind;
