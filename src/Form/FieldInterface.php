@@ -16,7 +16,7 @@ namespace Middag\Ui\Form;
  * Contract for fields. Implemented by abstract_field and all concrete field classes.
  *
  * The fluent DSL builder must be able to produce an immutable FieldDefinition
- * consumed by renderer adapters (ADR-806).
+ * consumed by renderer adapters.
  *
  * @api
  */

@@ -31,7 +31,7 @@ use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Table\CrudBuilder;
 
 /**
- * Fluent builder for PageContract (L3 API — ADR-807).
+ * Fluent builder for PageContract (L3 API).
  *
  * Produces a PageContract from a chainable API.
  *
@@ -88,7 +88,7 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Start a CRUD convention builder (Levels 1-2 — ADR-807).
+     * Start a CRUD convention builder (Levels 1-2).
      *
      * Level 1: PageBuilder::crud(Segment::class)->build('index')
      * Level 2: PageBuilder::crud(Segment::class)->without('show')->columns([...])->build('index')

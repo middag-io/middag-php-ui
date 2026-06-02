@@ -15,7 +15,7 @@ namespace Middag\Ui\Shared\Enum;
 use Middag\Ui\Shared\Enum\Concerns\ProvidesJsonSchema;
 
 /**
- * Closed catalog of MVP form field types (ADR-806).
+ * Closed catalog of MVP form field types.
  *
  * Adding a value requires: ADR amendment + matching field class +
  * a renderer-mapper case per host adapter + a client component.

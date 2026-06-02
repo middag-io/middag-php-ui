@@ -63,11 +63,13 @@ use Middag\Ui\Table\TableOptions;
  * Collects the hand-authored `jsonSchema()` of every wire value object and enum
  * into a single JSON Schema (draft 2020-12) bundle.
  *
- * The schema is the canonical machine-readable wire contract (D-02:A): PHP VOs
+ * The schema is the canonical machine-readable wire contract: PHP VOs
  * are the source of truth, this registry bundles their schemas, and the emitter
  * (bin/emit-schemas.php) writes them for downstream codegen (TS types, zod) and
  * the MCP server. Each VO co-locates its `jsonSchema()` with its
  * `jsonSerialize()`; SchemaRoundtripTest guarantees the two never drift.
+ *
+ * @internal
  */
 final class SchemaRegistry
 {

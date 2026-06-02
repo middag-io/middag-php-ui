@@ -15,7 +15,7 @@ namespace Middag\Ui\Shared\Enum;
 use Middag\Ui\Shared\Enum\Concerns\ProvidesJsonSchema;
 
 /**
- * Identity token for form renderer adapters (ADR-805).
+ * Identity token for form renderer adapters.
  *
  * Declares the output MEDIUM a renderer adapter produces — a rendered HTML
  * body, or a structured props payload — not a concrete transport. Used by the

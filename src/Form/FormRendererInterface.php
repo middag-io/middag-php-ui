@@ -16,7 +16,7 @@ use Middag\Ui\Shared\Data\RendererOutput;
 use Middag\Ui\Shared\Enum\RenderTarget;
 
 /**
- * Adapter contract — produces a RendererOutput for one RenderTarget (ADR-805).
+ * Adapter contract — produces a RendererOutput for one RenderTarget.
  *
  * Adapter implementations are registered with the host renderer registry,
  * which selects the correct adapter at render time.

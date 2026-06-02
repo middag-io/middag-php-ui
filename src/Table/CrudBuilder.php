@@ -27,7 +27,7 @@ use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\ValueFormat;
 
 /**
- * CRUD convention builder (ADR-807 Levels 1-2).
+ * CRUD convention builder (Levels 1-2).
  *
  * Generates PageContract instances for index/create/edit/show actions
  * following convention-over-configuration. Override methods allow point-of-use

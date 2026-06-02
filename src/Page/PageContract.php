@@ -16,7 +16,7 @@ use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Shared\Data\Notification;
 
 /**
- * Top-level page contract envelope (ADR-807).
+ * Top-level page contract envelope.
  *
  * Describes a complete server-driven page: shell, page identity,
  * layout with regions and blocks, and shared resources. Serialized to JSON

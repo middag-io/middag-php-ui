@@ -15,7 +15,7 @@ namespace Middag\Ui\Shared\Enum;
 use Middag\Ui\Shared\Enum\Concerns\ProvidesJsonSchema;
 
 /**
- * Closed catalog of condition operators for form field visibility rules (ADR-806).
+ * Closed catalog of condition operators for form field visibility rules.
  *
  * Used to declare reactive conditions between form fields. Host renderer
  * adapters decide which operators they can natively express.

@@ -15,7 +15,7 @@ namespace Middag\Ui\Navigation;
 use Closure;
 
 /**
- * Registry for the 3-level navigation tree (ADR-807).
+ * Registry for the 3-level navigation tree.
  *
  * Extensions register groups (N1), sections (N2), and items (N3) during boot().
  * The registry builds the full tree, filters by capability, resolves the active

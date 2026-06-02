@@ -18,7 +18,7 @@ use Middag\Ui\Block\LayoutElementInterface;
  * Contract for forms. Implemented by form classes in the framework/adapter layers.
  *
  * Covers the full lifecycle: schema declaration → hydration → validation → submission.
- * The host resolver chain hydrates and validates the form before the controller executes (ADR-802).
+ * The host resolver chain hydrates and validates the form before the controller executes.
  *
  * @api
  */

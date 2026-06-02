@@ -19,6 +19,8 @@ namespace Middag\Ui\Shared\Enum\Concerns;
  * single source of truth — the schema can never drift from the wire values.
  * Used by the schema emitter (bin/emit-schemas.php) to bundle every enum into
  * the wire-contract `$defs`.
+ *
+ * @internal
  */
 trait ProvidesJsonSchema
 {

@@ -16,7 +16,7 @@ namespace Middag\Ui\Condition;
  * Contract for objects that can produce a condition value object.
  *
  * Implemented by fluent DSL builders in the field layer that expose
- * conditional visibility/requirement/disability rules (ADR-806).
+ * conditional visibility/requirement/disability rules.
  *
  * @api
  */

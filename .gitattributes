@@ -9,6 +9,7 @@
 /.github                            export-ignore
 /.gitattributes                     export-ignore
 /.gitignore                         export-ignore
+/.specify                           export-ignore
 /.php-cs-fixer.dist.php             export-ignore
 /.php-rector.php                    export-ignore
 /.phpstan.neon                      export-ignore

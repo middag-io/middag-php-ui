@@ -22,7 +22,7 @@ use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ChartType;
 
 /**
- * Fluent builder for composing blocks within a layout region (ADR-807).
+ * Fluent builder for composing blocks within a layout region.
  *
  * Provides shorthand methods for common block types. Used via callback
  * in PageBuilder::region().

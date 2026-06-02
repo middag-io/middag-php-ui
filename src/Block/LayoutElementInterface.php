@@ -18,7 +18,7 @@ use Middag\Ui\Form\FieldInterface;
  * Layout primitive (section, group). Wraps a list of fields or nested elements.
  *
  * Implemented by section and group in infrastructure/form/layout/.
- * Allows renderers to traverse the schema tree uniformly (ADR-806).
+ * Allows renderers to traverse the schema tree uniformly.
  *
  * @api
  */

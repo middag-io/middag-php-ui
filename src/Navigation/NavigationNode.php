@@ -17,7 +17,7 @@ use Middag\Ui\Shared\Data\Label;
 use Middag\Ui\Shared\Data\Translatable;
 
 /**
- * A node in the navigation tree (ADR-807).
+ * A node in the navigation tree.
  *
  * Can represent any level: group (N1), section (N2), or item (N3).
  * Serialized for the client navigation component.

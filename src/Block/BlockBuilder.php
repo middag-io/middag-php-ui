@@ -17,7 +17,7 @@ use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ChartType;
 
 /**
- * Static factory for creating BlockDescriptor instances (ADR-807).
+ * Static factory for creating BlockDescriptor instances.
  *
  * Provides named constructors for each standard block type,
  * avoiding the need to remember block type strings and data shapes.

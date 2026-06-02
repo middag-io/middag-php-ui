@@ -15,7 +15,7 @@ namespace Middag\Ui\Page;
 use LogicException;
 
 /**
- * Base class for pages composed via the page contract pipeline (ADR-807).
+ * Base class for pages composed via the page contract pipeline.
  *
  * Extensions extend AbstractPage to declare a routable page. Subclasses set
  * the SLUG constant for container discovery and implement build() to compose
