@@ -118,7 +118,9 @@ final class BlockBuilderTest extends TestCase
         self::assertSame('form_panel', $payload['type']);
         self::assertSame('f', $payload['key']);
         self::assertSame('/submit', $payload['data']['action']);
-        self::assertSame('POST', $payload['data']['method']);
+        // formPanel() lowercases the method for the wire: @middag-io/react's
+        // FormPanelBlock matches `data.method === "post"/"put"` (lowercase).
+        self::assertSame('post', $payload['data']['method']);
         self::assertArrayHasKey('schema', $payload['data']);
         self::assertArrayHasKey('values', $payload['data']);
     }
