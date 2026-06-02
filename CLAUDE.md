@@ -10,11 +10,11 @@ Biblioteca PHP de contract builders para UI contract-driven. Produz um contrato 
 - **Lib fechada** — não adicionar features sem ADR.
 - **3 níveis de composição** (ADR-807): L1 convenção, L2 convenção + overrides, L3 composição livre.
 
-## Organização (eixo: feature-first)
+## Organização (eixo: concern-first)
 
-Pacote pequeno e single-purpose, organizado por **feature de UI** na raiz de `src/` (ex.: `Action/ Block/ Page/ Table/ Navigation/ Region/ Form/ Inspector/ Shared/ ...`). Não há `Contract/` central — cada papel convive co-localizado dentro da feature:
+Pacote pequeno e single-purpose, organizado por **concern de UI** na raiz de `src/` (ex.: `Action/ Block/ Page/ Table/ Navigation/ Region/ Form/ Inspector/ Shared/ ...`). Não há `Contract/` central — cada papel convive co-localizado dentro da concern:
 
-- **interfaces `@api`** vivem no próprio diretório da feature (sufixo `Interface`); nada concreto numa interface
+- **interfaces `@api`** vivem no próprio diretório da concern (sufixo `Interface`); nada concreto numa interface
 - **builders fluentes** retornam `static` e produzem value objects
 - **value objects** são `readonly` (serializáveis quando vão pro wire). Um VO pareado com um `*Interface` dedicado pode ser `readonly` não-`final` por design (seam de extensão que o adapter implementa); VO-folha leva `final readonly`
 - **enums backed** (catálogos fechados), VOs e helpers transversais ficam em `Shared/` (`Shared/Enum/`, `Shared/Data/`, `Shared/Schema/`)
@@ -31,7 +31,7 @@ Pacote pequeno e single-purpose, organizado por **feature de UI** na raiz de `sr
 | Renderers e field-mappers vivem em `framework`/adapters, não aqui          | ui hospeda só contratos + layout primitives                                                                                                                                                                       |
 | Nenhum contrato do ui produz HTML (`render(): string`)                     | Render é de produto/host → vive em core/adapter (ex.: `BlockInterface`/`DashboardWidgetInterface` foram movidos pro core). Contratos do ui produzem **dados/VOs** (ex.: `FormRendererInterface`→`RendererOutput`) |
 | `FieldDefinition` e `Condition` NÃO implementam `JsonSerializable`         | São boundary objects; renderers mapeiam — evita acoplar ao formato de wire                                                                                                                                        |
-| Interfaces `@api` co-localizadas na feature; VO concreto fora de interface | Eixo feature-first (não há `Contract/` central)                                                                                                                                                                   |
+| Interfaces `@api` co-localizadas na concern; VO concreto fora de interface | Eixo concern-first (não há `Contract/` central)                                                                                                                                                                   |
 
 > **Autz é dado, não chamada:** tokens opacos de autorização (ex.: o campo `capability` em `Action`/`NavigationNode`/`CrudBuilder`) são **dados** permitidos no contrato — o proibido é **chamar API de host** (`has_capability`/`mform`/`wpdb`). O adapter resolve o token; o ui só o carrega.
 
