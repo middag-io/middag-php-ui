@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/middag-io/middag-php-ui/compare/v0.8.0...v0.8.1) (2026-06-02)
+
+
+### Bug Fixes
+
+* **chart:** restrict FREE ChartType to line/bar/area ([d2f478e](https://github.com/middag-io/middag-php-ui/commit/d2f478e7f319ddfa99ca0dccedfa5a7bce715517))
+
 ## [0.8.0](https://github.com/middag-io/middag-php-ui/compare/v0.7.0...v0.8.0) (2026-06-02)
 
 
