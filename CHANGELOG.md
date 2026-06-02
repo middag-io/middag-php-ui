@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/middag-io/middag-php-ui/compare/v0.7.0...v0.8.0) (2026-06-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** UI interface FQNs moved from Middag\Ui\<Concern>\<Name>Interface to Middag\Ui\<Concern>\Contract\<Name>Interface; consumers must update imports. Middag\Ui\Workflow\WorkflowNodeDescriptorInterface is removed.
+
+### Features
+
+* **ui:** move concern interfaces into Contract/ subnamespace ([59e5361](https://github.com/middag-io/middag-php-ui/commit/59e5361013340de4f018b19480c86f66c84bef0a))
+
 ## [0.7.0](https://github.com/middag-io/middag-php-ui/compare/v0.6.4...v0.7.0) (2026-06-02)
 
 
