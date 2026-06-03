@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/middag-io/middag-php-ui/compare/v0.8.1...v0.8.2) (2026-06-03)
+
+
+### Features
+
+* **block:** denseTable() accepts block meta param ([308f1e6](https://github.com/middag-io/middag-php-ui/commit/308f1e603bcf16a1a13a237b290e284bc70e611d))
+
 ## [0.8.1](https://github.com/middag-io/middag-php-ui/compare/v0.8.0...v0.8.1) (2026-06-02)
 
 
