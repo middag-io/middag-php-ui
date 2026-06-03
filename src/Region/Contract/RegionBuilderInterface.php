@@ -30,8 +30,10 @@ interface RegionBuilderInterface
 
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload
+     * @param array<string, mixed> $meta Block-level meta (e.g. `clientSide` to
+     *                                   filter/sort/paginate in the browser)
      */
-    public function denseTable(string $key, array $columns, array $rows = [], array $data = []): static;
+    public function denseTable(string $key, array $columns, array $rows = [], array $data = [], array $meta = []): static;
 
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload

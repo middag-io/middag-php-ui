@@ -28,13 +28,19 @@ class BlockBuilder
 {
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload
+     * @param array<string, mixed> $meta Block-level meta the React DenseTableBlock
+     *                                   reads off `block.meta` (NOT `data`): e.g.
+     *                                   `clientSide` (filter/sort/paginate in the
+     *                                   browser on the supplied rows),
+     *                                   `partialReloadKey`, `rowKey`, `loading`.
      */
-    public static function denseTable(string $key, array $columns, array $rows = [], array $data = []): BlockDescriptor
+    public static function denseTable(string $key, array $columns, array $rows = [], array $data = [], array $meta = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'dense_table',
             key: $key,
             data: array_merge(['columns' => $columns, 'rows' => $rows], $data),
+            meta: $meta,
         );
     }
 
