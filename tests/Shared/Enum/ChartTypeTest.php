@@ -28,13 +28,14 @@ final class ChartTypeTest extends TestCase
     {
         $values = array_column(ChartType::cases(), 'value');
 
-        self::assertSame(['line', 'bar', 'area', 'pie', 'donut'], $values);
+        self::assertSame(['line', 'bar', 'area'], $values);
     }
 
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(ChartType::DONUT, ChartType::from('donut'));
+        self::assertSame(ChartType::AREA, ChartType::from('area'));
+        self::assertNull(ChartType::tryFrom('donut'));
         self::assertNull(ChartType::tryFrom('nope'));
     }
 }
