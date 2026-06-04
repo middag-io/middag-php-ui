@@ -1,7 +1,16 @@
+<div align="center">
+
 # middag-io/ui
 
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![PHP](https://img.shields.io/badge/php-%5E8.2-777BB4.svg)](https://www.php.net/)
+**Transport-agnostic PHP contract builders — describe a page once, render it anywhere.**
+
+[Documentation](https://docs.middag.dev) · [What it does](#what-it-does) · [GitHub](https://github.com/middag-io/middag-php-ui)
+
+[![CI](https://github.com/middag-io/middag-php-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/middag-io/middag-php-ui/actions/workflows/ci.yml) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![PHP](https://img.shields.io/badge/php-%5E8.2-777BB4.svg)](https://www.php.net/) [![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen.svg)](https://phpstan.org/)
+
+[![Packagist Version](https://img.shields.io/packagist/v/middag-io/ui.svg)](https://packagist.org/packages/middag-io/ui) [![Packagist Downloads](https://img.shields.io/packagist/dt/middag-io/ui.svg)](https://packagist.org/packages/middag-io/ui)
+
+</div>
 
 Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. Produces `PageContract` (JSON) consumed by `@middag-io/react` via Inertia or any transport layer.
 
@@ -34,19 +43,19 @@ This means PHP never renders HTML for pages — it declares structure, and React
 | **Transport-agnostic contracts** | Builders produce `JsonSerializable` → `PageContract` (JSON). No Inertia/transport dependency; works with any wire. |
 | **Zero dependencies** | PHP `^8.2` only. Consumers inherit no transitive packages. |
 | **Host-agnostic** | No Moodle / WordPress / `mform` / capability coupling. Host-specifics live in the adapter, never here. |
-| **3 levels of composition** | Convention (`CrudBuilder`) → convention + overrides → free composition (`PageBuilder`). ADR-807. |
+| **3 levels of composition** | Convention (`CrudBuilder`) → convention + overrides → free composition (`PageBuilder`). |
 | **CRUD convention builder** | `index`/`create`/`edit`/`show` pages from an entity class: i18n titles, filters, search, per-action `capability` gating. |
-| **13 block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
+| **Block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
 | **Typed value objects** | `final readonly` + `JsonSerializable`. camelCase wire keys, omit-empty payloads, immutable witters. |
 | **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull), `ResourcePatch`. |
 | **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible. |
-| **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters (ADR-806). |
+| **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters. |
 | **i18n intents** | `Translatable` `{key, domain, params}`. The library never resolves translations — the client does. |
-| **Quality gates** | 345 tests · 100% coverage · PHPStan L6 · php-cs-fixer · Rector — enforced per commit. |
+| **Quality gates** | Full test suite, high coverage, PHPStan L6, php-cs-fixer, Rector — enforced per commit. |
 
 ---
 
-## Three Levels of Composition (ADR-807)
+## Three Levels of Composition
 
 ### Level 1 — Convention (CrudBuilder)
 
@@ -212,7 +221,7 @@ $node = new NavigationNode(
 
 ## Form System
 
-The form system follows ADR-806. This library provides contracts and value objects only — renderers live in `middag-io/framework` (Inertia) and `middag-io/moodle` (mform).
+This library provides contracts and value objects only — renderers live in `middag-io/framework` (Inertia) and the host adapters.
 
 ### Contracts
 
@@ -250,7 +259,7 @@ A closed backed enum of field types (`TEXT`, `TEXTAREA`, `SELECT`, `DATE`,
 `RICHTEXT`, `TIME`, `AUTOCOMPLETE`, `TAGS`, …) — see `src/Shared/Enum/FieldType.php`
 for the full catalogue.
 
-Adding a type requires: ADR amendment + field class + `MformFieldMapper` case + `InertiaFieldMapper` case + Vue component.
+Adding a type requires a new field class, matching renderer-side mappers, and the client component — most of which live downstream.
 
 ---
 
@@ -276,18 +285,7 @@ $config = TableBuilder::make()
 
 ## Installation
 
-Add the MIDDAG Private Satis repository to your `composer.json`:
-
-```json
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://privatesatis.middag.io"
-        }
-    ]
-}
-```
+Requires PHP `^8.2`. Install via Composer:
 
 ```bash
 composer require middag-io/ui
