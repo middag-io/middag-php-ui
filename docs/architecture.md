@@ -1,0 +1,85 @@
+# Architecture
+
+`middag-io/ui` is the **contract-builder** layer of the MIDDAG stack: a transport- and host-agnostic
+library for describing a UI as an immutable, serializable value object — the **page contract** — that
+something downstream renders. It has zero runtime dependencies (PHP `^8.2` only).
+
+## The PageContract system
+
+A page is built up from value objects, never from markup. Builders compose a tree of concerns
+(regions, forms, tables, blocks, navigation, actions) and the root **page contract** serializes to
+JSON (`JsonSerializable`). A renderer — `middag-io/framework`'s Inertia renderer, a host adapter, or
+the `@middag-io/react` client — turns that JSON into a UI.
+
+The contract is the entire public surface: if a value can appear on the wire, it is a `readonly`
+value object with a deterministic `jsonSerialize()`; if it is a boundary object a renderer maps
+manually (e.g. `FieldDefinition`, `Condition`), it does **not** implement `JsonSerializable`, to avoid
+coupling the model to a wire format.
+
+## The OSS boundary — why nothing here renders
+
+This package is the bottom of the stack and defines only generic contracts. **Rendering, host wiring,
+and HTTP transport live downstream**, never here:
+
+- **No contract produces HTML** (`render(): string`). ui contracts produce **data / value objects**
+  (e.g. `FormRendererInterface` → `RendererOutput`, not a string). Rendering is a product/host concern.
+- **No host knowledge.** No `mform`, `wpdb`, capability calls, column names, or plugin conventions.
+- **Authorization is data, not a call.** Opaque authorization tokens (the `capability` field on
+  `Action`/`NavigationNode`/`CrudBuilder`) are data the contract carries. Calling a host API to
+  resolve them is forbidden here — the adapter does that downstream.
+
+## Concern-first layout
+
+`src/` is organised by **UI concern**, each a top-level directory:
+
+| Concern | What it carries |
+|---------|-----------------|
+| `Action/` | the canonical `Action` value object + its discriminated `ActionTarget` (link / route / request) |
+| `Block/` | content blocks (`BlockBuilder`, `BlockDescriptor`) and the `Section` layout primitive |
+| `Condition/` | the `Condition` value object (field visibility/requirement rules) |
+| `Envelope/` | the response envelope around a contract |
+| `Form/` | the form model — `FieldDefinition`, `Group`, form state and renderer contracts |
+| `Inspector/` | detail/inspector view contracts |
+| `Navigation/` | navigation nodes and registries |
+| `Page/` | the page contract entry points and page metadata |
+| `Region/` | page regions and fragments (partial updates) |
+| `Table/` | tables and the CRUD builder |
+| `Shared/` | cross-cutting `Enum/` (closed catalogs), `Data/` (value objects), `Schema/` (JSON-schema emission) |
+
+Inside each concern, `@api` interfaces live in a `Contract/` sub-namespace (suffix `Interface`),
+fluent builders return `static` and produce value objects, and leaf value objects are `final
+readonly`. A VO paired with a dedicated `*Interface` extension seam may be `readonly` (non-`final`).
+
+> **The wire value objects are an intentionally interlinked cluster.** An envelope can embed any
+> payload; an `ActionResult` carries either a full page contract or a partial fragment; a `CrudBuilder`
+> emits a page contract. So "concern" here is an organisational axis, **not** an acyclic dependency
+> boundary — the cross-references between concerns are inherent to the domain, not a layering defect.
+
+## Three composition levels
+
+The builders meet you at the level of control you need:
+
+- **L1 — convention.** Name your columns/fields and accept the conventional shape (e.g. `CrudBuilder`
+  derives sensible columns from names).
+- **L2 — convention + overrides.** Start from the convention, then override individual pieces
+  (a column's label, format, sortability) via a configurator.
+- **L3 — free composition.** Build the value objects directly for full control.
+
+## The wire contract and JSON schemas
+
+The emitted JSON schemas under `schema/` (`page-contract.json`, `fragment.json`) are **published
+artifacts**: the `@middag-io/react` client and other consumers codegen against them. `SchemaRegistry`
+(in `Shared/Schema/`) is the single source of truth; `bin/emit-schemas.php` writes the files and
+`composer check` runs it with `--check` to fail on drift. The schemas are strict — every object is
+`additionalProperties:false` and discriminated unions (like `ActionTarget`) use `oneOf` on a `kind`
+const — so the contract stays a small, stable, machine-checkable wire format.
+
+## Relationship to other packages
+
+```
+middag-io/ui (this repo)        ← zero deps, host-agnostic
+  └─ middag-io/framework        ← requires ui; generic renderers/kernel
+       ├─ middag-io/moodle      ← requires framework; Moodle adapters + host-specifics
+       └─ middag-io/wordpress   ← requires framework; WordPress adapters
+  └─ @middag-io/react (NPM)     ← consumes the JSON this package produces
+```
