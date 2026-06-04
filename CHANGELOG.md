@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.9.0](https://github.com/middag-io/middag-php-ui/compare/v0.8.2...v0.9.0) (2026-06-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** removed Middag\Ui\Condition\Contract\ConditionInterface (unused @api). Build Condition value objects directly; no consumer referenced the interface.
+
+### Bug Fixes
+
+* **ui:** expose Section and Group layout primitives as public [@api](https://github.com/api) ([fff88ce](https://github.com/middag-io/middag-php-ui/commit/fff88ce8304242c79fbe7a1693a4968b0bc791be))
+
+
+### Refactoring
+
+* **ui:** drop the unused ConditionInterface contract ([7aced16](https://github.com/middag-io/middag-php-ui/commit/7aced16d21d7d489beaae97fccf51d92d88150e8))
+
+
+### Documentation
+
+* **ui:** add the docs/ technical reference ([efa7bef](https://github.com/middag-io/middag-php-ui/commit/efa7bef399665af04ab0dced790870af7f669ddd))
+* **ui:** rewrite CLAUDE.md in English and expand the contributor guide ([69d8be4](https://github.com/middag-io/middag-php-ui/commit/69d8be4237eca276de8b35e6e157f4827fdba45a))
+* **ui:** switch README to Packagist install and de-rot the header ([3068221](https://github.com/middag-io/middag-php-ui/commit/3068221c99f3065a40b9d03adb1a8af60631b6d5))
+* **ui:** tidy public docblocks for the reviewed release ([03440db](https://github.com/middag-io/middag-php-ui/commit/03440db3a9892cbb79edfbe33d49de1a2e9254f6))
+
+
+### Miscellaneous
+
+* **hooks:** accept the breaking-change marker in commit-msg ([95f1537](https://github.com/middag-io/middag-php-ui/commit/95f1537e903d36b93b8fd8798cfb8d59870950fa))
+* **ui:** add community-health files and templates ([6f3f05d](https://github.com/middag-io/middag-php-ui/commit/6f3f05d2d9cd4228316d0c9f2cbda0caaf932a85))
+
 ## [0.8.2](https://github.com/middag-io/middag-php-ui/compare/v0.8.1...v0.8.2) (2026-06-03)
 
 
