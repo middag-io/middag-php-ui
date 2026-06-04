@@ -56,6 +56,9 @@ readonly class NavigationNode implements JsonSerializable
         public ?string $capability = null,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         $payload = [

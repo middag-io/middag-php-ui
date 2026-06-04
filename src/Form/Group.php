@@ -21,7 +21,9 @@ use Middag\Ui\Form\Contract\FieldInterface;
  * Immutable: `fields()` returns a new instance with the given children rather
  * than mutating in place.
  *
- * @internal — construct via the {@see Group::of()} factory
+ * Construct via the {@see Group::of()} factory (the constructor is private).
+ *
+ * @api
  */
 final readonly class Group implements LayoutElementInterface
 {

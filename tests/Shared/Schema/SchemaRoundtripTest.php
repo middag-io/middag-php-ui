@@ -306,6 +306,26 @@ final class SchemaRoundtripTest extends TestCase
         ]);
     }
 
+    // ── Negative: discriminated-union + additionalProperties:false strictness ──
+
+    #[Test]
+    public function testActionTargetDiscriminatorAndStrictnessAreEnforced(): void
+    {
+        // Sanity: a well-formed link target validates, so the rejections below
+        // are meaningful (not an all-reject schema).
+        $this->assertValidAgainst('ActionTarget', ['kind' => 'link', 'href' => '/x']);
+
+        // Foreign branch key: `route` belongs to the route branch, not link; the
+        // closed link branch (additionalProperties:false) must REJECT it. Guards
+        // against a branch's required[]/additionalProperties silently regressing
+        // and widening what the React/framework codegen accepts.
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'link', 'route' => 'x']);
+        // Unknown discriminator: no oneOf branch has a `kind` const of 'bogus'.
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'bogus']);
+        // additionalProperties:false bites: a valid link carrying an extra key.
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'link', 'href' => '/x', 'evil' => 1]);
+    }
+
     /**
      * Each emitted bundle is itself a well-formed schema opis can compile and
      * use (a malformed $def would throw here).

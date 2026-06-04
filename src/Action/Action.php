@@ -31,7 +31,7 @@ final readonly class Action implements ActionInterface
 {
     /**
      * @param ?string $capability Opaque authorization token, mapped by the host
-     *                            adapter (e.g. Moodle capability, WP capability).
+     *                            adapter (e.g. a host capability/permission identifier).
      *                            It is NOT a host API call — the framework treats
      *                            it as a transparent string and forwards it on the
      *                            wire; the adapter alone interprets/enforces it.

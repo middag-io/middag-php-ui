@@ -123,6 +123,13 @@ class BlockBuilder
         );
     }
 
+    /**
+     * Build a Markdown panel block.
+     *
+     * SECURITY: `$content` is rendered as HTML by the client renderer. Callers
+     * MUST NOT pass untrusted input unless the renderer sanitizes it — this
+     * builder is a transport-agnostic serializer and does not escape markup.
+     */
     public static function markdownPanel(string $key, string $content, ?int $maxHeight = null): BlockDescriptor
     {
         return new BlockDescriptor(
