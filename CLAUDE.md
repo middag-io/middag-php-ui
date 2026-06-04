@@ -1,68 +1,95 @@
 # CLAUDE.md — middag-io/ui
 
-## O que é este pacote
+> A **durable** orientation guide for the agent: what this package is, its boundaries, conventions and
+> workflow. **Not a file index** (an index breaks on every move). To locate symbols, use Glob/Grep.
+> **The codebase is the source of truth.** Live structure/counts come from `src/`, not from here.
 
-Biblioteca PHP de contract builders para UI contract-driven. Produz um contrato de página (`JsonSerializable` → JSON) consumido por `@middag-io/react` via InertiaJS ou qualquer transport.
+## Mental model in 30s
 
-- **Transport-agnostic** — builders produzem `JsonSerializable`, sem dep de Inertia/transport
-- **Zero dependências** — apenas PHP `^8.2`
-- **Host-agnostic** — NÃO conhece Moodle, WordPress nem nenhum host. Sem `mform`, `wpdb`, capabilities, nomes de coluna ou convenções de plugin. Qualquer coisa específica de host vive no adapter consumidor, nunca aqui.
-- **Lib fechada** — não adicionar features sem ADR.
-- **3 níveis de composição** (ADR-807): L1 convenção, L2 convenção + overrides, L3 composição livre.
+MIDDAG's **UI contract-builder** library: a transport-agnostic system for describing a page **once**
+and rendering it **anywhere**. Builders produce an immutable **page contract** (`JsonSerializable` →
+JSON) that a host/adapter or `@middag-io/react` turns into UI — over Inertia or any transport.
 
-## Organização (eixo: concern-first)
+- **Transport-agnostic** — builders produce `JsonSerializable` value objects; no Inertia/transport dependency.
+- **Zero runtime dependencies** — PHP `^8.2` only. Consumers inherit nothing transitive.
+- **Host-agnostic** — knows nothing about Moodle, WordPress, or any host. No `mform`, `wpdb`,
+  capability calls, column names, or plugin conventions. Anything host-specific lives in the consuming
+  adapter, never here.
+- **Closed by intent** — new public surface only lands with a real use case (no speculative contracts).
+- **Three composition levels** — L1 convention, L2 convention + overrides, L3 free composition.
 
-Pacote pequeno e single-purpose, organizado por **concern de UI** na raiz de `src/` (ex.: `Action/ Block/ Page/ Table/ Navigation/ Region/ Form/ Inspector/ Shared/ ...`). Não há `Contract/` central — cada papel convive co-localizado dentro da concern:
+## Rule #1 — the OSS boundary (the invariant everything respects)
 
-- **interfaces `@api`** vivem no próprio diretório da concern (sufixo `Interface`); nada concreto numa interface
-- **builders fluentes** retornam `static` e produzem value objects
-- **value objects** são `readonly` (serializáveis quando vão pro wire). Um VO pareado com um `*Interface` dedicado pode ser `readonly` não-`final` por design (seam de extensão que o adapter implementa); VO-folha leva `final readonly`
-- **enums backed** (catálogos fechados), VOs e helpers transversais ficam em `Shared/` (`Shared/Enum/`, `Shared/Data/`, `Shared/Schema/`)
+This package is the **bottom** of the MIDDAG stack: it defines the generic contracts and produces
+data. **Rendering, host wiring, and HTTP transport live downstream**, never here.
 
-`src/` (raiz) hospeda os entrypoints do contrato de página + o envelope raiz.
+- **No contract here produces HTML** (`render(): string`). Rendering is a product/host concern and
+  lives in `middag-io/framework` and the adapters. ui contracts produce **data / value objects**
+  (e.g. `FormRendererInterface` → `RendererOutput`, not a string).
+- **No proprietary or host concepts** anchor this surface — no tier/commercial language, no named
+  host APIs, in code or docblocks.
+- **Authorization is data, not a call:** opaque authorization tokens (e.g. the `capability` field on
+  `Action`/`NavigationNode`/`CrudBuilder`) are **data** the contract may carry. What is forbidden is
+  *calling* a host API (`has_capability`/`mform`/`wpdb`). The adapter resolves the token; ui only carries it.
 
-## Invariantes de Design
+## How the code is organised (the rule, not the list)
 
-| Regra                                                                      | Motivo                                                                                                                                                                                                            |
-|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Zero deps externas                                                         | Consumers não herdam transitividade indesejada                                                                                                                                                                    |
-| `Data/` são `readonly class`                                               | Imutabilidade garantida em compile time                                                                                                                                                                           |
-| Sem vazamento de host (Moodle/WordPress/mform/etc.)                        | Lib agnóstica; host-specifics ficam no adapter                                                                                                                                                                    |
-| Renderers e field-mappers vivem em `framework`/adapters, não aqui          | ui hospeda só contratos + layout primitives                                                                                                                                                                       |
-| Nenhum contrato do ui produz HTML (`render(): string`)                     | Render é de produto/host → vive em core/adapter (ex.: `BlockInterface`/`DashboardWidgetInterface` foram movidos pro core). Contratos do ui produzem **dados/VOs** (ex.: `FormRendererInterface`→`RendererOutput`) |
-| `FieldDefinition` e `Condition` NÃO implementam `JsonSerializable`         | São boundary objects; renderers mapeiam — evita acoplar ao formato de wire                                                                                                                                        |
-| Interfaces `@api` co-localizadas na concern; VO concreto fora de interface | Eixo concern-first (não há `Contract/` central)                                                                                                                                                                   |
+**Concern-first** at the root of `src/`: each *concern* is a top-level directory (`Action/ Block/
+Condition/ Envelope/ Form/ Inspector/ Navigation/ Page/ Region/ Table/`, plus `Shared/`). The `src/`
+root hosts the page-contract entry points and the root envelope.
 
-> **Autz é dado, não chamada:** tokens opacos de autorização (ex.: o campo `capability` em `Action`/`NavigationNode`/`CrudBuilder`) são **dados** permitidos no contrato — o proibido é **chamar API de host** (`has_capability`/`mform`/`wpdb`). O adapter resolve o token; o ui só o carrega.
+Inside each concern:
 
-## Comandos
+- **`@api` interfaces** live in the concern's `Contract/` sub-namespace (suffix `Interface`); never
+  put anything concrete in an interface.
+- **fluent builders** return `static` and produce value objects.
+- **value objects** are `readonly` (serializable when they go on the wire). A VO paired with a
+  dedicated `*Interface` extension seam may be `readonly` (non-`final`) by design; a leaf VO is
+  `final readonly`.
+- **backed enums** (closed catalogs), cross-cutting VOs and helpers live in `Shared/`
+  (`Shared/Enum/`, `Shared/Data/`, `Shared/Schema/`).
 
-```bash
-composer test          # PHPUnit
-composer test:coverage # PHPUnit + cobertura (requer xdebug/pcov)
-composer check:style   # php-cs-fixer dry-run
-composer check:rector  # rector dry-run
-composer check:stan    # phpstan
-composer check         # os três checks em sequência
-composer fix:style     # php-cs-fixer apply
-composer fix:rector    # rector apply
-```
+> The wire value objects are an intentionally interlinked cluster (an envelope can embed any payload,
+> a builder can emit a full page), so "concern" is an organisational axis, not an acyclic dependency
+> boundary.
 
-## Convenções
+### Design invariants
 
-- PHP 8.2+ — `readonly class`, constructor promotion, `match`, enums backed
-- PSR-4 — namespace raiz `Middag\Ui\`; `declare(strict_types=1)` em todos os arquivos
-- Cobertura: todo teste declara `#[CoversClass]`; `tests/` espelha `src/`
-- Fluent builders retornam `static`
-- Commits convencionais; pré-1.0 → breaking aceitável, sem shims de compat
-- NÃO mover lógica de renderer/mapper nem qualquer host-specific pra cá
+| Rule | Why |
+|------|-----|
+| Zero external dependencies | Consumers inherit no unwanted transitivity |
+| `Shared/Data/` are `readonly class` | Immutability guaranteed at compile time |
+| No host leak (Moodle/WordPress/`mform`/etc.) | Agnostic lib; host-specifics live in the adapter |
+| Renderers and field-mappers live in `framework`/adapters, not here | ui hosts only contracts + layout primitives |
+| No ui contract produces HTML (`render(): string`) | Rendering is a product/host concern (downstream) |
+| `FieldDefinition` and `Condition` do NOT implement `JsonSerializable` | They are boundary objects; renderers map them — avoids coupling to the wire format |
+| `@api` interfaces in each concern's `Contract/`; concrete VOs outside interfaces | Concern-first axis |
 
-## Relação com outros pacotes
+## How to work here
+
+- **Gates (everything green before any delivery):** `composer check` (php-cs-fixer + Rector +
+  PHPStan + schema check) **&&** `composer test` (PHPUnit). Auto-fix: `composer fix`.
+- **Schemas:** the emitted JSON schemas under `schema/` are published artifacts (codegen consumes
+  them). `composer check` runs `bin/emit-schemas.php --check` to catch drift; regenerate with
+  `composer emit:schemas`.
+- **Style:** `declare(strict_types=1)` in every file; PSR-4 root namespace `Middag\Ui\`; camelCase;
+  fluent builders return `static`; cover new behaviour with a test (`tests/` mirrors `src/`,
+  `#[CoversClass]`). `@api` = public surface (enters the generated xRef/docs); `@internal` = internal.
+- **Commits:** Conventional Commits; **NEVER** `Co-Authored-By`. Single lowercase scope. Mark breaking
+  changes with `!` or a `BREAKING CHANGE:` footer. Branch base: `develop`. Pre-1.0: feat/fix → patch,
+  breaking → minor.
+
+## Relationship to other packages
 
 ```
 middag-io/ui (this repo)        ← zero deps, host-agnostic
-  └─ middag-io/framework        ← require ui; renderers/kernel genéricos
-       ├─ middag-io/moodle      ← require framework; adapters + host-specifics Moodle
-       └─ middag-io/wordpress   ← require framework; adapters WordPress
-  └─ @middag-io/react (NPM)     ← consome o JSON produzido por este pacote
+  └─ middag-io/framework        ← requires ui; generic renderers/kernel
+       ├─ middag-io/moodle      ← requires framework; Moodle adapters + host-specifics
+       └─ middag-io/wordpress   ← requires framework; WordPress adapters
+  └─ @middag-io/react (NPM)     ← consumes the JSON this package produces
 ```
+
+## State
+
+Pre-1.0 public release (Apache-2.0, staying `0.x` until the API is stable). Technical docs live in
+**`docs/`** and are published at **docs.middag.dev**.
