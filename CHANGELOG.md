@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/middag-io/middag-php-ui/compare/v0.9.0...v1.0.0) (2026-06-04)
+
+
+### Miscellaneous
+
+* **release:** stabilize the public API at 1.0.0 ([8892d37](https://github.com/middag-io/middag-php-ui/commit/8892d37fcc87f3dac85b0f4658db1a76db99ab01))
+* **release:** stabilize the public API at 1.0.0 ([b5ffa91](https://github.com/middag-io/middag-php-ui/commit/b5ffa9128d48171209f079605608e50e7d54897a))
+
 ## [0.9.0](https://github.com/middag-io/middag-php-ui/compare/v0.8.2...v0.9.0) (2026-06-04)
 
 
