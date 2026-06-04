@@ -221,7 +221,6 @@ The form system follows ADR-806. This library provides contracts and value objec
 | `FormInterface`          | `schema()` → `hydrate()` → `validate()` → `validated()`          |
 | `FieldInterface`         | `toDefinition(): FieldDefinition` — produces the boundary object |
 | `FormRendererInterface`  | `target(): RenderTarget` + `render(Form): RendererOutput`        |
-| `ConditionInterface`     | `toCondition(): Condition`                                       |
 | `LayoutElementInterface` | `id()` + `children()` — Section and Group implement this         |
 
 ### Value Objects
