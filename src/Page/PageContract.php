@@ -28,7 +28,8 @@ use Middag\Ui\Shared\Data\Notification;
 readonly class PageContract implements PageContractInterface
 {
     /**
-     * @param Notification[] $notifications
+     * @param Notification[]        $notifications
+     * @param array<string, string> $entities      entity type → route pattern map; blocks resolve entity refs against it
      */
     public function __construct(
         public string $shell,
@@ -36,6 +37,7 @@ readonly class PageContract implements PageContractInterface
         public LayoutDescriptor $layout,
         public ?PageResources $resources = null,
         public array $notifications = [],
+        public array $entities = [],
     ) {}
 
     /** @return array<string, mixed> */
@@ -59,6 +61,10 @@ readonly class PageContract implements PageContractInterface
             );
         }
 
+        if ($this->entities !== []) {
+            $data['entities'] = $this->entities;
+        }
+
         return $data;
     }
 
@@ -69,7 +75,8 @@ readonly class PageContract implements PageContractInterface
             'properties' => ['version' => ['const' => '1'], 'shell' => ['type' => 'string'],
                 'page' => ['$ref' => '#/$defs/PageMeta'], 'layout' => ['$ref' => '#/$defs/LayoutDescriptor'],
                 'resources' => ['$ref' => '#/$defs/PageResources'],
-                'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']]],
+                'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],
+                'entities' => ['type' => 'object', 'additionalProperties' => ['type' => 'string']]],
             'additionalProperties' => false];
     }
 }

@@ -35,6 +35,12 @@
                     "items": {
                         "$ref": "#/$defs/Notification"
                     }
+                },
+                "entities": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 }
             },
             "additionalProperties": false

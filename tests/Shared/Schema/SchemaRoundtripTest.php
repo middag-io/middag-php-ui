@@ -286,6 +286,7 @@ final class SchemaRoundtripTest extends TestCase
             layout: new LayoutDescriptor(template: 'stack', regions: ['content' => [$table]], meta: ['gap' => 4]),
             resources: new PageResources(capabilities: ['manage_courses' => true]),
             notifications: [new Notification(level: NotificationLevel::INFO, message: 'Loaded')],
+            entities: ['course' => '/courses/{id}', 'user' => '/users/{id}'],
         );
 
         $this->assertValidAgainst('PageContract', $page);
