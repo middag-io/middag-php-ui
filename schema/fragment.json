@@ -930,6 +930,1047 @@
                 "$ref": "#/$defs/FieldError"
             }
         },
+        "FormSchemaNode": {
+            "oneOf": [
+                {
+                    "$ref": "#/$defs/FormFieldNode"
+                },
+                {
+                    "$ref": "#/$defs/FormSectionNode"
+                },
+                {
+                    "$ref": "#/$defs/FormGroupNode"
+                },
+                {
+                    "$ref": "#/$defs/FormHeaderNode"
+                }
+            ]
+        },
+        "FormFieldNode": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "text",
+                                "email",
+                                "url",
+                                "password",
+                                "color"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "textarea"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "rows": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "otp"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "maxLength": {
+                                            "type": "integer"
+                                        },
+                                        "pattern": {
+                                            "enum": [
+                                                "digits",
+                                                "alphanumeric"
+                                            ]
+                                        },
+                                        "groupSize": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "int",
+                                "float"
+                            ]
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "min": {
+                                            "type": "number"
+                                        },
+                                        "max": {
+                                            "type": "number"
+                                        },
+                                        "step": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "slider"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "min": {
+                                            "type": "number"
+                                        },
+                                        "max": {
+                                            "type": "number"
+                                        },
+                                        "step": {
+                                            "type": "number"
+                                        },
+                                        "multiple": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "select",
+                                "radio"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/OptionFieldProps"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "multiselect"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/OptionFieldProps"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "native_select"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/OptionFieldProps"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "checkbox",
+                                "switch"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "date",
+                                "datetime"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "duration"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "file"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "accept": {
+                                            "type": "string"
+                                        },
+                                        "multiple": {
+                                            "type": "boolean"
+                                        },
+                                        "maxFiles": {
+                                            "type": "integer"
+                                        },
+                                        "maxSize": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "entity_picker"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/OptionFieldProps"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "autocompleteHref": {
+                                            "type": "string"
+                                        },
+                                        "autocompleteMinChars": {
+                                            "type": "integer"
+                                        },
+                                        "entityDisplayField": {
+                                            "type": "string"
+                                        },
+                                        "entitySubtitleField": {
+                                            "type": "string"
+                                        },
+                                        "entityAvatarField": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "phone"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "defaultCountry": {
+                                            "type": "string"
+                                        },
+                                        "fixedCountry": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "document"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "documentType": {
+                                            "type": "string"
+                                        },
+                                        "documentScope": {
+                                            "enum": [
+                                                "person",
+                                                "company",
+                                                "any"
+                                            ]
+                                        },
+                                        "documentMasks": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "$ref": "#/$defs/FormFieldDocumentMask"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "currency"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "currency": {
+                                            "type": "string"
+                                        },
+                                        "currencyLocale": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "slug"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "sourceField": {
+                                            "type": "string"
+                                        },
+                                        "prefix": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "tags"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "maxTags": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "rating"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "maxRating": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "date_range"
+                        },
+                        "props": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/FieldPropsBase"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "operator": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "hidden"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "static"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "header"
+                        },
+                        "props": {
+                            "type": "object",
+                            "required": [
+                                "label"
+                            ],
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "FormSectionNode": {
+            "type": "object",
+            "required": [
+                "kind",
+                "id",
+                "label",
+                "children"
+            ],
+            "properties": {
+                "kind": {
+                    "const": "section"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "defaultCollapsed": {
+                    "type": "boolean"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/FormSchemaNode"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "FormGroupNode": {
+            "type": "object",
+            "required": [
+                "kind",
+                "id",
+                "children"
+            ],
+            "properties": {
+                "kind": {
+                    "const": "group"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "columns": {
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/FormSchemaNode"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "FormHeaderNode": {
+            "type": "object",
+            "required": [
+                "kind",
+                "label"
+            ],
+            "properties": {
+                "kind": {
+                    "const": "header"
+                },
+                "label": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "FieldPropsBase": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "placeholder": {
+                    "type": "string"
+                },
+                "helpText": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "validation": {
+                    "$ref": "#/$defs/FormFieldValidation"
+                },
+                "visible_when": {
+                    "$ref": "#/$defs/FormCondition"
+                },
+                "hidden_when": {
+                    "$ref": "#/$defs/FormCondition"
+                },
+                "disabled_when": {
+                    "$ref": "#/$defs/FormCondition"
+                },
+                "required_when": {
+                    "$ref": "#/$defs/FormCondition"
+                }
+            }
+        },
+        "OptionFieldProps": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/FieldPropsBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "options": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "value",
+                                    "label"
+                                ],
+                                "properties": {
+                                    "value": {
+                                        "type": "string"
+                                    },
+                                    "label": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "FormCondition": {
+            "type": "object",
+            "required": [
+                "field",
+                "operator",
+                "value"
+            ],
+            "properties": {
+                "field": {
+                    "type": "string"
+                },
+                "operator": {
+                    "enum": [
+                        "equals",
+                        "not_equals",
+                        "in",
+                        "not_in"
+                    ]
+                },
+                "value": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "FormFieldValidation": {
+            "type": "object",
+            "properties": {
+                "minLength": {
+                    "type": "integer"
+                },
+                "maxLength": {
+                    "type": "integer"
+                },
+                "pattern": {
+                    "type": "string"
+                },
+                "patternMessage": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "FormFieldDocumentMask": {
+            "type": "object",
+            "required": [
+                "pattern",
+                "maxLength"
+            ],
+            "properties": {
+                "pattern": {
+                    "type": "string"
+                },
+                "maxLength": {
+                    "type": "integer"
+                },
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
         "RegionUpdate": {
             "type": "object",
             "required": [
@@ -1114,6 +2155,42 @@
                 "date_range",
                 "boolean",
                 "number_range"
+            ]
+        },
+        "FormComponent": {
+            "type": "string",
+            "enum": [
+                "text",
+                "textarea",
+                "password",
+                "otp",
+                "email",
+                "url",
+                "int",
+                "float",
+                "slider",
+                "select",
+                "native_select",
+                "multiselect",
+                "radio",
+                "checkbox",
+                "switch",
+                "date",
+                "datetime",
+                "duration",
+                "file",
+                "entity_picker",
+                "phone",
+                "document",
+                "currency",
+                "color",
+                "slug",
+                "tags",
+                "rating",
+                "date_range",
+                "hidden",
+                "static",
+                "header"
             ]
         },
         "FragmentKind": {

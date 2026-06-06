@@ -22,9 +22,19 @@ use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FieldError;
+use Middag\Ui\Form\FieldPropsBase;
 use Middag\Ui\Form\FileValue;
+use Middag\Ui\Form\FormCondition;
 use Middag\Ui\Form\FormErrors;
+use Middag\Ui\Form\FormFieldDocumentMask;
+use Middag\Ui\Form\FormFieldNode;
+use Middag\Ui\Form\FormFieldValidation;
+use Middag\Ui\Form\FormGroupNode;
+use Middag\Ui\Form\FormHeaderNode;
+use Middag\Ui\Form\FormSchemaNode;
+use Middag\Ui\Form\FormSectionNode;
 use Middag\Ui\Form\FormStep;
+use Middag\Ui\Form\OptionFieldProps;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
 use Middag\Ui\Navigation\NavigationNode;
@@ -49,6 +59,7 @@ use Middag\Ui\Shared\Enum\ChartType;
 use Middag\Ui\Shared\Enum\ConditionOperator;
 use Middag\Ui\Shared\Enum\FieldType;
 use Middag\Ui\Shared\Enum\FilterType;
+use Middag\Ui\Shared\Enum\FormComponent;
 use Middag\Ui\Shared\Enum\FragmentKind;
 use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\NotificationLevel;
@@ -127,6 +138,19 @@ final class SchemaRegistry
         'FileValue' => FileValue::class,
         'FieldError' => FieldError::class,
         'FormErrors' => FormErrors::class,
+        // Form schema tree (the canonical form-field union; the form-panel block
+        // payload stays a lenient passthrough until producers migrate, so these
+        // are a standalone island — not yet referenced from the page tree).
+        'FormSchemaNode' => FormSchemaNode::class,
+        'FormFieldNode' => FormFieldNode::class,
+        'FormSectionNode' => FormSectionNode::class,
+        'FormGroupNode' => FormGroupNode::class,
+        'FormHeaderNode' => FormHeaderNode::class,
+        'FieldPropsBase' => FieldPropsBase::class,
+        'OptionFieldProps' => OptionFieldProps::class,
+        'FormCondition' => FormCondition::class,
+        'FormFieldValidation' => FormFieldValidation::class,
+        'FormFieldDocumentMask' => FormFieldDocumentMask::class,
         // Server-push slices.
         'RegionUpdate' => RegionUpdate::class,
         'ActionResult' => ActionResult::class,
@@ -138,6 +162,7 @@ final class SchemaRegistry
         'ConditionOperator' => ConditionOperator::class,
         'FieldType' => FieldType::class,
         'FilterType' => FilterType::class,
+        'FormComponent' => FormComponent::class,
         'FragmentKind' => FragmentKind::class,
         'HttpMethod' => HttpMethod::class,
         'NotificationLevel' => NotificationLevel::class,
