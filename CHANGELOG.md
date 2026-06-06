@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.0](https://github.com/middag-io/middag-php-ui/compare/v1.0.0...v1.1.0) (2026-06-06)
+
+
+### Features
+
+* **contracts:** emit canonical form-field schema (FormSchemaNode island) ([aa44237](https://github.com/middag-io/middag-php-ui/commit/aa442373f6f080d24eade6f22b9524b92f8dbfc7))
+* **form:** add FileValue wire VO for file-upload field values ([5bef40b](https://github.com/middag-io/middag-php-ui/commit/5bef40b9b0c4c00288f961cbcf6aae9179b37a2d))
+* **form:** first-class FormErrors/FieldError defs with the form-level (_) key ([73df262](https://github.com/middag-io/middag-php-ui/commit/73df2626ede89b1911eed0faa0389e02d7572896))
+* **form:** formPanel dual-accepts FormSchemaNode VOs ([776f97b](https://github.com/middag-io/middag-php-ui/commit/776f97b057df0f111d17223f5c20a7f080657c31))
+* **page:** add optional entities map to the page contract envelope ([c9ca386](https://github.com/middag-io/middag-php-ui/commit/c9ca3866f2955db058e21b99a6280b549bf3190d))
+
 ## [1.0.0](https://github.com/middag-io/middag-php-ui/compare/v0.9.0...v1.0.0) (2026-06-04)
 
 
