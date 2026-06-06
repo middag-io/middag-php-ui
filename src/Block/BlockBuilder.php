@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Block;
 
+use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ChartType;
@@ -45,10 +46,15 @@ class BlockBuilder
     }
 
     /**
-     * @param array<string, mixed>      $schema
-     * @param array<string, mixed>      $values
-     * @param null|array<int, FormStep> $steps  Wizard steps; when set, the form renders multi-step
-     * @param array<string, mixed>      $data   Extra data merged into the block payload
+     * @param array<int, array<string, mixed>|FormSchemaNodeInterface> $schema Form schema nodes.
+     *                                                                         Dual-accept during the form-on-wire migration: each element
+     *                                                                         is either a {@see FormSchemaNodeInterface} VO (serialized here
+     *                                                                         via jsonSerialize) or a legacy loose array (passed through
+     *                                                                         untouched). Loose passthrough is removed once every producer
+     *                                                                         builds VOs (Phase 4).
+     * @param array<string, mixed>                                     $values
+     * @param null|array<int, FormStep>                                $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>                                     $data   Extra data merged into the block payload
      */
     public static function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): BlockDescriptor
     {
@@ -62,7 +68,10 @@ class BlockBuilder
                     // @middag-io/react FormPanelBlock matches `data.method === "put"`
                     // exactly, so an uppercase "PUT" silently falls back to POST.
                     'method' => strtolower($method),
-                    'schema' => $schema,
+                    'schema' => array_map(
+                        static fn (mixed $node): mixed => $node instanceof FormSchemaNodeInterface ? $node->jsonSerialize() : $node,
+                        $schema,
+                    ),
                     'values' => $values,
                     // The @middag-io/react FormPanelBlock requires `errors` and
                     // `meta` (it reads `data.meta.validation` and iterates

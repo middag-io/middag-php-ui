@@ -14,6 +14,7 @@ namespace Middag\Ui\Region\Contract;
 
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
+use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ChartType;
@@ -45,10 +46,10 @@ interface RegionBuilderInterface
     public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): static;
 
     /**
-     * @param array<string, mixed>      $schema
-     * @param array<string, mixed>      $values
-     * @param null|array<int, FormStep> $steps  Wizard steps; when set, the form renders multi-step
-     * @param array<string, mixed>      $data   Extra data merged into the block payload
+     * @param array<int, array<string, mixed>|FormSchemaNodeInterface> $schema Form schema nodes (VO or legacy loose array)
+     * @param array<string, mixed>                                     $values
+     * @param null|array<int, FormStep>                                $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>                                     $data   Extra data merged into the block payload
      */
     public function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): static;
 

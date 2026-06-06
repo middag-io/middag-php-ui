@@ -16,6 +16,7 @@ use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
+use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\Tab;
@@ -106,10 +107,10 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a form panel block.
      *
-     * @param array<string, mixed>      $schema
-     * @param array<string, mixed>      $values
-     * @param null|array<int, FormStep> $steps  Wizard steps; when set, the form renders multi-step
-     * @param array<string, mixed>      $data   Extra data merged into the block payload
+     * @param array<int, array<string, mixed>|FormSchemaNodeInterface> $schema Form schema nodes (VO or legacy loose array — see {@see BlockBuilder::formPanel})
+     * @param array<string, mixed>                                     $values
+     * @param null|array<int, FormStep>                                $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>                                     $data   Extra data merged into the block payload
      */
     public function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): static
     {
