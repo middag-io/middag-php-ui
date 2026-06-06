@@ -21,6 +21,7 @@ use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
+use Middag\Ui\Form\FileValue;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
@@ -121,6 +122,7 @@ final class SchemaRegistry
         'Tab' => Tab::class,
         'FormStep' => FormStep::class,
         'FieldConstraints' => FieldConstraints::class,
+        'FileValue' => FileValue::class,
         // Server-push slices.
         'RegionUpdate' => RegionUpdate::class,
         'ActionResult' => ActionResult::class,

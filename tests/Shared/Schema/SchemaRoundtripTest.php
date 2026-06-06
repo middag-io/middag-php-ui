@@ -21,6 +21,7 @@ use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Form\FieldConstraints;
+use Middag\Ui\Form\FileValue;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
@@ -155,6 +156,22 @@ final class SchemaRoundtripTest extends TestCase
             maxLength: 8,
             pattern: '\d+',
             step: '0.5',
+        ));
+    }
+
+    // ── FileValue — url shorthand + full metadata ────────────────────────────
+
+    #[Test]
+    public function testFileValue(): void
+    {
+        $this->assertValidAgainst('FileValue', new FileValue('/files/x.pdf'));
+        $this->assertValidAgainst('FileValue', new FileValue(
+            url: '/files/report.pdf',
+            name: 'report.pdf',
+            size: 10240,
+            type: 'application/pdf',
+            id: 'f-7',
+            draftitemid: 99887766,
         ));
     }
 
