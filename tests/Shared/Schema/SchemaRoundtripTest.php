@@ -22,6 +22,7 @@ use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FileValue;
+use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
@@ -173,6 +174,21 @@ final class SchemaRoundtripTest extends TestCase
             id: 'f-7',
             draftitemid: 99887766,
         ));
+    }
+
+    // ── FormErrors — field, list and form-level (_) keys ─────────────────────
+
+    #[Test]
+    public function testFormErrors(): void
+    {
+        // Empty errors are never serialized (ActionResult omits them), so the
+        // schema only needs to accept the populated object form.
+        $this->assertValidAgainst('FormErrors', new FormErrors([
+            'email' => 'Required',
+            'tags' => ['Too few', 'Invalid value'],
+            'address.zip' => 'Bad ZIP',
+            FormErrors::FORM_LEVEL_KEY => 'The form could not be saved.',
+        ]));
     }
 
     // ── Notification + enum ──────────────────────────────────────────────────

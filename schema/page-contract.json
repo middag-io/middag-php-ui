@@ -910,6 +910,26 @@
                 }
             ]
         },
+        "FieldError": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "FormErrors": {
+            "type": "object",
+            "description": "Validation errors keyed by field name. The reserved key \"_\" carries form-level errors; dotted keys target nested fields.",
+            "additionalProperties": {
+                "$ref": "#/$defs/FieldError"
+            }
+        },
         "RegionUpdate": {
             "type": "object",
             "required": [
@@ -963,20 +983,7 @@
                     }
                 },
                 "errors": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "oneOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            }
-                        ]
-                    }
+                    "$ref": "#/$defs/FormErrors"
                 },
                 "fragments": {
                     "type": "array",

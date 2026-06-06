@@ -41,7 +41,7 @@ final readonly class ActionResult implements JsonSerializable
     /**
      * @param Notification[]                 $notifications
      * @param string[]                       $refreshBlocks Block keys to reload (pull)
-     * @param array<string, string|string[]> $errors        Per-field validation errors
+     * @param array<string, string|string[]> $errors        Validation errors keyed by field; the reserved "_" key carries form-level errors (see FormErrors)
      * @param Fragment[]                     $fragments     Ready pieces to swap in (push)
      */
     public function __construct(
@@ -102,7 +102,7 @@ final readonly class ActionResult implements JsonSerializable
                 'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],
                 'redirect' => ['type' => 'string'],
                 'refreshBlocks' => ['type' => 'array', 'items' => ['type' => 'string']],
-                'errors' => ['type' => 'object', 'additionalProperties' => ['oneOf' => [['type' => 'string'], ['type' => 'array', 'items' => ['type' => 'string']]]]],
+                'errors' => ['$ref' => '#/$defs/FormErrors'],
                 'fragments' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Fragment']],
                 'resources' => ['$ref' => '#/$defs/ResourcePatch']],
             'additionalProperties' => false];
