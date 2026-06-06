@@ -14,6 +14,7 @@ namespace Middag\Ui\Tests\Shared\Schema;
 
 use FilesystemIterator;
 use JsonSerializable;
+use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Shared\Schema\SchemaRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -116,6 +117,24 @@ final class SchemaCoverageTest extends TestCase
         $walk($defs);
 
         self::assertSame([], array_values(array_unique($missing)), 'Every $ref must resolve to a registered $def.');
+    }
+
+    /**
+     * Every emitted bundle must stamp x-contract-version with the envelope
+     * VERSION, so the react codegen (which fails on a missing/unknown stamp) and
+     * the version-coupling rule stay enforceable rather than documentary.
+     */
+    #[Test]
+    public function testBundlesStampTheContractVersion(): void
+    {
+        foreach (SchemaRegistry::bundles() as $file => $bundle) {
+            self::assertArrayHasKey('x-contract-version', $bundle, $file . ' must stamp x-contract-version.');
+            self::assertSame(
+                ContractEnvelopeInterface::VERSION,
+                $bundle['x-contract-version'],
+                $file . ' x-contract-version must equal ContractEnvelopeInterface::VERSION.',
+            );
+        }
     }
 
     /**
