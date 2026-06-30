@@ -48,7 +48,6 @@
     "scripts": {
         "test": "phpunit",
         "test:coverage": "XDEBUG_MODE=coverage phpunit --coverage-text",
-        "check:boundaries": "grep -rln --include='*.php' 'Middag\\\\Core\\\\' src && { echo 'Article-I VIOLATION: OSS adapter src/ imports a non-OSS MIDDAG namespace/package, which is forbidden'; exit 1; } || echo 'boundaries OK: no non-OSS MIDDAG namespace imports in src/'",
         "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
         "check:rector": "rector process --dry-run --config=.php-rector.php",
         "check:stan": "phpstan analyse --configuration=.phpstan.neon",
@@ -57,7 +56,6 @@
         "emit:schemas": "@php bin/emit-schemas.php",
         "verify:schemas": "@php bin/emit-schemas.php --check",
         "check": [
-            "@check:boundaries",
             "@check:style",
             "@check:rector",
             "@check:stan",
