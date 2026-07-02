@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/middag-io/middag-php-ui/compare/v1.1.1...v1.2.0) (2026-07-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **shared:** namespaces Middag\Ui\Shared\Data, Middag\Ui\Shared\Schema and Middag\Ui\Shared\ProvidesJsonSchema moved; update imports to Middag\Ui\Shared\ValueObject, Middag\Ui\Schema and Middag\Ui\Shared\Concerns\ProvidesJsonSchema.
+
+### Refactoring
+
+* **shared:** align Shared with closed type-bag vocabulary ([2065feb](https://github.com/middag-io/middag-php-ui/commit/2065feb471aee6e6b551945449647e8aa7370eee))
+* **shared:** align Shared with closed type-bag vocabulary ([76cb7da](https://github.com/middag-io/middag-php-ui/commit/76cb7dac803d89a9f7d7f92734343e93597a86cd))
+
 ## [1.1.1](https://github.com/middag-io/middag-php-ui/compare/v1.1.0...v1.1.1) (2026-06-30)
 
 
