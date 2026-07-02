@@ -14,7 +14,7 @@ namespace Middag\Ui\Table\Contract;
 
 use Closure;
 use Middag\Ui\Page\Contract\PageContractInterface;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /** @api */
 interface CrudBuilderInterface

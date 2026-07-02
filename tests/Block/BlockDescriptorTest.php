@@ -16,7 +16,7 @@ use Middag\Ui\Action\Action;
 use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Region\PollConfig;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

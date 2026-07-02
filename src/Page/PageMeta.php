@@ -15,8 +15,8 @@ namespace Middag\Ui\Page;
 use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Navigation\Contract\BreadcrumbInterface;
 use Middag\Ui\Page\Contract\PageMetaInterface;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * Page identity: key, title, subtitle, breadcrumbs, and page-level actions.

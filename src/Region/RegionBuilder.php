@@ -18,7 +18,6 @@ use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
 use Middag\Ui\Form\FormStep;
-use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Contract\RegionBuilderInterface;
 use Middag\Ui\Shared\Enum\ChartType;

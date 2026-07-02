@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Page\Contract;
 
 use Closure;
-use Middag\Ui\Shared\Data\Notification;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /** @api */
 interface PageBuilderInterface

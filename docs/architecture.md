@@ -69,7 +69,7 @@ The builders meet you at the level of control you need:
 
 The emitted JSON schemas under `schema/` (`page-contract.json`, `fragment.json`) are **published
 artifacts**: the `@middag-io/react` client and other consumers codegen against them. `SchemaRegistry`
-(in `Shared/Schema/`) is the single source of truth; `bin/emit-schemas.php` writes the files and
+(in `Schema/`) is the single source of truth; `bin/emit-schemas.php` writes the files and
 `composer check` runs it with `--check` to fail on drift. The schemas are strict — every object is
 `additionalProperties:false` and discriminated unions (like `ActionTarget`) use `oneOf` on a `kind`
 const — so the contract stays a small, stable, machine-checkable wire format.

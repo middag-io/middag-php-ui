@@ -10,13 +10,13 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Shared\Schema;
+namespace Middag\Ui\Tests\Schema;
 
 use FilesystemIterator;
 use JsonSerializable;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Page\PageContract;
-use Middag\Ui\Shared\Schema\SchemaRegistry;
+use Middag\Ui\Schema\SchemaRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -190,7 +190,7 @@ final class SchemaCoverageTest extends TestCase
      */
     private function srcClasses(): array
     {
-        $base = dirname(__DIR__, 3) . '/src';
+        $base = dirname(__DIR__, 2) . '/src';
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );

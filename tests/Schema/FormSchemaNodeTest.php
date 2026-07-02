@@ -10,15 +10,15 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Shared\Schema;
+namespace Middag\Ui\Tests\Schema;
 
 use JsonSerializable;
 use Middag\Ui\Form\FormFieldNode;
 use Middag\Ui\Form\FormGroupNode;
 use Middag\Ui\Form\FormHeaderNode;
 use Middag\Ui\Form\FormSectionNode;
+use Middag\Ui\Schema\SchemaRegistry;
 use Middag\Ui\Shared\Enum\FormComponent;
-use Middag\Ui\Shared\Schema\SchemaRegistry;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Validator;

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Shared\Data;
+namespace Middag\Ui\Shared\ValueObject;
 
 /**
  * Stateless helper to serialize a UI label that may be either an i18n intent

@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Navigation;
 
 use JsonSerializable;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * A node in the navigation tree.

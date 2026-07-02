@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Shared\Schema;
+namespace Middag\Ui\Schema;
 
 use Middag\Ui\Action\Action;
 use Middag\Ui\Action\ActionResult;
@@ -47,12 +47,6 @@ use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\PollConfig;
 use Middag\Ui\Region\RegionUpdate;
-use Middag\Ui\Shared\Data\Identity;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Notification;
-use Middag\Ui\Shared\Data\Translatable;
-use Middag\Ui\Shared\Data\UserPreferences;
-use Middag\Ui\Shared\Enum;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\ActionTargetKind;
 use Middag\Ui\Shared\Enum\ChartType;
@@ -67,6 +61,11 @@ use Middag\Ui\Shared\Enum\RegionUpdateMode;
 use Middag\Ui\Shared\Enum\RenderTarget;
 use Middag\Ui\Shared\Enum\ThemeMode;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Shared\ValueObject\Identity;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Shared\ValueObject\Translatable;
+use Middag\Ui\Shared\ValueObject\UserPreferences;
 use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\Pagination;

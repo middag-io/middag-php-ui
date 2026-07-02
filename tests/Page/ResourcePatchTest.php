@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Page\ResourcePatch;
-use Middag\Ui\Shared\Data\UserPreferences;
 use Middag\Ui\Shared\Enum\ThemeMode;
+use Middag\Ui\Shared\ValueObject\UserPreferences;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

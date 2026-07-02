@@ -14,8 +14,8 @@ namespace Middag\Ui\Page;
 
 use JsonSerializable;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * A single tab within a tabs container block.

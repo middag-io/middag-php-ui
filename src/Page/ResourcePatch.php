@@ -13,9 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Page;
 
 use JsonSerializable;
-use Middag\Ui\Action\ActionResult;
-use Middag\Ui\Region\Fragment;
-use Middag\Ui\Shared\Data\UserPreferences;
+use Middag\Ui\Shared\ValueObject\UserPreferences;
 
 /**
  * Partial update to the shared page resources.

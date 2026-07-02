@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Form;
 
-use Middag\Ui\Shared\Enum\ConditionOperator;
-
 /**
  * A reactive condition on a form field: visibility/state driven by another
  * field's value (`visible_when`, `hidden_when`, `disabled_when`, `required_when`).

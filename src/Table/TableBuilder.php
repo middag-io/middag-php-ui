@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Middag\Ui\Table;
 
 use Middag\Ui\Action\Contract\ActionInterface;
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\FilterType;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * Table Builder.

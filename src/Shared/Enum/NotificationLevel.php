@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Shared\Enum;
 
-use Middag\Ui\Shared\ProvidesJsonSchema;
+use Middag\Ui\Shared\Concerns\ProvidesJsonSchema;
 
 /**
  * Severity level of a user-facing notification (flash / toast).

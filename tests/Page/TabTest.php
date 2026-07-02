@@ -14,7 +14,7 @@ namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Page\Tab;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
