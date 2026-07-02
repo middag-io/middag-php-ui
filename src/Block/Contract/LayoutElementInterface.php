@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Middag\Ui\Block\Contract;
 
 use Middag\Ui\Form\Contract\FieldInterface;
-use Middag\Ui\Form\Group;
 
 /**
  * Layout primitive (section, group). Wraps a list of fields or nested elements.

@@ -14,7 +14,7 @@ namespace Middag\Ui\Page;
 
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Page\Contract\PageContractInterface;
-use Middag\Ui\Shared\Data\Notification;
+use Middag\Ui\Shared\ValueObject\Notification;
 
 /**
  * Top-level page contract envelope.

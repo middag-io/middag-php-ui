@@ -14,9 +14,9 @@ namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageResources;
-use Middag\Ui\Shared\Data\Identity;
-use Middag\Ui\Shared\Data\UserPreferences;
 use Middag\Ui\Shared\Enum\ThemeMode;
+use Middag\Ui\Shared\ValueObject\Identity;
+use Middag\Ui\Shared\ValueObject\UserPreferences;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

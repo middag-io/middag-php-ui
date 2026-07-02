@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Form;
 
 use JsonSerializable;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * A single step in a multi-step (wizard) form.

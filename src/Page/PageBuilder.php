@@ -16,7 +16,6 @@ use Closure;
 use Middag\Ui\Action\Action;
 use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Action\Contract\ActionInterface;
-use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Inspector\Contract\InspectorDescriptorInterface;
@@ -25,10 +24,10 @@ use Middag\Ui\Navigation\BreadcrumbListBuilder;
 use Middag\Ui\Navigation\Contract\BreadcrumbInterface;
 use Middag\Ui\Page\Contract\PageBuilderInterface;
 use Middag\Ui\Region\RegionBuilder;
-use Middag\Ui\Shared\Data\Notification;
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\NotificationLevel;
+use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use Middag\Ui\Table\CrudBuilder;
 
 /**

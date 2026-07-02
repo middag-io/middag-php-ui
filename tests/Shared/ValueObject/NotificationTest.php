@@ -10,13 +10,13 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Shared\Data;
+namespace Middag\Ui\Tests\Shared\ValueObject;
 
 use Middag\Ui\Action\Action;
 use Middag\Ui\Action\ActionTarget;
-use Middag\Ui\Shared\Data\Notification;
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\NotificationLevel;
+use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license     Apache-2.0
  */
 
-namespace Middag\Ui\Tests\Shared\Data;
+namespace Middag\Ui\Tests\Shared\ValueObject;
 
-use Middag\Ui\Shared\Data\Identity;
+use Middag\Ui\Shared\ValueObject\Identity;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

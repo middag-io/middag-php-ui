@@ -15,8 +15,8 @@ namespace Middag\Ui\Block;
 use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Region\PollConfig;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * A typed UI block: a `type` discriminator plus its `data` payload and

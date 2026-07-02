@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Form\Contract;
 
-use Middag\Ui\Shared\Data\RendererOutput;
 use Middag\Ui\Shared\Enum\RenderTarget;
+use Middag\Ui\Shared\ValueObject\RendererOutput;
 
 /**
  * Adapter contract — produces a RendererOutput for one RenderTarget.

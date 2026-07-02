@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Shared\Enum;
 
-use Middag\Ui\Form\FormFieldNode;
-use Middag\Ui\Shared\ProvidesJsonSchema;
+use Middag\Ui\Shared\Concerns\ProvidesJsonSchema;
 
 /**
  * Wire catalog of renderable form field components — the discriminant of a

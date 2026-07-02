@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Action;
 
 use Middag\Ui\Action\Confirmation;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

@@ -47,7 +47,8 @@ Inside each concern:
   dedicated `*Interface` extension seam may be `readonly` (non-`final`) by design; a leaf VO is
   `final readonly`.
 - **backed enums** (closed catalogs), cross-cutting VOs and helpers live in `Shared/`
-  (`Shared/Enum/`, `Shared/Data/`, `Shared/Schema/`).
+  (`Shared/Enum/`, `Shared/ValueObject/`, `Shared/Concerns/`); the schema registry lives in the
+  top-level `Schema/` concern.
 
 > The wire value objects are an intentionally interlinked cluster (an envelope can embed any payload,
 > a builder can emit a full page), so "concern" is an organisational axis, not an acyclic dependency
@@ -58,7 +59,7 @@ Inside each concern:
 | Rule | Why |
 |------|-----|
 | Zero external dependencies | Consumers inherit no unwanted transitivity |
-| `Shared/Data/` are `readonly class` | Immutability guaranteed at compile time |
+| `Shared/ValueObject/` are `readonly class` | Immutability guaranteed at compile time |
 | No host leak (Moodle/WordPress/`mform`/etc.) | Agnostic lib; host-specifics live in the adapter |
 | Renderers and field-mappers live in `framework`/adapters, not here | ui hosts only contracts + layout primitives |
 | No ui contract produces HTML (`render(): string`) | Rendering is a product/host concern (downstream) |

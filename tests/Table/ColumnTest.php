@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Table;
 
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use Middag\Ui\Table\Column;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

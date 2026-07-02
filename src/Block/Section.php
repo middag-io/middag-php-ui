@@ -14,8 +14,8 @@ namespace Middag\Ui\Block;
 
 use Middag\Ui\Block\Contract\LayoutElementInterface;
 use Middag\Ui\Form\Contract\FieldInterface;
-use Middag\Ui\Shared\Data\Label;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * Top-level form layout section grouping fields and nested elements.

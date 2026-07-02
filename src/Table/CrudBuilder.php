@@ -21,10 +21,10 @@ use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\PageContract;
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use Middag\Ui\Table\Contract\CrudBuilderInterface;
 
 /**

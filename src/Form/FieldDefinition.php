@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Form;
 
 use Middag\Ui\Condition\Condition;
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\FieldType;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * Neutral, immutable representation of a form field.

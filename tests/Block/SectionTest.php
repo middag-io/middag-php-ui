@@ -15,7 +15,7 @@ namespace Middag\Ui\Tests\Block;
 use Middag\Ui\Block\Contract\LayoutElementInterface;
 use Middag\Ui\Block\Section;
 use Middag\Ui\Form\Contract\FieldInterface;
-use Middag\Ui\Shared\Data\Translatable;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Middag\Ui\Page;
 
 use JsonSerializable;
-use Middag\Ui\Shared\Data\UserPreferences;
 
 /**
  * White-label branding for the page shell.

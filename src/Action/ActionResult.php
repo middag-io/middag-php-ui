@@ -13,10 +13,9 @@ declare(strict_types=1);
 namespace Middag\Ui\Action;
 
 use JsonSerializable;
-use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Region\Fragment;
-use Middag\Ui\Shared\Data\Notification;
+use Middag\Ui\Shared\ValueObject\Notification;
 
 /**
  * Server response to an action/mutation (POST/PUT/DELETE).

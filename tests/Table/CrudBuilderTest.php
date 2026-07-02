@@ -14,8 +14,8 @@ namespace Middag\Ui\Tests\Table;
 
 use InvalidArgumentException;
 use Middag\Ui\Page\PageContract;
-use Middag\Ui\Shared\Data\Translatable;
 use Middag\Ui\Shared\Enum\FilterType;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use Middag\Ui\Table\CrudBuilder;
 use Middag\Ui\Table\FilterDefinition;
 use PHPUnit\Framework\Attributes\CoversClass;
