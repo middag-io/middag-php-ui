@@ -46,23 +46,18 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "test": "phpunit",
-        "test:coverage": "XDEBUG_MODE=coverage phpunit --coverage-text",
-        "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
-        "check:rector": "rector process --dry-run --config=.php-rector.php",
-        "check:stan": "phpstan analyse --configuration=.phpstan.neon",
-        "check:schemas": "@php bin/emit-schemas.php --check",
-        "lint:php82": "bin/lint-php82.sh",
-        "emit:schemas": "@php bin/emit-schemas.php",
-        "verify:schemas": "@php bin/emit-schemas.php --check",
+        "post-install-cmd": "git config core.hooksPath .githooks 2>/dev/null || true",
+        "post-update-cmd": "git config core.hooksPath .githooks 2>/dev/null || true",
         "check": [
             "@check:style",
             "@check:rector",
             "@check:stan",
             "@check:schemas"
         ],
-        "fix:style": "php-cs-fixer fix --verbose --show-progress=none --config=.php-cs-fixer.dist.php",
-        "fix:rector": "rector process --config=.php-rector.php --no-progress-bar",
+        "check:style": "php-cs-fixer fix --dry-run --verbose --config=.php-cs-fixer.dist.php",
+        "check:rector": "rector process --dry-run --config=.php-rector.php",
+        "check:stan": "phpstan analyse --configuration=.phpstan.neon",
+        "check:schemas": "@php bin/emit-schemas.php --check",
         "fix": [
             "@fix:style",
             "@fix:rector"
@@ -72,7 +67,11 @@
             "@fix:rector",
             "@fix:style"
         ],
-        "post-install-cmd": "git config core.hooksPath .githooks 2>/dev/null || true",
-        "post-update-cmd": "git config core.hooksPath .githooks 2>/dev/null || true"
+        "fix:style": "php-cs-fixer fix --verbose --show-progress=none --config=.php-cs-fixer.dist.php",
+        "fix:rector": "rector process --config=.php-rector.php --no-progress-bar",
+        "test": "phpunit",
+        "test:cov": "XDEBUG_MODE=coverage phpunit --coverage-text",
+        "emit:schemas": "@php bin/emit-schemas.php",
+        "lint:php82": "bin/lint-php82.sh"
     }
 }

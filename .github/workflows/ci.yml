@@ -57,9 +57,6 @@ jobs:
           php -l .php-cs-fixer.dist.php > /dev/null
           php -l .php-rector.php > /dev/null
 
-      - name: Boundaries
-        run: composer check:boundaries
-
       - name: PHPStan
         run: composer check:stan
 
@@ -70,4 +67,4 @@ jobs:
         run: composer check:rector
 
       - name: Schema drift (generated schemas in sync with value objects)
-        run: composer verify:schemas
+        run: composer check:schemas

@@ -617,12 +617,12 @@
                     }
                 },
                 "options": {
-                    "$ref": "#/$defs/TableOptions"
+                    "$ref": "#/$defs/TableDisplayOptions"
                 }
             },
             "additionalProperties": false
         },
-        "TableOptions": {
+        "TableDisplayOptions": {
             "type": "object",
             "required": [
                 "perPage",

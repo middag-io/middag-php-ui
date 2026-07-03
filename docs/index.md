@@ -6,7 +6,8 @@ host or adapter render it. The library produces a JSON **page contract**; it nev
 
 > Describe the page once. Render it anywhere.
 
-Apache-2.0. Pre-1.0 — the public API may still change.
+Apache-2.0. On the `1.x` line a minor release may carry a documented breaking change, cut
+deliberately by a maintainer — strict semver (breaking only in majors) starts at `2.0`.
 
 ## Technical documentation
 

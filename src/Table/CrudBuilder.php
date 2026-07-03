@@ -434,7 +434,7 @@ class CrudBuilder implements CrudBuilderInterface
             bulkActions: $this->bulkActionsList !== null
                 ? array_map(fn (string $a): Action => $this->buildBulkAction($a), $this->bulkActionsList)
                 : [],
-            options: new TableOptions(
+            options: new TableDisplayOptions(
                 perPage: $this->perPage,
                 sortColumn: $this->sortColumn,
                 sortDirection: $this->sortDirection,

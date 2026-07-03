@@ -43,8 +43,9 @@ and HTTP transport live downstream**, never here:
 | `Navigation/` | navigation nodes and registries |
 | `Page/` | the page contract entry points and page metadata |
 | `Region/` | page regions and fragments (partial updates) |
+| `Schema/` | `SchemaRegistry`, the single source of truth for the emitted JSON schemas |
 | `Table/` | tables and the CRUD builder |
-| `Shared/` | cross-cutting `Enum/` (closed catalogs), `Data/` (value objects), `Schema/` (JSON-schema emission) |
+| `Shared/` | cross-cutting `Enum/` (closed catalogs), `ValueObject/` (readonly value objects), `Concerns/` (shared traits) |
 
 Inside each concern, `@api` interfaces live in a `Contract/` sub-namespace (suffix `Interface`),
 fluent builders return `static` and produce value objects, and leaf value objects are `final

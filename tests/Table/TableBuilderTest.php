@@ -21,7 +21,7 @@ use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\TableBuilder;
 use Middag\Ui\Table\TableConfig;
-use Middag\Ui\Table\TableOptions;
+use Middag\Ui\Table\TableDisplayOptions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -148,7 +148,7 @@ final class TableBuilderTest extends TestCase
     #[Test]
     public function testOptions(): void
     {
-        $options = new TableOptions(perPage: 50, selectable: true, searchable: true);
+        $options = new TableDisplayOptions(perPage: 50, selectable: true, searchable: true);
 
         $config = TableBuilder::make()
             ->options($options)
@@ -167,7 +167,7 @@ final class TableBuilderTest extends TestCase
         self::assertSame($builder, $builder->filter('b', 'B'));
         self::assertSame($builder, $builder->rowAction(new Action(id: 'c', label: 'C', target: ActionTarget::link('/c'))));
         self::assertSame($builder, $builder->bulkAction(new Action(id: 'd', label: 'D', target: ActionTarget::request('/d'), intent: ActionIntent::DANGER)));
-        self::assertSame($builder, $builder->options(new TableOptions()));
+        self::assertSame($builder, $builder->options(new TableDisplayOptions()));
     }
 
     #[Test]

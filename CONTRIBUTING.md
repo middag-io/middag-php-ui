@@ -48,7 +48,7 @@ The tree is **concern-first**: each concern (`Action/`, `Block/`, `Form/`,
 | ----------------- | ----------------------- | ------------------------------------------------ |
 | Interface         | `<Concern>/Contract/`   | mandatory `*Interface` suffix, no implementation |
 | Backed enum       | `Shared/Enum/`          | closed catalog (`: string` / `: int`), immutable |
-| Cross-cutting VO  | `Shared/Data/`          | `readonly class`, dumb data                      |
+| Cross-cutting VO  | `Shared/ValueObject/`   | `readonly class`, dumb data                      |
 | Builder / VO      | concern root            | fluent builders return `static`; leaf VOs `final readonly` |
 
 An interface always ends in `*Interface` and lives in the concern's `Contract/`.
@@ -106,33 +106,42 @@ Longer body when the "why" isn't obvious.
 
 ### Versioning (release-please)
 
-`release-please` reads the commit history to compute the next version and the
-CHANGELOG, so the commit **type** drives the bump.
+Releases are cut **exclusively** by `release-please` from the Conventional
+Commit history — there are no manual tags. The commit **type** drives the bump,
+and the package is on the **`1.x`** line:
 
-While the package is **pre-1.0** (`release-please-config.json` sets
-`bump-minor-pre-major` and `bump-patch-for-minor-pre-major`):
+| Commit | Bump on `1.x` |
+| ------ | ------------- |
+| `fix:` | PATCH |
+| `feat:` | MINOR |
+| breaking (`!` or `BREAKING CHANGE:`) | MINOR, cut deliberately (see below) |
 
-| Commit | Bump while `0.x` |
-| ------ | ---------------- |
-| `fix:` / `feat:` | PATCH |
-| breaking (`!` or `BREAKING CHANGE:`) | MINOR |
+**Breaking changes during `1.x`:** while the public API consolidates, a
+breaking change may ship in a **minor** — never in a patch. Such a release is
+always cut deliberately by a maintainer with a `Release-As:` footer, with the
+break explicitly marked in the history (`feat!` / a `BREAKING CHANGE:` footer)
+so it lands in the CHANGELOG's **⚠ BREAKING CHANGES** section. It is never the
+accidental side effect of merging.
 
-The public API is allowed to move while `0.x`, so no single commit auto-produces
-a MAJOR yet.
+**MAJOR releases (`2.0` and beyond):** a major is **never cut automatically** —
+it happens only by explicit maintainer decision, when the break genuinely
+impacts Composer consumers. A release PR proposing a major bump is not merged
+without that sign-off. From `2.0` onward full strict-semver rigor applies:
+breaking changes ship **only** in major releases.
 
-**Going to `1.0.0` (and MAJOR releases after):** when the public API is declared
-stable, cut `1.0.0` deliberately — land a commit whose footer is
-`Release-As: 1.0.0` (or bump `.release-please-manifest.json` directly). From
-`1.0.0` onward the pre-major flags become inert and standard semver applies:
-`fix:` → PATCH, `feat:` → MINOR, and a breaking change → MAJOR. Remove
-`bump-minor-pre-major` / `bump-patch-for-minor-pre-major` from
-`release-please-config.json` at that point for clarity.
+This mirrors the family-wide policy defined in the framework's
+[`API-STABILITY.md`](https://github.com/middag-io/middag-php-framework/blob/main/API-STABILITY.md).
+
+> Historical note: `1.2.1` shipped the audit-consolidation breaking change
+> (the `TableOptions` → `TableDisplayOptions` rename) as a patch by explicit
+> maintainer decision, closing the OSS audit before external consumers
+> existed. The policy above applies from that release onward.
 
 ## Pull request checklist
 
 1. `declare(strict_types=1);` in every new file.
 2. Interfaces in `<Concern>/Contract/` with the `*Interface` suffix; enums in
-   `Shared/Enum/`; cross-cutting VOs in `Shared/Data/`.
+   `Shared/Enum/`; cross-cutting VOs in `Shared/ValueObject/`.
 3. `@api` / `@internal` marked on the surface you touched.
 4. New behaviour covered by a test; wire shapes pinned.
 5. `composer check && composer test` green (schemas regenerated if a wire shape changed).

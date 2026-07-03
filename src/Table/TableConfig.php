@@ -25,18 +25,18 @@ use Middag\Ui\Action\Contract\ActionInterface;
 readonly class TableConfig implements JsonSerializable
 {
     /**
-     * @param Column[]           $columns
-     * @param FilterDefinition[] $filters
-     * @param ActionInterface[]  $rowActions  Per-row actions (link/route/request targets, {id} template)
-     * @param ActionInterface[]  $bulkActions Actions applied to selected rows
-     * @param TableOptions       $options     General table behavior options
+     * @param Column[]            $columns
+     * @param FilterDefinition[]  $filters
+     * @param ActionInterface[]   $rowActions  Per-row actions (link/route/request targets, {id} template)
+     * @param ActionInterface[]   $bulkActions Actions applied to selected rows
+     * @param TableDisplayOptions $options     General table behavior options
      */
     public function __construct(
         public array $columns,
         public array $filters = [],
         public array $rowActions = [],
         public array $bulkActions = [],
-        public TableOptions $options = new TableOptions(),
+        public TableDisplayOptions $options = new TableDisplayOptions(),
     ) {}
 
     /**
@@ -83,7 +83,7 @@ readonly class TableConfig implements JsonSerializable
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['columns', 'options'],
-            'properties' => ['columns' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Column']], 'filters' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/FilterDefinition']], 'rowActions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'bulkActions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'options' => ['$ref' => '#/$defs/TableOptions']],
+            'properties' => ['columns' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Column']], 'filters' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/FilterDefinition']], 'rowActions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'bulkActions' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Action']], 'options' => ['$ref' => '#/$defs/TableDisplayOptions']],
             'additionalProperties' => false];
     }
 }

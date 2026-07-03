@@ -19,7 +19,7 @@ use Middag\Ui\Shared\Enum\FilterType;
 use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\TableConfig;
-use Middag\Ui\Table\TableOptions;
+use Middag\Ui\Table\TableDisplayOptions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +48,7 @@ final class TableConfigTest extends TestCase
         self::assertSame([], $config->filters);
         self::assertSame([], $config->rowActions);
         self::assertSame([], $config->bulkActions);
-        self::assertInstanceOf(TableOptions::class, $config->options);
+        self::assertInstanceOf(TableDisplayOptions::class, $config->options);
     }
 
     #[Test]
@@ -88,7 +88,7 @@ final class TableConfigTest extends TestCase
         $filter = new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT);
         $rowAction = new Action(id: 'edit', label: 'Edit', target: ActionTarget::link('/x/{id}'));
         $bulkAction = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::DANGER);
-        $options = new TableOptions(perPage: 50, selectable: true);
+        $options = new TableDisplayOptions(perPage: 50, selectable: true);
 
         $config = new TableConfig(
             columns: [],

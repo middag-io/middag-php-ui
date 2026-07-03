@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Table;
 
-use Middag\Ui\Table\TableOptions;
+use Middag\Ui\Table\TableDisplayOptions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -21,19 +21,19 @@ use ReflectionClass;
 /**
  * @internal
  */
-#[CoversClass(TableOptions::class)]
-final class TableOptionsTest extends TestCase
+#[CoversClass(TableDisplayOptions::class)]
+final class TableDisplayOptionsTest extends TestCase
 {
     #[Test]
     public function testIsReadonlyClass(): void
     {
-        self::assertTrue((new ReflectionClass(TableOptions::class))->isReadOnly());
+        self::assertTrue((new ReflectionClass(TableDisplayOptions::class))->isReadOnly());
     }
 
     #[Test]
     public function testSerializesDefaults(): void
     {
-        $payload = (new TableOptions())->jsonSerialize();
+        $payload = (new TableDisplayOptions())->jsonSerialize();
 
         self::assertSame([
             'perPage' => 25,
@@ -47,7 +47,7 @@ final class TableOptionsTest extends TestCase
     #[Test]
     public function testSerializesSortColumnWhenSet(): void
     {
-        $payload = (new TableOptions(
+        $payload = (new TableDisplayOptions(
             perPage: 50,
             sortColumn: 'name',
             sortDirection: 'asc',
