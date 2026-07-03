@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.2.1](https://github.com/middag-io/middag-php-ui/compare/v1.2.0...v1.2.1) (2026-07-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **table:** Middag\Ui\Table\TableOptions is now Middag\Ui\Table\TableDisplayOptions. The JSON wire contract is unchanged.
+
+### Refactoring
+
+* **table:** rename TableOptions to TableDisplayOptions ([ee6d155](https://github.com/middag-io/middag-php-ui/commit/ee6d1554c6b381d388926fba03d8e2436a3eb178))
+
+
+### Documentation
+
+* **architecture:** align the concern table with the real src layout ([c4ff42c](https://github.com/middag-io/middag-php-ui/commit/c4ff42c2dabd68cca00f3f218ff9e34099e507b3))
+* **block:** document the optional mark-read pair on activity-timeline entries ([a457bbe](https://github.com/middag-io/middag-php-ui/commit/a457bbe813e0a28d2b6b12ad77e89b926ac74973))
+* **contributing:** point cross-cutting VOs at Shared/ValueObject ([d70cf21](https://github.com/middag-io/middag-php-ui/commit/d70cf21c4d5c405d4bf122f3624cff5bd9165a7d))
+* **contributing:** record the audit-consolidation patch exception ([5158a2d](https://github.com/middag-io/middag-php-ui/commit/5158a2dd821c9eb8675e4fcc5ca966cd0db2cd42))
+* **readme:** use TableDisplayOptions in the table builder sample ([5f589fb](https://github.com/middag-io/middag-php-ui/commit/5f589fb89872b25c817cf78afa9c08a8da1f6979))
+* **versioning:** replace pre-1.0 claims with the 1.x line policy ([90fd74c](https://github.com/middag-io/middag-php-ui/commit/90fd74cbf6a271bb4f0d7574dd02aab6d17b65e2))
+
+
+### Miscellaneous
+
+* **composer:** align scripts with the canonical MIDDAG baseline ([416d7a1](https://github.com/middag-io/middag-php-ui/commit/416d7a1eccdf8314b73dc60a83484c4231e3b6f2))
+* release 1.2.1 ([ef04162](https://github.com/middag-io/middag-php-ui/commit/ef0416275ee6582acc8eb575c27e45e637d7667c))
+
 ## [1.2.0](https://github.com/middag-io/middag-php-ui/compare/v1.1.1...v1.2.0) (2026-07-02)
 
 
