@@ -67,4 +67,4 @@ jobs:
         run: composer check:rector
 
       - name: Schema drift (generated schemas in sync with value objects)
-        run: composer verify:schemas
+        run: composer check:schemas
