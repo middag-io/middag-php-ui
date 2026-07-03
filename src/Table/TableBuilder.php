@@ -38,11 +38,11 @@ class TableBuilder
     /** @var ActionInterface[] */
     private array $bulkActions = [];
 
-    private TableOptions $options;
+    private TableDisplayOptions $options;
 
     public function __construct()
     {
-        $this->options = new TableOptions();
+        $this->options = new TableDisplayOptions();
     }
 
     /**
@@ -117,7 +117,7 @@ class TableBuilder
     /**
      * Set general table behavior options.
      */
-    public function options(TableOptions $options): static
+    public function options(TableDisplayOptions $options): static
     {
         $this->options = $options;
 

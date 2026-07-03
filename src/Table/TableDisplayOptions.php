@@ -19,7 +19,7 @@ use JsonSerializable;
  *
  * @api
  */
-final readonly class TableOptions implements JsonSerializable
+final readonly class TableDisplayOptions implements JsonSerializable
 {
     public function __construct(
         public int $perPage = 25,

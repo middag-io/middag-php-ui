@@ -70,7 +70,7 @@ use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\Pagination;
 use Middag\Ui\Table\TableConfig;
-use Middag\Ui\Table\TableOptions;
+use Middag\Ui\Table\TableDisplayOptions;
 
 /**
  * Collects the hand-authored `jsonSchema()` of every wire value object and enum
@@ -123,7 +123,7 @@ final class SchemaRegistry
         'NavigationNode' => NavigationNode::class,
         // Tables.
         'TableConfig' => TableConfig::class,
-        'TableOptions' => TableOptions::class,
+        'TableDisplayOptions' => TableDisplayOptions::class,
         'Column' => Column::class,
         'FilterDefinition' => FilterDefinition::class,
         'Pagination' => Pagination::class,

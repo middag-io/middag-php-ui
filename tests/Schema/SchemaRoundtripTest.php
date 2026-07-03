@@ -49,7 +49,7 @@ use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\Pagination;
 use Middag\Ui\Table\TableConfig;
-use Middag\Ui\Table\TableOptions;
+use Middag\Ui\Table\TableDisplayOptions;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Validator;
@@ -214,7 +214,7 @@ final class SchemaRoundtripTest extends TestCase
             columns: [new Column(key: 'name', label: 'Name', sortable: true, format: ValueFormat::TEXT)],
             filters: [new FilterDefinition(key: 'status', label: 'Status')],
             rowActions: [new Action(id: 'edit', label: 'Edit', target: ActionTarget::link('/x/1/edit'))],
-            options: new TableOptions(perPage: 50, sortColumn: 'name', selectable: true),
+            options: new TableDisplayOptions(perPage: 50, sortColumn: 'name', selectable: true),
         );
         $this->assertValidAgainst('TableConfig', $table);
         $this->assertValidAgainst('Pagination', new Pagination(1, 25, 100, 4));
