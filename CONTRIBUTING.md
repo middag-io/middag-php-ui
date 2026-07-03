@@ -132,6 +132,11 @@ breaking changes ship **only** in major releases.
 This mirrors the family-wide policy defined in the framework's
 [`API-STABILITY.md`](https://github.com/middag-io/middag-php-framework/blob/main/API-STABILITY.md).
 
+> Historical note: `1.2.1` shipped the audit-consolidation breaking change
+> (the `TableOptions` → `TableDisplayOptions` rename) as a patch by explicit
+> maintainer decision, closing the OSS audit before external consumers
+> existed. The policy above applies from that release onward.
+
 ## Pull request checklist
 
 1. `declare(strict_types=1);` in every new file.
