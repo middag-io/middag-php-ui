@@ -277,7 +277,7 @@ $config = TableBuilder::make()
     ])
     ->rowAction(PageBuilder::action('edit', 'Edit', ActionTarget::link('/invoices/{id}/edit')))
     ->bulkAction(PageBuilder::action('delete', 'Delete', ActionTarget::request('/invoices/bulk/delete'), ActionIntent::DANGER))
-    ->options(new TableOptions(perPage: 25, sortColumn: 'name', selectable: true))
+    ->options(new TableDisplayOptions(perPage: 25, sortColumn: 'name', selectable: true))
     ->build();
 ```
 
@@ -298,7 +298,7 @@ composer require middag-io/ui
 ```bash
 composer install
 composer test           # PHPUnit
-composer check          # style + rector + stan
+composer check          # style + rector + stan + schema drift
 composer fix            # style + rector (apply)
 composer lint:php82     # parse every file (incl. tooling configs) on real PHP 8.2 (Docker)
 ```
