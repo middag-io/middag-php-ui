@@ -203,6 +203,32 @@ final class BlockBuilderTest extends TestCase
     }
 
     #[Test]
+    public function testActivityTimelinePreservesEntryMarkReadAffordance(): void
+    {
+        // The optional per-entry mark-read pair (markReadHref/read) is loose
+        // passthrough — the builder must not drop or rename it (E2.4).
+        $groups = [[
+            'label' => 'Today',
+            'entries' => [[
+                'id' => 'n1',
+                'actor' => 'System',
+                'action' => 'Sync completed',
+                'icon' => 'plug',
+                'color' => 'success',
+                'timestamp' => 1714646400,
+                'markReadHref' => '/notifications/n1/read',
+                'read' => false,
+            ]],
+        ]];
+
+        $payload = BlockBuilder::activityTimeline('a', $groups)->jsonSerialize();
+        $entry = $payload['data']['groups'][0]['entries'][0];
+
+        self::assertSame('/notifications/n1/read', $entry['markReadHref']);
+        self::assertFalse($entry['read']);
+    }
+
+    #[Test]
     public function testMarkdownPanel(): void
     {
         $block = BlockBuilder::markdownPanel('md', '# Hello', 400);

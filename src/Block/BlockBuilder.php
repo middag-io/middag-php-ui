@@ -123,6 +123,19 @@ class BlockBuilder
         );
     }
 
+    /**
+     * Build an activity-timeline block.
+     *
+     * `$groups` is a list of `['label' => string, 'entries' => Entry[]]`. Each
+     * entry is a loose array (not modelled by a VO — FREE block-data stays loose
+     * on the wire) with the shape:
+     *   `id, actor, action, icon, color, timestamp` (required) and the optional
+     *   `actorHref, detail`. To surface a per-entry read/acknowledge affordance
+     *   (the client renders a "mark as read" action), add the optional pair:
+     *   `markReadHref` (string — the endpoint the client POSTs to) and `read`
+     *   (bool — current acknowledged state). Both are additive and passthrough;
+     *   entries without them render unchanged.
+     */
     public static function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): BlockDescriptor
     {
         return new BlockDescriptor(
