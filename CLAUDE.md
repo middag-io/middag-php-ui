@@ -77,8 +77,10 @@ Inside each concern:
   fluent builders return `static`; cover new behaviour with a test (`tests/` mirrors `src/`,
   `#[CoversClass]`). `@api` = public surface (enters the generated xRef/docs); `@internal` = internal.
 - **Commits:** Conventional Commits; **NEVER** `Co-Authored-By`. Single lowercase scope. Mark breaking
-  changes with `!` or a `BREAKING CHANGE:` footer. Branch base: `develop`. Pre-1.0: feat/fix → patch,
-  breaking → minor.
+  changes with `!` or a `BREAKING CHANGE:` footer. Branch base: `develop`. On the `1.x` line:
+  fix → patch, feat → minor; a breaking change only ships in a minor cut deliberately via
+  `Release-As` (never in a patch); a major (`2.0`) only by explicit maintainer sign-off — policy in
+  [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
 
 ## Relationship to other packages
 
@@ -92,5 +94,7 @@ middag-io/ui (this repo)        ← zero deps, host-agnostic
 
 ## State
 
-Pre-1.0 public release (Apache-2.0, staying `0.x` until the API is stable). Technical docs live in
-**`docs/`** and are published at **docs.middag.dev**.
+Public on the **`1.x`** line (Apache-2.0). The API is still consolidating: a minor release may carry
+a documented breaking change, cut deliberately via `Release-As`; strict semver starts at `2.0` — the
+policy is [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning. Technical docs live in **`docs/`** and
+are published at **docs.middag.dev**.

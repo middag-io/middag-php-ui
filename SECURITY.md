@@ -2,17 +2,18 @@
 
 ## Supported Versions
 
-`middag-io/ui` is in a pre-1.0 **alpha** (`0.x`) phase. Only the newest
-release receives security fixes — there are no long-term support branches, and
-upgrading to the latest `0.x` minor is the supported remediation path.
+`middag-io/ui` is on the **`1.x`** line. Only the newest release receives
+security fixes — there are no long-term support branches, and upgrading to the
+latest `1.x` release is the supported remediation path.
 
-| Version            | Supported          |
-| ------------------ | ------------------ |
-| Latest `0.x` minor | :white_check_mark: |
-| Older `0.x` minors | :x:                |
+| Version              | Supported          |
+| -------------------- | ------------------ |
+| Latest `1.x` release | :white_check_mark: |
+| Older releases       | :x:                |
 
-During the `0.x` series the public API may still change. We recommend tracking
-the latest release so you receive security and bug fixes promptly.
+During `1.x` the public API is still consolidating — a minor release may carry
+a documented breaking change. We recommend tracking the latest release so you
+receive security and bug fixes promptly.
 
 ## Reporting a Vulnerability
 

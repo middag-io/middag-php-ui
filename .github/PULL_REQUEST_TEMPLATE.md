@@ -33,9 +33,10 @@ Does this PR change public API or the wire contract in a backward-incompatible
 way? If so, add a `BREAKING CHANGE:` footer to the relevant commit and describe
 the break below.
 
-Note: this is a pre-1.0 alpha (0.x), so a `BREAKING CHANGE:` commit footer bumps
-the MINOR version (not major). Flagging it correctly lets release-please cut the
-right version — without the footer the break ships as a silent patch.
+Note: on the `1.x` line a breaking change ships only in a MINOR release cut
+deliberately by a maintainer (`Release-As:` footer) — never in a patch. The
+footer is what surfaces the break in the CHANGELOG's breaking section; without
+it the break would ship silently.
 -->
 
 - [ ] This PR introduces a breaking change (a `BREAKING CHANGE:` footer is present on the relevant commit)

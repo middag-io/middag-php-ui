@@ -24,7 +24,7 @@ Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. 
 > Until the docs site is live, this README plus the `@api` docblocks in `src/` are the reference.
 
 > [!IMPORTANT]
-> **`0.6.0` — concern-first layout (BREAKING).** Every `Middag\Ui\*` FQN moved from the old stereotype-first layout (`Contract/ Data/ Builder/ Enum/ Schema/`) to **concern-first**: each concern (`Page`, `Form`, `Table`, `Block`, `Region`, `Action`, …) owns its interfaces + value objects + builders, with cross-cutting types under `Shared/{Data,Enum,Schema}`. The **wire JSON is unchanged** — only PHP namespaces moved. Consumers on `^0.5` must update imports (e.g. `Middag\Ui\Data\Fragment` → `Middag\Ui\Region\Fragment`, `Middag\Ui\Enum\FieldType` → `Middag\Ui\Shared\Enum\FieldType`). Pre-1.0, no compatibility shims.
+> **`0.6.0` — concern-first layout (BREAKING).** Every `Middag\Ui\*` FQN moved from the old stereotype-first layout (`Contract/ Data/ Builder/ Enum/ Schema/`) to **concern-first**: each concern (`Page`, `Form`, `Table`, `Block`, `Region`, `Action`, …) owns its interfaces + value objects + builders, with cross-cutting types under `Shared/{Data,Enum,Schema}`. The **wire JSON is unchanged** — only PHP namespaces moved. Consumers on `^0.5` must update imports (e.g. `Middag\Ui\Data\Fragment` → `Middag\Ui\Region\Fragment`, `Middag\Ui\Enum\FieldType` → `Middag\Ui\Shared\Enum\FieldType`). That release predated `1.0`, so no compatibility shims were shipped.
 
 ---
 
