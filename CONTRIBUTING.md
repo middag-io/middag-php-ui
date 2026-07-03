@@ -48,7 +48,7 @@ The tree is **concern-first**: each concern (`Action/`, `Block/`, `Form/`,
 | ----------------- | ----------------------- | ------------------------------------------------ |
 | Interface         | `<Concern>/Contract/`   | mandatory `*Interface` suffix, no implementation |
 | Backed enum       | `Shared/Enum/`          | closed catalog (`: string` / `: int`), immutable |
-| Cross-cutting VO  | `Shared/Data/`          | `readonly class`, dumb data                      |
+| Cross-cutting VO  | `Shared/ValueObject/`   | `readonly class`, dumb data                      |
 | Builder / VO      | concern root            | fluent builders return `static`; leaf VOs `final readonly` |
 
 An interface always ends in `*Interface` and lives in the concern's `Contract/`.
@@ -132,7 +132,7 @@ stable, cut `1.0.0` deliberately — land a commit whose footer is
 
 1. `declare(strict_types=1);` in every new file.
 2. Interfaces in `<Concern>/Contract/` with the `*Interface` suffix; enums in
-   `Shared/Enum/`; cross-cutting VOs in `Shared/Data/`.
+   `Shared/Enum/`; cross-cutting VOs in `Shared/ValueObject/`.
 3. `@api` / `@internal` marked on the surface you touched.
 4. New behaviour covered by a test; wire shapes pinned.
 5. `composer check && composer test` green (schemas regenerated if a wire shape changed).
