@@ -129,7 +129,9 @@ impacts Composer consumers. A release PR proposing a major bump is not merged
 without that sign-off. From `2.0` onward full strict-semver rigor applies:
 breaking changes ship **only** in major releases.
 
-This mirrors the family-wide policy defined in the framework's
+This package's own public surface and `1.x` policy are documented in
+[`API-STABILITY.md`](API-STABILITY.md); it mirrors the family-wide policy defined
+in the framework's
 [`API-STABILITY.md`](https://github.com/middag-io/middag-php-framework/blob/main/API-STABILITY.md).
 
 > Historical note: `1.2.1` shipped the audit-consolidation breaking change
