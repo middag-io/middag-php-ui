@@ -33,7 +33,6 @@ final readonly class FieldDefinition
      * @param FieldType                $type
      * @param null|string|Translatable $label       UI label (i18n intent or raw literal)
      * @param null|string|Translatable $help        UI help text (i18n intent or raw literal)
-     * @param mixed                    $default
      * @param FieldConstraints         $constraints Typed client-side validation constraints
      * @param array<string, mixed>     $attributes
      * @param array<int, Condition>    $conditions

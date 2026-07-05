@@ -125,7 +125,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* **ui:** Middag\Ui\Block\BlockInterface and Middag\Ui\Dashboard\DashboardWidgetInterface are removed; implementers use Middag\Core\Admin\Contract\* instead.
+* **ui:** Middag\Ui\Block\BlockInterface and Middag\Ui\Dashboard\DashboardWidgetInterface are removed; implementers use Middag\Core\Ui\Admin\Contract\* instead.
 
 ### Bug Fixes
 
