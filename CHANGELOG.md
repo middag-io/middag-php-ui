@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.2](https://github.com/middag-io/middag-php-ui/compare/v1.2.1...v1.2.2) (2026-07-05)
+
+
+### Documentation
+
+* **api:** add API-STABILITY.md and link it from CONTRIBUTING ([229aba1](https://github.com/middag-io/middag-php-ui/commit/229aba156531136abe2da9b1a022c22ab6d85a36))
+* **changelog:** correct stale namespace in 0.7.0 breaking note ([29f5564](https://github.com/middag-io/middag-php-ui/commit/29f55644791081508df9984470e3164d450ada8e))
+
+
+### Miscellaneous
+
+* release 1.2.2 ([8249e73](https://github.com/middag-io/middag-php-ui/commit/8249e73e74941a47f2c4697efb49a5698fe5c4ec))
+
 ## [1.2.1](https://github.com/middag-io/middag-php-ui/compare/v1.2.0...v1.2.1) (2026-07-03)
 
 
