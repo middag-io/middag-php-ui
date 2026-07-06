@@ -18,6 +18,7 @@ use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,8 @@ use ReflectionClass;
 #[CoversClass(ActionResult::class)]
 final class ActionResultTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -82,5 +85,50 @@ final class ActionResultTest extends TestCase
         self::assertCount(1, $payload['fragments']);
         self::assertSame('block', $payload['fragments'][0]['kind']);
         self::assertSame(['user:edit' => true], $payload['resources']['capabilities']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAMinimalResult(): void
+    {
+        $this->assertValidAgainst('ActionResult', new ActionResult());
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAResultWithPullFields(): void
+    {
+        $this->assertValidAgainst('ActionResult', new ActionResult(
+            success: false,
+            notifications: [new Notification(NotificationLevel::ERROR, 'Failed')],
+            redirect: '/back',
+            refreshBlocks: ['table'],
+            errors: ['name' => 'Required'],
+        ));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAResultWithPushFields(): void
+    {
+        $this->assertValidAgainst('ActionResult', new ActionResult(
+            fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
+            resources: new ResourcePatch(capabilities: ['user:edit' => true]),
+        ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAResultMissingSuccess(): void
+    {
+        $this->assertInvalidAgainst('ActionResult', ['redirect' => '/x']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonBooleanSuccess(): void
+    {
+        $this->assertInvalidAgainst('ActionResult', ['success' => 'yes']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownProperty(): void
+    {
+        $this->assertInvalidAgainst('ActionResult', ['success' => true, 'unknown' => 1]);
     }
 }

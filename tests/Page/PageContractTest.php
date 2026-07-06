@@ -20,6 +20,7 @@ use Middag\Ui\Page\PageMeta;
 use Middag\Ui\Page\PageResources;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +31,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(PageContract::class)]
 final class PageContractTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testSerializesCompleteContract(): void
     {
@@ -145,5 +148,71 @@ final class PageContractTest extends TestCase
         );
 
         self::assertInstanceOf(ContractEnvelopeInterface::class, $contract);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAMinimalContract(): void
+    {
+        $contract = new PageContract(
+            shell: 'product',
+            page: new PageMeta(key: 'users.index', title: 'Users'),
+            layout: new LayoutDescriptor(
+                template: 'stack',
+                regions: ['main' => [new BlockDescriptor(type: 'dense_table', key: 'users', data: ['columns' => []])]],
+            ),
+        );
+
+        $this->assertValidAgainst('PageContract', $contract);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAContractWithResourcesAndNotifications(): void
+    {
+        $contract = new PageContract(
+            shell: 'product',
+            page: new PageMeta(key: 'home', title: 'Home'),
+            layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
+            resources: new PageResources(),
+            notifications: [new Notification(NotificationLevel::SUCCESS, 'Saved')],
+            entities: ['user' => '/users/:id'],
+        );
+
+        $this->assertValidAgainst('PageContract', $contract);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAContractMissingItsLayout(): void
+    {
+        $payload = $this->minimalContract()->jsonSerialize();
+        unset($payload['layout']);
+
+        $this->assertInvalidAgainst('PageContract', $payload);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAWrongVersionConstant(): void
+    {
+        $payload = $this->minimalContract()->jsonSerialize();
+        $payload['version'] = '2';
+
+        $this->assertInvalidAgainst('PageContract', $payload);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownTopLevelProperty(): void
+    {
+        $payload = $this->minimalContract()->jsonSerialize();
+        $payload['extra'] = true;
+
+        $this->assertInvalidAgainst('PageContract', $payload);
+    }
+
+    private function minimalContract(): PageContract
+    {
+        return new PageContract(
+            shell: 'product',
+            page: new PageMeta(key: 'home', title: 'Home'),
+            layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
+        );
     }
 }

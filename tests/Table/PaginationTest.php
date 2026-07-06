@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Table;
 
 use Middag\Ui\Table\Pagination;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use ReflectionClass;
 #[CoversClass(Pagination::class)]
 final class PaginationTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -60,5 +63,35 @@ final class PaginationTest extends TestCase
     public function testOfHandlesZeroPerPage(): void
     {
         self::assertSame(1, Pagination::of(1, 0, 100)->lastPage);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAConstructedPagination(): void
+    {
+        $this->assertValidAgainst('Pagination', new Pagination(page: 2, perPage: 25, total: 100, lastPage: 4));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsADerivedPagination(): void
+    {
+        $this->assertValidAgainst('Pagination', Pagination::of(1, 25, 101));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAPaginationMissingLastPage(): void
+    {
+        $this->assertInvalidAgainst('Pagination', ['page' => 1, 'perPage' => 25, 'total' => 100]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownProperty(): void
+    {
+        $this->assertInvalidAgainst('Pagination', ['page' => 1, 'perPage' => 25, 'total' => 100, 'lastPage' => 4, 'cursor' => 'x']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonIntegerPage(): void
+    {
+        $this->assertInvalidAgainst('Pagination', ['page' => '1', 'perPage' => 25, 'total' => 100, 'lastPage' => 4]);
     }
 }

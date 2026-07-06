@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Form;
 
 use Middag\Ui\Form\FieldConstraints;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use ReflectionClass;
 #[CoversClass(FieldConstraints::class)]
 final class FieldConstraintsTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -67,5 +70,49 @@ final class FieldConstraintsTest extends TestCase
 
         self::assertArrayNotHasKey('required', $payload);
         self::assertSame(5, $payload['min']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAPopulatedConstraintObject(): void
+    {
+        $this->assertValidAgainst('FieldConstraints', new FieldConstraints(
+            required: true,
+            min: 1,
+            max: 10,
+            minLength: 2,
+            maxLength: 50,
+            pattern: '^[a-z]+$',
+            step: '0.5',
+        ));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAPartialConstraintObject(): void
+    {
+        $this->assertValidAgainst('FieldConstraints', new FieldConstraints(min: 5));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsTheAllDefaultEmptyArrayBranch(): void
+    {
+        $this->assertValidAgainst('FieldConstraints', new FieldConstraints());
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownProperty(): void
+    {
+        $this->assertInvalidAgainst('FieldConstraints', ['min' => 1, 'unknown' => true]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsRequiredFalseSinceOnlyTrueIsEmitted(): void
+    {
+        $this->assertInvalidAgainst('FieldConstraints', ['required' => false]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAWrongTypedConstraint(): void
+    {
+        $this->assertInvalidAgainst('FieldConstraints', ['min' => 'not-an-int']);
     }
 }

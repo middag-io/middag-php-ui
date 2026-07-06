@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Shared\ValueObject;
 
 use Middag\Ui\Shared\ValueObject\Translatable;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use ReflectionClass;
 #[CoversClass(Translatable::class)]
 final class TranslatableTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -61,5 +64,29 @@ final class TranslatableTest extends TestCase
             'domain' => 'local_x',
             'params' => ['name' => 'Ada'],
         ], $payload);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAMinimalTranslatable(): void
+    {
+        $this->assertValidAgainst('Translatable', Translatable::of('save', 'local_x'));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsParamsAsAFreeFormMap(): void
+    {
+        $this->assertValidAgainst('Translatable', Translatable::of('greeting', 'local_x', ['name' => 'Ada']));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAPayloadMissingTheDomain(): void
+    {
+        $this->assertInvalidAgainst('Translatable', ['key' => 'save']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnAdditionalProperty(): void
+    {
+        $this->assertInvalidAgainst('Translatable', ['key' => 'save', 'domain' => 'local_x', 'extra' => 1]);
     }
 }
