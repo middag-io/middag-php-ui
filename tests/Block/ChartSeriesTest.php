@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Block;
 
 use Middag\Ui\Block\ChartSeries;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use ReflectionClass;
 #[CoversClass(ChartSeries::class)]
 final class ChartSeriesTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -47,5 +50,35 @@ final class ChartSeriesTest extends TestCase
         $series = new ChartSeries('Empty');
 
         self::assertSame(['name' => 'Empty', 'data' => []], $series->jsonSerialize());
+    }
+
+    #[Test]
+    public function testSchemaAcceptsASeriesWithData(): void
+    {
+        $this->assertValidAgainst('ChartSeries', new ChartSeries('Revenue', [1.0, 2.5, 3.0]));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsASeriesWithEmptyData(): void
+    {
+        $this->assertValidAgainst('ChartSeries', new ChartSeries('Empty'));
+    }
+
+    #[Test]
+    public function testSchemaRejectsASeriesMissingItsName(): void
+    {
+        $this->assertInvalidAgainst('ChartSeries', ['data' => [1.0, 2.0]]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsNonNumericDataPoints(): void
+    {
+        $this->assertInvalidAgainst('ChartSeries', ['name' => 'Revenue', 'data' => ['a', 'b']]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownProperty(): void
+    {
+        $this->assertInvalidAgainst('ChartSeries', ['name' => 'Revenue', 'data' => [1.0], 'color' => 'red']);
     }
 }

@@ -15,6 +15,7 @@ namespace Middag\Ui\Tests\Page;
 use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Shared\Enum\ThemeMode;
 use Middag\Ui\Shared\ValueObject\UserPreferences;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,8 @@ use ReflectionClass;
 #[CoversClass(ResourcePatch::class)]
 final class ResourcePatchTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -62,5 +65,40 @@ final class ResourcePatchTest extends TestCase
         self::assertSame(['user:edit' => true], $payload['capabilities']);
         self::assertSame(['beta' => false], $payload['featureFlags']);
         self::assertArrayNotHasKey('preferences', $payload);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAnEmptyPatchAsEmptyArray(): void
+    {
+        $this->assertValidAgainst('ResourcePatch', new ResourcePatch());
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAPatchWithPreferences(): void
+    {
+        $this->assertValidAgainst('ResourcePatch', new ResourcePatch(
+            preferences: new UserPreferences(theme: ThemeMode::DARK),
+        ));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAPatchWithCapabilitiesAndFlags(): void
+    {
+        $this->assertValidAgainst('ResourcePatch', new ResourcePatch(
+            capabilities: ['user:edit' => true],
+            featureFlags: ['beta' => false],
+        ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownPatchProperty(): void
+    {
+        $this->assertInvalidAgainst('ResourcePatch', ['unknown' => true]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsNonBooleanCapabilityValues(): void
+    {
+        $this->assertInvalidAgainst('ResourcePatch', ['capabilities' => ['user:edit' => 'yes']]);
     }
 }

@@ -14,6 +14,7 @@ namespace Middag\Ui\Tests\Shared\ValueObject;
 
 use Middag\Ui\Shared\ValueObject\Label;
 use Middag\Ui\Shared\ValueObject\Translatable;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Label::class)]
 final class LabelTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testSerializeStringPassesThrough(): void
     {
@@ -53,5 +56,29 @@ final class LabelTest extends TestCase
             ['key' => 'k', 'domain' => 'd'],
             Label::serializeNullable(Translatable::of('k', 'd')),
         );
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAPlainStringLabel(): void
+    {
+        $this->assertValidAgainst('Label', 'Raw');
+    }
+
+    #[Test]
+    public function testSchemaAcceptsATranslatableLabel(): void
+    {
+        $this->assertValidAgainst('Label', Translatable::of('k', 'd'));
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonStringNonTranslatableScalar(): void
+    {
+        $this->assertInvalidAgainst('Label', 42);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnObjectMissingTheTranslatableKey(): void
+    {
+        $this->assertInvalidAgainst('Label', ['domain' => 'd']);
     }
 }

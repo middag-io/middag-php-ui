@@ -15,6 +15,7 @@ namespace Middag\Ui\Tests\Action;
 use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Shared\Enum\ActionTargetKind;
 use Middag\Ui\Shared\Enum\HttpMethod;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,8 @@ use ReflectionClass;
 #[CoversClass(ActionTarget::class)]
 final class ActionTargetTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -81,5 +84,39 @@ final class ActionTargetTest extends TestCase
         $payload = ActionTarget::request('/users/1', HttpMethod::DELETE)->jsonSerialize();
 
         self::assertSame('delete', $payload['method']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsEachSerializedBranch(): void
+    {
+        $this->assertValidAgainst('ActionTarget', ActionTarget::link('/users/1'));
+        $this->assertValidAgainst('ActionTarget', ActionTarget::link('https://x', external: true));
+        $this->assertValidAgainst('ActionTarget', ActionTarget::route('users.edit'));
+        $this->assertValidAgainst('ActionTarget', ActionTarget::route('users.edit', ['id' => 7]));
+        $this->assertValidAgainst('ActionTarget', ActionTarget::request('/users/1', HttpMethod::DELETE));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownKind(): void
+    {
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'popup', 'href' => '/x']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsALinkMissingItsHref(): void
+    {
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'link']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnAdditionalPropertyOnALinkBranch(): void
+    {
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'link', 'href' => '/x', 'route' => 'y']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsExternalFalseSinceOnlyTrueIsEmitted(): void
+    {
+        $this->assertInvalidAgainst('ActionTarget', ['kind' => 'link', 'href' => '/x', 'external' => false]);
     }
 }

@@ -17,6 +17,7 @@ use Middag\Ui\Page\PageResources;
 use Middag\Ui\Shared\Enum\ThemeMode;
 use Middag\Ui\Shared\ValueObject\Identity;
 use Middag\Ui\Shared\ValueObject\UserPreferences;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -27,6 +28,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(PageResources::class)]
 final class PageResourcesTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testSerializesDefaults(): void
     {
@@ -78,5 +81,51 @@ final class PageResourcesTest extends TestCase
         self::assertArrayHasKey('featureFlags', $payload);
         self::assertArrayNotHasKey('feature_flags', $payload);
         self::assertSame(['new_dashboard' => true], $payload['featureFlags']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsDefaultResourcesWithEmptyMaps(): void
+    {
+        $this->assertValidAgainst('PageResources', new PageResources());
+    }
+
+    #[Test]
+    public function testSchemaAcceptsResourcesWithPopulatedMaps(): void
+    {
+        $this->assertValidAgainst('PageResources', new PageResources(
+            preferences: new UserPreferences(theme: ThemeMode::DARK, locale: 'pt-BR'),
+            capabilities: ['manage_users' => true],
+            featureFlags: ['dark_mode' => true, 'beta' => false],
+            user: new Identity(id: '1', name: 'Admin'),
+            branding: new Branding(appName: 'Helico'),
+        ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsResourcesMissingPreferences(): void
+    {
+        $payload = (new PageResources())->jsonSerialize();
+        unset($payload['preferences']);
+
+        $this->assertInvalidAgainst('PageResources', $payload);
+    }
+
+    #[Test]
+    public function testSchemaRejectsNonBooleanCapabilityValues(): void
+    {
+        $this->assertInvalidAgainst('PageResources', [
+            'preferences' => (new UserPreferences())->jsonSerialize(),
+            'capabilities' => ['manage_users' => 'yes'],
+            'featureFlags' => [],
+        ]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownResourceProperty(): void
+    {
+        $payload = (new PageResources())->jsonSerialize();
+        $payload['extra'] = true;
+
+        $this->assertInvalidAgainst('PageResources', $payload);
     }
 }

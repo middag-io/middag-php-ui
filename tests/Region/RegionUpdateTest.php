@@ -15,6 +15,7 @@ namespace Middag\Ui\Tests\Region;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Region\RegionUpdate;
 use Middag\Ui\Shared\Enum\RegionUpdateMode;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,8 @@ use ReflectionClass;
 #[CoversClass(RegionUpdate::class)]
 final class RegionUpdateTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -82,6 +85,42 @@ final class RegionUpdateTest extends TestCase
 
         self::assertSame(['row-1', 'row-2'], $payload['keys']);
         self::assertArrayNotHasKey('blocks', $payload);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsABareReplaceDefault(): void
+    {
+        $this->assertValidAgainst('RegionUpdate', new RegionUpdate('content'));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAReplaceCarryingBlocks(): void
+    {
+        $this->assertValidAgainst('RegionUpdate', RegionUpdate::replace('content', $this->block('a'), $this->block('b')));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsARemoveCarryingKeys(): void
+    {
+        $this->assertValidAgainst('RegionUpdate', RegionUpdate::remove('content', 'row-1', 'row-2'));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUpdateMissingItsRegion(): void
+    {
+        $this->assertInvalidAgainst('RegionUpdate', ['mode' => 'replace']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownMode(): void
+    {
+        $this->assertInvalidAgainst('RegionUpdate', ['region' => 'content', 'mode' => 'merge']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownProperty(): void
+    {
+        $this->assertInvalidAgainst('RegionUpdate', ['region' => 'content', 'mode' => 'replace', 'target' => 'x']);
     }
 
     private function block(string $key): BlockDescriptor

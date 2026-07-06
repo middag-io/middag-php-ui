@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Region;
 
 use Middag\Ui\Region\PollConfig;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use ReflectionClass;
 #[CoversClass(PollConfig::class)]
 final class PollConfigTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -50,5 +53,35 @@ final class PollConfigTest extends TestCase
 
         self::assertFalse($payload['pauseWhenHidden']);
         self::assertSame(60000, $payload['stopAfterMs']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAMinimalConfig(): void
+    {
+        $this->assertValidAgainst('PollConfig', new PollConfig(endpoint: '/poll', intervalMs: 3000));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAConfigWithStopAfter(): void
+    {
+        $this->assertValidAgainst('PollConfig', new PollConfig(endpoint: '/poll', intervalMs: 3000, stopAfterMs: 60000, pauseWhenHidden: false));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAConfigMissingItsEndpoint(): void
+    {
+        $this->assertInvalidAgainst('PollConfig', ['intervalMs' => 3000, 'pauseWhenHidden' => true]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownProperty(): void
+    {
+        $this->assertInvalidAgainst('PollConfig', ['endpoint' => '/poll', 'intervalMs' => 3000, 'pauseWhenHidden' => true, 'transport' => 'sse']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonIntegerInterval(): void
+    {
+        $this->assertInvalidAgainst('PollConfig', ['endpoint' => '/poll', 'intervalMs' => '3000', 'pauseWhenHidden' => true]);
     }
 }

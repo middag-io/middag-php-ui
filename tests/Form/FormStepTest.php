@@ -14,6 +14,7 @@ namespace Middag\Ui\Tests\Form;
 
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Shared\ValueObject\Translatable;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +26,8 @@ use ReflectionClass;
 #[CoversClass(FormStep::class)]
 final class FormStepTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -56,5 +59,40 @@ final class FormStepTest extends TestCase
 
         self::assertSame(['key' => 'step_basics', 'domain' => 'local_x'], $payload['label']);
         self::assertSame(['key' => 'step_help', 'domain' => 'local_x'], $payload['help']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAStepWithAPlainStringLabel(): void
+    {
+        $this->assertValidAgainst('FormStep', new FormStep(id: 'basics', label: 'Basics', fields: ['name', 'email']));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAStepWithTranslatableLabelAndHelp(): void
+    {
+        $this->assertValidAgainst('FormStep', new FormStep(
+            id: 'basics',
+            label: Translatable::of('step_basics', 'local_x'),
+            fields: [],
+            help: Translatable::of('step_help', 'local_x'),
+        ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsAStepMissingItsFields(): void
+    {
+        $this->assertInvalidAgainst('FormStep', ['id' => 'x', 'label' => 'X']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsNonStringFieldEntries(): void
+    {
+        $this->assertInvalidAgainst('FormStep', ['id' => 'x', 'label' => 'X', 'fields' => [123]]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnAdditionalPropertyOnAStep(): void
+    {
+        $this->assertInvalidAgainst('FormStep', ['id' => 'x', 'label' => 'X', 'fields' => [], 'evil' => 1]);
     }
 }

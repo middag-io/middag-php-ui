@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Page\Branding;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use ReflectionClass;
 #[CoversClass(Branding::class)]
 final class BrandingTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testIsReadonlyClass(): void
     {
@@ -49,5 +52,39 @@ final class BrandingTest extends TestCase
 
         self::assertSame('https://x/logo.svg', $payload['logoUrl']);
         self::assertSame('https://x/logo-c.svg', $payload['logoCompactUrl']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsMinimalBranding(): void
+    {
+        $this->assertValidAgainst('Branding', new Branding(appName: 'Helico'));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsBrandingWithLogos(): void
+    {
+        $this->assertValidAgainst('Branding', new Branding(
+            appName: 'Helico',
+            logoUrl: 'https://x/logo.svg',
+            logoCompactUrl: 'https://x/logo-c.svg',
+        ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsBrandingMissingAppName(): void
+    {
+        $this->assertInvalidAgainst('Branding', ['logoUrl' => 'https://x/logo.svg']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnUnknownBrandingProperty(): void
+    {
+        $this->assertInvalidAgainst('Branding', ['appName' => 'Helico', 'color' => '#fff']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonStringAppName(): void
+    {
+        $this->assertInvalidAgainst('Branding', ['appName' => 42]);
     }
 }

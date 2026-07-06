@@ -15,6 +15,7 @@ namespace Middag\Ui\Tests\Form;
 use Middag\Ui\Form\FormFieldNode;
 use Middag\Ui\Form\FormSectionNode;
 use Middag\Ui\Shared\Enum\FormComponent;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +26,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(FormSectionNode::class)]
 final class FormSectionNodeTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
     public function testSerializesWithChildrenAndCollapsed(): void
     {
@@ -51,5 +54,46 @@ final class FormSectionNodeTest extends TestCase
 
         self::assertArrayNotHasKey('defaultCollapsed', $payload);
         self::assertSame([], $payload['children']);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsACollapsedSectionWithChildren(): void
+    {
+        $this->assertValidAgainst('FormSectionNode', new FormSectionNode(
+            id: 'advanced',
+            label: 'Advanced',
+            children: [new FormFieldNode('secret', FormComponent::PASSWORD, ['label' => 'Secret'])],
+            defaultCollapsed: true,
+        ));
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAMinimalSection(): void
+    {
+        $this->assertValidAgainst('FormSectionNode', new FormSectionNode(id: 's', label: 'S'));
+    }
+
+    #[Test]
+    public function testSchemaRejectsASectionMissingItsLabel(): void
+    {
+        $this->assertInvalidAgainst('FormSectionNode', ['kind' => 'section', 'id' => 's', 'children' => []]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsASectionWithAWrongKind(): void
+    {
+        $this->assertInvalidAgainst('FormSectionNode', ['kind' => 'group', 'id' => 's', 'label' => 'S', 'children' => []]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonBooleanDefaultCollapsed(): void
+    {
+        $this->assertInvalidAgainst('FormSectionNode', ['kind' => 'section', 'id' => 's', 'label' => 'S', 'children' => [], 'defaultCollapsed' => 'yes']);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnAdditionalPropertyOnASection(): void
+    {
+        $this->assertInvalidAgainst('FormSectionNode', ['kind' => 'section', 'id' => 's', 'label' => 'S', 'children' => [], 'evil' => 1]);
     }
 }
