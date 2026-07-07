@@ -19,7 +19,7 @@ use Middag\Ui\Page\Contract\PageInterface;
 /**
  * Base class for pages composed via the page contract pipeline.
  *
- * Extensions extend AbstractPage to declare a routable page. Subclasses set
+ * Modules extend AbstractPage to declare a routable page. Subclasses set
  * the SLUG constant for container discovery and implement build() to compose
  * blocks/regions via a PageBuilder (or any PageContractInterface producer).
  *

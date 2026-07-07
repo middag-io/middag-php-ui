@@ -20,7 +20,7 @@ namespace Middag\Ui\Page\Contract;
  * produce a PageContractInterface via a PageBuilder, but the marker carries
  * no methods — it exists solely for service discovery and type-tagging.
  *
- * Extensions register page classes during boot(); controllers and the
+ * Modules register page classes during boot(); controllers and the
  * router resolve them by slug → FQN via the container.
  *
  * @api
