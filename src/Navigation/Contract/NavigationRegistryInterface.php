@@ -17,7 +17,7 @@ use Closure;
 /**
  * Registry for the 3-level navigation tree.
  *
- * Extensions register groups (N1), sections (N2), and items (N3) during boot().
+ * Modules register groups (N1), sections (N2), and items (N3) during boot().
  * The registry builds the full tree, filters by capability, resolves the active
  * state from the current route, and serializes for the client navigation component.
  *
@@ -36,7 +36,7 @@ interface NavigationRegistryInterface
     public function group(string $key, string $label, ?string $icon = null, int $weight = 50): static;
 
     /**
-     * Register a section within a group (N2 — extension/CC).
+     * Register a section within a group (N2 — module/CC).
      *
      * Key must be dot-separated: '{group}.{section}' (e.g. 'audience.segments').
      *
