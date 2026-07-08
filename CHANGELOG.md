@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.4](https://github.com/middag-io/middag-php-ui/compare/v1.2.3...v1.2.4) (2026-07-08)
+
+
+### Documentation
+
+* use Module vocabulary in [@api](https://github.com/api) docblocks ([d133e52](https://github.com/middag-io/middag-php-ui/commit/d133e52f548851f41f74c648b0f4d570ce42c468))
+
+
+### Miscellaneous
+
+* **dist:** export-ignore /bin in the published archive ([b866421](https://github.com/middag-io/middag-php-ui/commit/b866421ffd27f8c0cabc70cb9409dc15c5eb303d))
+* release 1.2.4 ([d2529d1](https://github.com/middag-io/middag-php-ui/commit/d2529d1634597ce15a8151d21bc080c729e6cd2d))
+* release 1.2.4 ([8af260c](https://github.com/middag-io/middag-php-ui/commit/8af260cb48054e3e2f3bf783ea06e4e2c2a3c036))
+
 ## [1.2.3](https://github.com/middag-io/middag-php-ui/compare/v1.2.2...v1.2.3) (2026-07-06)
 
 
