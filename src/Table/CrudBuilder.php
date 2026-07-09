@@ -407,7 +407,7 @@ class CrudBuilder implements CrudBuilderInterface
                 id: 'create',
                 label: 'Create',
                 target: ActionTarget::link(sprintf('/%s/create', $this->slug)),
-                intent: ActionIntent::PRIMARY,
+                intent: ActionIntent::Primary,
                 capability: $this->capability,
             ),
         ];
@@ -565,7 +565,7 @@ class CrudBuilder implements CrudBuilderInterface
                 label: $d['label'] ?? '',
                 sortable: $d['sortable'] ?? false,
                 searchable: $d['searchable'] ?? false,
-                format: $d['format'] ?? ValueFormat::TEXT,
+                format: $d['format'] ?? ValueFormat::Text,
                 formatOptions: $d['formatOptions'] ?? [],
                 options: $d['options'] ?? [],
             ),
@@ -587,8 +587,8 @@ class CrudBuilder implements CrudBuilderInterface
             'delete' => new Action(
                 id: 'delete',
                 label: $label,
-                target: ActionTarget::request(sprintf('/%s/{id}', $this->slug), HttpMethod::DELETE),
-                intent: ActionIntent::DANGER,
+                target: ActionTarget::request(sprintf('/%s/{id}', $this->slug), HttpMethod::Delete),
+                intent: ActionIntent::Danger,
                 confirmation: new Confirmation(title: 'Delete', message: 'Are you sure?', variant: 'danger'),
                 capability: $this->capability,
             ),
@@ -618,7 +618,7 @@ class CrudBuilder implements CrudBuilderInterface
             id: $action,
             label: ucfirst($action),
             target: ActionTarget::request(sprintf('/%s/bulk/%s', $this->slug, $action)),
-            intent: $action === 'delete' ? ActionIntent::DANGER : ActionIntent::SECONDARY,
+            intent: $action === 'delete' ? ActionIntent::Danger : ActionIntent::Secondary,
             confirmation: $action === 'delete'
                 ? new Confirmation(title: 'Delete', message: 'Are you sure?', variant: 'danger')
                 : null,

@@ -44,7 +44,7 @@ final class FragmentTest extends TestCase
         $fragment = Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []));
 
         self::assertInstanceOf(ContractEnvelopeInterface::class, $fragment);
-        self::assertSame(FragmentKind::BLOCK, $fragment->kind);
+        self::assertSame(FragmentKind::Block, $fragment->kind);
 
         $payload = $fragment->jsonSerialize();
 
@@ -87,7 +87,7 @@ final class FragmentTest extends TestCase
     public function testNotificationsCarriesNoPayload(): void
     {
         $payload = Fragment::notifications([
-            new Notification(NotificationLevel::SUCCESS, 'Saved'),
+            new Notification(NotificationLevel::Success, 'Saved'),
         ])->jsonSerialize();
 
         self::assertSame('notifications', $payload['kind']);
@@ -109,7 +109,7 @@ final class FragmentTest extends TestCase
     #[Test]
     public function testOfRoutesArbitraryKind(): void
     {
-        $payload = Fragment::of(FragmentKind::DETAIL, new BlockDescriptor(type: 'detail_panel', key: 'd', data: []))
+        $payload = Fragment::of(FragmentKind::Detail, new BlockDescriptor(type: 'detail_panel', key: 'd', data: []))
             ->jsonSerialize();
 
         self::assertSame('detail', $payload['kind']);
@@ -120,7 +120,7 @@ final class FragmentTest extends TestCase
     #[Test]
     public function testOfCustomWithoutCustomTypeOmitsIt(): void
     {
-        $payload = Fragment::of(FragmentKind::CUSTOM, new BlockDescriptor(type: 'x', key: 'k', data: []))
+        $payload = Fragment::of(FragmentKind::Custom, new BlockDescriptor(type: 'x', key: 'k', data: []))
             ->jsonSerialize();
 
         self::assertSame('custom', $payload['kind']);
@@ -131,7 +131,7 @@ final class FragmentTest extends TestCase
     public function testWithNotificationsAttachesSideChannel(): void
     {
         $payload = Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))
-            ->withNotifications(new Notification(NotificationLevel::INFO, 'Updated'))
+            ->withNotifications(new Notification(NotificationLevel::Info, 'Updated'))
             ->jsonSerialize();
 
         self::assertArrayHasKey('payload', $payload);

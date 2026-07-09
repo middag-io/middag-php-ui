@@ -34,7 +34,7 @@ final class ActionTargetKindTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(ActionTargetKind::REQUEST, ActionTargetKind::from('request'));
+        self::assertSame(ActionTargetKind::Request, ActionTargetKind::from('request'));
         self::assertNull(ActionTargetKind::tryFrom('nope'));
     }
 }

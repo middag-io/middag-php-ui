@@ -36,7 +36,7 @@ final class FormSchemaNodeTest extends TestCase
     #[Test]
     public function testSchemaAcceptsTheFieldBranch(): void
     {
-        $this->assertValidAgainst('FormSchemaNode', new FormFieldNode('a', FormComponent::TEXT, ['label' => 'A']));
+        $this->assertValidAgainst('FormSchemaNode', new FormFieldNode('a', FormComponent::Text, ['label' => 'A']));
     }
 
     #[Test]
@@ -49,7 +49,7 @@ final class FormSchemaNodeTest extends TestCase
     public function testSchemaAcceptsTheGroupBranch(): void
     {
         $this->assertValidAgainst('FormSchemaNode', new FormGroupNode('g', [
-            new FormFieldNode('a', FormComponent::TEXT, ['label' => 'A']),
+            new FormFieldNode('a', FormComponent::Text, ['label' => 'A']),
         ], 2));
     }
 
@@ -58,7 +58,7 @@ final class FormSchemaNodeTest extends TestCase
     {
         $this->assertValidAgainst('FormSchemaNode', new FormSectionNode('sec', 'Section', [
             new FormHeaderNode('Sub header'),
-            new FormFieldNode('bio', FormComponent::TEXTAREA, ['label' => 'Bio']),
+            new FormFieldNode('bio', FormComponent::Textarea, ['label' => 'Bio']),
         ], true));
     }
 

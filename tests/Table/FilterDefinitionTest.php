@@ -54,7 +54,7 @@ final class FilterDefinitionTest extends TestCase
         $payload = (new FilterDefinition(
             key: 'status',
             label: Translatable::of('status', 'local_x'),
-            type: FilterType::SELECT,
+            type: FilterType::Select,
             options: [
                 ['value' => 'active', 'label' => 'Active'],
                 ['value' => 'archived', 'label' => Translatable::of('archived', 'local_x')],
@@ -83,7 +83,7 @@ final class FilterDefinitionTest extends TestCase
         $this->assertValidAgainst('FilterDefinition', new FilterDefinition(
             key: 'status',
             label: Translatable::of('status', 'local_x'),
-            type: FilterType::SELECT,
+            type: FilterType::Select,
             options: [
                 ['value' => 'active', 'label' => 'Active'],
                 ['value' => 'archived', 'label' => Translatable::of('archived', 'local_x')],

@@ -37,7 +37,7 @@ final class ValueFormatTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(ValueFormat::CURRENCY, ValueFormat::from('currency'));
+        self::assertSame(ValueFormat::Currency, ValueFormat::from('currency'));
         self::assertNull(ValueFormat::tryFrom('nope'));
     }
 }

@@ -26,9 +26,9 @@ enum ChartType: string
 {
     use ProvidesJsonSchema;
 
-    case LINE = 'line';
+    case Line = 'line';
 
-    case BAR = 'bar';
+    case Bar = 'bar';
 
-    case AREA = 'area';
+    case Area = 'area';
 }

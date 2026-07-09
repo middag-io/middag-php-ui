@@ -66,43 +66,43 @@ final class FieldTypeTest extends TestCase
     #[Test]
     public function enumValuesMatchExpectedStrings(): void
     {
-        $this->assertSame('text', FieldType::TEXT->value);
-        $this->assertSame('textarea', FieldType::TEXTAREA->value);
-        $this->assertSame('richtext', FieldType::RICHTEXT->value);
-        $this->assertSame('password', FieldType::PASSWORD->value);
-        $this->assertSame('email', FieldType::EMAIL->value);
-        $this->assertSame('url', FieldType::URL->value);
-        $this->assertSame('int', FieldType::INT->value);
-        $this->assertSame('float', FieldType::FLOAT->value);
-        $this->assertSame('select', FieldType::SELECT->value);
-        $this->assertSame('multiselect', FieldType::MULTISELECT->value);
-        $this->assertSame('radio', FieldType::RADIO->value);
-        $this->assertSame('checkbox', FieldType::CHECKBOX->value);
-        $this->assertSame('switch', FieldType::SWITCH->value);
-        $this->assertSame('date', FieldType::DATE->value);
-        $this->assertSame('datetime', FieldType::DATETIME->value);
-        $this->assertSame('time', FieldType::TIME->value);
-        $this->assertSame('duration', FieldType::DURATION->value);
-        $this->assertSame('file', FieldType::FILE->value);
-        $this->assertSame('entity_picker', FieldType::ENTITY_PICKER->value);
-        $this->assertSame('autocomplete', FieldType::AUTOCOMPLETE->value);
-        $this->assertSame('tags', FieldType::TAGS->value);
-        $this->assertSame('hidden', FieldType::HIDDEN->value);
-        $this->assertSame('static', FieldType::STATIC->value);
-        $this->assertSame('header', FieldType::HEADER->value);
-        $this->assertSame('slider', FieldType::SLIDER->value);
-        $this->assertSame('otp', FieldType::OTP->value);
-        $this->assertSame('native_select', FieldType::NATIVE_SELECT->value);
+        $this->assertSame('text', FieldType::Text->value);
+        $this->assertSame('textarea', FieldType::Textarea->value);
+        $this->assertSame('richtext', FieldType::Richtext->value);
+        $this->assertSame('password', FieldType::Password->value);
+        $this->assertSame('email', FieldType::Email->value);
+        $this->assertSame('url', FieldType::Url->value);
+        $this->assertSame('int', FieldType::Int->value);
+        $this->assertSame('float', FieldType::Float->value);
+        $this->assertSame('select', FieldType::Select->value);
+        $this->assertSame('multiselect', FieldType::Multiselect->value);
+        $this->assertSame('radio', FieldType::Radio->value);
+        $this->assertSame('checkbox', FieldType::Checkbox->value);
+        $this->assertSame('switch', FieldType::Switch->value);
+        $this->assertSame('date', FieldType::Date->value);
+        $this->assertSame('datetime', FieldType::Datetime->value);
+        $this->assertSame('time', FieldType::Time->value);
+        $this->assertSame('duration', FieldType::Duration->value);
+        $this->assertSame('file', FieldType::File->value);
+        $this->assertSame('entity_picker', FieldType::EntityPicker->value);
+        $this->assertSame('autocomplete', FieldType::Autocomplete->value);
+        $this->assertSame('tags', FieldType::Tags->value);
+        $this->assertSame('hidden', FieldType::Hidden->value);
+        $this->assertSame('static', FieldType::Static->value);
+        $this->assertSame('header', FieldType::Header->value);
+        $this->assertSame('slider', FieldType::Slider->value);
+        $this->assertSame('otp', FieldType::Otp->value);
+        $this->assertSame('native_select', FieldType::NativeSelect->value);
     }
 
     #[Test]
     public function fieldTypeCanBeCreatedFromString(): void
     {
         $type = FieldType::from('text');
-        $this->assertSame(FieldType::TEXT, $type);
+        $this->assertSame(FieldType::Text, $type);
 
         $type = FieldType::from('entity_picker');
-        $this->assertSame(FieldType::ENTITY_PICKER, $type);
+        $this->assertSame(FieldType::EntityPicker, $type);
     }
 
     #[Test]

@@ -34,7 +34,7 @@ final class NotificationLevelTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(NotificationLevel::ERROR, NotificationLevel::from('error'));
+        self::assertSame(NotificationLevel::Error, NotificationLevel::from('error'));
         self::assertNull(NotificationLevel::tryFrom('nope'));
     }
 }

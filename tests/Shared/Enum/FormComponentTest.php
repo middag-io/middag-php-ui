@@ -53,17 +53,17 @@ final class FormComponentTest extends TestCase
     #[Test]
     public function enumValuesMatchExpectedStrings(): void
     {
-        $this->assertSame('text', FormComponent::TEXT->value);
-        $this->assertSame('native_select', FormComponent::NATIVE_SELECT->value);
-        $this->assertSame('entity_picker', FormComponent::ENTITY_PICKER->value);
-        $this->assertSame('date_range', FormComponent::DATE_RANGE->value);
-        $this->assertSame('header', FormComponent::HEADER->value);
+        $this->assertSame('text', FormComponent::Text->value);
+        $this->assertSame('native_select', FormComponent::NativeSelect->value);
+        $this->assertSame('entity_picker', FormComponent::EntityPicker->value);
+        $this->assertSame('date_range', FormComponent::DateRange->value);
+        $this->assertSame('header', FormComponent::Header->value);
     }
 
     #[Test]
     public function componentCanBeCreatedFromString(): void
     {
-        $this->assertSame(FormComponent::DATE_RANGE, FormComponent::from('date_range'));
+        $this->assertSame(FormComponent::DateRange, FormComponent::from('date_range'));
     }
 
     #[Test]

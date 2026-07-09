@@ -35,34 +35,34 @@ final readonly class RegionUpdate implements JsonSerializable
      */
     public function __construct(
         public string $region,
-        public RegionUpdateMode $mode = RegionUpdateMode::REPLACE,
+        public RegionUpdateMode $mode = RegionUpdateMode::Replace,
         public array $blocks = [],
         public array $keys = [],
     ) {}
 
     public static function replace(string $region, BlockDescriptorInterface ...$blocks): self
     {
-        return new self($region, RegionUpdateMode::REPLACE, $blocks);
+        return new self($region, RegionUpdateMode::Replace, $blocks);
     }
 
     public static function append(string $region, BlockDescriptorInterface ...$blocks): self
     {
-        return new self($region, RegionUpdateMode::APPEND, $blocks);
+        return new self($region, RegionUpdateMode::Append, $blocks);
     }
 
     public static function prepend(string $region, BlockDescriptorInterface ...$blocks): self
     {
-        return new self($region, RegionUpdateMode::PREPEND, $blocks);
+        return new self($region, RegionUpdateMode::Prepend, $blocks);
     }
 
     public static function update(string $region, BlockDescriptorInterface ...$blocks): self
     {
-        return new self($region, RegionUpdateMode::UPDATE, $blocks);
+        return new self($region, RegionUpdateMode::Update, $blocks);
     }
 
     public static function remove(string $region, string ...$keys): self
     {
-        return new self($region, RegionUpdateMode::REMOVE, keys: $keys);
+        return new self($region, RegionUpdateMode::Remove, keys: $keys);
     }
 
     /** @return array<string, mixed> */

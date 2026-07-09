@@ -23,11 +23,11 @@ enum NotificationLevel: string
 {
     use ProvidesJsonSchema;
 
-    case SUCCESS = 'success';
+    case Success = 'success';
 
-    case INFO = 'info';
+    case Info = 'info';
 
-    case WARNING = 'warning';
+    case Warning = 'warning';
 
-    case ERROR = 'error';
+    case Error = 'error';
 }

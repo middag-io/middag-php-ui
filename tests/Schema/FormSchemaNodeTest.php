@@ -57,32 +57,32 @@ final class FormSchemaNodeTest extends TestCase
     public function testRichComponentPropsValidate(): void
     {
         // select — option props.
-        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('type', FormComponent::SELECT, [
+        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('type', FormComponent::Select, [
             'label' => 'Type',
             'options' => [['value' => 'a', 'label' => 'A'], ['value' => 'b', 'label' => 'B']],
         ]));
         // document — base + scope enum + masks map ($ref FormFieldDocumentMask).
-        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('doc', FormComponent::DOCUMENT, [
+        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('doc', FormComponent::Document, [
             'label' => 'Document',
             'documentScope' => 'person',
             'documentMasks' => ['cpf' => ['pattern' => '999.999.999-99', 'maxLength' => 14]],
         ]));
         // slider — numeric bounds + range toggle.
-        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('score', FormComponent::SLIDER, [
+        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('score', FormComponent::Slider, [
             'label' => 'Score',
             'min' => 0,
             'max' => 10,
             'multiple' => true,
         ]));
         // entity_picker — option props + async search props (nested allOf).
-        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('owner', FormComponent::ENTITY_PICKER, [
+        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('owner', FormComponent::EntityPicker, [
             'label' => 'Owner',
             'options' => [['value' => '1', 'label' => 'Ana']],
             'autocompleteHref' => '/api/users',
             'autocompleteMinChars' => 2,
         ]));
         // a field carrying a reactive condition ($ref FormCondition + validation).
-        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('secret', FormComponent::PASSWORD, [
+        $this->assertValidAgainst('FormFieldNode', new FormFieldNode('secret', FormComponent::Password, [
             'label' => 'Secret',
             'validation' => ['minLength' => 8],
             'visible_when' => ['field' => 'type', 'operator' => 'equals', 'value' => 'b'],
@@ -97,19 +97,19 @@ final class FormSchemaNodeTest extends TestCase
     #[Test]
     public function testUmbrellaAcceptsEveryNodeKindAndRecurses(): void
     {
-        $this->assertValidAgainst('FormSchemaNode', new FormFieldNode('a', FormComponent::TEXT, ['label' => 'A']));
+        $this->assertValidAgainst('FormSchemaNode', new FormFieldNode('a', FormComponent::Text, ['label' => 'A']));
         $this->assertValidAgainst('FormSchemaNode', new FormHeaderNode('Header'));
         $this->assertValidAgainst('FormSchemaNode', new FormGroupNode('g', [
-            new FormFieldNode('a', FormComponent::TEXT, ['label' => 'A']),
+            new FormFieldNode('a', FormComponent::Text, ['label' => 'A']),
         ], 2));
 
         $tree = new FormSectionNode('sec', 'Section', [
             new FormHeaderNode('Sub header'),
             new FormGroupNode('row', [
-                new FormFieldNode('first', FormComponent::TEXT, ['label' => 'First']),
-                new FormFieldNode('last', FormComponent::TEXT, ['label' => 'Last']),
+                new FormFieldNode('first', FormComponent::Text, ['label' => 'First']),
+                new FormFieldNode('last', FormComponent::Text, ['label' => 'Last']),
             ], 2),
-            new FormFieldNode('bio', FormComponent::TEXTAREA, ['label' => 'Bio', 'rows' => 4]),
+            new FormFieldNode('bio', FormComponent::Textarea, ['label' => 'Bio', 'rows' => 4]),
         ], true);
         $this->assertValidAgainst('FormSchemaNode', $tree);
     }

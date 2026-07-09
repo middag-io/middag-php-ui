@@ -31,65 +31,65 @@ enum FormComponent: string
 {
     use ProvidesJsonSchema;
 
-    case TEXT = 'text';
+    case Text = 'text';
 
-    case TEXTAREA = 'textarea';
+    case Textarea = 'textarea';
 
-    case PASSWORD = 'password';
+    case Password = 'password';
 
-    case OTP = 'otp';
+    case Otp = 'otp';
 
-    case EMAIL = 'email';
+    case Email = 'email';
 
-    case URL = 'url';
+    case Url = 'url';
 
-    case INT = 'int';
+    case Int = 'int';
 
-    case FLOAT = 'float';
+    case Float = 'float';
 
-    case SLIDER = 'slider';
+    case Slider = 'slider';
 
-    case SELECT = 'select';
+    case Select = 'select';
 
-    case NATIVE_SELECT = 'native_select';
+    case NativeSelect = 'native_select';
 
-    case MULTISELECT = 'multiselect';
+    case Multiselect = 'multiselect';
 
-    case RADIO = 'radio';
+    case Radio = 'radio';
 
-    case CHECKBOX = 'checkbox';
+    case Checkbox = 'checkbox';
 
-    case SWITCH = 'switch';
+    case Switch = 'switch';
 
-    case DATE = 'date';
+    case Date = 'date';
 
-    case DATETIME = 'datetime';
+    case Datetime = 'datetime';
 
-    case DURATION = 'duration';
+    case Duration = 'duration';
 
-    case FILE = 'file';
+    case File = 'file';
 
-    case ENTITY_PICKER = 'entity_picker';
+    case EntityPicker = 'entity_picker';
 
-    case PHONE = 'phone';
+    case Phone = 'phone';
 
-    case DOCUMENT = 'document';
+    case Document = 'document';
 
-    case CURRENCY = 'currency';
+    case Currency = 'currency';
 
-    case COLOR = 'color';
+    case Color = 'color';
 
-    case SLUG = 'slug';
+    case Slug = 'slug';
 
-    case TAGS = 'tags';
+    case Tags = 'tags';
 
-    case RATING = 'rating';
+    case Rating = 'rating';
 
-    case DATE_RANGE = 'date_range';
+    case DateRange = 'date_range';
 
-    case HIDDEN = 'hidden';
+    case Hidden = 'hidden';
 
-    case STATIC = 'static';
+    case Static = 'static';
 
-    case HEADER = 'header';
+    case Header = 'header';
 }

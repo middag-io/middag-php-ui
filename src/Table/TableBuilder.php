@@ -69,7 +69,7 @@ class TableBuilder
             label: $label,
             sortable: $settings['sortable'] ?? false,
             searchable: $settings['searchable'] ?? false,
-            format: $settings['format'] ?? ValueFormat::TEXT,
+            format: $settings['format'] ?? ValueFormat::Text,
             formatOptions: $settings['formatOptions'] ?? [],
             options: $settings['options'] ?? [],
         );
@@ -82,7 +82,7 @@ class TableBuilder
      *
      * @param array<int, array{value: mixed, label: string|Translatable}> $options
      */
-    public function filter(string $key, string|Translatable $label, FilterType $type = FilterType::SELECT, array $options = []): static
+    public function filter(string $key, string|Translatable $label, FilterType $type = FilterType::Select, array $options = []): static
     {
         $this->filters[] = new FilterDefinition(
             key: $key,

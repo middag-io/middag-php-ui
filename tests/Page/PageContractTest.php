@@ -121,7 +121,7 @@ final class PageContractTest extends TestCase
             shell: 'product',
             page: new PageMeta(key: 'home', title: 'Home'),
             layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
-            notifications: [new Notification(NotificationLevel::SUCCESS, 'Saved')],
+            notifications: [new Notification(NotificationLevel::Success, 'Saved')],
         );
 
         $payload = $contract->jsonSerialize();
@@ -173,7 +173,7 @@ final class PageContractTest extends TestCase
             page: new PageMeta(key: 'home', title: 'Home'),
             layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
             resources: new PageResources(),
-            notifications: [new Notification(NotificationLevel::SUCCESS, 'Saved')],
+            notifications: [new Notification(NotificationLevel::Success, 'Saved')],
             entities: ['user' => '/users/:id'],
         );
 

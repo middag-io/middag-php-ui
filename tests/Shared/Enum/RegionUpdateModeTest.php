@@ -34,7 +34,7 @@ final class RegionUpdateModeTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(RegionUpdateMode::REMOVE, RegionUpdateMode::from('remove'));
+        self::assertSame(RegionUpdateMode::Remove, RegionUpdateMode::from('remove'));
         self::assertNull(RegionUpdateMode::tryFrom('nope'));
     }
 }

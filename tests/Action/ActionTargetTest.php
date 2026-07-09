@@ -40,7 +40,7 @@ final class ActionTargetTest extends TestCase
     {
         $target = ActionTarget::link('/users/1');
 
-        self::assertSame(ActionTargetKind::LINK, $target->kind);
+        self::assertSame(ActionTargetKind::Link, $target->kind);
         self::assertSame(['kind' => 'link', 'href' => '/users/1'], $target->jsonSerialize());
     }
 
@@ -74,14 +74,14 @@ final class ActionTargetTest extends TestCase
     {
         $target = ActionTarget::request('/users/1');
 
-        self::assertSame(HttpMethod::POST, $target->method);
+        self::assertSame(HttpMethod::Post, $target->method);
         self::assertSame(['kind' => 'request', 'endpoint' => '/users/1', 'method' => 'post'], $target->jsonSerialize());
     }
 
     #[Test]
     public function testRequestWithMethod(): void
     {
-        $payload = ActionTarget::request('/users/1', HttpMethod::DELETE)->jsonSerialize();
+        $payload = ActionTarget::request('/users/1', HttpMethod::Delete)->jsonSerialize();
 
         self::assertSame('delete', $payload['method']);
     }
@@ -93,7 +93,7 @@ final class ActionTargetTest extends TestCase
         $this->assertValidAgainst('ActionTarget', ActionTarget::link('https://x', external: true));
         $this->assertValidAgainst('ActionTarget', ActionTarget::route('users.edit'));
         $this->assertValidAgainst('ActionTarget', ActionTarget::route('users.edit', ['id' => 7]));
-        $this->assertValidAgainst('ActionTarget', ActionTarget::request('/users/1', HttpMethod::DELETE));
+        $this->assertValidAgainst('ActionTarget', ActionTarget::request('/users/1', HttpMethod::Delete));
     }
 
     #[Test]

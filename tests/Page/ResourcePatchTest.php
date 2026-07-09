@@ -45,7 +45,7 @@ final class ResourcePatchTest extends TestCase
     public function testSerializesPreferencesWhenSet(): void
     {
         $payload = (new ResourcePatch(
-            preferences: new UserPreferences(theme: ThemeMode::DARK),
+            preferences: new UserPreferences(theme: ThemeMode::Dark),
         ))->jsonSerialize();
 
         self::assertArrayHasKey('preferences', $payload);
@@ -77,7 +77,7 @@ final class ResourcePatchTest extends TestCase
     public function testSchemaAcceptsAPatchWithPreferences(): void
     {
         $this->assertValidAgainst('ResourcePatch', new ResourcePatch(
-            preferences: new UserPreferences(theme: ThemeMode::DARK),
+            preferences: new UserPreferences(theme: ThemeMode::Dark),
         ));
     }
 

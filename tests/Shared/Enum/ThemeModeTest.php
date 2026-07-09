@@ -34,7 +34,7 @@ final class ThemeModeTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(ThemeMode::DARK, ThemeMode::from('dark'));
+        self::assertSame(ThemeMode::Dark, ThemeMode::from('dark'));
         self::assertNull(ThemeMode::tryFrom('nope'));
     }
 }

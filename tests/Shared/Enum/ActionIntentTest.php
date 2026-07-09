@@ -37,7 +37,7 @@ final class ActionIntentTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(ActionIntent::DANGER, ActionIntent::from('danger'));
+        self::assertSame(ActionIntent::Danger, ActionIntent::from('danger'));
         self::assertNull(ActionIntent::tryFrom('nope'));
     }
 }

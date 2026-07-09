@@ -48,7 +48,7 @@ final class RegionUpdateTest extends TestCase
     {
         $update = RegionUpdate::replace('content', $this->block('a'), $this->block('b'));
 
-        self::assertSame(RegionUpdateMode::REPLACE, $update->mode);
+        self::assertSame(RegionUpdateMode::Replace, $update->mode);
 
         $payload = $update->jsonSerialize();
 
@@ -79,7 +79,7 @@ final class RegionUpdateTest extends TestCase
     {
         $update = RegionUpdate::remove('content', 'row-1', 'row-2');
 
-        self::assertSame(RegionUpdateMode::REMOVE, $update->mode);
+        self::assertSame(RegionUpdateMode::Remove, $update->mode);
 
         $payload = $update->jsonSerialize();
 

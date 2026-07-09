@@ -27,33 +27,33 @@ enum ConditionOperator: string
     use ProvidesJsonSchema;
 
     // ── Equality ──────────────────────────────
-    case EQ = 'eq';
+    case Eq = 'eq';
 
-    case NEQ = 'neq';
+    case Neq = 'neq';
 
     // ── Set membership ────────────────────────
-    case IN = 'in';
+    case In = 'in';
 
-    case NOT_IN = 'not_in';
+    case NotIn = 'not_in';
 
     // ── Numeric comparison ────────────────────
-    case GT = 'gt';
+    case Gt = 'gt';
 
-    case GTE = 'gte';
+    case Gte = 'gte';
 
-    case LT = 'lt';
+    case Lt = 'lt';
 
-    case LTE = 'lte';
+    case Lte = 'lte';
 
     // ── Boolean / presence ────────────────────
-    case TRUTHY = 'truthy';
+    case Truthy = 'truthy';
 
-    case FALSY = 'falsy';
+    case Falsy = 'falsy';
 
-    case EXISTS = 'exists';
+    case Exists = 'exists';
 
-    case EMPTY = 'empty';
+    case Empty = 'empty';
 
     // ── Pattern ───────────────────────────────
-    case MATCHES = 'matches';
+    case Matches = 'matches';
 }

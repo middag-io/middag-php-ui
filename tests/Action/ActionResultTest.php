@@ -51,7 +51,7 @@ final class ActionResultTest extends TestCase
     {
         $payload = (new ActionResult(
             success: false,
-            notifications: [new Notification(NotificationLevel::ERROR, 'Failed')],
+            notifications: [new Notification(NotificationLevel::Error, 'Failed')],
             redirect: '/back',
             refreshBlocks: ['table'],
             errors: ['name' => 'Required'],
@@ -98,7 +98,7 @@ final class ActionResultTest extends TestCase
     {
         $this->assertValidAgainst('ActionResult', new ActionResult(
             success: false,
-            notifications: [new Notification(NotificationLevel::ERROR, 'Failed')],
+            notifications: [new Notification(NotificationLevel::Error, 'Failed')],
             redirect: '/back',
             refreshBlocks: ['table'],
             errors: ['name' => 'Required'],

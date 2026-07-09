@@ -34,8 +34,8 @@ final class RenderTargetTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(RenderTarget::HTML, RenderTarget::from('html'));
-        self::assertSame(RenderTarget::PROPS, RenderTarget::from('props'));
+        self::assertSame(RenderTarget::Html, RenderTarget::from('html'));
+        self::assertSame(RenderTarget::Props, RenderTarget::from('props'));
         self::assertNull(RenderTarget::tryFrom('nope'));
     }
 }

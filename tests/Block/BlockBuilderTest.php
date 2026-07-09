@@ -47,7 +47,7 @@ final class BlockBuilderTest extends TestCase
     #[Test]
     public function testChartMinimal(): void
     {
-        $payload = BlockBuilder::chart('c', ChartType::LINE, [new ChartSeries('A', [1.0, 2.0])])->jsonSerialize();
+        $payload = BlockBuilder::chart('c', ChartType::Line, [new ChartSeries('A', [1.0, 2.0])])->jsonSerialize();
 
         self::assertSame('chart', $payload['type']);
         self::assertSame('line', $payload['data']['chartType']);
@@ -62,7 +62,7 @@ final class BlockBuilderTest extends TestCase
     {
         $payload = BlockBuilder::chart(
             'c',
-            ChartType::BAR,
+            ChartType::Bar,
             [new ChartSeries('A', [1.0])],
             ['Jan', 'Feb'],
             ['stacked' => true],

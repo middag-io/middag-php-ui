@@ -26,15 +26,15 @@ enum FilterType: string
 {
     use ProvidesJsonSchema;
 
-    case SELECT = 'select';
+    case Select = 'select';
 
-    case TEXT = 'text';
+    case Text = 'text';
 
-    case DATE = 'date';
+    case Date = 'date';
 
-    case DATE_RANGE = 'date_range';
+    case DateRange = 'date_range';
 
-    case BOOLEAN = 'boolean';
+    case Boolean = 'boolean';
 
-    case NUMBER_RANGE = 'number_range';
+    case NumberRange = 'number_range';
 }

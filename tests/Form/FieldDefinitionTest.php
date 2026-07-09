@@ -55,7 +55,7 @@ final class FieldDefinitionTest extends TestCase
 
         $def = new FieldDefinition(
             name: 'email',
-            type: FieldType::EMAIL,
+            type: FieldType::Email,
             label: Translatable::of('email_label', 'local_x'),
             help: null,
             default: '',
@@ -66,7 +66,7 @@ final class FieldDefinitionTest extends TestCase
         );
 
         self::assertSame('email', $def->name);
-        self::assertSame(FieldType::EMAIL, $def->type);
+        self::assertSame(FieldType::Email, $def->type);
         self::assertInstanceOf(Translatable::class, $def->label);
         self::assertSame('email_label', $def->label->key);
         self::assertNull($def->help);
@@ -83,7 +83,7 @@ final class FieldDefinitionTest extends TestCase
     {
         $def = new FieldDefinition(
             name: 'note',
-            type: FieldType::TEXT,
+            type: FieldType::Text,
             label: 'Note',
             help: 'Free text',
             default: null,
@@ -101,11 +101,11 @@ final class FieldDefinitionTest extends TestCase
     #[Test]
     public function testConditionsHoldConditionObjects(): void
     {
-        $cond = new Condition(field: 'role', operator: ConditionOperator::EQ, value: 'admin');
+        $cond = new Condition(field: 'role', operator: ConditionOperator::Eq, value: 'admin');
 
         $def = new FieldDefinition(
             name: 'secret',
-            type: FieldType::TEXT,
+            type: FieldType::Text,
             label: null,
             help: null,
             default: null,
@@ -124,7 +124,7 @@ final class FieldDefinitionTest extends TestCase
     {
         $def = new FieldDefinition(
             name: 'status',
-            type: FieldType::SELECT,
+            type: FieldType::Select,
             label: null,
             help: null,
             default: 'active',

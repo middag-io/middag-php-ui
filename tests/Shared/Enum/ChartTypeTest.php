@@ -34,7 +34,7 @@ final class ChartTypeTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(ChartType::AREA, ChartType::from('area'));
+        self::assertSame(ChartType::Area, ChartType::from('area'));
         self::assertNull(ChartType::tryFrom('donut'));
         self::assertNull(ChartType::tryFrom('nope'));
     }

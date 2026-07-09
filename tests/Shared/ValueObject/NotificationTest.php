@@ -37,7 +37,7 @@ final class NotificationTest extends TestCase
     #[Test]
     public function testSerializesMinimal(): void
     {
-        $payload = (new Notification(NotificationLevel::SUCCESS, 'Saved'))->jsonSerialize();
+        $payload = (new Notification(NotificationLevel::Success, 'Saved'))->jsonSerialize();
 
         self::assertSame([
             'level' => 'success',
@@ -50,7 +50,7 @@ final class NotificationTest extends TestCase
     public function testSerializesAllFields(): void
     {
         $payload = (new Notification(
-            level: NotificationLevel::ERROR,
+            level: NotificationLevel::Error,
             message: Translatable::of('failed', 'local_x'),
             title: 'Oops',
             dismissible: false,
@@ -68,7 +68,7 @@ final class NotificationTest extends TestCase
     public function testSerializesActionWhenSet(): void
     {
         $payload = (new Notification(
-            level: NotificationLevel::INFO,
+            level: NotificationLevel::Info,
             message: 'Deleted',
             action: new Action(id: 'undo', label: 'Undo', target: ActionTarget::request('/undo')),
         ))->jsonSerialize();

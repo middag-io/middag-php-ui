@@ -41,7 +41,7 @@ final class RegionBuilderTest extends TestCase
     {
         $builder = new RegionBuilder();
 
-        self::assertSame($builder, $builder->chart('c', ChartType::AREA, [new ChartSeries('A', [1.0])]));
+        self::assertSame($builder, $builder->chart('c', ChartType::Area, [new ChartSeries('A', [1.0])]));
 
         $blocks = $builder->all();
         self::assertCount(1, $blocks);

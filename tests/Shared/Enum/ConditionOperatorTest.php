@@ -61,26 +61,26 @@ final class ConditionOperatorTest extends TestCase
     #[Test]
     public function enumValuesMatchExpectedStrings(): void
     {
-        $this->assertSame('eq', ConditionOperator::EQ->value);
-        $this->assertSame('neq', ConditionOperator::NEQ->value);
-        $this->assertSame('in', ConditionOperator::IN->value);
-        $this->assertSame('not_in', ConditionOperator::NOT_IN->value);
-        $this->assertSame('gt', ConditionOperator::GT->value);
-        $this->assertSame('gte', ConditionOperator::GTE->value);
-        $this->assertSame('lt', ConditionOperator::LT->value);
-        $this->assertSame('lte', ConditionOperator::LTE->value);
-        $this->assertSame('truthy', ConditionOperator::TRUTHY->value);
-        $this->assertSame('falsy', ConditionOperator::FALSY->value);
-        $this->assertSame('exists', ConditionOperator::EXISTS->value);
-        $this->assertSame('empty', ConditionOperator::EMPTY->value);
-        $this->assertSame('matches', ConditionOperator::MATCHES->value);
+        $this->assertSame('eq', ConditionOperator::Eq->value);
+        $this->assertSame('neq', ConditionOperator::Neq->value);
+        $this->assertSame('in', ConditionOperator::In->value);
+        $this->assertSame('not_in', ConditionOperator::NotIn->value);
+        $this->assertSame('gt', ConditionOperator::Gt->value);
+        $this->assertSame('gte', ConditionOperator::Gte->value);
+        $this->assertSame('lt', ConditionOperator::Lt->value);
+        $this->assertSame('lte', ConditionOperator::Lte->value);
+        $this->assertSame('truthy', ConditionOperator::Truthy->value);
+        $this->assertSame('falsy', ConditionOperator::Falsy->value);
+        $this->assertSame('exists', ConditionOperator::Exists->value);
+        $this->assertSame('empty', ConditionOperator::Empty->value);
+        $this->assertSame('matches', ConditionOperator::Matches->value);
     }
 
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        $this->assertSame(ConditionOperator::EQ, ConditionOperator::from('eq'));
-        $this->assertSame(ConditionOperator::MATCHES, ConditionOperator::from('matches'));
+        $this->assertSame(ConditionOperator::Eq, ConditionOperator::from('eq'));
+        $this->assertSame(ConditionOperator::Matches, ConditionOperator::from('matches'));
     }
 
     #[Test]

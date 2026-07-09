@@ -48,22 +48,22 @@ final readonly class Fragment implements ContractEnvelopeInterface
 
     public static function block(BlockDescriptorInterface $block): self
     {
-        return new self(kind: FragmentKind::BLOCK, payload: $block);
+        return new self(kind: FragmentKind::Block, payload: $block);
     }
 
     public static function region(RegionUpdate $region): self
     {
-        return new self(kind: FragmentKind::REGION, payload: $region);
+        return new self(kind: FragmentKind::Region, payload: $region);
     }
 
     public static function table(TableConfig $table): self
     {
-        return new self(kind: FragmentKind::TABLE, payload: $table);
+        return new self(kind: FragmentKind::Table, payload: $table);
     }
 
     public static function form(BlockDescriptorInterface $form): self
     {
-        return new self(kind: FragmentKind::FORM, payload: $form);
+        return new self(kind: FragmentKind::Form, payload: $form);
     }
 
     /**
@@ -71,12 +71,12 @@ final readonly class Fragment implements ContractEnvelopeInterface
      */
     public static function notifications(array $notifications): self
     {
-        return new self(kind: FragmentKind::NOTIFICATIONS, notifications: $notifications);
+        return new self(kind: FragmentKind::Notifications, notifications: $notifications);
     }
 
     public static function custom(string $customType, JsonSerializable $payload): self
     {
-        return new self(kind: FragmentKind::CUSTOM, payload: $payload, customType: $customType);
+        return new self(kind: FragmentKind::Custom, payload: $payload, customType: $customType);
     }
 
     public static function of(FragmentKind $kind, JsonSerializable $payload): self
@@ -117,7 +117,7 @@ final readonly class Fragment implements ContractEnvelopeInterface
             $payload['resources'] = $this->resources->jsonSerialize();
         }
 
-        if ($this->kind === FragmentKind::CUSTOM && $this->customType !== null) {
+        if ($this->kind === FragmentKind::Custom && $this->customType !== null) {
             $payload['customType'] = $this->customType;
         }
 

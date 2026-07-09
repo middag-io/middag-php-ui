@@ -26,9 +26,9 @@ enum ThemeMode: string
 {
     use ProvidesJsonSchema;
 
-    case LIGHT = 'light';
+    case Light = 'light';
 
-    case DARK = 'dark';
+    case Dark = 'dark';
 
-    case SYSTEM = 'system';
+    case System = 'system';
 }

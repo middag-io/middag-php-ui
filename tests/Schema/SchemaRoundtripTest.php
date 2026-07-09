@@ -88,7 +88,7 @@ final class SchemaRoundtripTest extends TestCase
     #[Test]
     public function testActionTargetRequest(): void
     {
-        $this->assertValidAgainst('ActionTarget', ActionTarget::request('/x/{id}', HttpMethod::DELETE));
+        $this->assertValidAgainst('ActionTarget', ActionTarget::request('/x/{id}', HttpMethod::Delete));
     }
 
     // ── Action — minimal and maximal ─────────────────────────────────────────
@@ -105,8 +105,8 @@ final class SchemaRoundtripTest extends TestCase
         $this->assertValidAgainst('Action', new Action(
             id: 'del',
             label: Translatable::of('btn_delete', 'local_x', ['name' => 'Item']),
-            target: ActionTarget::request('/x/{id}', HttpMethod::DELETE),
-            intent: ActionIntent::DANGER,
+            target: ActionTarget::request('/x/{id}', HttpMethod::Delete),
+            intent: ActionIntent::Danger,
             icon: 'trash',
             confirmation: new Confirmation(title: 'Delete?', message: Translatable::of('confirm', 'local_x'), variant: 'danger'),
             capability: 'manage_x',
@@ -197,7 +197,7 @@ final class SchemaRoundtripTest extends TestCase
     public function testNotification(): void
     {
         $this->assertValidAgainst('Notification', new Notification(
-            level: NotificationLevel::ERROR,
+            level: NotificationLevel::Error,
             message: Translatable::of('failed', 'core'),
             title: 'Oops',
             timeout: 5000,
@@ -211,7 +211,7 @@ final class SchemaRoundtripTest extends TestCase
     public function testTableConfig(): void
     {
         $table = new TableConfig(
-            columns: [new Column(key: 'name', label: 'Name', sortable: true, format: ValueFormat::TEXT)],
+            columns: [new Column(key: 'name', label: 'Name', sortable: true, format: ValueFormat::Text)],
             filters: [new FilterDefinition(key: 'status', label: 'Status')],
             rowActions: [new Action(id: 'edit', label: 'Edit', target: ActionTarget::link('/x/1/edit'))],
             options: new TableDisplayOptions(perPage: 50, sortColumn: 'name', selectable: true),
@@ -253,7 +253,7 @@ final class SchemaRoundtripTest extends TestCase
     {
         $this->assertValidAgainst('ActionResult', new ActionResult(
             success: false,
-            notifications: [new Notification(level: NotificationLevel::WARNING, message: 'Heads up')],
+            notifications: [new Notification(level: NotificationLevel::Warning, message: 'Heads up')],
             redirect: '/x',
             refreshBlocks: ['m1', 'm2'],
             errors: ['name' => 'required', 'tags' => ['too few', 'invalid']],
@@ -285,7 +285,7 @@ final class SchemaRoundtripTest extends TestCase
             title: Translatable::of('courses', 'local_x'),
             actions: [
                 new Action(id: 'new', label: 'New', target: ActionTarget::link('/courses/new')),
-                new Action(id: 'sync', label: Translatable::of('sync', 'local_x'), target: ActionTarget::request('/sync', HttpMethod::POST), intent: ActionIntent::PRIMARY),
+                new Action(id: 'sync', label: Translatable::of('sync', 'local_x'), target: ActionTarget::request('/sync', HttpMethod::Post), intent: ActionIntent::Primary),
             ],
             poll: new PollConfig(endpoint: '/courses/poll', intervalMs: 10000),
         );
@@ -301,7 +301,7 @@ final class SchemaRoundtripTest extends TestCase
             ),
             layout: new LayoutDescriptor(template: 'stack', regions: ['content' => [$table]], meta: ['gap' => 4]),
             resources: new PageResources(capabilities: ['manage_courses' => true]),
-            notifications: [new Notification(level: NotificationLevel::INFO, message: 'Loaded')],
+            notifications: [new Notification(level: NotificationLevel::Info, message: 'Loaded')],
             entities: ['course' => '/courses/{id}', 'user' => '/users/{id}'],
         );
 
