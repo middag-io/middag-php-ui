@@ -69,4 +69,17 @@ final class UserPreferencesTest extends TestCase
         self::assertSame('compact', $payload['density']);
         self::assertSame('en', $payload['locale']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = UserPreferences::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['theme', 'locale'], $schema['required']);
+        // Unlike every other VO in this lib, extra keys ARE allowed here —
+        // they carry arbitrary host/product preference extensions (see
+        // testExtraIsMergedWithTypedPrecedence above).
+        self::assertTrue($schema['additionalProperties']);
+    }
 }

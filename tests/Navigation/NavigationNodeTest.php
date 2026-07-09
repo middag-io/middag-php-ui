@@ -141,4 +141,14 @@ final class NavigationNodeTest extends TestCase
 
         self::assertSame('home', $decoded['key']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = NavigationNode::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['key', 'label'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

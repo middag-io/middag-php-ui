@@ -148,4 +148,14 @@ final class FragmentTest extends TestCase
 
         self::assertSame(['x' => true], $payload['resources']['capabilities']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = Fragment::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['version', 'kind'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

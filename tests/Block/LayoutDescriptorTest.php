@@ -81,4 +81,14 @@ final class LayoutDescriptorTest extends TestCase
         self::assertArrayHasKey('meta', $payload);
         self::assertSame(['steps' => 3], $payload['meta']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = LayoutDescriptor::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['template', 'regions'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

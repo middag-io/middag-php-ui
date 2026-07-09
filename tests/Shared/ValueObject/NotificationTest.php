@@ -77,4 +77,14 @@ final class NotificationTest extends TestCase
         self::assertSame('undo', $payload['action']['id']);
         self::assertSame('request', $payload['action']['target']['kind']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = Notification::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['level', 'message', 'dismissible'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

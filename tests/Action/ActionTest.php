@@ -87,4 +87,14 @@ final class ActionTest extends TestCase
         self::assertArrayNotHasKey('disabled', $payload);
         self::assertArrayNotHasKey('loading', $payload);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = Action::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['id', 'label', 'target', 'intent'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

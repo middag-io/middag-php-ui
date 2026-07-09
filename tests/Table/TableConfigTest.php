@@ -106,4 +106,14 @@ final class TableConfigTest extends TestCase
         self::assertSame($options->jsonSerialize(), $payload['options']);
         self::assertSame(50, $payload['options']['perPage']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = TableConfig::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['columns', 'options'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

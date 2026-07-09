@@ -34,6 +34,13 @@ final class FieldPropsBaseTest extends TestCase
 
         self::assertNotNull($ctor);
         self::assertTrue($ctor->isPrivate());
+
+        // Invoke the (empty) private constructor via reflection purely to prove
+        // it is inert; instances are never used at runtime — this is a
+        // schema-only value shape.
+        $instance = (new ReflectionClass(FieldPropsBase::class))->newInstanceWithoutConstructor();
+        $ctor->invoke($instance);
+        self::assertInstanceOf(FieldPropsBase::class, $instance);
     }
 
     #[Test]
