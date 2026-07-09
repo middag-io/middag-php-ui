@@ -55,4 +55,14 @@ final class IdentityTest extends TestCase
         self::assertSame('https://x/a.png', $payload['avatarUrl']);
         self::assertSame(['admin'], $payload['roles']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = Identity::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['id', 'name'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

@@ -115,4 +115,14 @@ final class PageMetaTest extends TestCase
         self::assertArrayNotHasKey('breadcrumbs', $payload);
         self::assertArrayNotHasKey('actions', $payload);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = PageMeta::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['key', 'title'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }

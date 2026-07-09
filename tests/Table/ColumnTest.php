@@ -112,4 +112,14 @@ final class ColumnTest extends TestCase
         self::assertTrue($decoded['sortable']);
         self::assertSame('number', $decoded['format']);
     }
+
+    #[Test]
+    public function testJsonSchemaDeclaresTheRequiredWireFields(): void
+    {
+        $schema = Column::jsonSchema();
+
+        self::assertSame('object', $schema['type']);
+        self::assertSame(['key', 'label', 'sortable', 'searchable', 'format'], $schema['required']);
+        self::assertFalse($schema['additionalProperties']);
+    }
 }
