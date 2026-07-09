@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/middag-io/middag-php-ui/compare/v1.3.0...v1.3.1) (2026-07-09)
+
+
+### Miscellaneous
+
+* release 1.3.1 ([2edd2d5](https://github.com/middag-io/middag-php-ui/commit/2edd2d5f59b973fde71183dde3d2414059642893))
+* release 1.3.1 ([59c6eff](https://github.com/middag-io/middag-php-ui/commit/59c6effce282306b2c6f38261dbf1e60e36c7dd6))
+
 ## [1.3.0](https://github.com/middag-io/middag-php-ui/compare/v1.2.4...v1.3.0) (2026-07-09)
 
 
