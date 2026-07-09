@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://github.com/middag-io/middag-php-ui/compare/v1.2.4...v1.3.0) (2026-07-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* enum case names changed for FragmentKind, ValueFormat, ActionIntent, ThemeMode, FieldType, ActionTargetKind, NotificationLevel, RegionUpdateMode, ConditionOperator, ChartType, FilterType, RenderTarget, FormComponent and HttpMethod. Consumers referencing cases by name must update (backed values unchanged).
+
+### Features
+
+* rename all enum cases to strict PascalCase (PER-CS 2.0) ([f65f9df](https://github.com/middag-io/middag-php-ui/commit/f65f9dfab655dd58d472d627e0a57b8b16048468))
+
+
+### Miscellaneous
+
+* release 1.3.0 ([bb7e698](https://github.com/middag-io/middag-php-ui/commit/bb7e698544a2e4b5590a0934374691c40d4d3450))
+* release ui 1.3.0 ([94c3141](https://github.com/middag-io/middag-php-ui/commit/94c31418c646fece4136d5307fcbfa4836dfe4b7))
+
 ## [1.2.4](https://github.com/middag-io/middag-php-ui/compare/v1.2.3...v1.2.4) (2026-07-08)
 
 
