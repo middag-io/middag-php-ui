@@ -43,7 +43,7 @@ final class ColumnTest extends TestCase
         self::assertSame('Name', $col->label);
         self::assertFalse($col->sortable);
         self::assertFalse($col->searchable);
-        self::assertSame(ValueFormat::TEXT, $col->format);
+        self::assertSame(ValueFormat::Text, $col->format);
         self::assertSame([], $col->formatOptions);
         self::assertSame([], $col->options);
     }
@@ -70,7 +70,7 @@ final class ColumnTest extends TestCase
             label: 'Amount',
             sortable: true,
             searchable: true,
-            format: ValueFormat::CURRENCY,
+            format: ValueFormat::Currency,
             formatOptions: ['currency' => 'BRL', 'decimals' => 2],
             options: ['align' => 'right'],
         );
@@ -99,7 +99,7 @@ final class ColumnTest extends TestCase
     #[Test]
     public function testJsonEncodeProducesValidJson(): void
     {
-        $col = new Column(key: 'amount', label: 'Amount', sortable: true, format: ValueFormat::NUMBER);
+        $col = new Column(key: 'amount', label: 'Amount', sortable: true, format: ValueFormat::Number);
 
         $json = json_encode($col, JSON_THROW_ON_ERROR);
 

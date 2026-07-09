@@ -27,19 +27,19 @@ enum FragmentKind: string
 {
     use ProvidesJsonSchema;
 
-    case BLOCK = 'block';
+    case Block = 'block';
 
-    case REGION = 'region';
+    case Region = 'region';
 
-    case TABLE = 'table';
+    case Table = 'table';
 
-    case FORM = 'form';
+    case Form = 'form';
 
-    case DETAIL = 'detail';
+    case Detail = 'detail';
 
-    case INSPECTOR = 'inspector';
+    case Inspector = 'inspector';
 
-    case NOTIFICATIONS = 'notifications';
+    case Notifications = 'notifications';
 
-    case CUSTOM = 'custom';
+    case Custom = 'custom';
 }

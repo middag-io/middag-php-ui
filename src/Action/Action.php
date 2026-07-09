@@ -40,7 +40,7 @@ final readonly class Action implements ActionInterface
         public string $id,
         public string|Translatable $label,
         public ActionTarget $target,
-        public ActionIntent $intent = ActionIntent::SECONDARY,
+        public ActionIntent $intent = ActionIntent::Secondary,
         public ?string $icon = null,
         public ?Confirmation $confirmation = null,
         public ?string $capability = null,

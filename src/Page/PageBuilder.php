@@ -105,7 +105,7 @@ class PageBuilder implements PageBuilderInterface
         string $id,
         string|Translatable $label,
         ActionTarget $target,
-        ActionIntent $intent = ActionIntent::SECONDARY,
+        ActionIntent $intent = ActionIntent::Secondary,
         ?string $icon = null,
     ): Action {
         return new Action(
@@ -263,7 +263,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function notifySuccess(string|Translatable $message, string|Translatable|null $title = null): static
     {
-        return $this->notify(new Notification(NotificationLevel::SUCCESS, $message, $title));
+        return $this->notify(new Notification(NotificationLevel::Success, $message, $title));
     }
 
     /**
@@ -271,7 +271,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function notifyInfo(string|Translatable $message, string|Translatable|null $title = null): static
     {
-        return $this->notify(new Notification(NotificationLevel::INFO, $message, $title));
+        return $this->notify(new Notification(NotificationLevel::Info, $message, $title));
     }
 
     /**
@@ -279,7 +279,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function notifyWarning(string|Translatable $message, string|Translatable|null $title = null): static
     {
-        return $this->notify(new Notification(NotificationLevel::WARNING, $message, $title));
+        return $this->notify(new Notification(NotificationLevel::Warning, $message, $title));
     }
 
     /**
@@ -287,7 +287,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public function notifyError(string|Translatable $message, string|Translatable|null $title = null): static
     {
-        return $this->notify(new Notification(NotificationLevel::ERROR, $message, $title));
+        return $this->notify(new Notification(NotificationLevel::Error, $message, $title));
     }
 
     /**

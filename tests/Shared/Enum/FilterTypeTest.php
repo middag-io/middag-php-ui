@@ -37,7 +37,7 @@ final class FilterTypeTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(FilterType::DATE_RANGE, FilterType::from('date_range'));
+        self::assertSame(FilterType::DateRange, FilterType::from('date_range'));
         self::assertNull(FilterType::tryFrom('nope'));
     }
 }

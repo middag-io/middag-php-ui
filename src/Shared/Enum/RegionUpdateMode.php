@@ -31,13 +31,13 @@ enum RegionUpdateMode: string
 {
     use ProvidesJsonSchema;
 
-    case REPLACE = 'replace';
+    case Replace = 'replace';
 
-    case APPEND = 'append';
+    case Append = 'append';
 
-    case PREPEND = 'prepend';
+    case Prepend = 'prepend';
 
-    case REMOVE = 'remove';
+    case Remove = 'remove';
 
-    case UPDATE = 'update';
+    case Update = 'update';
 }

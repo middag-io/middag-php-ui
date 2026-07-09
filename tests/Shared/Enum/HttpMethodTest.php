@@ -34,7 +34,7 @@ final class HttpMethodTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(HttpMethod::DELETE, HttpMethod::from('delete'));
+        self::assertSame(HttpMethod::Delete, HttpMethod::from('delete'));
         self::assertNull(HttpMethod::tryFrom('nope'));
     }
 }

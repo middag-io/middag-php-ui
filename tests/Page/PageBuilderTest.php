@@ -69,12 +69,12 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testActionFactory(): void
     {
-        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::PRIMARY);
+        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::Primary);
 
         self::assertInstanceOf(Action::class, $action);
         self::assertSame('a', $action->id);
         self::assertSame('Label', $action->label);
-        self::assertSame(ActionIntent::PRIMARY, $action->intent);
+        self::assertSame(ActionIntent::Primary, $action->intent);
         self::assertSame('/href', $action->target->href);
     }
 
@@ -157,7 +157,7 @@ final class PageBuilderTest extends TestCase
     #[Test]
     public function testActions(): void
     {
-        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::PRIMARY);
+        $action = PageBuilder::action('a', 'Label', ActionTarget::link('/href'), ActionIntent::Primary);
 
         $contract = PageBuilder::page('test')
             ->actions([$action])

@@ -40,13 +40,13 @@ final class ConditionTest extends TestCase
     {
         $condition = new Condition(
             field: 'status',
-            operator: ConditionOperator::EQ,
+            operator: ConditionOperator::Eq,
             value: 'active',
             kind: Condition::KIND_VISIBLE_WHEN,
         );
 
         self::assertSame('status', $condition->field);
-        self::assertSame(ConditionOperator::EQ, $condition->operator);
+        self::assertSame(ConditionOperator::Eq, $condition->operator);
         self::assertSame('active', $condition->value);
         self::assertSame(Condition::KIND_VISIBLE_WHEN, $condition->kind);
     }
@@ -56,7 +56,7 @@ final class ConditionTest extends TestCase
     {
         $condition = new Condition(
             field: 'type',
-            operator: ConditionOperator::NEQ,
+            operator: ConditionOperator::Neq,
             value: 'draft',
         );
 
@@ -75,9 +75,9 @@ final class ConditionTest extends TestCase
     #[Test]
     public function testValueCanBeMixed(): void
     {
-        $withBool = new Condition(field: 'enabled', operator: ConditionOperator::TRUTHY, value: true);
-        $withInt = new Condition(field: 'count', operator: ConditionOperator::GT, value: 5);
-        $withArray = new Condition(field: 'role', operator: ConditionOperator::IN, value: ['admin', 'editor']);
+        $withBool = new Condition(field: 'enabled', operator: ConditionOperator::Truthy, value: true);
+        $withInt = new Condition(field: 'count', operator: ConditionOperator::Gt, value: 5);
+        $withArray = new Condition(field: 'role', operator: ConditionOperator::In, value: ['admin', 'editor']);
 
         self::assertTrue($withBool->value);
         self::assertSame(5, $withInt->value);
@@ -95,7 +95,7 @@ final class ConditionTest extends TestCase
         ] as $kind) {
             $condition = new Condition(
                 field: 'f',
-                operator: ConditionOperator::EQ,
+                operator: ConditionOperator::Eq,
                 value: 1,
                 kind: $kind,
             );

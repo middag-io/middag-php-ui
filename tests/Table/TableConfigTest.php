@@ -85,9 +85,9 @@ final class TableConfigTest extends TestCase
     #[Test]
     public function testFiltersRowActionsBulkActionsAndOptions(): void
     {
-        $filter = new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT);
+        $filter = new FilterDefinition(key: 'status', label: 'Status', type: FilterType::Select);
         $rowAction = new Action(id: 'edit', label: 'Edit', target: ActionTarget::link('/x/{id}'));
-        $bulkAction = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::DANGER);
+        $bulkAction = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::Danger);
         $options = new TableDisplayOptions(perPage: 50, selectable: true);
 
         $config = new TableConfig(

@@ -30,7 +30,7 @@ final readonly class UserPreferences implements JsonSerializable
      * @param array<string, mixed> $extra Open bag for future/host-specific preferences
      */
     public function __construct(
-        public ThemeMode $theme = ThemeMode::SYSTEM,
+        public ThemeMode $theme = ThemeMode::System,
         public string $locale = 'en',
         public ?string $timezone = null,
         public ?string $dateFormat = null,

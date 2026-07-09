@@ -45,7 +45,7 @@ final readonly class ActionTarget implements JsonSerializable
 
     public static function link(string $href, bool $external = false): self
     {
-        return new self(kind: ActionTargetKind::LINK, href: $href, external: $external);
+        return new self(kind: ActionTargetKind::Link, href: $href, external: $external);
     }
 
     /**
@@ -53,27 +53,27 @@ final readonly class ActionTarget implements JsonSerializable
      */
     public static function route(string $name, array $params = []): self
     {
-        return new self(kind: ActionTargetKind::ROUTE, route: $name, params: $params);
+        return new self(kind: ActionTargetKind::Route, route: $name, params: $params);
     }
 
-    public static function request(string $endpoint, HttpMethod $method = HttpMethod::POST): self
+    public static function request(string $endpoint, HttpMethod $method = HttpMethod::Post): self
     {
-        return new self(kind: ActionTargetKind::REQUEST, endpoint: $endpoint, method: $method);
+        return new self(kind: ActionTargetKind::Request, endpoint: $endpoint, method: $method);
     }
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
         return match ($this->kind) {
-            ActionTargetKind::LINK => array_merge(
+            ActionTargetKind::Link => array_merge(
                 ['kind' => 'link', 'href' => $this->href],
                 $this->external ? ['external' => true] : [],
             ),
-            ActionTargetKind::ROUTE => array_merge(
+            ActionTargetKind::Route => array_merge(
                 ['kind' => 'route', 'route' => $this->route],
                 $this->params !== [] ? ['params' => $this->params] : [],
             ),
-            ActionTargetKind::REQUEST => [
+            ActionTargetKind::Request => [
                 'kind' => 'request',
                 'endpoint' => $this->endpoint,
                 // `method` is always set for the REQUEST kind: the request() named

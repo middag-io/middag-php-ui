@@ -27,7 +27,7 @@ enum RenderTarget: string
 {
     use ProvidesJsonSchema;
 
-    case HTML = 'html';
+    case Html = 'html';
 
-    case PROPS = 'props';
+    case Props = 'props';
 }

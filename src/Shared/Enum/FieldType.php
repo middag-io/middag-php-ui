@@ -26,57 +26,57 @@ enum FieldType: string
 {
     use ProvidesJsonSchema;
 
-    case TEXT = 'text';
+    case Text = 'text';
 
-    case TEXTAREA = 'textarea';
+    case Textarea = 'textarea';
 
-    case RICHTEXT = 'richtext';
+    case Richtext = 'richtext';
 
-    case PASSWORD = 'password';
+    case Password = 'password';
 
-    case OTP = 'otp';
+    case Otp = 'otp';
 
-    case EMAIL = 'email';
+    case Email = 'email';
 
-    case URL = 'url';
+    case Url = 'url';
 
-    case INT = 'int';
+    case Int = 'int';
 
-    case FLOAT = 'float';
+    case Float = 'float';
 
-    case SLIDER = 'slider';
+    case Slider = 'slider';
 
-    case SELECT = 'select';
+    case Select = 'select';
 
-    case MULTISELECT = 'multiselect';
+    case Multiselect = 'multiselect';
 
-    case NATIVE_SELECT = 'native_select';
+    case NativeSelect = 'native_select';
 
-    case RADIO = 'radio';
+    case Radio = 'radio';
 
-    case CHECKBOX = 'checkbox';
+    case Checkbox = 'checkbox';
 
-    case SWITCH = 'switch';
+    case Switch = 'switch';
 
-    case DATE = 'date';
+    case Date = 'date';
 
-    case DATETIME = 'datetime';
+    case Datetime = 'datetime';
 
-    case TIME = 'time';
+    case Time = 'time';
 
-    case DURATION = 'duration';
+    case Duration = 'duration';
 
-    case FILE = 'file';
+    case File = 'file';
 
-    case ENTITY_PICKER = 'entity_picker';
+    case EntityPicker = 'entity_picker';
 
-    case AUTOCOMPLETE = 'autocomplete';
+    case Autocomplete = 'autocomplete';
 
-    case TAGS = 'tags';
+    case Tags = 'tags';
 
-    case HIDDEN = 'hidden';
+    case Hidden = 'hidden';
 
-    case STATIC = 'static';
+    case Static = 'static';
 
-    case HEADER = 'header';
+    case Header = 'header';
 }

@@ -33,7 +33,7 @@ final class FormGroupNodeTest extends TestCase
     {
         $payload = (new FormGroupNode(
             id: 'name_row',
-            children: [new FormFieldNode('first', FormComponent::TEXT, ['label' => 'First'])],
+            children: [new FormFieldNode('first', FormComponent::Text, ['label' => 'First'])],
             columns: 2,
         ))->jsonSerialize();
 
@@ -57,7 +57,7 @@ final class FormGroupNodeTest extends TestCase
     {
         $this->assertValidAgainst('FormGroupNode', new FormGroupNode(
             id: 'name_row',
-            children: [new FormFieldNode('first', FormComponent::TEXT, ['label' => 'First'])],
+            children: [new FormFieldNode('first', FormComponent::Text, ['label' => 'First'])],
             columns: 2,
         ));
     }

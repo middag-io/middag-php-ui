@@ -54,8 +54,8 @@ final class ActionTest extends TestCase
         $action = new Action(
             id: 'delete',
             label: Translatable::of('btn_delete', 'local_x'),
-            target: ActionTarget::request('/x/{id}', HttpMethod::DELETE),
-            intent: ActionIntent::DANGER,
+            target: ActionTarget::request('/x/{id}', HttpMethod::Delete),
+            intent: ActionIntent::Danger,
             icon: 'trash',
             confirmation: new Confirmation(title: 'Delete?', message: 'Sure?', variant: 'danger'),
             capability: 'manage_x',

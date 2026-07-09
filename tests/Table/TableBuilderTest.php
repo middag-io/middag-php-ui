@@ -78,7 +78,7 @@ final class TableBuilderTest extends TestCase
 
         self::assertFalse($col->sortable);
         self::assertFalse($col->searchable);
-        self::assertSame(ValueFormat::TEXT, $col->format);
+        self::assertSame(ValueFormat::Text, $col->format);
         self::assertSame([], $col->options);
     }
 
@@ -89,7 +89,7 @@ final class TableBuilderTest extends TestCase
             ->column('amount', 'Amount', [
                 'sortable' => true,
                 'searchable' => true,
-                'format' => ValueFormat::CURRENCY,
+                'format' => ValueFormat::Currency,
                 'formatOptions' => ['currency' => 'BRL'],
                 'options' => ['align' => 'right'],
             ])
@@ -99,7 +99,7 @@ final class TableBuilderTest extends TestCase
 
         self::assertTrue($col->sortable);
         self::assertTrue($col->searchable);
-        self::assertSame(ValueFormat::CURRENCY, $col->format);
+        self::assertSame(ValueFormat::Currency, $col->format);
         self::assertSame(['currency' => 'BRL'], $col->formatOptions);
         self::assertSame(['align' => 'right'], $col->options);
     }
@@ -108,7 +108,7 @@ final class TableBuilderTest extends TestCase
     public function testAddFilter(): void
     {
         $config = TableBuilder::make()
-            ->filter('status', 'Status', FilterType::SELECT, [
+            ->filter('status', 'Status', FilterType::Select, [
                 ['value' => 'active', 'label' => 'Active'],
             ])
             ->build();
@@ -116,7 +116,7 @@ final class TableBuilderTest extends TestCase
         self::assertCount(1, $config->filters);
         self::assertInstanceOf(FilterDefinition::class, $config->filters[0]);
         self::assertSame('status', $config->filters[0]->key);
-        self::assertSame(FilterType::SELECT, $config->filters[0]->type);
+        self::assertSame(FilterType::Select, $config->filters[0]->type);
     }
 
     #[Test]
@@ -135,7 +135,7 @@ final class TableBuilderTest extends TestCase
     #[Test]
     public function testAddBulkAction(): void
     {
-        $action = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::DANGER);
+        $action = new Action(id: 'delete', label: 'Delete', target: ActionTarget::request('/x/bulk-delete'), intent: ActionIntent::Danger);
 
         $config = TableBuilder::make()
             ->bulkAction($action)
@@ -166,7 +166,7 @@ final class TableBuilderTest extends TestCase
         self::assertSame($builder, $builder->column('a', 'A'));
         self::assertSame($builder, $builder->filter('b', 'B'));
         self::assertSame($builder, $builder->rowAction(new Action(id: 'c', label: 'C', target: ActionTarget::link('/c'))));
-        self::assertSame($builder, $builder->bulkAction(new Action(id: 'd', label: 'D', target: ActionTarget::request('/d'), intent: ActionIntent::DANGER)));
+        self::assertSame($builder, $builder->bulkAction(new Action(id: 'd', label: 'D', target: ActionTarget::request('/d'), intent: ActionIntent::Danger)));
         self::assertSame($builder, $builder->options(new TableDisplayOptions()));
     }
 

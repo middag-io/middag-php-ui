@@ -52,7 +52,7 @@ final class PageResourcesTest extends TestCase
     public function testSerializesCustomValues(): void
     {
         $resources = new PageResources(
-            preferences: new UserPreferences(theme: ThemeMode::DARK, locale: 'pt-BR'),
+            preferences: new UserPreferences(theme: ThemeMode::Dark, locale: 'pt-BR'),
             capabilities: ['manage_users' => true],
             featureFlags: ['dark_mode' => true, 'beta' => false],
             user: new Identity(id: '1', name: 'Admin'),
@@ -93,7 +93,7 @@ final class PageResourcesTest extends TestCase
     public function testSchemaAcceptsResourcesWithPopulatedMaps(): void
     {
         $this->assertValidAgainst('PageResources', new PageResources(
-            preferences: new UserPreferences(theme: ThemeMode::DARK, locale: 'pt-BR'),
+            preferences: new UserPreferences(theme: ThemeMode::Dark, locale: 'pt-BR'),
             capabilities: ['manage_users' => true],
             featureFlags: ['dark_mode' => true, 'beta' => false],
             user: new Identity(id: '1', name: 'Admin'),

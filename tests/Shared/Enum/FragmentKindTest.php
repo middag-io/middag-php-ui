@@ -37,7 +37,7 @@ final class FragmentKindTest extends TestCase
     #[Test]
     public function canBeCreatedFromString(): void
     {
-        self::assertSame(FragmentKind::CUSTOM, FragmentKind::from('custom'));
+        self::assertSame(FragmentKind::Custom, FragmentKind::from('custom'));
         self::assertNull(FragmentKind::tryFrom('nope'));
     }
 }

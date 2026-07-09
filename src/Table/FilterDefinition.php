@@ -30,7 +30,7 @@ final readonly class FilterDefinition implements JsonSerializable
     public function __construct(
         public string $key,
         public string|Translatable $label,
-        public FilterType $type = FilterType::SELECT,
+        public FilterType $type = FilterType::Select,
         public array $options = [],
         public string|Translatable|null $placeholder = null,
         public mixed $default = null,

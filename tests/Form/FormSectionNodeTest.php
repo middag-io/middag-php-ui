@@ -34,7 +34,7 @@ final class FormSectionNodeTest extends TestCase
         $payload = (new FormSectionNode(
             id: 'advanced',
             label: 'Advanced',
-            children: [new FormFieldNode('secret', FormComponent::PASSWORD, ['label' => 'Secret'])],
+            children: [new FormFieldNode('secret', FormComponent::Password, ['label' => 'Secret'])],
             defaultCollapsed: true,
         ))->jsonSerialize();
 
@@ -62,7 +62,7 @@ final class FormSectionNodeTest extends TestCase
         $this->assertValidAgainst('FormSectionNode', new FormSectionNode(
             id: 'advanced',
             label: 'Advanced',
-            children: [new FormFieldNode('secret', FormComponent::PASSWORD, ['label' => 'Secret'])],
+            children: [new FormFieldNode('secret', FormComponent::Password, ['label' => 'Secret'])],
             defaultCollapsed: true,
         ));
     }

@@ -368,7 +368,7 @@ final class CrudBuilderTest extends TestCase
     public function testFiltersEmitFilterDefinitions(): void
     {
         $crud = CrudBuilder::for('App\Entity\Invoice')->filters([
-            new FilterDefinition(key: 'status', label: 'Status', type: FilterType::SELECT),
+            new FilterDefinition(key: 'status', label: 'Status', type: FilterType::Select),
         ]);
 
         $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];

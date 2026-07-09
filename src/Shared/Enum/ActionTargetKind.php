@@ -27,9 +27,9 @@ enum ActionTargetKind: string
 {
     use ProvidesJsonSchema;
 
-    case LINK = 'link';
+    case Link = 'link';
 
-    case ROUTE = 'route';
+    case Route = 'route';
 
-    case REQUEST = 'request';
+    case Request = 'request';
 }

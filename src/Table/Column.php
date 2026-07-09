@@ -40,7 +40,7 @@ readonly class Column implements JsonSerializable
         public string|Translatable $label,
         public bool $sortable = false,
         public bool $searchable = false,
-        public ValueFormat $format = ValueFormat::TEXT,
+        public ValueFormat $format = ValueFormat::Text,
         public array $formatOptions = [],
         public array $options = []
     ) {}

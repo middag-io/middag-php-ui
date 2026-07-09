@@ -27,19 +27,19 @@ enum ValueFormat: string
 {
     use ProvidesJsonSchema;
 
-    case TEXT = 'text';
+    case Text = 'text';
 
-    case DATE = 'date';
+    case Date = 'date';
 
-    case DATETIME = 'datetime';
+    case Datetime = 'datetime';
 
-    case TIME = 'time';
+    case Time = 'time';
 
-    case NUMBER = 'number';
+    case Number = 'number';
 
-    case CURRENCY = 'currency';
+    case Currency = 'currency';
 
-    case BOOLEAN = 'boolean';
+    case Boolean = 'boolean';
 
-    case BADGE = 'badge';
+    case Badge = 'badge';
 }

@@ -23,13 +23,13 @@ enum HttpMethod: string
 {
     use ProvidesJsonSchema;
 
-    case GET = 'get';
+    case Get = 'get';
 
-    case POST = 'post';
+    case Post = 'post';
 
-    case PUT = 'put';
+    case Put = 'put';
 
-    case PATCH = 'patch';
+    case Patch = 'patch';
 
-    case DELETE = 'delete';
+    case Delete = 'delete';
 }

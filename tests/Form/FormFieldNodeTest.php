@@ -38,7 +38,7 @@ final class FormFieldNodeTest extends TestCase
     #[Test]
     public function testSerializesNodeShape(): void
     {
-        $payload = (new FormFieldNode('email', FormComponent::EMAIL, [
+        $payload = (new FormFieldNode('email', FormComponent::Email, [
             'label' => 'Email',
             'required' => true,
         ]))->jsonSerialize();
@@ -52,7 +52,7 @@ final class FormFieldNodeTest extends TestCase
     #[Test]
     public function testUsesEnumValueForComponent(): void
     {
-        $payload = (new FormFieldNode('range', FormComponent::DATE_RANGE, ['label' => 'When']))->jsonSerialize();
+        $payload = (new FormFieldNode('range', FormComponent::DateRange, ['label' => 'When']))->jsonSerialize();
 
         self::assertSame('date_range', $payload['component']);
     }
@@ -60,7 +60,7 @@ final class FormFieldNodeTest extends TestCase
     #[Test]
     public function testEmptyPropsSerializeToJsonObject(): void
     {
-        $payload = (new FormFieldNode('x', FormComponent::TEXT))->jsonSerialize();
+        $payload = (new FormFieldNode('x', FormComponent::Text))->jsonSerialize();
 
         // An empty props bag must encode as `{}`, never `[]` — the renderer
         // always reads props as an object.

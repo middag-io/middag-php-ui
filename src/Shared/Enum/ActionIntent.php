@@ -27,19 +27,19 @@ enum ActionIntent: string
 {
     use ProvidesJsonSchema;
 
-    case PRIMARY = 'primary';
+    case Primary = 'primary';
 
-    case SECONDARY = 'secondary';
+    case Secondary = 'secondary';
 
-    case DANGER = 'danger';
+    case Danger = 'danger';
 
-    case SUCCESS = 'success';
+    case Success = 'success';
 
-    case WARNING = 'warning';
+    case Warning = 'warning';
 
-    case INFO = 'info';
+    case Info = 'info';
 
-    case LINK = 'link';
+    case Link = 'link';
 
-    case GHOST = 'ghost';
+    case Ghost = 'ghost';
 }

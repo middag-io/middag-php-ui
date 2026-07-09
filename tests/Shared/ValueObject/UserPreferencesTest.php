@@ -44,7 +44,7 @@ final class UserPreferencesTest extends TestCase
     public function testSerializesOptionalFieldsWhenSet(): void
     {
         $payload = (new UserPreferences(
-            theme: ThemeMode::DARK,
+            theme: ThemeMode::Dark,
             locale: 'pt-BR',
             timezone: 'America/Sao_Paulo',
             dateFormat: 'short',
