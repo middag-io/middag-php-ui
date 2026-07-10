@@ -41,7 +41,7 @@ final class RegionBuilderTest extends TestCase
     {
         $builder = new RegionBuilder();
 
-        self::assertSame($builder, $builder->chart('c', ChartType::Area, [new ChartSeries('A', [1.0])]));
+        self::assertSame($builder, $builder->chart('c', ChartType::Area, [new ChartSeries('a', 'A')], 'month', [['month' => 'Jan', 'a' => 1.0]]));
 
         $blocks = $builder->all();
         self::assertCount(1, $blocks);
@@ -58,6 +58,17 @@ final class RegionBuilderTest extends TestCase
         $blocks = $builder->all();
         self::assertCount(1, $blocks);
         self::assertSame('tabs', $blocks[0]->jsonSerialize()['type']);
+    }
+
+    #[Test]
+    public function testTabsForwardsDefaultTab(): void
+    {
+        $builder = new RegionBuilder();
+
+        $builder->tabs('tb', [new Tab('a', 'A'), new Tab('b', 'B')], 'b');
+
+        $blocks = $builder->all();
+        self::assertSame('b', $blocks[0]->jsonSerialize()['data']['defaultTab']);
     }
 
     #[Test]

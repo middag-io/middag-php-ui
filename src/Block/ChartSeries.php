@@ -15,34 +15,36 @@ namespace Middag\Ui\Block;
 use JsonSerializable;
 
 /**
- * A single named data series within a chart block.
+ * A single named data series within a chart block. `key` matches a field on each
+ * chart data row; `label` is the human-facing series name; `color` is an optional
+ * CSS color token (e.g. `var(--chart-1)`).
  *
  * @api
  */
 final readonly class ChartSeries implements JsonSerializable
 {
-    /**
-     * @param float[] $data
-     */
     public function __construct(
-        public string $name,
-        public array $data = [],
+        public string $key,
+        public string $label,
+        public ?string $color = null,
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        return [
-            'name' => $this->name,
-            'data' => $this->data,
-        ];
+        $out = ['key' => $this->key, 'label' => $this->label];
+        if ($this->color !== null) {
+            $out['color'] = $this->color;
+        }
+
+        return $out;
     }
 
     /** @return array<string, mixed> */
     public static function jsonSchema(): array
     {
-        return ['type' => 'object', 'required' => ['name', 'data'],
-            'properties' => ['name' => ['type' => 'string'], 'data' => ['type' => 'array', 'items' => ['type' => 'number']]],
+        return ['type' => 'object', 'required' => ['key', 'label'],
+            'properties' => ['key' => ['type' => 'string'], 'label' => ['type' => 'string'], 'color' => ['type' => 'string']],
             'additionalProperties' => false];
     }
 }
