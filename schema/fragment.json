@@ -776,18 +776,18 @@
         "ChartSeries": {
             "type": "object",
             "required": [
-                "name",
-                "data"
+                "key",
+                "label"
             ],
             "properties": {
-                "name": {
+                "key": {
                     "type": "string"
                 },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "type": "number"
-                    }
+                "label": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
                 }
             },
             "additionalProperties": false

@@ -34,51 +34,36 @@ final class ChartSeriesTest extends TestCase
     }
 
     #[Test]
-    public function testSerializesNameAndData(): void
+    public function testSerializesKeyAndLabel(): void
     {
-        $series = new ChartSeries('Revenue', [1.0, 2.5, 3.0]);
+        $series = new ChartSeries('revenue', 'Revenue');
 
         self::assertSame(
-            ['name' => 'Revenue', 'data' => [1.0, 2.5, 3.0]],
+            ['key' => 'revenue', 'label' => 'Revenue'],
             $series->jsonSerialize(),
         );
     }
 
     #[Test]
-    public function testDataDefaultsToEmpty(): void
+    public function testSerializesColorWhenSet(): void
     {
-        $series = new ChartSeries('Empty');
+        $series = new ChartSeries('revenue', 'Revenue', 'var(--chart-1)');
 
-        self::assertSame(['name' => 'Empty', 'data' => []], $series->jsonSerialize());
+        self::assertSame(
+            ['key' => 'revenue', 'label' => 'Revenue', 'color' => 'var(--chart-1)'],
+            $series->jsonSerialize(),
+        );
     }
 
     #[Test]
-    public function testSchemaAcceptsASeriesWithData(): void
+    public function testOmitsColorWhenNull(): void
     {
-        $this->assertValidAgainst('ChartSeries', new ChartSeries('Revenue', [1.0, 2.5, 3.0]));
+        self::assertArrayNotHasKey('color', (new ChartSeries('x', 'X'))->jsonSerialize());
     }
 
     #[Test]
-    public function testSchemaAcceptsASeriesWithEmptyData(): void
+    public function testSchemaAcceptsASeries(): void
     {
-        $this->assertValidAgainst('ChartSeries', new ChartSeries('Empty'));
-    }
-
-    #[Test]
-    public function testSchemaRejectsASeriesMissingItsName(): void
-    {
-        $this->assertInvalidAgainst('ChartSeries', ['data' => [1.0, 2.0]]);
-    }
-
-    #[Test]
-    public function testSchemaRejectsNonNumericDataPoints(): void
-    {
-        $this->assertInvalidAgainst('ChartSeries', ['name' => 'Revenue', 'data' => ['a', 'b']]);
-    }
-
-    #[Test]
-    public function testSchemaRejectsAnUnknownProperty(): void
-    {
-        $this->assertInvalidAgainst('ChartSeries', ['name' => 'Revenue', 'data' => [1.0], 'color' => 'red']);
+        $this->assertValidAgainst('ChartSeries', new ChartSeries('revenue', 'Revenue', 'var(--chart-1)'));
     }
 }

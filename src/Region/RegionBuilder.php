@@ -168,13 +168,14 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a chart block.
      *
-     * @param ChartSeries[]        $series
-     * @param array<int, mixed>    $categories
-     * @param array<string, mixed> $options
+     * @param ChartSeries[]                    $series  one entry per plotted series
+     * @param array<int, array<string, mixed>> $data    chart rows; each row has the
+     *                                                  categoryKey field plus one field per series key
+     * @param array<string, mixed>             $options extra display options (showLegend, showGrid, …)
      */
-    public function chart(string $key, ChartType $type, array $series, array $categories = [], array $options = []): static
+    public function chart(string $key, ChartType $type, array $series, string $categoryKey, array $data, array $options = []): static
     {
-        $this->blocks[] = BlockBuilder::chart($key, $type, $series, $categories, $options);
+        $this->blocks[] = BlockBuilder::chart($key, $type, $series, $categoryKey, $data, $options);
 
         return $this;
     }
@@ -184,9 +185,9 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param Tab[] $tabs
      */
-    public function tabs(string $key, array $tabs): static
+    public function tabs(string $key, array $tabs, ?string $defaultTab = null): static
     {
-        $this->blocks[] = BlockBuilder::tabs($key, $tabs);
+        $this->blocks[] = BlockBuilder::tabs($key, $tabs, $defaultTab);
 
         return $this;
     }
