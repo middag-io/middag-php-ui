@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/middag-io/middag-php-ui/compare/v1.3.1...v2.0.0) (2026-07-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **block:** ChartSeries is now {key,label,color?} instead of {name,data[]}, and BlockBuilder::chart()/RegionBuilder::chart() signatures changed to (key, type, series, categoryKey, data, options).
+
+### Features
+
+* **block:** rich chart shape and tabs defaultTab ([2d709de](https://github.com/middag-io/middag-php-ui/commit/2d709ded37b7fa10daf69b1a691a1ea2bc07d989))
+
 ## [1.3.1](https://github.com/middag-io/middag-php-ui/compare/v1.3.0...v1.3.1) (2026-07-09)
 
 
