@@ -199,11 +199,12 @@ class BlockBuilder
     }
 
     /**
-     * @param ChartSeries[]        $series
-     * @param array<int, mixed>    $categories
-     * @param array<string, mixed> $options
+     * @param ChartSeries[]                    $series  one entry per plotted series
+     * @param array<int, array<string, mixed>> $data    chart rows; each row has the
+     *                                                  categoryKey field plus one field per series key
+     * @param array<string, mixed>             $options extra display options (showLegend, showGrid, …)
      */
-    public static function chart(string $key, ChartType $type, array $series, array $categories = [], array $options = []): BlockDescriptor
+    public static function chart(string $key, ChartType $type, array $series, string $categoryKey, array $data, array $options = []): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'chart',
@@ -211,12 +212,13 @@ class BlockBuilder
             data: array_merge(
                 [
                     'chartType' => $type->value,
+                    'categoryKey' => $categoryKey,
                     'series' => array_map(
                         static fn (ChartSeries $serie): array => $serie->jsonSerialize(),
                         $series,
                     ),
+                    'data' => $data,
                 ],
-                $categories !== [] ? ['categories' => $categories] : [],
                 $options !== [] ? ['options' => $options] : [],
             ),
         );
@@ -225,17 +227,20 @@ class BlockBuilder
     /**
      * @param Tab[] $tabs
      */
-    public static function tabs(string $key, array $tabs): BlockDescriptor
+    public static function tabs(string $key, array $tabs, ?string $defaultTab = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'tabs',
             key: $key,
-            data: [
-                'tabs' => array_map(
-                    static fn (Tab $tab): array => $tab->jsonSerialize(),
-                    $tabs,
-                ),
-            ],
+            data: array_merge(
+                [
+                    'tabs' => array_map(
+                        static fn (Tab $tab): array => $tab->jsonSerialize(),
+                        $tabs,
+                    ),
+                ],
+                $defaultTab !== null ? ['defaultTab' => $defaultTab] : [],
+            ),
         );
     }
 }

@@ -266,7 +266,7 @@ final class SchemaRoundtripTest extends TestCase
     #[Test]
     public function testMiscLeaves(): void
     {
-        $this->assertValidAgainst('ChartSeries', new ChartSeries('Revenue', [1.0, 2.5, 3.0]));
+        $this->assertValidAgainst('ChartSeries', new ChartSeries('revenue', 'Revenue', 'var(--chart-1)'));
         $this->assertValidAgainst('PollConfig', new PollConfig(endpoint: '/poll', intervalMs: 5000, stopAfterMs: 60000));
         $this->assertValidAgainst('InspectorDescriptor', new InspectorDescriptor(endpoint: '/inspect/{id}', width: 480, poll: new PollConfig('/p', 1000)));
         $this->assertValidAgainst('FormStep', new FormStep(id: 's1', label: 'Step', fields: ['name', 'email'], help: Translatable::of('help', 'core')));

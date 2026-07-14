@@ -47,29 +47,37 @@ final class BlockBuilderTest extends TestCase
     #[Test]
     public function testChartMinimal(): void
     {
-        $payload = BlockBuilder::chart('c', ChartType::Line, [new ChartSeries('A', [1.0, 2.0])])->jsonSerialize();
+        $payload = BlockBuilder::chart(
+            'c',
+            ChartType::Line,
+            [new ChartSeries('a', 'A')],
+            'month',
+            [['month' => 'Jan', 'a' => 1.0], ['month' => 'Feb', 'a' => 2.0]],
+        )->jsonSerialize();
 
         self::assertSame('chart', $payload['type']);
         self::assertSame('line', $payload['data']['chartType']);
+        self::assertSame('month', $payload['data']['categoryKey']);
         // Series VOs are serialized to a pure array tree.
-        self::assertSame([['name' => 'A', 'data' => [1.0, 2.0]]], $payload['data']['series']);
-        self::assertArrayNotHasKey('categories', $payload['data']);
+        self::assertSame([['key' => 'a', 'label' => 'A']], $payload['data']['series']);
+        self::assertSame([['month' => 'Jan', 'a' => 1.0], ['month' => 'Feb', 'a' => 2.0]], $payload['data']['data']);
         self::assertArrayNotHasKey('options', $payload['data']);
     }
 
     #[Test]
-    public function testChartWithCategoriesAndOptions(): void
+    public function testChartWithOptions(): void
     {
         $payload = BlockBuilder::chart(
             'c',
             ChartType::Bar,
-            [new ChartSeries('A', [1.0])],
-            ['Jan', 'Feb'],
+            [new ChartSeries('a', 'A', 'var(--chart-1)')],
+            'month',
+            [['month' => 'Jan', 'a' => 1.0]],
             ['stacked' => true],
         )->jsonSerialize();
 
         self::assertSame('bar', $payload['data']['chartType']);
-        self::assertSame(['Jan', 'Feb'], $payload['data']['categories']);
+        self::assertSame([['key' => 'a', 'label' => 'A', 'color' => 'var(--chart-1)']], $payload['data']['series']);
         self::assertSame(['stacked' => true], $payload['data']['options']);
     }
 
@@ -94,6 +102,23 @@ final class BlockBuilderTest extends TestCase
         self::assertSame(['key' => 'tab_a', 'domain' => 'forms'], $serialized['label']);
         self::assertIsArray($serialized['blocks'][0]);
         self::assertSame('markdown_panel', $serialized['blocks'][0]['type']);
+    }
+
+    #[Test]
+    public function testTabsOmitsDefaultTabWhenNull(): void
+    {
+        $block = BlockBuilder::tabs('t', [new Tab('a', 'A'), new Tab('b', 'B')]);
+
+        self::assertSame('tabs', $block->type);
+        self::assertArrayNotHasKey('defaultTab', $block->data);
+    }
+
+    #[Test]
+    public function testTabsIncludesDefaultTabWhenSet(): void
+    {
+        $block = BlockBuilder::tabs('t', [new Tab('a', 'A')], 'a');
+
+        self::assertSame('a', $block->data['defaultTab']);
     }
 
     #[Test]
