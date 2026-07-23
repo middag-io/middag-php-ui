@@ -22,6 +22,8 @@ use Middag\Ui\Shared\Enum\HttpMethod;
  * - `link`    — a URL (`href`), optionally external.
  * - `route`   — a host-named route (`route` + `params`) resolved client-side.
  * - `request` — an HTTP mutation (`endpoint` + `method`).
+ * - `panel`   — open the editable side panel for the acting row (carries no
+ *               fields of its own; data resolves from the page `editablePanel`).
  *
  * Build via the named constructors; the wire payload only carries the fields
  * relevant to the chosen kind.
@@ -61,6 +63,16 @@ final readonly class ActionTarget implements JsonSerializable
         return new self(kind: ActionTargetKind::Request, endpoint: $endpoint, method: $method);
     }
 
+    /**
+     * Open the editable side panel for the acting row. Carries no fields — the
+     * panel's data source is the page-level `editablePanel` config, keyed by the
+     * row id.
+     */
+    public static function panel(): self
+    {
+        return new self(kind: ActionTargetKind::Panel);
+    }
+
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
@@ -81,6 +93,7 @@ final readonly class ActionTarget implements JsonSerializable
                 // HttpMethod (defaulting to POST). Hence `->`, not `?->`.
                 'method' => $this->method->value,
             ],
+            ActionTargetKind::Panel => ['kind' => 'panel'],
         };
     }
 
@@ -125,6 +138,15 @@ final readonly class ActionTarget implements JsonSerializable
                         'kind' => ['const' => 'request'],
                         'endpoint' => ['type' => 'string'],
                         'method' => ['$ref' => '#/$defs/HttpMethod'],
+                    ],
+                    'additionalProperties' => false,
+                ],
+                // panel: {kind:'panel'} — no other fields.
+                [
+                    'type' => 'object',
+                    'required' => ['kind'],
+                    'properties' => [
+                        'kind' => ['const' => 'panel'],
                     ],
                     'additionalProperties' => false,
                 ],

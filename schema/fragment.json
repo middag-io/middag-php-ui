@@ -266,6 +266,33 @@
             },
             "additionalProperties": false
         },
+        "EditablePanelDescriptor": {
+            "type": "object",
+            "required": [
+                "endpoint",
+                "submitMethod",
+                "width"
+            ],
+            "properties": {
+                "endpoint": {
+                    "type": "string"
+                },
+                "submitEndpoint": {
+                    "type": "string"
+                },
+                "submitMethod": {
+                    "enum": [
+                        "post",
+                        "put",
+                        "patch"
+                    ]
+                },
+                "width": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
         "Action": {
             "type": "object",
             "required": [
@@ -362,6 +389,18 @@
                         },
                         "method": {
                             "$ref": "#/$defs/HttpMethod"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "panel"
                         }
                     },
                     "additionalProperties": false
@@ -2085,7 +2124,8 @@
             "enum": [
                 "link",
                 "route",
-                "request"
+                "request",
+                "panel"
             ]
         },
         "ChartType": {

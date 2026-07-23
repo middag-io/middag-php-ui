@@ -28,7 +28,7 @@ final class ActionTargetKindTest extends TestCase
     {
         $values = array_column(ActionTargetKind::cases(), 'value');
 
-        self::assertSame(['link', 'route', 'request'], $values);
+        self::assertSame(['link', 'route', 'request', 'panel'], $values);
     }
 
     #[Test]
