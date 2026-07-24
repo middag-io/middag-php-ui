@@ -18,6 +18,7 @@ use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Shared\Enum\ActionIntent;
+use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Table\CrudBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -221,6 +222,20 @@ final class PageBuilderTest extends TestCase
         self::assertArrayHasKey('inspector', $props);
         self::assertSame('/api/{id}', $props['inspector']->endpoint);
         self::assertSame(500, $props['inspector']->width);
+    }
+
+    #[Test]
+    public function testToPropsWithEditablePanel(): void
+    {
+        $props = PageBuilder::page('test')
+            ->editablePanel('/api/panel/{id}', '/forms/{id}', HttpMethod::Put, 520)
+            ->toProps();
+
+        self::assertArrayHasKey('editablePanel', $props);
+        self::assertSame('/api/panel/{id}', $props['editablePanel']->endpoint);
+        self::assertSame('/forms/{id}', $props['editablePanel']->submitEndpoint);
+        self::assertSame(HttpMethod::Put, $props['editablePanel']->submitMethod);
+        self::assertSame(520, $props['editablePanel']->width);
     }
 
     #[Test]

@@ -79,6 +79,15 @@ final class ActionTargetTest extends TestCase
     }
 
     #[Test]
+    public function testPanelCarriesOnlyKind(): void
+    {
+        $target = ActionTarget::panel();
+
+        self::assertSame(ActionTargetKind::Panel, $target->kind);
+        self::assertSame(['kind' => 'panel'], $target->jsonSerialize());
+    }
+
+    #[Test]
     public function testRequestWithMethod(): void
     {
         $payload = ActionTarget::request('/users/1', HttpMethod::Delete)->jsonSerialize();

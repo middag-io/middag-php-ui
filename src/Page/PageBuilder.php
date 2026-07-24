@@ -18,6 +18,8 @@ use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Block\LayoutDescriptor;
+use Middag\Ui\EditablePanel\Contract\EditablePanelDescriptorInterface;
+use Middag\Ui\EditablePanel\EditablePanelDescriptor;
 use Middag\Ui\Inspector\Contract\InspectorDescriptorInterface;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\BreadcrumbListBuilder;
@@ -25,6 +27,7 @@ use Middag\Ui\Navigation\Contract\BreadcrumbInterface;
 use Middag\Ui\Page\Contract\PageBuilderInterface;
 use Middag\Ui\Region\RegionBuilder;
 use Middag\Ui\Shared\Enum\ActionIntent;
+use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
 use Middag\Ui\Shared\ValueObject\Translatable;
@@ -71,6 +74,8 @@ class PageBuilder implements PageBuilderInterface
     private ?array $helpData = null;
 
     private ?InspectorDescriptor $inspector = null;
+
+    private ?EditablePanelDescriptor $editablePanel = null;
 
     /** @var Notification[] */
     private array $notifications = [];
@@ -249,6 +254,35 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
+     * Declare an editable side-panel (drawer) for this page.
+     *
+     * A row action built with {@see ActionTarget::panel()}
+     * opens the drawer for the acting row: the client GETs `$endpoint` (with the
+     * `{id}` placeholder replaced) for the form to edit, and saves back to
+     * `$submitEndpoint` (defaults to `$endpoint`) with `$submitMethod`.
+     *
+     * @param string      $endpoint       GET endpoint with `{id}` placeholder
+     * @param null|string $submitEndpoint Save endpoint with `{id}`; defaults to $endpoint
+     * @param HttpMethod  $submitMethod   Save method (post | put | patch)
+     * @param int         $width          Panel width in pixels (default 440)
+     */
+    public function editablePanel(
+        string $endpoint,
+        ?string $submitEndpoint = null,
+        HttpMethod $submitMethod = HttpMethod::Post,
+        int $width = 440,
+    ): static {
+        $this->editablePanel = new EditablePanelDescriptor(
+            endpoint: $endpoint,
+            submitEndpoint: $submitEndpoint,
+            submitMethod: $submitMethod,
+            width: $width,
+        );
+
+        return $this;
+    }
+
+    /**
      * Attach a notification (flash / toast) to the page.
      */
     public function notify(Notification $notification): static
@@ -319,7 +353,7 @@ class PageBuilder implements PageBuilderInterface
      * Use this when you need overlay/help metadata alongside the contract.
      * The PageContract itself remains unchanged (@api safe).
      *
-     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor}
+     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor, editablePanel?: EditablePanelDescriptor}
      */
     public function toProps(): array
     {
@@ -337,6 +371,10 @@ class PageBuilder implements PageBuilderInterface
 
         if ($this->inspector instanceof InspectorDescriptorInterface) {
             $props['inspector'] = $this->inspector;
+        }
+
+        if ($this->editablePanel instanceof EditablePanelDescriptorInterface) {
+            $props['editablePanel'] = $this->editablePanel;
         }
 
         return $props;
