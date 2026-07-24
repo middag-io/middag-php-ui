@@ -20,6 +20,8 @@ use Middag\Ui\Shared\Concerns\ProvidesJsonSchema;
  * - `link`    — navigate to a URL (href).
  * - `route`   — navigate to a host-named route resolved client-side.
  * - `request` — trigger an HTTP request (mutation).
+ * - `panel`   — open the editable side panel for the acting row (data resolves
+ *               from the page-level `editablePanel` config, keyed by row id).
  *
  * @api
  */
@@ -32,4 +34,6 @@ enum ActionTargetKind: string
     case Route = 'route';
 
     case Request = 'request';
+
+    case Panel = 'panel';
 }

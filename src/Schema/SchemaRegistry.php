@@ -19,6 +19,7 @@ use Middag\Ui\Action\Confirmation;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
+use Middag\Ui\EditablePanel\EditablePanelDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FieldError;
@@ -109,6 +110,7 @@ final class SchemaRegistry
         'BlockDescriptor' => BlockDescriptor::class,
         'Breadcrumb' => Breadcrumb::class,
         'InspectorDescriptor' => InspectorDescriptor::class,
+        'EditablePanelDescriptor' => EditablePanelDescriptor::class,
         // Actions.
         'Action' => Action::class,
         'ActionTarget' => ActionTarget::class,
