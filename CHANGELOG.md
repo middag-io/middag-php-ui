@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.0](https://github.com/middag-io/middag-php-ui/compare/v1.4.0...v1.5.0) (2026-07-24)
+
+
+### Features
+
+* **action:** add panel ActionTarget kind + editablePanel PageBuilder ([b620314](https://github.com/middag-io/middag-php-ui/commit/b620314e93a5711beaac254de221a5bdb57e7ada))
+* **action:** editable side-panel — panel ActionTarget + editablePanel PageBuilder ([1fc8919](https://github.com/middag-io/middag-php-ui/commit/1fc8919c51b4017df8c600b7c5a5ee5f04fe7a8f))
+* **action:** panel ActionTarget kind + editablePanel PageBuilder ([d71b4b0](https://github.com/middag-io/middag-php-ui/commit/d71b4b0b52a0c90015580b1bfdf6fa8285ca2e64))
+
+
+### Documentation
+
+* reformat UI-001/UI-002 to MADR-compact, extract REF to docs-middag-dev ([760ac19](https://github.com/middag-io/middag-php-ui/commit/760ac19e6980f9c3d11958fff06931077afc9a51))
+
 ## [1.4.0](https://github.com/middag-io/middag-php-ui/compare/v1.3.1...v1.4.0) (2026-07-14)
 
 
