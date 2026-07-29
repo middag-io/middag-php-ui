@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/middag-io/middag-php-ui/compare/v1.5.0...v1.5.1) (2026-07-29)
+
+
+### Miscellaneous
+
+* **build:** cache do phpstan por repo, em vez do diretorio global da maquina ([5979cf6](https://github.com/middag-io/middag-php-ui/commit/5979cf665062ef928108f71f05897b770e370982))
+* promove develop para main ([a976506](https://github.com/middag-io/middag-php-ui/commit/a97650655958d2b774444ad6c3bc78f44ff6796f))
+
 ## [1.5.0](https://github.com/middag-io/middag-php-ui/compare/v1.4.0...v1.5.0) (2026-07-24)
 
 
