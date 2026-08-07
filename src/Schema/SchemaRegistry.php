@@ -51,6 +51,7 @@ use Middag\Ui\Region\RegionUpdate;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\ActionTargetKind;
 use Middag\Ui\Shared\Enum\ChartType;
+use Middag\Ui\Shared\Enum\ColumnVariant;
 use Middag\Ui\Shared\Enum\ConditionOperator;
 use Middag\Ui\Shared\Enum\FieldType;
 use Middag\Ui\Shared\Enum\FilterType;
@@ -160,6 +161,7 @@ final class SchemaRegistry
         'ActionIntent' => ActionIntent::class,
         'ActionTargetKind' => ActionTargetKind::class,
         'ChartType' => ChartType::class,
+        'ColumnVariant' => ColumnVariant::class,
         'ConditionOperator' => ConditionOperator::class,
         'FieldType' => FieldType::class,
         'FilterType' => FilterType::class,
