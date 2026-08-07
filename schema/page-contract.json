@@ -720,6 +720,9 @@
                 "options": {
                     "type": "object",
                     "additionalProperties": true
+                },
+                "variant": {
+                    "$ref": "#/$defs/ColumnVariant"
                 }
             },
             "additionalProperties": false
@@ -2134,6 +2137,22 @@
                 "line",
                 "bar",
                 "area"
+            ]
+        },
+        "ColumnVariant": {
+            "type": "string",
+            "enum": [
+                "text",
+                "status",
+                "badge",
+                "boolean",
+                "timestamp",
+                "link",
+                "rich_status",
+                "html",
+                "link_group",
+                "annotated",
+                "progress"
             ]
         },
         "ConditionOperator": {

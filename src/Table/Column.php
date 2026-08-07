@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Table;
 
 use JsonSerializable;
+use Middag\Ui\Shared\Enum\ColumnVariant;
 use Middag\Ui\Shared\Enum\ValueFormat;
 use Middag\Ui\Shared\ValueObject\Label;
 use Middag\Ui\Shared\ValueObject\Translatable;
@@ -34,6 +35,7 @@ readonly class Column implements JsonSerializable
      * @param ValueFormat          $format        Client-side formatting intent for the cell value
      * @param array<string, mixed> $formatOptions Format options (e.g. {currency:'BRL', decimals:2})
      * @param array<string, mixed> $options       Additional display options
+     * @param null|ColumnVariant   $variant       Cell renderer; null leaves the client on its `text` default
      */
     public function __construct(
         public string $key,
@@ -42,7 +44,8 @@ readonly class Column implements JsonSerializable
         public bool $searchable = false,
         public ValueFormat $format = ValueFormat::Text,
         public array $formatOptions = [],
-        public array $options = []
+        public array $options = [],
+        public ?ColumnVariant $variant = null,
     ) {}
 
     /**
@@ -68,6 +71,10 @@ readonly class Column implements JsonSerializable
             $payload['options'] = $this->options;
         }
 
+        if ($this->variant instanceof ColumnVariant) {
+            $payload['variant'] = $this->variant->value;
+        }
+
         return $payload;
     }
 
@@ -75,7 +82,7 @@ readonly class Column implements JsonSerializable
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['key', 'label', 'sortable', 'searchable', 'format'],
-            'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'sortable' => ['type' => 'boolean'], 'searchable' => ['type' => 'boolean'], 'format' => ['$ref' => '#/$defs/ValueFormat'], 'formatOptions' => ['type' => 'object', 'additionalProperties' => true], 'options' => ['type' => 'object', 'additionalProperties' => true]],
+            'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'sortable' => ['type' => 'boolean'], 'searchable' => ['type' => 'boolean'], 'format' => ['$ref' => '#/$defs/ValueFormat'], 'formatOptions' => ['type' => 'object', 'additionalProperties' => true], 'options' => ['type' => 'object', 'additionalProperties' => true], 'variant' => ['$ref' => '#/$defs/ColumnVariant']],
             'additionalProperties' => false];
     }
 }

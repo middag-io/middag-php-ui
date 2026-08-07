@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Table;
 
+use Middag\Ui\Shared\Enum\ColumnVariant;
 use Middag\Ui\Shared\Enum\ValueFormat;
 use Middag\Ui\Shared\ValueObject\Translatable;
 use Middag\Ui\Table\Column;
@@ -121,5 +122,48 @@ final class ColumnTest extends TestCase
         self::assertSame('object', $schema['type']);
         self::assertSame(['key', 'label', 'sortable', 'searchable', 'format'], $schema['required']);
         self::assertFalse($schema['additionalProperties']);
+    }
+
+    #[Test]
+    public function testVariantDefaultsToNullAndIsOmittedFromTheWire(): void
+    {
+        $col = new Column(key: 'name', label: 'Name');
+
+        self::assertNull($col->variant);
+        self::assertArrayNotHasKey('variant', $col->jsonSerialize());
+    }
+
+    #[Test]
+    public function testVariantSerializesAsItsWireValue(): void
+    {
+        $col = new Column(key: 'status', label: 'Status', variant: ColumnVariant::RichStatus);
+
+        self::assertSame('rich_status', $col->jsonSerialize()['variant']);
+    }
+
+    #[Test]
+    public function testVariantIsIndependentOfFormat(): void
+    {
+        // The client reads `variant` to pick the cell component and `format` to
+        // render a scalar — a column can need one without the other, so neither
+        // may be derived from the other.
+        $payload = (new Column(
+            key: 'due',
+            label: 'Due',
+            format: ValueFormat::Date,
+            variant: ColumnVariant::RichStatus,
+        ))->jsonSerialize();
+
+        self::assertSame('date', $payload['format']);
+        self::assertSame('rich_status', $payload['variant']);
+    }
+
+    #[Test]
+    public function testJsonSchemaDeclaresVariantAsTheEnumRef(): void
+    {
+        self::assertSame(
+            ['$ref' => '#/$defs/ColumnVariant'],
+            Column::jsonSchema()['properties']['variant'],
+        );
     }
 }
