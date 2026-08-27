@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.6.0](https://github.com/middag-io/middag-php-ui/compare/v1.5.1...v1.6.0) (2026-08-27)
+
+
+### Features
+
+* **table:** declare the cell renderer of a column ([b5dca91](https://github.com/middag-io/middag-php-ui/commit/b5dca91b3c04db56e33d562c85be10f6b2c5fa89))
+* **table:** declare the cell renderer of a column ([9146096](https://github.com/middag-io/middag-php-ui/commit/91460967c7562a6b4d0c3e1a610a3dced50f7706))
+
+
+### Bug Fixes
+
+* **ci:** replace removed PHPUnitSetList::PHPUNIT_120 with composer-based set ([d7df501](https://github.com/middag-io/middag-php-ui/commit/d7df50195392ca93d83e4e8ff65dd895b0265fcc))
+* **ci:** replace removed PHPUnitSetList::PHPUNIT_120 with composer-based set ([61331db](https://github.com/middag-io/middag-php-ui/commit/61331db6790967a7e4d08a460c0775535aab2bb6))
+
+
+### Documentation
+
+* canonical AGENTS.md, CLAUDE.md symlink (ADR-017) ([33e2cea](https://github.com/middag-io/middag-php-ui/commit/33e2cea67cc1061d517e2263d492dad4a2d442b4))
+
 ## [1.5.1](https://github.com/middag-io/middag-php-ui/compare/v1.5.0...v1.5.1) (2026-07-29)
 
 
