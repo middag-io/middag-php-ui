@@ -29,6 +29,14 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict
 
+      - name: Cache vendor
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php${{ matrix.php }}-vendor-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-php${{ matrix.php }}-vendor-
+
       - name: Install dependencies
         uses: ramsey/composer-install@v3
 
@@ -51,8 +59,43 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Cache vendor
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php8.2-vendor-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-php8.2-vendor-
+
       - name: Install dependencies
         uses: ramsey/composer-install@v3
+
+      - name: Cache Rector
+        uses: actions/cache@v4
+        with:
+          path: .cache/rector
+          key: ${{ runner.os }}-rector-${{ hashFiles('composer.json', '.php-rector.php') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-rector-${{ hashFiles('composer.json', '.php-rector.php') }}-
+            ${{ runner.os }}-rector-
+
+      - name: Cache PHPStan
+        uses: actions/cache@v4
+        with:
+          path: .cache/phpstan
+          key: ${{ runner.os }}-phpstan-${{ hashFiles('composer.json', '.phpstan.neon') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-phpstan-${{ hashFiles('composer.json', '.phpstan.neon') }}-
+            ${{ runner.os }}-phpstan-
+
+      - name: Cache PHP-CS-Fixer
+        uses: actions/cache@v4
+        with:
+          path: .cache/php-cs-fixer.cache
+          key: ${{ runner.os }}-php-cs-fixer-${{ hashFiles('composer.json', '.php-cs-fixer.dist.php') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-php-cs-fixer-${{ hashFiles('composer.json', '.php-cs-fixer.dist.php') }}-
+            ${{ runner.os }}-php-cs-fixer-
 
       - name: Lint (PHP 8.2 parse floor)
         run: |
