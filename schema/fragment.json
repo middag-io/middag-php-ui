@@ -853,6 +853,9 @@
                     "items": {
                         "$ref": "#/$defs/BlockDescriptor"
                     }
+                },
+                "disabled": {
+                    "type": "boolean"
                 }
             },
             "additionalProperties": false

@@ -34,12 +34,13 @@ final readonly class Tab implements JsonSerializable
         public string $id,
         public string|Translatable $label,
         public array $blocks = [],
+        public ?bool $disabled = null,
     ) {}
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        return [
+        $out = [
             'id' => $this->id,
             'label' => Label::serialize($this->label),
             'blocks' => array_map(
@@ -47,13 +48,23 @@ final readonly class Tab implements JsonSerializable
                 $this->blocks,
             ),
         ];
+        if ($this->disabled !== null) {
+            $out['disabled'] = $this->disabled;
+        }
+
+        return $out;
     }
 
     /** @return array<string, mixed> */
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['id', 'label', 'blocks'],
-            'properties' => ['id' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'blocks' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/BlockDescriptor']]],
+            'properties' => [
+                'id' => ['type' => 'string'],
+                'label' => ['$ref' => '#/$defs/Label'],
+                'blocks' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/BlockDescriptor']],
+                'disabled' => ['type' => 'boolean'],
+            ],
             'additionalProperties' => false];
     }
 }
