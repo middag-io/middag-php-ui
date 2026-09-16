@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/middag-io/middag-php-ui/compare/v1.6.0...v1.7.0) (2026-09-16)
+
+
+### Features
+
+* **page:** Tab accepts an optional disabled flag ([04a7a90](https://github.com/middag-io/middag-php-ui/commit/04a7a90ea970201d23bfcbc8131a53bc02143f02))
+* **page:** Tab accepts an optional disabled flag ([f901442](https://github.com/middag-io/middag-php-ui/commit/f9014420c41b32342b3925d1629b9bd80d253a00))
+
 ## [1.6.0](https://github.com/middag-io/middag-php-ui/compare/v1.5.1...v1.6.0) (2026-08-27)
 
 
