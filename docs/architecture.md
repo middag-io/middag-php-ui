@@ -59,9 +59,11 @@ readonly`. A VO paired with a dedicated `*Interface` extension seam may be `read
 > emits a page contract. So "concern" here is an organisational axis, **not** an acyclic dependency
 > boundary — the cross-references between concerns are inherent to the domain, not a layering defect.
 
-## Three composition levels
+## Three builder levels
 
-The builders meet you at the level of control you need:
+The builders meet you at the level of control you need. The docs hub also lists a fourth level
+(L4, a dedicated frontend page); it has no builder in this package, because the consuming product
+owns that page.
 
 - **L1 — convention.** Name your columns/fields and accept the conventional shape (e.g. `CrudBuilder`
   derives sensible columns from names).

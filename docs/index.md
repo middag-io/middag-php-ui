@@ -11,7 +11,7 @@ deliberately by a maintainer — strict semver (breaking only in majors) starts 
 
 ## Technical documentation
 
-- **[Architecture](architecture.md)** — the PageContract system, the three composition levels, the
+- **[Architecture](architecture.md)** — the PageContract system, the three builder levels, the
   concern-first layout, and the OSS boundary (why nothing here renders). Start here.
 
 ## Decision records
