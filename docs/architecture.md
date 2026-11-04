@@ -18,6 +18,8 @@ coupling the model to a wire format.
 
 ## The OSS boundary — why nothing here renders
 
+The decision is [UI-001](decisions/UI-001-react-typescript-inertia-stack.md).
+
 This package is the bottom of the stack and defines only generic contracts. **Rendering, host wiring,
 and HTTP transport live downstream**, never here:
 
@@ -34,9 +36,10 @@ and HTTP transport live downstream**, never here:
 
 | Concern | What it carries |
 |---------|-----------------|
-| `Action/` | the canonical `Action` value object + its discriminated `ActionTarget` (link / route / request) |
+| `Action/` | the canonical `Action` value object + its discriminated `ActionTarget` (link / route / request / panel) |
 | `Block/` | content blocks (`BlockBuilder`, `BlockDescriptor`) and the `Section` layout primitive |
 | `Condition/` | the `Condition` value object (field visibility/requirement rules) |
+| `EditablePanel/` | the editable side-panel descriptor an action of kind `panel` opens |
 | `Envelope/` | the response envelope around a contract |
 | `Form/` | the form model — `FieldDefinition`, `Group`, form state and renderer contracts |
 | `Inspector/` | detail/inspector view contracts |
@@ -71,9 +74,12 @@ The builders meet you at the level of control you need:
 The emitted JSON schemas under `schema/` (`page-contract.json`, `fragment.json`) are **published
 artifacts**: the `@middag-io/react` client and other consumers codegen against them. `SchemaRegistry`
 (in `Schema/`) is the single source of truth; `bin/emit-schemas.php` writes the files and
-`composer check` runs it with `--check` to fail on drift. The schemas are strict — every object is
-`additionalProperties:false` and discriminated unions (like `ActionTarget`) use `oneOf` on a `kind`
-const — so the contract stays a small, stable, machine-checkable wire format.
+`composer check` runs it with `--check` to fail on drift. The schemas are strict — every value
+object is `additionalProperties:false` (only passthrough bags such as block `data`/`meta`, fragment
+`payload` and parameter maps are open) and discriminated unions (like `ActionTarget`) use `oneOf` on a
+`kind` const — so the contract stays a small, stable, machine-checkable wire format. The decision behind it is
+[UI-002](decisions/UI-002-page-contract-composition-model.md); the full wire reference is at
+[docs.middag.dev](https://docs.middag.dev/framework/reference/ui/wire-contract).
 
 ## Relationship to other packages
 

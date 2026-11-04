@@ -26,7 +26,7 @@ data. **Rendering, host wiring, and HTTP transport live downstream**, never here
 - **No contract here produces HTML** (`render(): string`). Rendering is a product/host concern and
   lives in `middag-io/framework` and the adapters. ui contracts produce **data / value objects**
   (e.g. `FormRendererInterface` → `RendererOutput`, not a string).
-- **No proprietary or host concepts** anchor this surface — no tier/commercial language, no named
+- **No proprietary or host concepts** anchor this surface — no edition or commercial labels, no named
   host APIs, in code or docblocks.
 - **Authorization is data, not a call:** opaque authorization tokens (e.g. the `capability` field on
   `Action`/`NavigationNode`/`CrudBuilder`) are **data** the contract may carry. What is forbidden is
@@ -35,7 +35,7 @@ data. **Rendering, host wiring, and HTTP transport live downstream**, never here
 ## How the code is organised (the rule, not the list)
 
 **Concern-first** at the root of `src/`: each *concern* is a top-level directory (`Action/ Block/
-Condition/ Envelope/ Form/ Inspector/ Navigation/ Page/ Region/ Table/`, plus `Shared/`). The `src/`
+Condition/ EditablePanel/ Envelope/ Form/ Inspector/ Navigation/ Page/ Region/ Table/`, plus `Shared/`). The `src/`
 root hosts the page-contract entry points and the root envelope.
 
 Inside each concern:
@@ -77,10 +77,23 @@ Inside each concern:
   fluent builders return `static`; cover new behaviour with a test (`tests/` mirrors `src/`,
   `#[CoversClass]`). `@api` = public surface (enters the generated xRef/docs); `@internal` = internal.
 - **Commits:** Conventional Commits; **NEVER** `Co-Authored-By`. Single lowercase scope. Mark breaking
-  changes with `!` or a `BREAKING CHANGE:` footer. Branch base: `develop`. On the `1.x` line:
+  changes with `!` or a `BREAKING CHANGE:` footer. Branch base: `main`. On the `1.x` line:
   fix → patch, feat → minor; a breaking change only ships in a minor cut deliberately via
   `Release-As` (never in a patch); a major (`2.0`) only by explicit maintainer sign-off — policy in
   [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
+
+## Decision records
+
+Architecture decisions live in [`docs/decisions/`](docs/decisions/) as `UI-NNN` records in the
+MIDDAG-MADR compact format (`docs-middag-ops` ADR-014): frontmatter, then Context → Considered Options
+→ Decision → Consequences → Enforcement. A record states **why** (the choice, the alternatives, the
+consequences); specification (class lists, catalogs, wire shapes) lives in the reference docs its
+Enforcement table points to, mostly at docs.middag.dev (`docs-middag-dev`, `docs/framework/`). Ids are
+never reused. OSS records never cite proprietary record ids. `deciders` is a role id (`leadership`),
+never a person.
+
+**`domains` vocabulary** (a record uses only these): `ui`, `frontend`, `contract`, `schema`,
+`portability`.
 
 ## Relationship to other packages
 

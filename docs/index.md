@@ -14,6 +14,16 @@ deliberately by a maintainer — strict semver (breaking only in majors) starts 
 - **[Architecture](architecture.md)** — the PageContract system, the three composition levels, the
   concern-first layout, and the OSS boundary (why nothing here renders). Start here.
 
+## Decision records
+
+Why ui is shaped the way it is. Each record holds one decision; the specification lives in the
+reference docs its Enforcement table points to.
+
+| Id | Decision |
+|----|----------|
+| [UI-001](decisions/UI-001-react-typescript-inertia-stack.md) | UI contracts are a separate zero-dependency package at the bottom of the stack |
+| [UI-002](decisions/UI-002-page-contract-composition-model.md) | A versioned data contract, published as schema |
+
 ## Quick start
 
 Requires PHP `^8.2`. Install via Composer:
