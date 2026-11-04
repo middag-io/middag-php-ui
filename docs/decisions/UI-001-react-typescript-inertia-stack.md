@@ -1,7 +1,7 @@
 ---
 title: 'UI contracts are a separate zero-dependency package at the bottom of the stack'
 status: accepted
-date: 2026-04-16
+date: 2026-05-10
 last-updated: 2026-11-04
 lang: en
 domains: [ui, portability]
@@ -38,6 +38,7 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 - (+) Server and client evolve separately; a second renderer only has to read the wire.
 - (+) Contracts are pure data, so they are testable without a host, a browser or a transport.
 - (−) `RendererOutput::html()` lets a form renderer return an HTML body. It is a known exception for host renderers that only emit markup; no ui contract renders HTML itself.
+- (−) `FileValue` carries `draftitemid`, a Moodle draft-area id, on the wire and in the schema, and its docblock names Moodle. It is known host coupling in a neutral contract; [#64](https://github.com/middag-io/middag-php-ui/issues/64) tracks replacing it with a neutral field or an adapter extension.
 - (−) Some docblocks name the first-party client's mechanisms (for example Inertia deferred props on `BlockDescriptor`). The coupling is open in UI-002.
 - (−) A change that spans ui, the framework and the client needs coordinated releases across repositories.
 
@@ -45,7 +46,7 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 
 | Decision clause | Verification | State |
 |---|---|---|
-| Requires only PHP; no runtime dependency | `composer.json` `require` holds only `php` | coded |
+| Requires only PHP; no runtime dependency | `tests/Architecture/RuntimeDependencyTest.php` | coded |
 | No host API, no transport, no rendering in `src/` | review against the OSS boundary rule in `AGENTS.md` | planned |
 | Dependency direction and the OSS boundary | doc `docs/architecture.md` | coded |
 | First-party client and design system | doc `docs-middag-dev:docs/framework/reference/ui/design-system-catalog.md` | coded |

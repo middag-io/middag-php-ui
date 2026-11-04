@@ -16,7 +16,8 @@ JSON) that a host/adapter or `@middag-io/react` turns into UI — over Inertia o
   capability calls, column names, or plugin conventions. Anything host-specific lives in the consuming
   adapter, never here.
 - **Closed by intent** — new public surface only lands with a real use case (no speculative contracts).
-- **Three composition levels** — L1 convention, L2 convention + overrides, L3 free composition.
+- **Three builder levels** — L1 convention, L2 convention + overrides, L3 free composition. A fourth
+  level (L4, a dedicated frontend page) has no builder here: the consuming product owns it.
 
 ## Rule #1 — the OSS boundary (the invariant everything respects)
 
