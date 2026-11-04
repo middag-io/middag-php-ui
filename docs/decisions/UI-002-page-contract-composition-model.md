@@ -1,64 +1,53 @@
 ---
-id: UI-002
-title: 'Page Contract & Declarative Composition Model'
+title: 'A versioned data contract, published as schema'
 status: accepted
 date: 2026-04-16
+last-updated: 2026-11-04
 lang: en
-domains: [ui, frontend]
-deciders: ['PENDING — original decider not recorded during the legacy-vault reconstruction; confirm with Michael Meneses before ratifying']
+domains: [ui, contract, schema]
+deciders: [leadership]
+decision: 'One versioned wire contract for full pages and fragments, published as strict JSON Schemas with a drift gate.'
 related: [UI-001]
 supersedes: []
 superseded_by: null
 enforced_by:
   mdgstan: []
-  docs: [framework/reference/ui/composition-levels-and-capabilities]
-decision: 'Page UI is described via one closed, versioned page-contract value object (shell/page/layout/regions/blocks), consumed through 4 progressive composition levels (L1-L4) over the same wire format.'
+  docs: [docs/architecture.md]
 ---
 
-# UI-002: Page Contract & Declarative Composition Model
-
-> [!NOTE]
-> **Provenance.** Reconstructed from the `moodle-local_middag` legacy vault (`ADR-807`, sections 1, 3-5, 7, 9-16, 19-25 — the sections that are a generic, reapplicable mechanism rather than a product-specific decision). Sections 2 and 6 of the original restated UI-001 and are not duplicated here. Theme bridging and build-pipeline sections (17-18) belong to the consuming host adapter's decisions record. The applied visual identity and the `product` shell instance are a downstream product concern, not part of this library's contract.
+# UI-002: A versioned data contract, published as schema
 
 ## Context
 
-Need: describe a MIDDAG product page once and render it across a spectrum from fully generated (no hand-written React) to a fully bespoke page, without forcing every screen into either extreme or maintaining two incompatible wire formats for "simple" vs "custom" pages.
+A page has to be described once and drawn by a client that lives in another repository and another language. Pages range from fully generated CRUD screens to freely composed ones, and the server also sends partial updates after the first render. Without one versioned, machine-readable contract, the client guesses the shape, and server and client drift apart silently.
 
 ## Considered Options
 
-1. **Two separate wire formats** — one for simple/generated pages, one for fully custom pages — rejected: doubles the maintenance surface and forces every screen to commit to an extreme upfront.
-2. **A single rigid generation path** (CRUD-only, no escape hatch) — rejected: cannot express bespoke composition when the convention doesn't fit.
-3. **One closed page-contract value object, consumed through progressive composition levels over the same wire format** ← chosen.
+1. Two wire formats: one for generated pages and one for custom pages.
+2. PHP value objects as the only definition, with the client hand-writing matching types.
+3. A schema-first definition (JSON Schema or TypeScript) from which PHP is generated.
+4. One wire contract for full pages (`PageContract`) and partial updates (`Fragment`) that share one version constant. The PHP value objects are the source of truth and publish strict JSON Schemas, guarded by a drift gate. Every composition level emits the same contract. ← chosen
 
 ## Decision
 
-The **page contract** is a closed, versioned, `JsonSerializable` value object composed of five layers:
-
-| Layer     | Responsibility                                                                             |
-|-----------|--------------------------------------------------------------------------------------------|
-| `shell`   | Macro frame of the experience (`product`, `admin`, `course`, `immersive`)                  |
-| `page`    | Screen identity — title, breadcrumbs, global actions                                       |
-| `layout`  | Structural template (`stack`, `split`, `dashboard`, `master-detail`, `wizard`*, `canvas`*) |
-| `regions` | Named slots (`header`, `sidebar`, `content`, `aside`, `footer`)                            |
-| `blocks`  | Typed descriptors of renderable widgets                                                    |
-
-The backend describes intent, data, and permitted actions; the frontend owns materialization into React components via a closed, versioned block registry. The contract, registry, and React layer are **internal by default** — promotion to a stable `@api` extension surface requires real usage by at least two concrete consumers plus a stabilized shell/layout/block taxonomy (see the OSS boundary rule in `CLAUDE.md`).
-
-Four composition levels via `page_builder`, same wire contract regardless of path (L1 convention-only through L4 fully dedicated React page) — see `framework/reference/ui/composition-levels-and-capabilities` (in `docs-middag-dev`) for the level-by-level API table, the block catalog, and the v2 capability rollout.
-
-Table and form are **first-class blocks**, not bespoke per-screen code: the `Table` concern drives server-side sort/filter/pagination via Inertia partial reloads; the `Form` concern bridges the form DSL to the contract (see `middag-php-framework`'s form decisions for the DSL itself). Extensions register custom block types via `block_type_interface`; the same contract transports standard and custom blocks identically. Navigation is a **registry** (`Navigation` concern), not a host callback — host-level callback patterns (e.g. Moodle's `get_quick_access_links()`) are deprecated in favor of registering against this contract; see the consuming adapter's own decisions record for the host-side migration.
+The server describes a page as data over one versioned contract. A full page and a fragment carry the same `version`, so they cannot drift apart. Each wire value object declares its own JSON Schema next to its serializer, and the package publishes the bundled schemas as artifacts that clients generate their types from. Whether a page is generated by convention or composed by hand, it serializes to the same contract. The vocabulary of shells, layouts, regions and block types is open in PHP and closed by the client's registry. Authorization tokens and translation keys travel as opaque data that a downstream layer resolves.
 
 ## Consequences
 
-- One wire format serves all four composition tiers — no separate "simple mode" data shape to maintain in parallel.
-- Closed-by-default defers premature `@api` commitments until real multi-consumer usage exists.
-- Two layout kinds (`wizard`, `canvas`) are reserved in the schema but unimplemented — avoids a future breaking change at the cost of carrying dead types today.
-- Host-specific rendering, HTTP transport, and theme bridging stay downstream (per the OSS boundary rule) in `middag-php-framework` and host adapters — this contract makes no assumption about any of the three.
-- Full capability rollout detail (polling, conditional row actions, confirmation dialogs, toasts, rich column variants) lives in the reference doc above, not in this ADR — it changes independently of the durable contract shape.
+- (+) Generated and composed pages share one data shape; no parallel "simple mode" format to maintain.
+- (+) Clients codegen against a published schema, and a stale schema fails CI instead of breaking at runtime.
+- (+) New block types need no change in this package; a client registers them.
+- (−) Because the vocabulary is open, a typo in a block type or layout name passes PHP and the schema and only fails in the client.
+- (−) Block `data` and `meta` are passthrough objects, so their inner shape is not covered by the schema.
+- (−) Open: the `deferred` and `remember` block hints are documented in terms of the first-party client's transport. Whether they are renderer-neutral hints or a coupling to that transport is not decided.
 
 ## Enforcement
 
 | Decision clause | Verification | State |
 |---|---|---|
-| Page contract stays closed by default (no `@api` promotion without ≥2 real consumers + a stabilized taxonomy) | OSS boundary rule, `CLAUDE.md` | **coded** |
-| Composition levels L1-L4, block catalog, v2 capabilities (polling, confirmations, toasts, rich columns) | doc `framework/reference/ui/composition-levels-and-capabilities` | **coded** |
+| Page and fragment share one version | `tests/Envelope/ContractEnvelopeInterfaceTest.php` | coded |
+| Every wire type has a schema | `tests/Schema/SchemaCoverageTest.php` | coded |
+| Serializer output validates against its schema | `tests/Schema/SchemaRoundtripTest.php` | coded |
+| Published schemas match the code | `composer check:schemas` (`bin/emit-schemas.php --check`) | coded |
+| Envelope, schemas and fragment kinds | doc `docs-middag-dev:docs/framework/reference/ui/wire-contract.md` | coded |
+| Composition levels and optional capabilities | doc `docs-middag-dev:docs/framework/reference/ui/composition-levels-and-capabilities.md` | coded |
