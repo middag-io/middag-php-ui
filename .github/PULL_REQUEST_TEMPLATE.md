@@ -30,16 +30,20 @@ Closes #
 
 <!--
 Does this PR change public API or the wire contract in a backward-incompatible
-way? If so, add a `BREAKING CHANGE:` footer to the relevant commit and describe
-the break below.
+way? If so, describe the break below. Rules (ADR-032, see CONTRIBUTING.md
+§Versioning):
 
-Note: on the `1.x` line a breaking change ships only in a MINOR release cut
-deliberately by a maintainer (`Release-As:` footer) — never in a patch. The
-footer is what surfaces the break in the CHANGELOG's breaking section; without
-it the break would ship silently.
+- On `1.x`: use `feat:` and describe the break in the commit body; never `!`,
+  a `BREAKING CHANGE:` footer or `Release-As:`. Allowed only until 2026-11-30;
+  from 2026-12-01 no break lands on `1.x`.
+- From `2.0.0`: a break needs a family MAJOR window (organization variable
+  `PHP_LIBS_OPEN_RELEASE` = `X.0`, set by the product owner) and a deprecation
+  in an earlier minor; a `feat` needs a family MINOR window. Until the window
+  opens, keep the PR current by merging `main` (never rebase or force-push).
 -->
 
-- [ ] This PR introduces a breaking change (a `BREAKING CHANGE:` footer is present on the relevant commit)
+- [ ] This PR introduces a breaking change (described above and in the commit body)
+- [ ] The `php-version-family-check / check` job passes
 
 ## Checklist
 

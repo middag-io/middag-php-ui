@@ -77,11 +77,17 @@ Inside each concern:
 - **Style:** `declare(strict_types=1)` in every file; PSR-4 root namespace `Middag\Ui\`; camelCase;
   fluent builders return `static`; cover new behaviour with a test (`tests/` mirrors `src/`,
   `#[CoversClass]`). `@api` = public surface (enters the generated xRef/docs); `@internal` = internal.
-- **Commits:** Conventional Commits; **NEVER** `Co-Authored-By`. Single lowercase scope. Mark breaking
-  changes with `!` or a `BREAKING CHANGE:` footer. Branch base: `main`. On the `1.x` line:
-  fix → patch, feat → minor; a breaking change only ships in a minor cut deliberately via
-  `Release-As` (never in a patch); a major (`2.0`) only by explicit maintainer sign-off — policy in
-  [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
+- **Commits:** Conventional Commits; **NEVER** `Co-Authored-By`. Single lowercase scope. Branch base: `main`.
+  Versioning follows `docs-middag-ops` ADR-032 (version family of the `middag-php-*` libs). On
+  `1.x`: fix → patch, feat → minor; never `!` or a `BREAKING CHANGE:` footer (either would cut
+  `2.0.0` in this lib alone) and no `Release-As:` outside an open window — the version family
+  check fails them; a break ships as
+  `feat:` with the break in the body, only until 2026-11-30 (exception to `MSR-015.R1(b)`), then no
+  break on `1.x`. From `2.0.0`: shared MAJOR.MINOR across the family, patch = fixes only, `feat`
+  waits for a family MINOR window, `!` for a family MAJOR window; the window is the organization
+  variable `PHP_LIBS_OPEN_RELEASE`, set on the order of the product owner, who decides every family
+  MINOR and MAJOR. Keep a waiting PR current by merging `main` (never rebase or force-push) —
+  policy in [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning and [`API-STABILITY.md`](API-STABILITY.md).
 
 ## Decision records
 
@@ -108,7 +114,8 @@ middag-io/ui (this repo)        ← zero deps, host-agnostic
 
 ## State
 
-Public on the **`1.x`** line (Apache-2.0). The API is still consolidating: a minor release may carry
-a documented breaking change, cut deliberately via `Release-As`; strict semver starts at `2.0` — the
-policy is [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning. Technical docs live in **`docs/`** and
+Public on the **`1.x`** line (Apache-2.0). Until 2026-11-30 a minor may carry a breaking change
+described in its commit body; from 2026-12-01 `1.x` takes no break. `2.0.0` is cut for the whole
+`middag-php-*` family at once, on the decision of the product owner; from then on a minor never
+breaks — the policy is [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning. Technical docs live in **`docs/`** and
 are published at **docs.middag.dev**.

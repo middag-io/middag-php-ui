@@ -99,40 +99,48 @@ Longer body when the "why" isn't obvious.
   `ci`, `chore`, `revert` — the set `release-please` maps to CHANGELOG sections.
 - One scope per commit, lowercase — the `commit-msg` hook rejects
   comma-separated multi-scope subjects.
-- Mark a breaking change with `!` (e.g. `feat(table)!: …`) or a
-  `BREAKING CHANGE:` footer; the hook accepts both.
+- Do not mark a break with `!` or a `BREAKING CHANGE:` footer unless a family
+  MAJOR window is open (see Versioning below). The hook accepts both markers;
+  the version family check rejects them outside a MAJOR window.
 - **Never** add `Co-Authored-By` trailers.
 - The branch base is **`main`**.
 
 ### Versioning (release-please)
 
 Releases are cut **exclusively** by `release-please` from the Conventional
-Commit history — there are no manual tags. The commit **type** drives the bump,
-and the package is on the **`1.x`** line:
+Commit history — there are no manual tags. The rules come from
+[ADR-032](https://github.com/middag-io/docs-middag-ops/blob/main/internal/decisions/ADR-032-php-library-version-family.md)
+and are detailed in [`API-STABILITY.md`](API-STABILITY.md).
 
-| Commit | Bump on `1.x` |
-| ------ | ------------- |
-| `fix:` | PATCH |
-| `feat:` | MINOR |
-| breaking (`!` or `BREAKING CHANGE:`) | MINOR, cut deliberately (see below) |
+| Commit | Bump on `1.x` (now) | Bump from `2.0.0` |
+| ------ | ------------------- | ----------------- |
+| `fix:` | PATCH | PATCH |
+| `feat:` | MINOR | none by itself: waits for a family MINOR window |
+| `!` or `BREAKING CHANGE:` | not allowed (would cut `2.0.0` in this lib alone) | only in a family MAJOR window |
 
-**Breaking changes during `1.x`:** while the public API consolidates, a
-breaking change may ship in a **minor** — never in a patch. Such a release is
-always cut deliberately by a maintainer with a `Release-As:` footer, with the
-break explicitly marked in the history (`feat!` / a `BREAKING CHANGE:` footer)
-so it lands in the CHANGELOG's **⚠ BREAKING CHANGES** section. It is never the
-accidental side effect of merging.
+**Breaking changes on `1.x`:** until 2026-11-30 a break may ship in a
+**minor**, never in a patch, under the exception to `MSR-015.R1(b)` in
+`org-middag:adoption.yaml#MSR-015`. Write it as `feat:` and describe the break
+in the commit body. From 2026-12-01, if the family has not reached `2.0.0`, no
+break lands on `1.x`.
 
-**MAJOR releases (`2.0` and beyond):** a major is **never cut automatically** —
-it happens only by explicit maintainer decision, when the break genuinely
-impacts Composer consumers. A release PR proposing a major bump is not merged
-without that sign-off. From `2.0` onward full strict-semver rigor applies:
-breaking changes ship **only** in major releases.
+**From `2.0.0`:** this lib is part of the `middag-php-*` version family. Every
+lib shares MAJOR.MINOR, a patch carries fixes only, and a minor never breaks
+(deprecate in a minor, remove in the next family MAJOR). A family MINOR or
+MAJOR is a coordinated `Release-As: X.Y.0` in every lib, decided by the
+product owner. No lib cuts `2.0.0` or any other MAJOR on its own.
 
-This package's own public surface and `1.x` policy are documented in
-[`API-STABILITY.md`](API-STABILITY.md); it mirrors the family-wide policy defined
-in the framework's
-[`API-STABILITY.md`](https://github.com/middag-io/middag-php-framework/blob/main/API-STABILITY.md).
+**The version family check.** The `php-version-family-check / check` job runs
+on every PR and reads the PR title and every non-merge commit. The window is
+the organization variable `PHP_LIBS_OPEN_RELEASE` (empty = closed, `X.Y` =
+family MINOR window, `X.0` = family MAJOR window), set and cleared on the
+order of the product owner. To pass:
+
+- never use `!`, `BREAKING CHANGE:` or `Release-As:` outside the matching
+  window;
+- from `2.0.0`, keep a `feat` PR open until a family MINOR window opens. Keep it
+  current by merging `main` into it (never rebase or force-push), then re-run
+  the check.
 
 > Historical note: `1.2.1` shipped the audit-consolidation breaking change
 > (the `TableOptions` → `TableDisplayOptions` rename) as a patch by explicit

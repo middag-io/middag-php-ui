@@ -6,8 +6,10 @@ host or adapter render it. The library produces a JSON **page contract**; it nev
 
 > Describe the page once. Render it anywhere.
 
-Apache-2.0. On the `1.x` line a minor release may carry a documented breaking change, cut
-deliberately by a maintainer — strict semver (breaking only in majors) starts at `2.0`.
+Apache-2.0. On the `1.x` line a minor release may carry a breaking change until 2026-11-30, and none
+after. From `2.0.0` ui is part of the `middag-php-*` version family (shared MAJOR.MINOR, a minor
+never breaks, a family MAJOR is decided by the product owner) — see
+[`API-STABILITY.md`](https://github.com/middag-io/middag-php-ui/blob/main/API-STABILITY.md).
 
 ## Technical documentation
 
