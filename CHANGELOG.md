@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.1](https://github.com/middag-io/middag-php-ui/compare/v1.7.0...v1.7.1) (2026-11-05)
+
+
+### Documentation
+
+* align versioning docs with the version family (ADR-032) ([65e8e51](https://github.com/middag-io/middag-php-ui/commit/65e8e510f05de6714fe7f7479f98daff6af257a7))
+* align versioning docs with the version family (ADR-032) ([484c710](https://github.com/middag-io/middag-php-ui/commit/484c7103eb0dad812f74c5b5b11de387495e0227))
+* **decisions:** fix UI-001 review findings and guard runtime deps ([f3aeff4](https://github.com/middag-io/middag-php-ui/commit/f3aeff485993db62c42f117cd7225993b6d572de))
+* **decisions:** fix UI-001 review findings and guard runtime deps ([4e881ad](https://github.com/middag-io/middag-php-ui/commit/4e881ad9986f466d6f0e1160ff7854ab7803e5df))
+* **decisions:** rewrite UI-001 and UI-002 as architecture decisions ([8602bb1](https://github.com/middag-io/middag-php-ui/commit/8602bb179816ed2c51c633855535a985792abb72))
+* **decisions:** rewrite UI-001 and UI-002 as architecture decisions ([175afec](https://github.com/middag-io/middag-php-ui/commit/175afec1dc754d687d96eaaa16b5437bf0b3eb21))
+* tighten the 1.x break rule and the window notes ([ad7f018](https://github.com/middag-io/middag-php-ui/commit/ad7f018cbc79c08a0d09ac2336f60e2543523e1b))
+
 ## [1.7.0](https://github.com/middag-io/middag-php-ui/compare/v1.6.0...v1.7.0) (2026-09-16)
 
 
