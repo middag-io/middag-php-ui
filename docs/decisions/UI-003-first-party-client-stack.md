@@ -1,9 +1,10 @@
 ---
 title: 'The first-party UI client is React + TypeScript + Inertia + ReUI'
 status: accepted
-date: 2026-11-05
+date: 2026-04-16
+last-updated: 2026-11-05
 lang: en
-domains: [ui]
+domains: [ui, frontend]
 deciders: [leadership]
 decision: 'The first-party client, @middag-io/react, is React + TypeScript over Inertia with ReUI as its design system.'
 related: [UI-001, UI-002]
@@ -30,7 +31,7 @@ UI-001 keeps the wire contract renderer-neutral, so any client may draw a page. 
 
 ## Decision
 
-The first-party client is `@middag-io/react`: React and TypeScript, with Inertia (`@inertiajs/react`) as the transport and ReUI as the design system foundation. Its components come from the ReUI `radix-maia` registry preset, and the default Classic theme is the Maia style. Hosts consume the package; the Moodle plugin's `ui/` entry boots it with `createInertiaApp`. The choice is about the client only: the contracts of this package do not assume it, and another renderer can still consume the same wire (UI-001). Theme bridging to a host (for example Moodle color tokens to Tailwind tokens) belongs to the host adapter, not to the client or the contracts. There is no Vue/React bridge: Vue routes move to React per extension and keep working until they are rewritten.
+The first-party client is `@middag-io/react`: React and TypeScript, with Inertia (`@inertiajs/react`) as the transport and ReUI as the design system foundation. Hosts consume the package; the Moodle plugin's `ui/` entry boots it with `createInertiaApp`. The choice is about the client only: the contracts of this package do not assume it, and another renderer can still consume the same wire (UI-001). Theme bridging to a host (for example Moodle color tokens to Tailwind tokens) belongs to the host adapter, not to the client or the contracts. There is no Vue/React bridge: Vue is no longer built or shipped, and screens not yet on React keep their legacy runtime until they move.
 
 ## Consequences
 
@@ -38,7 +39,7 @@ The first-party client is `@middag-io/react`: React and TypeScript, with Inertia
 - (+) ReUI's copy-paste distribution puts the component source in the package, so MIDDAG owns and can change it; the MIT license puts no limit on where the product runs.
 - (+) Inertia stayed the transport, so only the client target changed (`@inertiajs/vue3` to `@inertiajs/react`) and the server side did not move.
 - (−) The client diverges from Moodle core's internal Vue; the product ships as an embedded app with its own UI identity instead of sharing components with Moodle core.
-- (−) The existing Vue frontend has to be rewritten in full; the per-extension migration spreads the cost instead of removing it.
+- (−) The existing Vue frontend has to be rewritten in full; moving one extension at a time spreads the cost instead of removing it.
 - (−) The first-party client is coupled to Inertia, and some docblocks of this package name its mechanisms. Whether the `deferred` and `remember` block hints are renderer-neutral or an Inertia coupling stays open in UI-002; this record does not decide it.
 
 ## Enforcement
@@ -46,6 +47,6 @@ The first-party client is `@middag-io/react`: React and TypeScript, with Inertia
 | Decision clause | Verification | State |
 |---|---|---|
 | Rationale, rejected alternatives and trade-offs | doc `docs-middag-dev:docs/framework/explanation/ui/architecture.md` | coded |
-| Current client package, design system and versions | doc `docs-middag-dev:docs/framework/reference/ui/design-system-catalog.md` | coded |
-| First-party client named next to the dependency graph | doc `docs/architecture.md` | coded |
-| The contracts do not assume the first-party client | review against the OSS boundary rule in `AGENTS.md` | planned |
+| First-party client and design system: current package and versions | doc `docs-middag-dev:docs/framework/reference/ui/design-system-catalog.md` | coded |
+| ReUI registry preset and default theme | doc `middag-react:components.json`, doc `middag-react:docs/guides/theme.md` | coded |
+| First-party client named next to the dependency graph; the contracts do not assume it | doc `docs/architecture.md` | coded |
