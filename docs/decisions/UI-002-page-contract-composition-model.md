@@ -2,12 +2,12 @@
 title: 'A versioned data contract, published as schema'
 status: accepted
 date: 2026-04-16
-last-updated: 2026-11-04
+last-updated: 2026-11-05
 lang: en
 domains: [ui, contract, schema]
 deciders: [leadership]
 decision: 'One versioned wire contract for full pages and fragments, published as strict JSON Schemas with a drift gate.'
-related: [UI-001]
+related: [UI-001, UI-003]
 supersedes: []
 superseded_by: null
 enforced_by:

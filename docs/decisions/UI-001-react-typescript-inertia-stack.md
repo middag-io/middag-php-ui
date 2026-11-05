@@ -2,12 +2,12 @@
 title: 'UI contracts are a separate zero-dependency package at the bottom of the stack'
 status: accepted
 date: 2026-05-10
-last-updated: 2026-11-04
+last-updated: 2026-11-05
 lang: en
 domains: [ui, portability]
 deciders: [leadership]
 decision: 'ui is a separate zero-dependency OSS package at the bottom of the stack; it describes UI and never renders it.'
-related: [UI-002, middag-php-framework:FW-011, middag-php-framework:FW-004, middag-php-framework:FW-005]
+related: [UI-002, UI-003, middag-php-framework:FW-011, middag-php-framework:FW-004, middag-php-framework:FW-005]
 supersedes: []
 superseded_by: null
 enforced_by:
@@ -26,11 +26,11 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 1. Define the UI contracts inside the framework, next to its Inertia renderer.
 2. Define them in each host adapter, in the host's own UI vocabulary.
 3. Let the client renderer own the shapes and have the server emit whatever the client expects.
-4. A separate OSS package with no dependencies other than PHP, at the bottom of the stack, that emits immutable `JsonSerializable` value objects and never renders, talks to a host or knows the transport. A React + TypeScript client is the first-party renderer, and the wire stays renderer-neutral. ← chosen
+4. A separate OSS package with no dependencies other than PHP, at the bottom of the stack, that emits immutable `JsonSerializable` value objects and never renders, talks to a host or knows the transport; the wire stays renderer-neutral. ← chosen
 
 ## Decision
 
-`middag-io/ui` is its own OSS Composer package and requires only PHP. It describes UI as immutable value objects that serialize to JSON and never produces markup, calls a host API or assumes a transport. Every other MIDDAG package may depend on it, and it depends on none of them. Rendering lives downstream: the framework and the host adapters map the contracts to a response, and `@middag-io/react` (React + TypeScript) is the first-party client. No contract assumes that client, so another renderer can consume the same wire. Authorization and translation travel as opaque data that a downstream layer resolves.
+`middag-io/ui` is its own OSS Composer package and requires only PHP. It describes UI as immutable value objects that serialize to JSON and never produces markup, calls a host API or assumes a transport. Every other MIDDAG package may depend on it, and it depends on none of them. Rendering lives downstream: the framework and the host adapters map the contracts to a response, and the first-party client, `@middag-io/react`, is chosen in UI-003. No contract assumes that client, so another renderer can consume the same wire. Authorization and translation travel as opaque data that a downstream layer resolves.
 
 ## Consequences
 
@@ -49,4 +49,3 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 | Requires only PHP; no runtime dependency | `tests/Architecture/RuntimeDependencyTest.php` | coded |
 | No host API, no transport, no rendering in `src/` | review against the OSS boundary rule in `AGENTS.md` | planned |
 | Dependency direction and the OSS boundary | doc `docs/architecture.md` | coded |
-| First-party client and design system | doc `docs-middag-dev:docs/framework/reference/ui/design-system-catalog.md` | coded |
