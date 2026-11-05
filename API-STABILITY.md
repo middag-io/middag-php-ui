@@ -45,7 +45,7 @@ Releases are cut **exclusively** by
 [release-please](https://github.com/googleapis/release-please) from
 [Conventional Commits](https://www.conventionalcommits.org/). There are no
 manual tags. The versioning rules come from
-[ADR-032](https://github.com/middag-io/docs-middag-ops/blob/main/internal/decisions/ADR-032-php-library-version-family.md)
+ADR-032 of the internal `docs-middag-ops`
 (version family of the `middag-php-*` libraries), which amends ADR-003 for the
 libraries.
 
@@ -57,12 +57,12 @@ On `1.x` the commit type drives the bump (`fix:` → patch, `feat:` → minor):
   `@api` (or wire) change.
 - **Minor** (`1.Y.0`) — additive `@api` changes (new builders, new optional
   parameters, promoting an `@internal` symbol to `@api`). Until **2026-11-30** a
-  minor may also carry a breaking `@api` change, under the exception to
-  `MSR-015.R1(b)` recorded in `org-middag:adoption.yaml#MSR-015`. That exception
-  is not renewed: from **2026-12-01**, if the family has not reached `2.0.0`, no
+  minor may also carry a breaking `@api` change, under a recorded exception
+  that ends on that date. That exception is not renewed: from **2026-12-01**, if the family has not reached `2.0.0`, no
   break lands on `1.x`.
 - **How a `1.x` break is written.** As a `feat:` commit (so it cuts a minor,
-  never a patch) with the break described in the commit body. Never use `!` or a
+  never a patch) with the break described in the commit body; never as `fix:`,
+  `refactor:` or `chore:`. Never use `!` or a
   `BREAKING CHANGE:` footer on `1.x`: release-please would cut `2.0.0` in this
   lib alone, and the version family check fails the PR.
 - **No `2.0.0` from this lib alone.** `2.0.0` is cut for the whole family at
@@ -119,6 +119,15 @@ family MAJOR window.
 To pass with a feature on `2.x`, keep the PR open until the product owner opens
 a family MINOR window. Keep it current by merging `main` into it (never rebase
 or force-push), then re-run the check once the window is open.
+
+- A window counts as open only when it is ahead of this lib's current version
+  and the PR targets `main`; a value left set after its family release reads
+  as closed.
+- While a window is open, this lib's Release PR is merged only at the
+  coordinated `X.Y.0`.
+- A re-run reads the base of the original event. After the `2.0.0` cut, a PR
+  opened before the cut must merge `main` into it so that the check reads the
+  new version.
 
 ## The cross-package seam
 

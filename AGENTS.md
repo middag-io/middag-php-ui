@@ -82,11 +82,12 @@ Inside each concern:
   `1.x`: fix → patch, feat → minor; never `!` or a `BREAKING CHANGE:` footer (either would cut
   `2.0.0` in this lib alone) and no `Release-As:` outside an open window — the version family
   check fails them; a break ships as
-  `feat:` with the break in the body, only until 2026-11-30 (exception to `MSR-015.R1(b)`), then no
+  `feat:` (never `fix:`) with the break in the body, only until 2026-11-30 (a recorded exception), then no
   break on `1.x`. From `2.0.0`: shared MAJOR.MINOR across the family, patch = fixes only, `feat`
   waits for a family MINOR window, `!` for a family MAJOR window; the window is the organization
   variable `PHP_LIBS_OPEN_RELEASE`, set on the order of the product owner, who decides every family
-  MINOR and MAJOR. Keep a waiting PR current by merging `main` (never rebase or force-push) —
+  MINOR and MAJOR. A window counts as open only when it is ahead of this lib's version; while one is
+  open, merge the Release PR only at the coordinated `X.Y.0`. Keep a waiting PR current by merging `main` (never rebase or force-push) —
   policy in [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning and [`API-STABILITY.md`](API-STABILITY.md).
 
 ## Decision records

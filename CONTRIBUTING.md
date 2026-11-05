@@ -109,7 +109,7 @@ Longer body when the "why" isn't obvious.
 
 Releases are cut **exclusively** by `release-please` from the Conventional
 Commit history — there are no manual tags. The rules come from
-[ADR-032](https://github.com/middag-io/docs-middag-ops/blob/main/internal/decisions/ADR-032-php-library-version-family.md)
+ADR-032 of the internal `docs-middag-ops`
 and are detailed in [`API-STABILITY.md`](API-STABILITY.md).
 
 | Commit | Bump on `1.x` (now) | Bump from `2.0.0` |
@@ -119,9 +119,9 @@ and are detailed in [`API-STABILITY.md`](API-STABILITY.md).
 | `!` or `BREAKING CHANGE:` | not allowed (would cut `2.0.0` in this lib alone) | only in a family MAJOR window |
 
 **Breaking changes on `1.x`:** until 2026-11-30 a break may ship in a
-**minor**, never in a patch, under the exception to `MSR-015.R1(b)` in
-`org-middag:adoption.yaml#MSR-015`. Write it as `feat:` and describe the break
-in the commit body. From 2026-12-01, if the family has not reached `2.0.0`, no
+**minor**, never in a patch, under a recorded exception that is not renewed.
+Write it as `feat:` and describe the break in the commit body; never as `fix:`,
+`refactor:` or `chore:`. From 2026-12-01, if the family has not reached `2.0.0`, no
 break lands on `1.x`.
 
 **From `2.0.0`:** this lib is part of the `middag-php-*` version family. Every
@@ -141,6 +141,11 @@ order of the product owner. To pass:
 - from `2.0.0`, keep a `feat` PR open until a family MINOR window opens. Keep it
   current by merging `main` into it (never rebase or force-push), then re-run
   the check.
+
+A window counts as open only when it is ahead of this lib's current version; a
+stale value reads as closed. While a window is open, merge this lib's Release
+PR only at the coordinated `X.Y.0`. After the `2.0.0` cut, a PR opened before
+it must merge `main` in so that the check reads the new version.
 
 > Historical note: `1.2.1` shipped the audit-consolidation breaking change
 > (the `TableOptions` → `TableDisplayOptions` rename) as a patch by explicit

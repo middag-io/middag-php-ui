@@ -37,7 +37,7 @@ way? If so, describe the break below. Rules (ADR-032, see CONTRIBUTING.md
   a `BREAKING CHANGE:` footer or `Release-As:`. Allowed only until 2026-11-30;
   from 2026-12-01 no break lands on `1.x`.
 - From `2.0.0`: a break needs a family MAJOR window (organization variable
-  `PHP_LIBS_OPEN_RELEASE` = `X.0`, set by the product owner) and a deprecation
+  `PHP_LIBS_OPEN_RELEASE` = `X.0`, set on the order of the product owner) and a deprecation
   in an earlier minor; a `feat` needs a family MINOR window. Until the window
   opens, keep the PR current by merging `main` (never rebase or force-push).
 -->
