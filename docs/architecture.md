@@ -92,3 +92,7 @@ middag-io/ui (this repo)        ← zero deps, host-agnostic
        └─ middag-io/wordpress   ← requires framework; WordPress adapters
   └─ @middag-io/react (NPM)     ← consumes the JSON this package produces
 ```
+
+`@middag-io/react` (React + TypeScript over Inertia, with ReUI as its design system) is the
+first-party client; the choice is recorded in [UI-003](decisions/UI-003-first-party-client-stack.md).
+The contracts do not assume it, and any renderer can consume the same wire.

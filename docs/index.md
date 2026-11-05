@@ -23,6 +23,7 @@ reference docs its Enforcement table points to.
 |----|----------|
 | [UI-001](decisions/UI-001-react-typescript-inertia-stack.md) | UI contracts are a separate zero-dependency package at the bottom of the stack |
 | [UI-002](decisions/UI-002-page-contract-composition-model.md) | A versioned data contract, published as schema |
+| [UI-003](decisions/UI-003-first-party-client-stack.md) | The first-party UI client is React + TypeScript + Inertia + ReUI |
 
 ## Quick start
 
