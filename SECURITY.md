@@ -3,17 +3,22 @@
 ## Supported Versions
 
 `middag-io/ui` is on the **`1.x`** line. Only the newest release receives
-security fixes — there are no long-term support branches, and upgrading to the
-latest `1.x` release is the supported remediation path.
+security fixes, and upgrading to the latest `1.x` release is the supported
+remediation path.
 
 | Version              | Supported          |
 | -------------------- | ------------------ |
 | Latest `1.x` release | :white_check_mark: |
 | Older releases       | :x:                |
 
-During `1.x` the public API is still consolidating — a minor release may carry
-a documented breaking change. We recommend tracking the latest release so you
-receive security and bug fixes promptly.
+From `2.0.0` this package is part of the `middag-php-*` version family. The
+latest release of the current family MAJOR is supported. The last minor of the
+previous MAJOR (for `1.x`, its last `1.Y` release) receives security fixes only,
+for 6 months after the next MAJOR ships.
+
+Until 2026-11-30 a `1.x` minor release may carry a breaking change described in
+its commit body; from 2026-12-01 `1.x` takes no break. We recommend tracking
+the latest release so you receive security and bug fixes promptly.
 
 ## Reporting a Vulnerability
 

@@ -324,6 +324,12 @@ Releases managed by [release-please](https://github.com/googleapis/release-pleas
 
 ---
 
+## Versioning
+
+On `1.x`, `fix:` cuts a patch and `feat:` a minor. Until 2026-11-30 a minor may carry a breaking change described in its commit body; from 2026-12-01 `1.x` takes no break. From `2.0.0`, all `middag-php-*` libraries form one version family: they share MAJOR.MINOR, a patch carries fixes only, a minor never breaks, and a family MINOR or MAJOR is released in every library on the decision of the product owner. Consumers then declare one `^2.N` range for every `middag-io/*` sibling. Details: [`API-STABILITY.md`](API-STABILITY.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
+
+---
+
 ## License
 
 Licensed under the Apache License, Version 2.0. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
