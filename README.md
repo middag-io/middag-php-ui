@@ -6,7 +6,7 @@
 
 [Documentation](https://docs.middag.dev) · [What it does](#what-it-does) · [GitHub](https://github.com/middag-io/middag-php-ui)
 
-[![CI](https://github.com/middag-io/middag-php-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/middag-io/middag-php-ui/actions/workflows/ci.yml) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![PHP](https://img.shields.io/badge/php-%5E8.2-777BB4.svg)](https://www.php.net/) [![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen.svg)](https://phpstan.org/)
+[![CI](https://github.com/middag-io/middag-php-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/middag-io/middag-php-ui/actions/workflows/ci.yml) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![PHP](https://img.shields.io/badge/php-%5E8.3-777BB4.svg)](https://www.php.net/) [![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen.svg)](https://phpstan.org/)
 
 [![Packagist Version](https://img.shields.io/packagist/v/middag-io/ui.svg)](https://packagist.org/packages/middag-io/ui) [![Packagist Downloads](https://img.shields.io/packagist/dt/middag-io/ui.svg)](https://packagist.org/packages/middag-io/ui)
 
@@ -14,7 +14,7 @@
 
 Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. Produces `PageContract` (JSON) consumed by `@middag-io/react` via Inertia or any transport layer.
 
-**Zero external dependencies.** PHP 8.2+ only.
+**Zero external dependencies.** PHP 8.3+ only.
 
 **Open source — Apache-2.0.** The foundation layer of the MIDDAG framework stack (`ui` → `framework` → `moodle` / `wordpress` adapters; `@middag-io/react` on the client). Host-agnostic and transport-agnostic by design: this package knows nothing about Moodle, WordPress, or any transport — it only describes pages.
 
@@ -41,7 +41,7 @@ This means PHP never renders HTML for pages — it declares structure, and React
 | Feature | What you get |
 |---------|--------------|
 | **Transport-agnostic contracts** | Builders produce `JsonSerializable` → `PageContract` (JSON). No Inertia/transport dependency; works with any wire. |
-| **Zero dependencies** | PHP `^8.2` only. Consumers inherit no transitive packages. |
+| **Zero dependencies** | PHP `^8.3` only. Consumers inherit no transitive packages. |
 | **Host-agnostic** | No Moodle / WordPress / `mform` / capability coupling. Host-specifics live in the adapter, never here. |
 | **3 levels of composition** | Convention (`CrudBuilder`) → convention + overrides → free composition (`PageBuilder`). |
 | **CRUD convention builder** | `index`/`create`/`edit`/`show` pages from an entity class: i18n titles, filters, search, per-action `capability` gating. |
@@ -285,7 +285,7 @@ $config = TableBuilder::make()
 
 ## Installation
 
-Requires PHP `^8.2`. Install via Composer:
+Requires PHP `^8.3`. Install via Composer:
 
 ```bash
 composer require middag-io/ui
@@ -300,17 +300,18 @@ composer install
 composer test           # PHPUnit
 composer check          # style + rector + stan + schema drift
 composer fix            # style + rector (apply)
-composer lint:php82     # parse every file (incl. tooling configs) on real PHP 8.2 (Docker)
+composer lint:php83     # parse every file (incl. tooling configs) on real PHP 8.3 (Docker)
 ```
 
-The dev toolchain may run a newer PHP than the supported floor (`^8.2`). Newer
-syntax such as `new X()->method()` parses on 8.4 but is a fatal error on 8.2, so
+The dev toolchain may run a newer PHP than the supported floor (`^8.3`). Newer
+syntax such as `new X()->method()` parses on 8.4 but is a fatal error on 8.3, so
 `composer check` alone will not catch it. Two guards keep the floor honest:
-`composer lint:php82` runs `php -l` under a real PHP 8.2 interpreter over the
+`composer lint:php83` runs `php -l` under a real PHP 8.3 interpreter over the
 source, tests, and the `.php-cs-fixer.dist.php` / `.php-rector.php` configs; and
-the CI **Static analysis & style** job runs entirely on PHP 8.2. PHPStan is
-configured for the `8.2–8.4` range for version-sensitive type checks (it does
-not catch syntax-level issues — that is the lint's job).
+the static checks of the CI run on PHP 8.3, the floor. PHPStan targets the
+floor (`phpVersion: 80300`); it does not catch syntax-level issues, which is
+the lint's job. CI runs the tests on PHP 8.3, 8.4 and 8.5, and a `highest` job
+resolves the highest dependency versions on 8.4 and 8.5 without the platform pin.
 
 Git hooks configured automatically via `post-install-cmd`. `commit-msg` enforces Conventional Commits.
 

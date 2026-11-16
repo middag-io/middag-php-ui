@@ -11,7 +11,7 @@ and rendering it **anywhere**. Builders produce an immutable **page contract** (
 JSON) that a host/adapter or `@middag-io/react` turns into UI — over Inertia or any transport.
 
 - **Transport-agnostic** — builders produce `JsonSerializable` value objects; no Inertia/transport dependency.
-- **Zero runtime dependencies** — PHP `^8.2` only. Consumers inherit nothing transitive.
+- **Zero runtime dependencies** — PHP `^8.3` only. Consumers inherit nothing transitive.
 - **Host-agnostic** — knows nothing about Moodle, WordPress, or any host. No `mform`, `wpdb`,
   capability calls, column names, or plugin conventions. Anything host-specific lives in the consuming
   adapter, never here.

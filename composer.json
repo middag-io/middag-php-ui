@@ -19,7 +19,7 @@
         "security": "https://github.com/middag-io/middag-php-ui/security/policy"
     },
     "require": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
@@ -41,7 +41,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "8.2.0"
+            "php": "8.3.0"
         }
     },
     "minimum-stability": "stable",
@@ -73,6 +73,6 @@
         "test": "phpunit",
         "test:cov": "XDEBUG_MODE=coverage phpunit --coverage-text",
         "emit:schemas": "@php bin/emit-schemas.php",
-        "lint:php82": "bin/lint-php82.sh"
+        "lint:php83": "bin/lint-php83.sh"
     }
 }
