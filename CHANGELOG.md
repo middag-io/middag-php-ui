@@ -5,7 +5,6 @@
 
 ### Documentation
 
-* rewrite API-STABILITY.md for the 2.0.0 support model ([e1e57fd](https://github.com/middag-io/middag-php-ui/commit/e1e57fddb3b6b7a23a2aaadc0951d0bc311fb552))
 * rewrite API-STABILITY.md for the 2.0.0 support model ([ea89f41](https://github.com/middag-io/middag-php-ui/commit/ea89f41df77774bdc5b27d598b2b95c8a5597702))
 
 ## [1.8.1](https://github.com/middag-io/middag-php-ui/compare/v1.8.0...v1.8.1) (2026-11-16)
