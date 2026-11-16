@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/middag-io/middag-php-ui/compare/v1.8.4...v1.9.0) (2026-11-16)
+
+
+### Features
+
+* add RegionBuilder::poll() to attach a PollConfig to a block ([31bb12b](https://github.com/middag-io/middag-php-ui/commit/31bb12b14afb6e5c6d9589bf9393731114bf1e5f))
+
 ## [1.8.4](https://github.com/middag-io/middag-php-ui/compare/v1.8.3...v1.8.4) (2026-11-16)
 
 
