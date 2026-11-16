@@ -19,12 +19,7 @@ Transport-agnostic PHP contract builder system for MIDDAG's contract-driven UI. 
 **Open source — Apache-2.0.** The foundation layer of the MIDDAG framework stack (`ui` → `framework` → `moodle` / `wordpress` adapters; `@middag-io/react` on the client). Host-agnostic and transport-agnostic by design: this package knows nothing about Moodle, WordPress, or any transport — it only describes pages.
 
 > [!NOTE]
-> **Documentation** — the MIDDAG open-source project lives at **[middag.dev](https://middag.dev)**; full docs will be at **[docs.middag.dev](https://docs.middag.dev)** _(coming soon)_.
->
-> Until the docs site is live, this README plus the `@api` docblocks in `src/` are the reference.
-
-> [!IMPORTANT]
-> **`0.6.0` — concern-first layout (BREAKING).** Every `Middag\Ui\*` FQN moved from the old stereotype-first layout (`Contract/ Data/ Builder/ Enum/ Schema/`) to **concern-first**: each concern (`Page`, `Form`, `Table`, `Block`, `Region`, `Action`, …) owns its interfaces + value objects + builders, with cross-cutting types under `Shared/{Data,Enum,Schema}`. The **wire JSON is unchanged** — only PHP namespaces moved. Consumers on `^0.5` must update imports (e.g. `Middag\Ui\Data\Fragment` → `Middag\Ui\Region\Fragment`, `Middag\Ui\Enum\FieldType` → `Middag\Ui\Shared\Enum\FieldType`). That release predated `1.0`, so no compatibility shims were shipped.
+> **Documentation:** https://docs.middag.dev/framework/explanation/ui/overview — the hub is the reference; this README is a summary.
 
 ---
 
@@ -331,6 +326,12 @@ Releases managed by [release-please](https://github.com/googleapis/release-pleas
 On `1.x`, `fix:` cuts a patch and `feat:` a minor. The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. From `2.0.0`, all `middag-php-*` libraries form one version family: they share MAJOR.MINOR, a patch carries fixes only, a minor never breaks, and a family MINOR or MAJOR is released in every library on the decision of the product owner. Consumers then declare one `^2.N` range for every `middag-io/*` sibling. Details: [`API-STABILITY.md`](API-STABILITY.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
 
 ---
+
+## Help and status
+
+- **Status:** the 1.x line is pre-stable and unsupported; support starts at 2.0.0. See https://docs.middag.dev/libraries/reference/versioning-and-compatibility
+- **Questions and bugs:** https://github.com/middag-io/middag-php-ui/issues
+- **Security reports:** see [`SECURITY.md`](SECURITY.md) (do not open a public issue).
 
 ## License
 

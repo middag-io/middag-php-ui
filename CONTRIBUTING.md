@@ -163,9 +163,8 @@ it must merge `main` in so that the check reads the new version.
 ## Architecture
 
 The full technical reference — the PageContract system, the concern-first
-layout, the three composition levels, and the OSS boundary — lives in
-[`docs/architecture.md`](https://github.com/middag-io/middag-php-ui/blob/main/docs/architecture.md)
-and is published at [docs.middag.dev](https://docs.middag.dev).
+layout, the three composition levels, and the OSS boundary — lives in the hub:
+https://docs.middag.dev/framework/explanation/ui/architecture
 
 ## Code of conduct
 

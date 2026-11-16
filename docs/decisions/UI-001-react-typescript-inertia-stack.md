@@ -13,7 +13,7 @@ superseded_by: null
 enforced_by:
   mdgstan: []
   tests: [tests/Architecture/RuntimeDependencyTest.php, tests/Architecture/HostVocabularyTest.php]
-  docs: [docs/architecture.md]
+  docs: [https://docs.middag.dev/framework/explanation/ui/architecture]
 ---
 
 # UI-001: UI contracts are a separate zero-dependency package at the bottom of the stack
@@ -50,4 +50,4 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 | Requires only PHP; no runtime dependency | `tests/Architecture/RuntimeDependencyTest.php` | coded |
 | No host vocabulary in `src/` and `schema/`, comments included | `tests/Architecture/HostVocabularyTest.php` | coded |
 | No transport, no rendering in `src/` | review against the OSS boundary rule in `AGENTS.md` | planned |
-| Dependency direction and the OSS boundary | doc `docs/architecture.md` | coded |
+| Dependency direction and the OSS boundary | doc https://docs.middag.dev/framework/explanation/ui/architecture | coded |

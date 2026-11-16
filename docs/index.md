@@ -1,72 +1,9 @@
-# middag-io/ui
+# middag-io/ui documentation
 
-Transport-agnostic PHP **contract builders** for contract-driven UI. Describe a page once — its
-regions, forms, tables, blocks, navigation and actions — as an immutable value object, then let any
-host or adapter render it. The library produces a JSON **page contract**; it never produces HTML.
+The documentation lives in the hub: https://docs.middag.dev/framework/explanation/ui/overview
 
-> Describe the page once. Render it anywhere.
+This repository keeps only the [README](../README.md), [API-STABILITY](../API-STABILITY.md) and the decision records:
 
-Apache-2.0. The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. From `2.0.0` ui is part of the `middag-php-*` version family (shared MAJOR.MINOR, a minor
-never breaks, a family MAJOR is decided by the product owner) — see
-[`API-STABILITY.md`](https://github.com/middag-io/middag-php-ui/blob/main/API-STABILITY.md).
-
-## Technical documentation
-
-- **[Architecture](architecture.md)** — the PageContract system, the three builder levels, the
-  concern-first layout, and the OSS boundary (why nothing here renders). Start here.
-
-## Decision records
-
-Why ui is shaped the way it is. Each record holds one decision; the specification lives in the
-reference docs its Enforcement table points to.
-
-| Id | Decision |
-|----|----------|
-| [UI-001](decisions/UI-001-react-typescript-inertia-stack.md) | UI contracts are a separate zero-dependency package at the bottom of the stack |
-| [UI-002](decisions/UI-002-page-contract-composition-model.md) | A versioned data contract, published as schema |
-| [UI-003](decisions/UI-003-first-party-client-stack.md) | The first-party UI client is React + TypeScript + Inertia + ReUI |
-
-## Quick start
-
-Requires PHP `^8.3`. Install via Composer:
-
-```bash
-composer require middag-io/ui
-```
-
-Compose a form layout from immutable value objects — the result serializes to a JSON contract a
-renderer consumes:
-
-```php
-use Middag\Ui\Block\Section;
-use Middag\Ui\Form\Group;
-
-$section = Section::of('personal')
-    ->label('Personal details')
-    ->fields(
-        $nameField,
-        $emailField,
-        Group::of('phone')->fields($countryField, $numberField),
-    );
-```
-
-The builders carry no transport and no host knowledge: the same contract renders standalone, inside a
-Moodle plugin, or inside WordPress, by swapping the renderer downstream.
-
-## Where it is consumed
-
-| Consumer | How |
-|----------|-----|
-| **`middag-io/framework`** | Maps the contracts to its Inertia renderer and form pipeline. |
-| **Host adapters** (Moodle, WordPress) | Render the contract through the host's UI, via the framework. |
-| **`@middag-io/react`** (NPM) | Consumes the emitted JSON page contract on the client. |
-
-## Open source and MIDDAG
-
-`middag-io/ui`, `middag-io/framework`, and the Moodle/WordPress adapters are open source under
-Apache-2.0 — the generic plumbing, free, forever. The governed domain infrastructure built on top is
-MIDDAG's proprietary product, opt-in; this library has zero dependencies and never points at it.
-
-## Contributing
-
-See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for the workflow, coding standards and quality gates.
+- [UI-001 — The first-party UI client is React + TypeScript + Inertia + ReUI](decisions/UI-001-react-typescript-inertia-stack.md)
+- [UI-002 — UI contracts are a separate zero-dependency package at the bottom of the stack](decisions/UI-002-page-contract-composition-model.md)
+- [UI-003 — A versioned data contract, published as schema](decisions/UI-003-first-party-client-stack.md)
