@@ -28,7 +28,7 @@ reference docs its Enforcement table points to.
 
 ## Quick start
 
-Requires PHP `^8.2`. Install via Composer:
+Requires PHP `^8.3`. Install via Composer:
 
 ```bash
 composer require middag-io/ui

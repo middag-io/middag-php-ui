@@ -50,7 +50,7 @@ final class FileValueTest extends TestCase
             size: 2048,
             type: 'application/pdf',
             id: 'file-7',
-            draftitemid: 99,
+            uploadToken: 'upload-99',
         ))->jsonSerialize();
 
         self::assertSame([
@@ -59,8 +59,29 @@ final class FileValueTest extends TestCase
             'size' => 2048,
             'type' => 'application/pdf',
             'id' => 'file-7',
-            'draftitemid' => 99,
+            'uploadToken' => 'upload-99',
         ], $payload);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsAnOpaqueUploadToken(): void
+    {
+        $this->assertValidAgainst('FileValue', new FileValue(
+            url: '/files/pending.pdf',
+            uploadToken: 'opaque-token-1',
+        ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsANonStringUploadToken(): void
+    {
+        $this->assertInvalidAgainst('FileValue', ['url' => '/files/pending.pdf', 'uploadToken' => 42]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsTheRemovedHostDraftField(): void
+    {
+        $this->assertInvalidAgainst('FileValue', ['url' => '/files/pending.pdf', 'draftitemid' => 42]);
     }
 
     #[Test]

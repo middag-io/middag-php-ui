@@ -13,17 +13,38 @@ concurrency:
 
 jobs:
   # Released php-library-check component of middag-io/actions, called by its
-  # major tag. One job per PHP version: the static
-  # checks (composer validate --strict, strict PSR-4, the PHP 8.2 parse lint,
-  # PHPStan, PHP-CS-Fixer, Rector and the schema drift gate) run on 8.2, the
-  # audit and PHPUnit on every version. No credentials.
+  # major tag. One job per PHP version, with the platform pin (8.3.0) kept:
+  # the static checks (composer validate --strict, strict PSR-4, the PHP 8.3
+  # parse lint, PHPStan, PHP-CS-Fixer, Rector and the schema drift gate) run
+  # on 8.3, the floor; the audit and PHPUnit on every version. The tool caches
+  # live in .cache. No credentials: ui has no private dependency.
   php-library-check:
     uses: middag-io/actions/.github/workflows/php-library-check.yml@php-library-check-v1
     permissions:
       contents: read
     with:
-      php-versions: '["8.2", "8.3", "8.4"]'
+      php-versions: '["8.3", "8.4", "8.5"]'
       composer-validate-strict: true
       lint-script: check:lint
       composer-scripts: check:schemas
+      tool-cache-paths: .cache
+      audit-blocking-severities: critical, high
+
+  # Second call of the same component: removes the platform pin and resolves
+  # the highest dependency versions on the PHP of each job. ui depends on no
+  # Symfony package, so expect-majors is empty: the job proves the PHP range
+  # only. The static checks already run in the locked job.
+  php-library-check-highest:
+    uses: middag-io/actions/.github/workflows/php-library-check.yml@php-library-check-v1
+    permissions:
+      contents: read
+    with:
+      php-versions: '["8.4", "8.5"]'
+      dependency-versions: highest
+      unset-platform-php: true
+      composer-validate: false
+      strict-psr: false
+      phpstan-script: ""
+      cs-fixer-script: ""
+      rector-script: ""
       audit-blocking-severities: critical, high

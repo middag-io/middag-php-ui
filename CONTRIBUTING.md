@@ -34,7 +34,7 @@ agnostic contract) rather than downstream (a renderer or host concern).
 - The style is **PSR-12 plus the `@PhpCsFixer` ruleset**, enforced by
   PHP-CS-Fixer. `camelCase` for methods and properties, `PascalCase` for classes.
 - **PSR-4**: the namespace mirrors the path — `Middag\Ui\<Concern>\...`.
-- Explicit types on every signature. Target PHP `^8.2`; use enums, `readonly`,
+- Explicit types on every signature. Target PHP `^8.3`; use enums, `readonly`,
   and `final` where they fit. Fluent builders return `static`.
 - The Apache-2.0 license header is applied automatically by PHP-CS-Fixer — run
   `composer fix` and it is added for you.

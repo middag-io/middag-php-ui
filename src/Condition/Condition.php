@@ -21,13 +21,13 @@ use Middag\Ui\Shared\Enum\ConditionOperator;
  */
 final readonly class Condition
 {
-    public const KIND_VISIBLE_WHEN = 'visible_when';
+    public const string KIND_VISIBLE_WHEN = 'visible_when';
 
-    public const KIND_HIDDEN_WHEN = 'hidden_when';
+    public const string KIND_HIDDEN_WHEN = 'hidden_when';
 
-    public const KIND_REQUIRED_WHEN = 'required_when';
+    public const string KIND_REQUIRED_WHEN = 'required_when';
 
-    public const KIND_DISABLED_WHEN = 'disabled_when';
+    public const string KIND_DISABLED_WHEN = 'disabled_when';
 
     public function __construct(
         public string $field,

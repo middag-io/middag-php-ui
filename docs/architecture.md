@@ -2,7 +2,7 @@
 
 `middag-io/ui` is the **contract-builder** layer of the MIDDAG stack: a transport- and host-agnostic
 library for describing a UI as an immutable, serializable value object — the **page contract** — that
-something downstream renders. It has zero runtime dependencies (PHP `^8.2` only).
+something downstream renders. It has zero runtime dependencies (PHP `^8.3` only).
 
 ## The PageContract system
 

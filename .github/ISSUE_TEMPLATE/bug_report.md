@@ -27,7 +27,7 @@ A clear and concise description of what actually happened, including any error m
 ## Environment
 
 - Library version (`middag-io/ui`):
-- PHP version (`^8.2`):
+- PHP version (`^8.3`):
 - Consumer: framework / host adapter / standalone
 
 ## Relevant `composer check` / `composer test` output

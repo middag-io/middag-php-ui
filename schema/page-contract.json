@@ -944,8 +944,8 @@
                         "id": {
                             "type": "string"
                         },
-                        "draftitemid": {
-                            "type": "integer"
+                        "uploadToken": {
+                            "type": "string"
                         }
                     },
                     "required": [
