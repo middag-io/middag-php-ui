@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Table\Contract;
 
 use Closure;
+use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Page\Contract\PageContractInterface;
 use Middag\Ui\Shared\ValueObject\Translatable;
 
@@ -25,6 +26,12 @@ interface CrudBuilderInterface
 
     public function column(string $name, Closure $configurator): static;
 
+    /**
+     * Each item is a convention name or a ready ActionInterface (any target,
+     * including the editable panel); instances are emitted as given.
+     *
+     * @param array<ActionInterface|string> $actions
+     */
     public function rowActions(array $actions): static;
 
     public function bulkActions(array $actions): static;
