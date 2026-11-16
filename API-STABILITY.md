@@ -56,13 +56,9 @@ On `1.x` the commit type drives the bump (`fix:` → patch, `feat:` → minor):
 - **Patch** (`1.y.Z`) — bug fixes and `@internal`-only changes. Never a breaking
   `@api` (or wire) change.
 - **Minor** (`1.Y.0`) — additive `@api` changes (new builders, new optional
-  parameters, promoting an `@internal` symbol to `@api`). Until **2026-11-30** a
-  minor may also carry a breaking `@api` change, under a recorded exception
-  that ends on that date. That exception is not renewed: from **2026-12-01**, if the family has not reached `2.0.0`, no
-  break lands on `1.x`.
-- **How a `1.x` break is written.** As a `feat:` commit (so it cuts a minor,
-  never a patch) with the break described in the commit body; never as `fix:`,
-  `refactor:` or `chore:`. Never use `!` or a
+  parameters, promoting an `@internal` symbol to `@api`).
+- The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut.
+- **No `!` on `1.x`.** Never use `!` or a
   `BREAKING CHANGE:` footer on `1.x`: release-please would cut `2.0.0` in this
   lib alone, and the version family check fails the PR.
 - **No `2.0.0` from this lib alone.** `2.0.0` is cut for the whole family at
@@ -97,8 +93,6 @@ version family:
   Moodle version needs support, a MIDDAG release needs a feature, a deprecation
   or a new range, or a new Symfony minor needs absorbing) and every family
   MAJOR.
-- **Previous MAJOR.** The last minor of a family MAJOR receives security fixes
-  only, for 6 months after the next MAJOR ships.
 
 ## The version family check
 
@@ -145,11 +139,7 @@ serialize to the `PageContract` wire JSON; no host or transport is imported.
 
 - Depend only on `@api` types. If you need behaviour exposed only by an
   `@internal` symbol, open an issue to have it promoted rather than reaching in.
-- **On `1.x`:** pin a caret range (`^1.0`) and read the commits of a minor
-  before crossing it, since a `1.x` minor released up to 2026-11-30 may carry a
-  breaking `@api` change described in a commit body. To receive only
-  patches, pin a tilde patch range (for example `~1.2.1`) and move across
-  minors deliberately.
+- **On `1.x`:** The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut.
 - **From `2.0.0`:** declare one `^2.N` range, the same for every
   `middag-io/*` sibling you depend on. Minor upgrades inside that range do not
   break.

@@ -33,16 +33,15 @@ Does this PR change public API or the wire contract in a backward-incompatible
 way? If so, describe the break below. Rules (ADR-032, see CONTRIBUTING.md
 §Versioning):
 
-- On `1.x`: use `feat:` and describe the break in the commit body; never `!`,
-  a `BREAKING CHANGE:` footer or `Release-As:`. Allowed only until 2026-11-30;
-  from 2026-12-01 no break lands on `1.x`.
+- On `1.x`: never `!`, a `BREAKING CHANGE:` footer or `Release-As:`.
+  The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut.
 - From `2.0.0`: a break needs a family MAJOR window (organization variable
   `PHP_LIBS_OPEN_RELEASE` = `X.0`, set on the order of the product owner) and a deprecation
   in an earlier minor; a `feat` needs a family MINOR window. Until the window
   opens, keep the PR current by merging `main` (never rebase or force-push).
 -->
 
-- [ ] This PR introduces a breaking change (described above and in the commit body)
+- [ ] This PR introduces a breaking change (described above)
 - [ ] The `php-version-family-check / check` job passes
 
 ## Checklist

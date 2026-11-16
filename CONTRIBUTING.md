@@ -118,11 +118,7 @@ and are detailed in [`API-STABILITY.md`](API-STABILITY.md).
 | `feat:` | MINOR | none by itself: waits for a family MINOR window |
 | `!` or `BREAKING CHANGE:` | not allowed (would cut `2.0.0` in this lib alone) | only in a family MAJOR window |
 
-**Breaking changes on `1.x`:** until 2026-11-30 a break may ship in a
-**minor**, never in a patch, under a recorded exception that is not renewed.
-Write it as `feat:` and describe the break in the commit body; never as `fix:`,
-`refactor:` or `chore:`. From 2026-12-01, if the family has not reached `2.0.0`, no
-break lands on `1.x`.
+**On `1.x`:** The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut.
 
 **From `2.0.0`:** this lib is part of the `middag-php-*` version family. Every
 lib shares MAJOR.MINOR, a patch carries fixes only, and a minor never breaks
