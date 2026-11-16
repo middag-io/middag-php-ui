@@ -95,6 +95,7 @@ $props = CrudBuilder::for(Agent::class, slug: 'agents')
     ->rowActions([new Action(id: 'edit', label: 'Edit', target: ActionTarget::panel()), 'delete'])
     ->rowHref('/agents/{id}')
     ->page(fn (PageBuilder $page) => $page
+        ->layout('dashboard')                 // renders the `metrics` region above `content`
         ->subtitle('Who answers tickets')
         ->region('metrics', fn (RegionBuilder $r) => $r->metricCard('agents', 12, 'Agents'))
         ->editablePanel('/agents/{id}/panel'))

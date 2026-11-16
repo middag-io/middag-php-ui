@@ -107,6 +107,7 @@ final class CrudBuilderRoundtripTest extends TestCase
             ->rowHref('/agents/{id}')
             ->page(static function (PageBuilder $page): void {
                 $page->shell('basic')
+                    ->layout('dashboard')
                     ->subtitle('Who answers tickets')
                     ->region('metrics', static function (RegionBuilder $region): void {
                         $region->metricCard('agent_count', 3, 'Agents', icon: 'users');
@@ -120,6 +121,19 @@ final class CrudBuilderRoundtripTest extends TestCase
         $this->assertValidAgainstPublishedSchema($contract);
         self::assertCount(2, $contract->layout->regions);
         self::assertValidAgainst('EditablePanelDescriptor', $props['editablePanel'] ?? null);
+    }
+
+    #[Test]
+    public function testPublishedSchemaRejectsABrokenPage(): void
+    {
+        // Guards the checks above against a vacuous schema: a built page with
+        // its required `version` removed must fail.
+        $payload = CrudBuilder::for('App\Agent')->build('index')->jsonSerialize();
+        unset($payload['version']);
+
+        $result = (new Validator())->validate(self::asData($payload), $this->publishedSchema());
+
+        self::assertFalse($result->isValid());
     }
 
     #[Test]
@@ -139,9 +153,7 @@ final class CrudBuilderRoundtripTest extends TestCase
 
     private function assertValidAgainstPublishedSchema(PageContract $contract): void
     {
-        $schema = json_decode((string) file_get_contents(self::PUBLISHED_SCHEMA));
-        $data = json_decode(json_encode($contract) ?: 'null');
-        $result = (new Validator())->validate($data, $schema);
+        $result = (new Validator())->validate(self::asData($contract), $this->publishedSchema());
 
         if (!$result->isValid()) {
             $error = $result->error();
@@ -151,6 +163,11 @@ final class CrudBuilderRoundtripTest extends TestCase
         }
 
         self::assertTrue($result->isValid());
+    }
+
+    private function publishedSchema(): mixed
+    {
+        return json_decode((string) file_get_contents(self::PUBLISHED_SCHEMA));
     }
 
     /**
