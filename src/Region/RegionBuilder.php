@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Region;
 
+use LogicException;
 use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
@@ -206,6 +207,46 @@ class RegionBuilder implements RegionBuilderInterface
             type: $type,
             key: $key,
             data: $data,
+        );
+
+        return $this;
+    }
+
+    /**
+     * Attach a poll config to the most recently added block.
+     *
+     * The block is replaced by a copy that carries the config, so the client
+     * refreshes it from `$poll->endpoint` on the given interval.
+     *
+     * @throws LogicException when no block was added yet, or the last block is
+     *                        not a {@see BlockDescriptor}
+     */
+    public function poll(PollConfig $poll): static
+    {
+        $index = array_key_last($this->blocks);
+
+        if ($index === null) {
+            throw new LogicException('RegionBuilder::poll() needs a block: add one before calling it.');
+        }
+
+        $block = $this->blocks[$index];
+
+        if (!$block instanceof BlockDescriptor) {
+            throw new LogicException(sprintf('RegionBuilder::poll() cannot attach a poll config to %s.', $block::class));
+        }
+
+        $this->blocks[$index] = new BlockDescriptor(
+            type: $block->type,
+            key: $block->key,
+            data: $block->data,
+            variant: $block->variant,
+            title: $block->title,
+            subtitle: $block->subtitle,
+            actions: $block->actions,
+            meta: $block->meta,
+            poll: $poll,
+            deferred: $block->deferred,
+            remember: $block->remember,
         );
 
         return $this;
