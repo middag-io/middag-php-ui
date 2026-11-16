@@ -30,7 +30,7 @@ Closes #
 
 <!--
 Does this PR change public API or the wire contract in a backward-incompatible
-way? If so, describe the break below. Rules (ADR-032, see CONTRIBUTING.md
+way? If so, describe the break below. Rules (https://docs.middag.dev/libraries/reference/versioning-and-compatibility, see CONTRIBUTING.md
 §Versioning):
 
 - On `1.x`: never `!`, a `BREAKING CHANGE:` footer or `Release-As:`.

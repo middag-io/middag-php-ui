@@ -44,8 +44,9 @@ of the two tags.
 The public surface is the set of `@api`-annotated types: the interfaces under
 each concern's `Contract/` sub-namespace (`Page/Contract/`, `Form/Contract/`,
 `Table/Contract/`, `Block/Contract/`, `Region/Contract/`, `Action/Contract/`,
-`Navigation/Contract/`, `Inspector/Contract/`, `Envelope/Contract/`), the
-concern builders and their value objects, and the cross-cutting types under
+`Navigation/Contract/`, `Inspector/Contract/`, `Envelope/Contract/`,
+`EditablePanel/Contract/`), the concern builders and their value objects
+(including `Condition\Condition` and `EditablePanel\EditablePanelDescriptor`), and the cross-cutting types under
 `Shared/`.
 
 ## The wire contract

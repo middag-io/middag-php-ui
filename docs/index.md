@@ -2,6 +2,8 @@
 
 The documentation lives in the hub: https://docs.middag.dev/framework/explanation/ui/overview
 
+The architecture (PageContract system, concern-first layout, composition levels, OSS boundary) is in the hub: https://docs.middag.dev/framework/explanation/ui/architecture
+
 This repository keeps only the [README](../README.md), [API-STABILITY](../API-STABILITY.md) and the decision records:
 
 - [UI-001 — UI contracts are a separate zero-dependency package at the bottom of the stack](decisions/UI-001-react-typescript-inertia-stack.md)

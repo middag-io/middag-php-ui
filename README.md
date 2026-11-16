@@ -331,6 +331,7 @@ Support starts at `2.0.0`; the 1.x line is pre-stable and unsupported, and the c
 
 - **Status:** the 1.x line is pre-stable and unsupported; support starts at 2.0.0. See https://docs.middag.dev/libraries/reference/versioning-and-compatibility
 - **Questions and bugs:** https://github.com/middag-io/middag-php-ui/issues
+- **Changes:** see [`CHANGELOG.md`](CHANGELOG.md).
 - **Security reports:** see [`SECURITY.md`](SECURITY.md) (do not open a public issue).
 
 ## License
