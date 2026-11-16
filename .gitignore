@@ -29,7 +29,7 @@ docs-site/.vitepress/dist/
 docs-site/.vitepress/cache/
 docs-site/.vitepress/.temp/
 
-# VIGIM operational state (ADR-925 - local_middag)
+# local agent state
 # Versioned: all .vigim/ except data/
 # Ephemeral: .vigim/content/data/ (inventory, snapshots, reports, cache)
 .vigim/content/data/*

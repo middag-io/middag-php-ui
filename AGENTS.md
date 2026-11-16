@@ -82,7 +82,7 @@ Inside each concern:
   fluent builders return `static`; cover new behaviour with a test (`tests/` mirrors `src/`,
   `#[CoversClass]`). `@api` = public surface (enters the generated xRef/docs); `@internal` = internal.
 - **Commits:** Conventional Commits; **NEVER** `Co-Authored-By`. Single lowercase scope. Branch base: `main`.
-  Versioning follows `docs-middag-ops` ADR-032 (version family of the `middag-php-*` libs). On
+  Versioning follows the version family of the `middag-php-*` libs (https://docs.middag.dev/libraries/reference/versioning-and-compatibility). On
   `1.x`: fix → patch, feat → minor; never `!` or a `BREAKING CHANGE:` footer (either would cut
   `2.0.0` in this lib alone) and no `Release-As:` outside an open window — the version family
   check fails them. The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. From `2.0.0`: shared MAJOR.MINOR across the family, patch = fixes only, `feat`
@@ -95,7 +95,7 @@ Inside each concern:
 ## Decision records
 
 Architecture decisions live in [`docs/decisions/`](docs/decisions/) as `UI-NNN` records in the
-MIDDAG-MADR compact format (`docs-middag-ops` ADR-014): frontmatter, then Context → Considered Options
+MIDDAG-MADR compact format: frontmatter, then Context → Considered Options
 → Decision → Consequences → Enforcement. A record states **why** (the choice, the alternatives, the
 consequences); specification (class lists, catalogs, wire shapes) lives in the reference docs its
 Enforcement table points to, mostly at docs.middag.dev (`docs-middag-dev`, `docs/framework/`). Ids are
