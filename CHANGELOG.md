@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/middag-io/middag-php-ui/compare/v1.9.0...v1.10.0) (2026-11-16)
+
+
+### Features
+
+* CrudBuilder row action targets, column variants and multi-region pages ([cc5587a](https://github.com/middag-io/middag-php-ui/commit/cc5587a812292f1b70e28a1ab7365cbe42e147a8))
+
 ## [1.9.0](https://github.com/middag-io/middag-php-ui/compare/v1.8.4...v1.9.0) (2026-11-16)
 
 
