@@ -10,7 +10,7 @@ latest release of the current family MAJOR is supported.
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability, please report it **privately by email**
-to **michael@middag.io**.
+to **security@middag.io**.
 
 **Do not open public GitHub issues, pull requests, or discussions for security
 problems.** Public disclosure before a fix is available puts all users at risk.
