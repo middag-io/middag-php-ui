@@ -81,9 +81,7 @@ Inside each concern:
   Versioning follows `docs-middag-ops` ADR-032 (version family of the `middag-php-*` libs). On
   `1.x`: fix → patch, feat → minor; never `!` or a `BREAKING CHANGE:` footer (either would cut
   `2.0.0` in this lib alone) and no `Release-As:` outside an open window — the version family
-  check fails them; a break ships as
-  `feat:` (never `fix:`) with the break in the body, only until 2026-11-30 (a recorded exception), then no
-  break on `1.x`. From `2.0.0`: shared MAJOR.MINOR across the family, patch = fixes only, `feat`
+  check fails them. The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. From `2.0.0`: shared MAJOR.MINOR across the family, patch = fixes only, `feat`
   waits for a family MINOR window, `!` for a family MAJOR window; the window is the organization
   variable `PHP_LIBS_OPEN_RELEASE`, set on the order of the product owner, who decides every family
   MINOR and MAJOR. A window counts as open only when it is ahead of this lib's version; while one is
@@ -115,8 +113,7 @@ middag-io/ui (this repo)        ← zero deps, host-agnostic
 
 ## State
 
-Public on the **`1.x`** line (Apache-2.0). Until 2026-11-30 a minor may carry a breaking change
-described in its commit body; from 2026-12-01 `1.x` takes no break. `2.0.0` is cut for the whole
+Public on the **`1.x`** line (Apache-2.0). The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. `2.0.0` is cut for the whole
 `middag-php-*` family at once, on the decision of the product owner; from then on a minor never
 breaks — the policy is [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning. Technical docs live in **`docs/`** and
 are published at **docs.middag.dev**.
