@@ -5,7 +5,6 @@
 
 ### Documentation
 
-* mark ProvidesJsonSchema and Schema as internal in API stability ([250ad69](https://github.com/middag-io/middag-php-ui/commit/250ad6918b660d8d1c1a2e600d6a7d824332da2e))
 * mark ProvidesJsonSchema and Schema as internal in API stability ([988824d](https://github.com/middag-io/middag-php-ui/commit/988824de97c2b899e59c534a59efac7a1aedaa5e))
 
 ## [1.8.3](https://github.com/middag-io/middag-php-ui/compare/v1.8.2...v1.8.3) (2026-11-16)
