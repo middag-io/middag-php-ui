@@ -5,7 +5,6 @@
 
 ### Bug Fixes
 
-* emit the active sort in the CrudBuilder index table data ([5f7d02e](https://github.com/middag-io/middag-php-ui/commit/5f7d02e7fd455a046a6726910ae3574f74d42b96))
 * emit the active sort in the CrudBuilder index table data ([61f19d3](https://github.com/middag-io/middag-php-ui/commit/61f19d3505e08b94155e7aaeedd41f3919d82348))
 
 ## [1.10.0](https://github.com/middag-io/middag-php-ui/compare/v1.9.0...v1.10.0) (2026-11-16)
