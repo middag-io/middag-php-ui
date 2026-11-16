@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversNothing]
 final class RuntimeDependencyTest extends TestCase
 {
-    private const COMPOSER_JSON = __DIR__ . '/../../composer.json';
+    private const string COMPOSER_JSON = __DIR__ . '/../../composer.json';
 
     #[Test]
     public function composerRequireHoldsOnlyPhp(): void

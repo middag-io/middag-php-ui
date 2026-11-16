@@ -26,7 +26,7 @@ final class FormComponentTest extends TestCase
     /**
      * The wire renderer catalog mirrored from @middag-io/react's FormFieldType.
      */
-    private const EXPECTED = [
+    private const array EXPECTED = [
         'text', 'textarea', 'password', 'otp', 'email', 'url', 'int', 'float',
         'slider', 'select', 'native_select', 'multiselect', 'radio', 'checkbox',
         'switch', 'date', 'datetime', 'duration', 'file', 'entity_picker',

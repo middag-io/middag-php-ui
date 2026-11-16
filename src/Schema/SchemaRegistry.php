@@ -88,9 +88,9 @@ use Middag\Ui\Table\TableDisplayOptions;
  */
 final class SchemaRegistry
 {
-    public const JSON_SCHEMA_DRAFT = 'https://json-schema.org/draft/2020-12/schema';
+    public const string JSON_SCHEMA_DRAFT = 'https://json-schema.org/draft/2020-12/schema';
 
-    public const ID_BASE = 'https://ui-docs.middag.io/schemas/';
+    public const string ID_BASE = 'https://ui-docs.middag.io/schemas/';
 
     /**
      * Every type that contributes a `$def`, keyed by its schema name (the basename
@@ -98,7 +98,7 @@ final class SchemaRegistry
      *
      * @var array<string, class-string>
      */
-    private const TYPES = [
+    private const array TYPES = [
         // Envelope roots.
         'PageContract' => PageContract::class,
         'Fragment' => Fragment::class,

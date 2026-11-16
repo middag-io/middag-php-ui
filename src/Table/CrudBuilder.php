@@ -39,7 +39,7 @@ use Middag\Ui\Table\Contract\CrudBuilderInterface;
 class CrudBuilder implements CrudBuilderInterface
 {
     /** Default i18n domain for the generic CRUD verb keys (owned by the client UI layer). */
-    private const VERB_DOMAIN = 'ui';
+    private const string VERB_DOMAIN = 'ui';
 
     private readonly string $slug;
 

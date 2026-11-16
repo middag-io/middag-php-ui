@@ -29,7 +29,7 @@ use JsonSerializable;
 final readonly class FormErrors implements JsonSerializable
 {
     /** Reserved key for errors that apply to the whole form, not one field. */
-    public const FORM_LEVEL_KEY = '_';
+    public const string FORM_LEVEL_KEY = '_';
 
     /**
      * @param array<string, string|string[]> $errors field name → message(s)
