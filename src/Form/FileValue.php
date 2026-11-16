@@ -19,8 +19,12 @@ use JsonSerializable;
  *
  * A file field's value is a `FileValue` (single) or `FileValue[]` (multiple).
  * On the wire each entry is either a bare URL string (shorthand) or an object
- * with the file's display metadata. `draftitemid` carries the Moodle draft area
- * id for a pending upload when the host round-trips it.
+ * with the file's display metadata.
+ *
+ * `uploadToken` is an opaque reference to a pending upload, issued by the
+ * host's upload endpoint and sent back with the form so the host can find the
+ * file again. It is not the file id (`id`): ui and the client never read it,
+ * they only carry it; the host adapter decides what it maps to.
  *
  * Mirrors the shape @middag-io/react's FileUploadField already parses
  * (url + optional name/size/type/id), promoted to a typed wire contract so the
@@ -36,7 +40,7 @@ final readonly class FileValue implements JsonSerializable
         public ?int $size = null,
         public ?string $type = null,
         public ?string $id = null,
-        public ?int $draftitemid = null,
+        public ?string $uploadToken = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -60,8 +64,8 @@ final readonly class FileValue implements JsonSerializable
             $payload['id'] = $this->id;
         }
 
-        if ($this->draftitemid !== null) {
-            $payload['draftitemid'] = $this->draftitemid;
+        if ($this->uploadToken !== null) {
+            $payload['uploadToken'] = $this->uploadToken;
         }
 
         return $payload;
@@ -83,7 +87,7 @@ final readonly class FileValue implements JsonSerializable
                         'size' => ['type' => 'integer'],
                         'type' => ['type' => 'string'],
                         'id' => ['type' => 'string'],
-                        'draftitemid' => ['type' => 'integer'],
+                        'uploadToken' => ['type' => 'string'],
                     ],
                     'required' => ['url'],
                     'additionalProperties' => false,

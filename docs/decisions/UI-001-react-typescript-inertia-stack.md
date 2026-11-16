@@ -2,7 +2,7 @@
 title: 'UI contracts are a separate zero-dependency package at the bottom of the stack'
 status: accepted
 date: 2026-05-10
-last-updated: 2026-11-05
+last-updated: 2026-11-16
 lang: en
 domains: [ui, portability]
 deciders: [leadership]
@@ -12,6 +12,7 @@ supersedes: []
 superseded_by: null
 enforced_by:
   mdgstan: []
+  tests: [tests/Architecture/RuntimeDependencyTest.php, tests/Architecture/HostVocabularyTest.php]
   docs: [docs/architecture.md]
 ---
 
@@ -37,8 +38,8 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 - (+) Consumers inherit no transitive dependency, and the same contract serves every host and every product.
 - (+) Server and client evolve separately; a second renderer only has to read the wire.
 - (+) Contracts are pure data, so they are testable without a host, a browser or a transport.
-- (−) `RendererOutput::html()` lets a form renderer return an HTML body. It is a known exception for host renderers that only emit markup; no ui contract renders HTML itself.
-- (−) `FileValue` carries `draftitemid`, a Moodle draft-area id, on the wire and in the schema, and its docblock names Moodle. It is known host coupling in a neutral contract; [#64](https://github.com/middag-io/middag-php-ui/issues/64) tracks replacing it with a neutral field or an adapter extension.
+- (+) `RendererOutput::html()` and `RenderTarget::Html` carry a markup body that a renderer downstream produced, as opaque data. No ui contract produces markup, so they are not an exception to the decision.
+- (+) A file value carries a pending upload as an opaque `uploadToken` that the host adapter maps to its own storage; the wire names no host concept.
 - (−) Some docblocks name the first-party client's mechanisms (for example Inertia deferred props on `BlockDescriptor`). The coupling is open in UI-002.
 - (−) A change that spans ui, the framework and the client needs coordinated releases across repositories.
 
@@ -47,5 +48,6 @@ MIDDAG pages are produced on the server by PHP code that runs standalone, inside
 | Decision clause | Verification | State |
 |---|---|---|
 | Requires only PHP; no runtime dependency | `tests/Architecture/RuntimeDependencyTest.php` | coded |
-| No host API, no transport, no rendering in `src/` | review against the OSS boundary rule in `AGENTS.md` | planned |
+| No host vocabulary in `src/` and `schema/`, comments included | `tests/Architecture/HostVocabularyTest.php` | coded |
+| No transport, no rendering in `src/` | review against the OSS boundary rule in `AGENTS.md` | planned |
 | Dependency direction and the OSS boundary | doc `docs/architecture.md` | coded |

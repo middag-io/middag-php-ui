@@ -28,7 +28,11 @@ data. **Rendering, host wiring, and HTTP transport live downstream**, never here
   lives in `middag-io/framework` and the adapters. ui contracts produce **data / value objects**
   (e.g. `FormRendererInterface` → `RendererOutput`, not a string).
 - **No proprietary or host concepts** anchor this surface — no edition or commercial labels, no named
-  host APIs, in code or docblocks.
+  host APIs, in code, docblocks or schemas. `tests/Architecture/HostVocabularyTest.php` scans `src/`
+  and `schema/` (comments included) against a host deny list; a host-specific value travels as an
+  opaque neutral field (e.g. `FileValue::$uploadToken`) that the adapter maps.
+- **A markup body is opaque data:** `RendererOutput::html()` / `RenderTarget::Html` carry a body a
+  renderer downstream produced; no ui contract produces markup, so this is not an exception.
 - **Authorization is data, not a call:** opaque authorization tokens (e.g. the `capability` field on
   `Action`/`NavigationNode`/`CrudBuilder`) are **data** the contract may carry. What is forbidden is
   *calling* a host API (`has_capability`/`mform`/`wpdb`). The adapter resolves the token; ui only carries it.
@@ -61,7 +65,7 @@ Inside each concern:
 |------|-----|
 | Zero external dependencies | Consumers inherit no unwanted transitivity |
 | `Shared/ValueObject/` are `readonly class` | Immutability guaranteed at compile time |
-| No host leak (Moodle/WordPress/`mform`/etc.) | Agnostic lib; host-specifics live in the adapter |
+| No host leak (Moodle/WordPress/`mform`/etc.), guarded by `tests/Architecture/HostVocabularyTest.php` | Agnostic lib; host-specifics live in the adapter |
 | Renderers and field-mappers live in `framework`/adapters, not here | ui hosts only contracts + layout primitives |
 | No ui contract produces HTML (`render(): string`) | Rendering is a product/host concern (downstream) |
 | `FieldDefinition` and `Condition` do NOT implement `JsonSerializable` | They are boundary objects; renderers map them — avoids coupling to the wire format |

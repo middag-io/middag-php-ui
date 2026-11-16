@@ -172,7 +172,7 @@ final class SchemaRoundtripTest extends TestCase
             size: 10240,
             type: 'application/pdf',
             id: 'f-7',
-            draftitemid: 99887766,
+            uploadToken: '99887766',
         ));
     }
 
