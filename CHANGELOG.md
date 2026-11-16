@@ -5,7 +5,6 @@
 
 ### Documentation
 
-* point governance refs to the public docs and drop the architecture stub ([8dda73e](https://github.com/middag-io/middag-php-ui/commit/8dda73e3b3c32768a9ac2c0f129ffa7b36701861))
 * point governance refs to the public docs and drop the architecture stub ([aa408ef](https://github.com/middag-io/middag-php-ui/commit/aa408ef24b52bc08568bddfc8a68f1efdf36b933))
 
 ## [1.8.2](https://github.com/middag-io/middag-php-ui/compare/v1.8.1...v1.8.2) (2026-11-16)
@@ -37,7 +36,7 @@
 
 ### Documentation
 
-* align versioning docs with the version family (ADR-032) ([484c710](https://github.com/middag-io/middag-php-ui/commit/484c7103eb0dad812f74c5b5b11de387495e0227))
+* align versioning docs with the version family ([484c710](https://github.com/middag-io/middag-php-ui/commit/484c7103eb0dad812f74c5b5b11de387495e0227))
 * **decisions:** fix UI-001 review findings and guard runtime deps ([4e881ad](https://github.com/middag-io/middag-php-ui/commit/4e881ad9986f466d6f0e1160ff7854ab7803e5df))
 * **decisions:** rewrite UI-001 and UI-002 as architecture decisions ([175afec](https://github.com/middag-io/middag-php-ui/commit/175afec1dc754d687d96eaaa16b5437bf0b3eb21))
 * drop pre-v2 deadline text ([69f8b59](https://github.com/middag-io/middag-php-ui/commit/69f8b595bd2a6e69e83c7fcde07a619013ed09b1))
@@ -49,7 +48,6 @@
 
 ### Features
 
-* **page:** Tab accepts an optional disabled flag ([04a7a90](https://github.com/middag-io/middag-php-ui/commit/04a7a90ea970201d23bfcbc8131a53bc02143f02))
 * **page:** Tab accepts an optional disabled flag ([f901442](https://github.com/middag-io/middag-php-ui/commit/f9014420c41b32342b3925d1629b9bd80d253a00))
 
 ## [1.6.0](https://github.com/middag-io/middag-php-ui/compare/v1.5.1...v1.6.0) (2026-08-27)
@@ -57,19 +55,17 @@
 
 ### Features
 
-* **table:** declare the cell renderer of a column ([b5dca91](https://github.com/middag-io/middag-php-ui/commit/b5dca91b3c04db56e33d562c85be10f6b2c5fa89))
 * **table:** declare the cell renderer of a column ([9146096](https://github.com/middag-io/middag-php-ui/commit/91460967c7562a6b4d0c3e1a610a3dced50f7706))
 
 
 ### Bug Fixes
 
-* **ci:** replace removed PHPUnitSetList::PHPUNIT_120 with composer-based set ([d7df501](https://github.com/middag-io/middag-php-ui/commit/d7df50195392ca93d83e4e8ff65dd895b0265fcc))
 * **ci:** replace removed PHPUnitSetList::PHPUNIT_120 with composer-based set ([61331db](https://github.com/middag-io/middag-php-ui/commit/61331db6790967a7e4d08a460c0775535aab2bb6))
 
 
 ### Documentation
 
-* canonical AGENTS.md, CLAUDE.md symlink (ADR-017) ([33e2cea](https://github.com/middag-io/middag-php-ui/commit/33e2cea67cc1061d517e2263d492dad4a2d442b4))
+* canonical AGENTS.md, CLAUDE.md symlink ([33e2cea](https://github.com/middag-io/middag-php-ui/commit/33e2cea67cc1061d517e2263d492dad4a2d442b4))
 
 ## [1.5.1](https://github.com/middag-io/middag-php-ui/compare/v1.5.0...v1.5.1) (2026-07-29)
 
@@ -114,7 +110,6 @@
 
 ### Miscellaneous
 
-* release 1.3.1 ([2edd2d5](https://github.com/middag-io/middag-php-ui/commit/2edd2d5f59b973fde71183dde3d2414059642893))
 * release 1.3.1 ([59c6eff](https://github.com/middag-io/middag-php-ui/commit/59c6effce282306b2c6f38261dbf1e60e36c7dd6))
 
 ## [1.3.0](https://github.com/middag-io/middag-php-ui/compare/v1.2.4...v1.3.0) (2026-07-09)
@@ -145,7 +140,6 @@
 ### Miscellaneous
 
 * **dist:** export-ignore /bin in the published archive ([b866421](https://github.com/middag-io/middag-php-ui/commit/b866421ffd27f8c0cabc70cb9409dc15c5eb303d))
-* release 1.2.4 ([d2529d1](https://github.com/middag-io/middag-php-ui/commit/d2529d1634597ce15a8151d21bc080c729e6cd2d))
 * release 1.2.4 ([8af260c](https://github.com/middag-io/middag-php-ui/commit/8af260cb48054e3e2f3bf783ea06e4e2c2a3c036))
 
 ## [1.2.3](https://github.com/middag-io/middag-php-ui/compare/v1.2.2...v1.2.3) (2026-07-06)
@@ -204,7 +198,6 @@
 
 ### Refactoring
 
-* **shared:** align Shared with closed type-bag vocabulary ([2065feb](https://github.com/middag-io/middag-php-ui/commit/2065feb471aee6e6b551945449647e8aa7370eee))
 * **shared:** align Shared with closed type-bag vocabulary ([76cb7da](https://github.com/middag-io/middag-php-ui/commit/76cb7dac803d89a9f7d7f92734343e93597a86cd))
 
 ## [1.1.1](https://github.com/middag-io/middag-php-ui/compare/v1.1.0...v1.1.1) (2026-06-30)
@@ -230,7 +223,6 @@
 
 ### Miscellaneous
 
-* **release:** stabilize the public API at 1.0.0 ([8892d37](https://github.com/middag-io/middag-php-ui/commit/8892d37fcc87f3dac85b0f4658db1a76db99ab01))
 * **release:** stabilize the public API at 1.0.0 ([b5ffa91](https://github.com/middag-io/middag-php-ui/commit/b5ffa9128d48171209f079605608e50e7d54897a))
 
 ## [0.9.0](https://github.com/middag-io/middag-php-ui/compare/v0.8.2...v0.9.0) (2026-06-04)
