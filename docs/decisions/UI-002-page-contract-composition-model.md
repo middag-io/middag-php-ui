@@ -12,7 +12,7 @@ supersedes: []
 superseded_by: null
 enforced_by:
   mdgstan: []
-  docs: [docs/architecture.md]
+  docs: [https://docs.middag.dev/framework/explanation/ui/architecture]
 ---
 
 # UI-002: A versioned data contract, published as schema

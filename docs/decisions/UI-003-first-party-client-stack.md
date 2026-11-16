@@ -12,7 +12,7 @@ supersedes: []
 superseded_by: null
 enforced_by:
   mdgstan: []
-  docs: [docs/architecture.md]
+  docs: [https://docs.middag.dev/framework/explanation/ui/architecture]
 ---
 
 # UI-003: The first-party UI client is React + TypeScript + Inertia + ReUI
@@ -49,4 +49,4 @@ The first-party client is `@middag-io/react`: React and TypeScript, with Inertia
 | Rationale, rejected alternatives and trade-offs | doc `docs-middag-dev:docs/framework/explanation/ui/architecture.md` | coded |
 | First-party client and design system: current package and versions | doc `docs-middag-dev:docs/framework/reference/ui/design-system-catalog.md` | coded |
 | ReUI registry preset and default theme | doc `middag-react:components.json`, doc `middag-react:docs/guides/theme.md` | coded |
-| First-party client named next to the dependency graph; the contracts do not assume it | doc `docs/architecture.md` | coded |
+| First-party client named next to the dependency graph; the contracts do not assume it | doc https://docs.middag.dev/framework/explanation/ui/architecture | coded |
