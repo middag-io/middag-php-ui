@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.8.0](https://github.com/middag-io/middag-php-ui/compare/v1.7.0...v1.8.0) (2026-11-16)
+
+
+### Features
+
+* carry a pending upload as a neutral uploadToken ([126c02d](https://github.com/middag-io/middag-php-ui/commit/126c02d0e14d2b89c76a0105d0b81febae05c638)), closes [#64](https://github.com/middag-io/middag-php-ui/issues/64)
+
+
+### Refactoring
+
+* apply the PHP 8.3 Rector set ([64feff7](https://github.com/middag-io/middag-php-ui/commit/64feff7ebc7a973cd96fa3d95f7e21d3aa858a61))
+
+
+### Documentation
+
+* align versioning docs with the version family (ADR-032) ([484c710](https://github.com/middag-io/middag-php-ui/commit/484c7103eb0dad812f74c5b5b11de387495e0227))
+* **decisions:** fix UI-001 review findings and guard runtime deps ([4e881ad](https://github.com/middag-io/middag-php-ui/commit/4e881ad9986f466d6f0e1160ff7854ab7803e5df))
+* **decisions:** rewrite UI-001 and UI-002 as architecture decisions ([175afec](https://github.com/middag-io/middag-php-ui/commit/175afec1dc754d687d96eaaa16b5437bf0b3eb21))
+* drop pre-v2 deadline text ([69f8b59](https://github.com/middag-io/middag-php-ui/commit/69f8b595bd2a6e69e83c7fcde07a619013ed09b1))
+* state the html() stance and the file value in the README ([e5a1ae0](https://github.com/middag-io/middag-php-ui/commit/e5a1ae05532ebafecc40dd8cae713b1bf74fbabe))
+* tighten the 1.x break rule and the window notes ([ad7f018](https://github.com/middag-io/middag-php-ui/commit/ad7f018cbc79c08a0d09ac2336f60e2543523e1b))
+
 ## [1.7.0](https://github.com/middag-io/middag-php-ui/compare/v1.6.0...v1.7.0) (2026-09-16)
 
 
