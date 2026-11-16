@@ -352,8 +352,8 @@ class CrudBuilder implements CrudBuilderInterface
      *   - edit:         `id` (int|string), `schema`, `values`, `errors` (array)
      *   - show:         `detail` (array), `activity` (array)
      *
-     * @param string                                                                                                                                                                                                                                                               $action One of: index, create, edit, show
-     * @param array{rows?: list<array<string, mixed>>, pagination?: array<string, mixed>|Pagination, id?: int|string, schema?: array<string, mixed>, values?: array<string, mixed>, errors?: array<string, mixed>, detail?: array<string, mixed>, activity?: array<string, mixed>} $data   Context data keyed by action (see above)
+     * @param string                                                                                                                                                                                                                                                                                                                      $action One of: index, create, edit, show
+     * @param array{rows?: list<array<string, mixed>>, pagination?: array<string, mixed>|Pagination, sort?: array{column: string, direction: 'asc'|'desc'}, id?: int|string, schema?: array<string, mixed>, values?: array<string, mixed>, errors?: array<string, mixed>, detail?: array<string, mixed>, activity?: array<string, mixed>} $data   Context data keyed by action (see above)
      */
     public function build(string $action = 'index', array $data = []): PageContract
     {
@@ -531,6 +531,7 @@ class CrudBuilder implements CrudBuilderInterface
             [
                 'rows' => $data['rows'] ?? [],
                 'pagination' => $pagination instanceof Pagination ? $pagination->jsonSerialize() : $pagination,
+                'sort' => $this->currentSort($data['sort'] ?? null),
             ],
             $this->rowHref !== null ? ['rowHref' => $this->rowHref] : [],
         );
@@ -542,6 +543,26 @@ class CrudBuilder implements CrudBuilderInterface
             ->region('content', [
                 new BlockDescriptor(type: 'dense_table', key: $this->slug . '.table', data: $tableData),
             ]);
+    }
+
+    /**
+     * The sort the table renders as active: the request's sort when it names a
+     * column and a valid direction, otherwise the default set by sort().
+     *
+     * @return array{column: string, direction: string}
+     */
+    private function currentSort(mixed $sort): array
+    {
+        if (is_array($sort)) {
+            $column = $sort['column'] ?? null;
+            $direction = $sort['direction'] ?? null;
+
+            if (is_string($column) && $column !== '' && in_array($direction, ['asc', 'desc'], true)) {
+                return ['column' => $column, 'direction' => $direction];
+            }
+        }
+
+        return ['column' => $this->sortColumn, 'direction' => $this->sortDirection];
     }
 
     private function buildCreate(array $data): PageBuilder

@@ -145,6 +145,40 @@ final class CrudBuilderTest extends TestCase
     }
 
     #[Test]
+    public function testIndexEmitsTheDefaultSortAsTheActiveSort(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice');
+        $crud->sort('name', 'asc');
+
+        $data = $crud->build('index')->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertSame(['column' => 'name', 'direction' => 'asc'], $data['sort']);
+    }
+
+    #[Test]
+    public function testIndexEmitsTheRequestSortAsTheActiveSort(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice');
+        $crud->sort('name', 'asc');
+
+        $data = $crud->build('index', ['sort' => ['column' => 'name', 'direction' => 'desc']])
+            ->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertSame(['column' => 'name', 'direction' => 'desc'], $data['sort']);
+    }
+
+    #[Test]
+    public function testIndexFallsBackToTheDefaultSortOnAnInvalidRequestSort(): void
+    {
+        $crud = CrudBuilder::for('App\Entity\Invoice');
+
+        $data = $crud->build('index', ['sort' => ['column' => 'name', 'direction' => 'sideways']])
+            ->layout->regions['content'][0]->jsonSerialize()['data'];
+
+        self::assertSame(['column' => 'created_at', 'direction' => 'desc'], $data['sort']);
+    }
+
+    #[Test]
     public function testBuildCreate(): void
     {
         $crud = CrudBuilder::for('App\Entity\Invoice');
