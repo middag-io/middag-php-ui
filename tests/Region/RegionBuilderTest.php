@@ -12,12 +12,15 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Region;
 
+use LogicException;
 use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Page\Tab;
+use Middag\Ui\Region\PollConfig;
 use Middag\Ui\Region\RegionBuilder;
 use Middag\Ui\Shared\Enum\ChartType;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +31,48 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(RegionBuilder::class)]
 final class RegionBuilderTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
+    #[Test]
+    public function testPollAttachesConfigToLastBlock(): void
+    {
+        $builder = new RegionBuilder();
+        $poll = new PollConfig('/status', 5000, stopAfterMs: 60000);
+
+        $builder
+            ->metricCard('first', 1, 'First')
+            ->metricCard('second', 2, 'Second');
+
+        self::assertSame($builder, $builder->poll($poll));
+
+        $blocks = $builder->all();
+        self::assertCount(2, $blocks);
+        self::assertArrayNotHasKey('poll', $blocks[0]->jsonSerialize());
+        self::assertSame($poll->jsonSerialize(), $blocks[1]->jsonSerialize()['poll']);
+    }
+
+    #[Test]
+    public function testPolledBlockValidatesAgainstPublishedSchema(): void
+    {
+        $builder = (new RegionBuilder())
+            ->block('custom', 'live', ['value' => 1])
+            ->poll(new PollConfig('/live', 2000, pauseWhenHidden: false));
+
+        $block = $builder->all()[0];
+        $this->assertValidAgainst('BlockDescriptor', $block);
+
+        $roundTrip = json_decode(json_encode($block, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        self::assertSame(['endpoint' => '/live', 'intervalMs' => 2000, 'pauseWhenHidden' => false], $roundTrip['poll']);
+    }
+
+    #[Test]
+    public function testPollWithoutBlockThrows(): void
+    {
+        $this->expectException(LogicException::class);
+
+        (new RegionBuilder())->poll(new PollConfig('/x', 1000));
+    }
+
     #[Test]
     public function testEmptyRegion(): void
     {
