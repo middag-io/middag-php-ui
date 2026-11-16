@@ -5,7 +5,6 @@
 
 ### Features
 
-* CrudBuilder row action targets, column variants and multi-region pages ([aead862](https://github.com/middag-io/middag-php-ui/commit/aead86221b9c7d9a49fc58c58c2be31584b48548))
 * CrudBuilder row action targets, column variants and multi-region pages ([cc5587a](https://github.com/middag-io/middag-php-ui/commit/cc5587a812292f1b70e28a1ab7365cbe42e147a8))
 
 ## [1.9.0](https://github.com/middag-io/middag-php-ui/compare/v1.8.4...v1.9.0) (2026-11-16)
