@@ -19,9 +19,12 @@ use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Action\Confirmation;
 use Middag\Ui\Action\Contract\ActionInterface;
 use Middag\Ui\Block\BlockDescriptor;
+use Middag\Ui\EditablePanel\EditablePanelDescriptor;
+use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Page\PageBuilder;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Shared\Enum\ActionIntent;
+use Middag\Ui\Shared\Enum\ColumnVariant;
 use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\ValueFormat;
 use Middag\Ui\Shared\ValueObject\Translatable;
@@ -55,7 +58,7 @@ class CrudBuilder implements CrudBuilderInterface
     /** @var array<string, Closure> Column configurators */
     private array $columnConfigs = [];
 
-    /** @var null|string[] Row actions (null = default ['edit', 'delete']) */
+    /** @var null|array<ActionInterface|string> Row actions (null = default ['edit', 'delete']) */
     private ?array $rowActionsList = null;
 
     /** @var null|string[] Bulk actions */
@@ -92,6 +95,12 @@ class CrudBuilder implements CrudBuilderInterface
     private string|Translatable|null $labelPlural = null;
 
     private ?string $customLayout = null;
+
+    /** Index row link template with `{id}`-style placeholders; null = rows are not links. */
+    private ?string $rowHref = null;
+
+    /** @var null|Closure(PageBuilder, string): void Runs on the page builder before every build */
+    private ?Closure $pageConfigurator = null;
 
     private function __construct(private readonly string $entityClass, ?string $slug = null)
     {
@@ -141,7 +150,8 @@ class CrudBuilder implements CrudBuilderInterface
      * The callback receives the column descriptor array **by reference** and
      * mutates it in place (it returns nothing). The descriptor mirrors the
      * {@see Column} shape: keys `key`, `label`, `sortable`, `searchable`,
-     * `format` (ValueFormat), `formatOptions`, `options`. The descriptor
+     * `format` (ValueFormat), `formatOptions`, `options`, `variant`
+     * (ColumnVariant or its wire value, e.g. `'badge'`). The descriptor
      * `key` is a data-column name and follows the data layer's casing
      * (snake_case by convention, e.g. `created_at`), distinct from the
      * camelCase wire keys emitted on serialization.
@@ -158,11 +168,48 @@ class CrudBuilder implements CrudBuilderInterface
     /**
      * Set row-level actions for index table.
      *
-     * @param string[] $actions
+     * Each item is either a convention name (`edit`, `show`, `delete`, or any
+     * other name, see {@see buildRowAction()}) or a ready {@see ActionInterface}
+     * with any target, for example `ActionTarget::panel()` to open the page's
+     * editable panel. Instances are emitted as given, in order.
+     *
+     * @param array<ActionInterface|string> $actions
      */
     public function rowActions(array $actions): static
     {
         $this->rowActionsList = $actions;
+
+        return $this;
+    }
+
+    /**
+     * Make each index row a link.
+     *
+     * The template is emitted as the table's `rowHref`; the client replaces
+     * `{field}` placeholders with the row values (e.g. `/agents/{id}`).
+     */
+    public function rowHref(string $href): static
+    {
+        $this->rowHref = $href;
+
+        return $this;
+    }
+
+    /**
+     * Customize the generated page through its {@see PageBuilder}.
+     *
+     * The configurator runs after the convention has filled the builder and
+     * right before it builds, for every action. It receives the builder and
+     * the CRUD action name, so it can set the shell or subtitle, add regions,
+     * declare an editable panel, or override any convention value. Settings
+     * that live outside the contract (the editable panel, the inspector) are
+     * returned by {@see toProps()}, not by {@see build()}.
+     *
+     * @param Closure(PageBuilder, string): void $configurator
+     */
+    public function page(Closure $configurator): static
+    {
+        $this->pageConfigurator = $configurator;
 
         return $this;
     }
@@ -283,8 +330,9 @@ class CrudBuilder implements CrudBuilderInterface
      * Set a required capability for the generated actions.
      *
      * The capability is stamped onto every action this builder fabricates
-     * (the default create action, row actions, bulk actions). Caller-supplied
-     * pageActions() carry their own capability and are left untouched.
+     * (the default create action, row actions given by name, bulk actions).
+     * Caller-supplied ActionInterface instances (pageActions(), rowActions())
+     * carry their own capability and are left untouched.
      */
     public function capability(string $cap): static
     {
@@ -309,13 +357,22 @@ class CrudBuilder implements CrudBuilderInterface
      */
     public function build(string $action = 'index', array $data = []): PageContract
     {
-        return match ($action) {
-            'index' => $this->buildIndex($data),
-            'create' => $this->buildCreate($data),
-            'edit' => $this->buildEdit($data),
-            'show' => $this->buildShow($data),
-            default => throw new InvalidArgumentException('Unknown CRUD action: ' . $action),
-        };
+        return $this->pageBuilder($action, $data)->build();
+    }
+
+    /**
+     * Build the props for the given CRUD action: the contract plus the
+     * page-level settings that travel next to it (see {@see PageBuilder::toProps()}),
+     * such as the editable panel declared through {@see page()}.
+     *
+     * @param string               $action One of: index, create, edit, show
+     * @param array<string, mixed> $data   Same keys as {@see build()}
+     *
+     * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor, editablePanel?: EditablePanelDescriptor}
+     */
+    public function toProps(string $action = 'index', array $data = []): array
+    {
+        return $this->pageBuilder($action, $data)->toProps();
     }
 
     /**
@@ -397,7 +454,30 @@ class CrudBuilder implements CrudBuilderInterface
         return $singular;
     }
 
-    private function buildIndex(array $data): PageContract
+    /**
+     * Fill a PageBuilder by convention for the action, then hand it to the
+     * page configurator, if any.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function pageBuilder(string $action, array $data): PageBuilder
+    {
+        $page = match ($action) {
+            'index' => $this->buildIndex($data),
+            'create' => $this->buildCreate($data),
+            'edit' => $this->buildEdit($data),
+            'show' => $this->buildShow($data),
+            default => throw new InvalidArgumentException('Unknown CRUD action: ' . $action),
+        };
+
+        if ($this->pageConfigurator instanceof Closure) {
+            ($this->pageConfigurator)($page, $action);
+        }
+
+        return $page;
+    }
+
+    private function buildIndex(array $data): PageBuilder
     {
         $title = $this->actionTitle('index');
         $columns = $this->columnsList ?? ['name', 'status', 'created_at'];
@@ -430,7 +510,10 @@ class CrudBuilder implements CrudBuilderInterface
         $tableConfig = new TableConfig(
             columns: $builtColumns,
             filters: $this->filtersList,
-            rowActions: array_map(fn (string $a): Action => $this->buildRowAction($a), $rowActions),
+            rowActions: array_map(
+                fn (ActionInterface|string $a): ActionInterface => is_string($a) ? $this->buildRowAction($a) : $a,
+                $rowActions,
+            ),
             bulkActions: $this->bulkActionsList !== null
                 ? array_map(fn (string $a): Action => $this->buildBulkAction($a), $this->bulkActionsList)
                 : [],
@@ -449,6 +532,7 @@ class CrudBuilder implements CrudBuilderInterface
                 'rows' => $data['rows'] ?? [],
                 'pagination' => $pagination instanceof Pagination ? $pagination->jsonSerialize() : $pagination,
             ],
+            $this->rowHref !== null ? ['rowHref' => $this->rowHref] : [],
         );
 
         return PageBuilder::page($this->slug . '.index')
@@ -457,11 +541,10 @@ class CrudBuilder implements CrudBuilderInterface
             ->actions($pageActions)
             ->region('content', [
                 new BlockDescriptor(type: 'dense_table', key: $this->slug . '.table', data: $tableData),
-            ])
-            ->build();
+            ]);
     }
 
-    private function buildCreate(array $data): PageContract
+    private function buildCreate(array $data): PageBuilder
     {
         $title = $this->actionTitle('create');
 
@@ -482,11 +565,10 @@ class CrudBuilder implements CrudBuilderInterface
             ->layout($this->customLayout ?? 'stack')
             ->region('content', [
                 new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $formData),
-            ])
-            ->build();
+            ]);
     }
 
-    private function buildEdit(array $data): PageContract
+    private function buildEdit(array $data): PageBuilder
     {
         $id = $data['id'] ?? 0;
         $title = $this->actionTitle('edit');
@@ -508,11 +590,10 @@ class CrudBuilder implements CrudBuilderInterface
             ->layout($this->customLayout ?? 'stack')
             ->region('content', [
                 new BlockDescriptor(type: 'form_panel', key: $this->slug . '.form', data: $formData),
-            ])
-            ->build();
+            ]);
     }
 
-    private function buildShow(array $data): PageContract
+    private function buildShow(array $data): PageBuilder
     {
         $title = $this->actionTitle('show');
 
@@ -524,8 +605,7 @@ class CrudBuilder implements CrudBuilderInterface
             ])
             ->region('aside', [
                 new BlockDescriptor(type: 'activity_timeline', key: $this->slug . '.activity', data: $data['activity'] ?? []),
-            ])
-            ->build();
+            ]);
     }
 
     /**
@@ -568,9 +648,33 @@ class CrudBuilder implements CrudBuilderInterface
                 format: $d['format'] ?? ValueFormat::Text,
                 formatOptions: $d['formatOptions'] ?? [],
                 options: $d['options'] ?? [],
+                variant: self::columnVariant($d['key'], $d['variant'] ?? null),
             ),
             $this->buildColumnDescriptors($columns),
         );
+    }
+
+    /**
+     * Resolve a descriptor `variant` (enum case or wire value) to a ColumnVariant.
+     */
+    private static function columnVariant(string $column, mixed $variant): ?ColumnVariant
+    {
+        if ($variant === null || $variant instanceof ColumnVariant) {
+            return $variant;
+        }
+
+        $resolved = is_string($variant) ? ColumnVariant::tryFrom($variant) : null;
+
+        if (!$resolved instanceof ColumnVariant) {
+            throw new InvalidArgumentException(sprintf(
+                'Unknown variant for column "%s": %s. Expected a ColumnVariant or one of: %s.',
+                $column,
+                is_string($variant) ? $variant : get_debug_type($variant),
+                implode(', ', array_map(static fn (ColumnVariant $v): string => $v->value, ColumnVariant::cases())),
+            ));
+        }
+
+        return $resolved;
     }
 
     /**

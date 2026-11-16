@@ -82,6 +82,26 @@ $contract = CrudBuilder::for(Invoice::class, slug: 'invoices')
     ->build('index', ['rows' => $invoices]);
 ```
 
+Row actions take convention names or ready actions with any target, and
+`page()` hands over the underlying `PageBuilder` for anything the convention
+does not cover (shell, subtitle, extra regions, the editable panel). Use
+`toProps()` instead of `build()` when the page declares settings that travel
+next to the contract, such as the editable panel:
+
+```php
+$props = CrudBuilder::for(Agent::class, slug: 'agents')
+    ->columns(['name', 'role', 'workload'])
+    ->column('role', fn (array &$col) => $col['variant'] = ColumnVariant::Badge)
+    ->rowActions([new Action(id: 'edit', label: 'Edit', target: ActionTarget::panel()), 'delete'])
+    ->rowHref('/agents/{id}')
+    ->page(fn (PageBuilder $page) => $page
+        ->layout('dashboard')                 // renders the `metrics` region above `content`
+        ->subtitle('Who answers tickets')
+        ->region('metrics', fn (RegionBuilder $r) => $r->metricCard('agents', 12, 'Agents'))
+        ->editablePanel('/agents/{id}/panel'))
+    ->toProps('index', ['rows' => $agents]);   // ['contract' => PageContract, 'editablePanel' => ...]
+```
+
 The class basename is treated as a **singular** noun. The library never
 fabricates a plural: the slug defaults to the singular, and `for(class, slug:)`
 overrides it for a plural URL. Titles resolve via `->label()` (explicit) →
