@@ -42,7 +42,7 @@ This means PHP never renders HTML for pages — it declares structure, and React
 |---------|--------------|
 | **Transport-agnostic contracts** | Builders produce `JsonSerializable` → `PageContract` (JSON). No Inertia/transport dependency; works with any wire. |
 | **Zero dependencies** | PHP `^8.3` only. Consumers inherit no transitive packages. |
-| **Host-agnostic** | No Moodle / WordPress / `mform` / capability coupling. Host-specifics live in the adapter, never here. |
+| **Host-agnostic** | No Moodle / WordPress / `mform` / capability coupling. Host-specifics live in the adapter, never here. `tests/Architecture/HostVocabularyTest.php` scans `src/` and `schema/`, comments included, for host vocabulary. |
 | **3 levels of composition** | Convention (`CrudBuilder`) → convention + overrides → free composition (`PageBuilder`). |
 | **CRUD convention builder** | `index`/`create`/`edit`/`show` pages from an entity class: i18n titles, filters, search, per-action `capability` gating. |
 | **Block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
@@ -239,7 +239,8 @@ This library provides contracts and value objects only — renderers live in `mi
 | `FieldDefinition` | Immutable boundary object between DSL and renderers. No `JsonSerializable` — renderers map manually.                                |
 | `Condition`       | `field + operator (ConditionOperator enum) + value + kind`. Kinds: `visible_when`, `hidden_when`, `required_when`, `disabled_when`. |
 | `FormState`       | Immutable readonly VO. `withValues()` / `withErrors()` return a new instance. Carries `values`, `errors`, `submitted`.              |
-| `RendererOutput`  | Static factories `::html()` and `::props()` for the two render targets.                                                             |
+| `RendererOutput`  | Static factories `::html()` and `::props()` for the two render targets. `html()` carries a body a renderer downstream produced, as opaque data; no ui contract produces markup.                                                             |
+| `FileValue`       | A file field value: `url` plus optional `name`, `size`, `type`, `id` and `uploadToken`, an opaque string the host adapter maps to its pending-upload storage. |
 
 ### Layout Primitives
 

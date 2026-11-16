@@ -31,7 +31,12 @@ final readonly class RendererOutput
         public array $props,
     ) {}
 
-    /** Build an HTML-body output. */
+    /**
+     * Build an HTML-body output.
+     *
+     * The body is opaque data: a renderer downstream produced it, and ui only
+     * carries it. No ui contract produces markup (UI-001).
+     */
     public static function html(RenderTarget $target, string $body): self
     {
         return new self($target, $body, []);
