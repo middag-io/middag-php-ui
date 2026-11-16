@@ -47,7 +47,11 @@ each concern's `Contract/` sub-namespace (`Page/Contract/`, `Form/Contract/`,
 `Navigation/Contract/`, `Inspector/Contract/`, `Envelope/Contract/`,
 `EditablePanel/Contract/`), the concern builders and their value objects
 (including `Condition\Condition` and `EditablePanel\EditablePanelDescriptor`), and the cross-cutting types under
-`Shared/`.
+`Shared/`, except `Shared/Concerns/ProvidesJsonSchema`.
+
+`Shared/Concerns/ProvidesJsonSchema` and everything under `Schema/` (the JSON
+Schema registry) are `@internal`: they support schema export inside the
+package and are not part of the public surface.
 
 ## The wire contract
 
