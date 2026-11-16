@@ -108,9 +108,9 @@ Longer body when the "why" isn't obvious.
 ### Versioning (release-please)
 
 Releases are cut **exclusively** by `release-please` from the Conventional
-Commit history — there are no manual tags. The rules come from
-ADR-032 of the internal `docs-middag-ops`
-and are detailed in [`API-STABILITY.md`](API-STABILITY.md).
+Commit history — there are no manual tags. The family rules are in
+https://docs.middag.dev/libraries/reference/versioning-and-compatibility and
+the public surface of this lib in [`API-STABILITY.md`](API-STABILITY.md).
 
 | Commit | Bump on `1.x` (now) | Bump from `2.0.0` |
 | ------ | ------------------- | ----------------- |
@@ -142,11 +142,6 @@ A window counts as open only when it is ahead of this lib's current version; a
 stale value reads as closed. While a window is open, merge this lib's Release
 PR only at the coordinated `X.Y.0`. After the `2.0.0` cut, a PR opened before
 it must merge `main` in so that the check reads the new version.
-
-> Historical note: `1.2.1` shipped the audit-consolidation breaking change
-> (the `TableOptions` → `TableDisplayOptions` rename) as a patch by explicit
-> maintainer decision, closing the OSS audit before external consumers
-> existed. The policy above applies from that release onward.
 
 ## Pull request checklist
 
