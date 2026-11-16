@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.3](https://github.com/middag-io/middag-php-ui/compare/v1.8.2...v1.8.3) (2026-11-16)
+
+
+### Documentation
+
+* point governance refs to the public docs and drop the architecture stub ([8dda73e](https://github.com/middag-io/middag-php-ui/commit/8dda73e3b3c32768a9ac2c0f129ffa7b36701861))
+* point governance refs to the public docs and drop the architecture stub ([aa408ef](https://github.com/middag-io/middag-php-ui/commit/aa408ef24b52bc08568bddfc8a68f1efdf36b933))
+
 ## [1.8.2](https://github.com/middag-io/middag-php-ui/compare/v1.8.1...v1.8.2) (2026-11-16)
 
 
