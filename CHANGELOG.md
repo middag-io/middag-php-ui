@@ -6,7 +6,6 @@
 ### Features
 
 * carry a pending upload as a neutral uploadToken ([126c02d](https://github.com/middag-io/middag-php-ui/commit/126c02d0e14d2b89c76a0105d0b81febae05c638)), closes [#64](https://github.com/middag-io/middag-php-ui/issues/64)
-* PHP 8.3 platform and a neutral upload token on the file value ([9391f78](https://github.com/middag-io/middag-php-ui/commit/9391f788da994be1530f5b832eb20031174fc1d6))
 
 
 ### Refactoring
@@ -16,13 +15,9 @@
 
 ### Documentation
 
-* align versioning docs with the version family (ADR-032) ([65e8e51](https://github.com/middag-io/middag-php-ui/commit/65e8e510f05de6714fe7f7479f98daff6af257a7))
 * align versioning docs with the version family (ADR-032) ([484c710](https://github.com/middag-io/middag-php-ui/commit/484c7103eb0dad812f74c5b5b11de387495e0227))
-* **decisions:** fix UI-001 review findings and guard runtime deps ([f3aeff4](https://github.com/middag-io/middag-php-ui/commit/f3aeff485993db62c42f117cd7225993b6d572de))
 * **decisions:** fix UI-001 review findings and guard runtime deps ([4e881ad](https://github.com/middag-io/middag-php-ui/commit/4e881ad9986f466d6f0e1160ff7854ab7803e5df))
-* **decisions:** rewrite UI-001 and UI-002 as architecture decisions ([8602bb1](https://github.com/middag-io/middag-php-ui/commit/8602bb179816ed2c51c633855535a985792abb72))
 * **decisions:** rewrite UI-001 and UI-002 as architecture decisions ([175afec](https://github.com/middag-io/middag-php-ui/commit/175afec1dc754d687d96eaaa16b5437bf0b3eb21))
-* drop pre-v2 deadline text ([e484660](https://github.com/middag-io/middag-php-ui/commit/e484660611fda2430d2149c02218c95d9c07bc47))
 * drop pre-v2 deadline text ([69f8b59](https://github.com/middag-io/middag-php-ui/commit/69f8b595bd2a6e69e83c7fcde07a619013ed09b1))
 * state the html() stance and the file value in the README ([e5a1ae0](https://github.com/middag-io/middag-php-ui/commit/e5a1ae05532ebafecc40dd8cae713b1bf74fbabe))
 * tighten the 1.x break rule and the window notes ([ad7f018](https://github.com/middag-io/middag-php-ui/commit/ad7f018cbc79c08a0d09ac2336f60e2543523e1b))
