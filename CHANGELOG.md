@@ -5,7 +5,6 @@
 
 ### Documentation
 
-* point the architecture copies to the hub and add help and status ([cb506aa](https://github.com/middag-io/middag-php-ui/commit/cb506aa15e8ba21409e3f7c6eff938128aea0b9c))
 * point the architecture copies to the hub and add help and status ([61567af](https://github.com/middag-io/middag-php-ui/commit/61567af0f37be650086037f392b77c6be2901988))
 
 ## [1.8.0](https://github.com/middag-io/middag-php-ui/compare/v1.7.0...v1.8.0) (2026-11-16)
