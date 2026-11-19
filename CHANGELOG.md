@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.2](https://github.com/middag-io/middag-php-ui/compare/v1.10.1...v1.10.2) (2026-11-19)
+
+
+### Documentation
+
+* point the security contact to security@middag.io ([9a17d05](https://github.com/middag-io/middag-php-ui/commit/9a17d053a38cc549b22921fadd7f07adac082da0))
+* point the security contact to security@middag.io ([96874a5](https://github.com/middag-io/middag-php-ui/commit/96874a5c6c06283a2ea3b63d308221fef93b7912))
+
 ## [1.10.1](https://github.com/middag-io/middag-php-ui/compare/v1.10.0...v1.10.1) (2026-11-16)
 
 
