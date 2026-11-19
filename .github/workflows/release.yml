@@ -45,3 +45,38 @@ jobs:
       app-client-id: ${{ vars.GH_APPS_MIDDAG_CI_RELEASE_CLIENT_ID }}
     secrets:
       app-private-key: ${{ secrets.GH_APPS_MIDDAG_CI_RELEASE_PRIVATE_KEY }}
+
+  # @middag-io/ui-contracts (middag-io/middag-react, packages/contracts) mirrors
+  # schema/ from a release tag. On a release, send it the tag: its Contracts
+  # mirror workflow copies the schemas, regenerates the TypeScript and opens a
+  # pull request when they changed. Nothing here builds or reads React code.
+  #
+  # This repository is public, so the job mints the release App token itself
+  # instead of calling the private dispatch component. repository_dispatch
+  # needs contents: write on the target; the App holds it on middag-react.
+  notify-contracts:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release-created == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Mint App token
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.GH_APPS_MIDDAG_CI_RELEASE_CLIENT_ID }}
+          private-key: ${{ secrets.GH_APPS_MIDDAG_CI_RELEASE_PRIVATE_KEY }}
+          owner: middag-io
+          repositories: middag-react
+          permission-contents: write
+
+      - name: Send php-ui-released to middag-react
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          TAG: ${{ needs.release-please.outputs.tag-name }}
+        run: |
+          gh api --method POST repos/middag-io/middag-react/dispatches \
+            -f event_type=php-ui-released \
+            -f "client_payload[tag]=${TAG}"
+          echo "Sent php-ui-released (${TAG}) to middag-io/middag-react."
