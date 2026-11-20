@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.3](https://github.com/middag-io/middag-php-ui/compare/v1.10.2...v1.10.3) (2026-11-20)
+
+
+### Bug Fixes
+
+* **block:** send the empty-state call-to-action as an object ([60628e2](https://github.com/middag-io/middag-php-ui/commit/60628e28aa947928bdc6bc5ed364bb5a039dd076))
+* **block:** send the empty-state call-to-action as an object ([84b1047](https://github.com/middag-io/middag-php-ui/commit/84b104763db0ced4bbc165eb546bda912ff22c58))
+
 ## [1.10.2](https://github.com/middag-io/middag-php-ui/compare/v1.10.1...v1.10.2) (2026-11-19)
 
 
