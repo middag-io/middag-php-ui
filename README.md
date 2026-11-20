@@ -192,7 +192,7 @@ Static factories in `BlockBuilder::`:
 | `BlockBuilder::formPanel($key, $action, $method, $schema, $values)`      | Form panel             |
 | `BlockBuilder::detailPanel($key, $sections)`                             | Read-only detail view  |
 | `BlockBuilder::metricCard($key, $value, $label, $delta, $icon, $href)`   | KPI card               |
-| `BlockBuilder::emptyState($key, $variant, $description, $cta)`           | Empty state            |
+| `BlockBuilder::emptyState($key, $variant, $description, $cta, $icon, $ctaHref)` | Empty state            |
 | `BlockBuilder::statusStrip($key, $items, $tone)`                         | Status bar             |
 | `BlockBuilder::activityTimeline($key, $groups, $hasMore, $loadMoreHref)` | Activity feed          |
 | `BlockBuilder::markdownPanel($key, $content, $maxHeight)`                | Markdown body          |

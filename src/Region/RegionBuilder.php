@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Region;
 
 use LogicException;
+use Middag\Ui\Action\Action;
 use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
@@ -95,11 +96,12 @@ class RegionBuilder implements RegionBuilderInterface
     }
 
     /**
-     * Add an empty state block.
+     * Add an empty state block. `$cta` is the button label and `$ctaHref` where
+     * it leads (see {@see BlockBuilder::emptyState}).
      */
-    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): static
+    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): static
     {
-        $this->blocks[] = BlockBuilder::emptyState($key, $variant, $description, $cta, $icon);
+        $this->blocks[] = BlockBuilder::emptyState($key, $variant, $description, $cta, $icon, $ctaHref);
 
         return $this;
     }
@@ -144,8 +146,12 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add an action grid block.
      *
-     * @param array<int, array{id: string, icon: string, title: string, description: string, actionUrl: string, actionMethod?: string, confirmText?: string}> $items
-     * @param null|array{success: bool, message: string}                                                                                                      $flash
+     * Each item is an action card: the fields of {@see Action::jsonSerialize()}
+     * (`id`, `label`, `target`, `intent`, and the optional `icon`,
+     * `confirmation`, `capability`) plus the card's `title` and `description`.
+     *
+     * @param array<int, array<string, mixed>>           $items
+     * @param null|array{success: bool, message: string} $flash
      */
     public function actionGrid(string $key, array $items, ?array $flash = null): static
     {

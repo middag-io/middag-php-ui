@@ -243,6 +243,15 @@ final class RegionBuilderTest extends TestCase
     }
 
     #[Test]
+    public function testEmptyStatePassesTheCtaHref(): void
+    {
+        $builder = new RegionBuilder();
+        $builder->emptyState('e', cta: 'Create item', ctaHref: '/items/create');
+
+        self::assertSame(['label' => 'Create item', 'href' => '/items/create'], $builder->all()[0]->jsonSerialize()['data']['cta']);
+    }
+
+    #[Test]
     public function testFormPanel(): void
     {
         $builder = new RegionBuilder();
