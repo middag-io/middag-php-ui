@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Region\Contract;
 
+use Middag\Ui\Action\Action;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
@@ -61,8 +62,12 @@ interface RegionBuilderInterface
     public function cardGrid(string $key, array $columns, array $rows = [], ?string $variant = null, array $data = []): static;
 
     /**
-     * @param array<int, array{id: string, icon: string, title: string, description: string, actionUrl: string, actionMethod?: string, confirmText?: string}> $items
-     * @param null|array{success: bool, message: string}                                                                                                      $flash
+     * Each item is an action card: the fields of {@see Action::jsonSerialize()}
+     * (`id`, `label`, `target`, `intent`, and the optional `icon`,
+     * `confirmation`, `capability`) plus the card's `title` and `description`.
+     *
+     * @param array<int, array<string, mixed>>           $items
+     * @param null|array{success: bool, message: string} $flash
      */
     public function actionGrid(string $key, array $items, ?array $flash = null): static;
 

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Block;
 
+use Middag\Ui\Action\Action;
 use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
@@ -105,12 +106,21 @@ class BlockBuilder
         );
     }
 
-    public static function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): BlockDescriptor
+    /**
+     * Build an empty-state block.
+     *
+     * `$cta` is the label of the call-to-action button and `$ctaHref` where it
+     * leads. On the wire the button is an object, `{label, href?}`: the client
+     * reads `cta.label`, so a bare string would render a button with no text.
+     */
+    public static function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): BlockDescriptor
     {
+        $button = $cta === null ? null : array_filter(['label' => $cta, 'href' => $ctaHref], static fn (?string $v): bool => $v !== null);
+
         return new BlockDescriptor(
             type: 'empty_state',
             key: $key,
-            data: array_filter(['variant' => $variant, 'description' => $description, 'cta' => $cta, 'icon' => $icon], static fn (?string $v): bool => $v !== null),
+            data: array_filter(['variant' => $variant, 'description' => $description, 'cta' => $button, 'icon' => $icon], static fn (array|string|null $v): bool => $v !== null),
         );
     }
 
@@ -178,8 +188,12 @@ class BlockBuilder
     }
 
     /**
-     * @param array<int, array{id: string, icon: string, title: string, description: string, actionUrl: string, actionMethod?: string, confirmText?: string}> $items
-     * @param null|array{success: bool, message: string}                                                                                                      $flash
+     * Each item is an action card: the fields of {@see Action::jsonSerialize()}
+     * (`id`, `label`, `target`, `intent`, and the optional `icon`,
+     * `confirmation`, `capability`) plus the card's `title` and `description`.
+     *
+     * @param array<int, array<string, mixed>>           $items
+     * @param null|array{success: bool, message: string} $flash
      */
     public static function actionGrid(string $key, array $items, ?array $flash = null): BlockDescriptor
     {

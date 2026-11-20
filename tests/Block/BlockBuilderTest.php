@@ -12,12 +12,16 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Block;
 
+use Middag\Ui\Action\Action;
+use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
+use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\ChartType;
+use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -194,6 +198,23 @@ final class BlockBuilderTest extends TestCase
         self::assertSame('empty_state', $payload['type']);
         self::assertSame('e', $payload['key']);
         self::assertSame('first-use', $payload['data']['variant']);
+        self::assertArrayNotHasKey('cta', $payload['data']);
+    }
+
+    #[Test]
+    public function testEmptyStateCtaIsAnObjectWithLabelAndHref(): void
+    {
+        $payload = BlockBuilder::emptyState('e', cta: 'Create item', ctaHref: '/items/create')->jsonSerialize();
+
+        self::assertSame(['label' => 'Create item', 'href' => '/items/create'], $payload['data']['cta']);
+    }
+
+    #[Test]
+    public function testEmptyStateCtaWithoutHrefKeepsOnlyTheLabel(): void
+    {
+        $payload = BlockBuilder::emptyState('e', cta: 'Create item')->jsonSerialize();
+
+        self::assertSame(['label' => 'Create item'], $payload['data']['cta']);
     }
 
     #[Test]
@@ -295,6 +316,20 @@ final class BlockBuilderTest extends TestCase
         self::assertSame('action_grid', $payload['type']);
         self::assertSame('ag', $payload['key']);
         self::assertArrayHasKey('items', $payload['data']);
+    }
+
+    #[Test]
+    public function testActionGridItemIsAnActionPlusTitleAndDescription(): void
+    {
+        $action = new Action(id: 'reindex', label: 'Run', target: ActionTarget::request('/tools/reindex', HttpMethod::Post), intent: ActionIntent::Primary);
+        $item = array_merge($action->jsonSerialize(), ['title' => 'Reindex', 'description' => 'Rebuild the search index.']);
+
+        $payload = BlockBuilder::actionGrid('ag', [$item])->jsonSerialize();
+
+        self::assertSame($item, $payload['data']['items'][0]);
+        self::assertSame('reindex', $payload['data']['items'][0]['id']);
+        self::assertSame('Run', $payload['data']['items'][0]['label']);
+        self::assertArrayHasKey('target', $payload['data']['items'][0]);
     }
 
     #[Test]
