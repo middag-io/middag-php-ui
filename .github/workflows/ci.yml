@@ -12,39 +12,57 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # Released php-library-check component of middag-io/actions, called by its
-  # major tag. One job per PHP version, with the platform pin (8.3.0) kept:
-  # the static checks (composer validate --strict, strict PSR-4, the PHP 8.3
-  # parse lint, PHPStan, PHP-CS-Fixer, Rector and the schema drift gate) run
-  # on 8.3, the floor; the audit and PHPUnit on every version. The tool caches
-  # live in .cache. No credentials: ui has no private dependency.
+  # Steps of the released php-library-check composite of middag-io/actions,
+  # called by its major tag (onda 2, middag-io/infra-terraform#450). One job
+  # per matrix entry. Locked entries keep the platform pin (8.3.0): the static
+  # checks (composer validate --strict, strict PSR-4, the PHP 8.3 parse lint,
+  # PHPStan, PHP-CS-Fixer, Rector and the schema drift gate) run on 8.3, the
+  # floor; the audit and PHPUnit on every version. The tool caches live in
+  # .cache. No credentials: ui has no private dependency.
+  #
+  # Highest entries remove the platform pin and resolve the highest
+  # dependency versions on the PHP of each job. ui depends on no Symfony
+  # package, so expect-majors is empty: these jobs prove the PHP range only.
   php-library-check:
-    uses: middag-io/actions/.github/workflows/php-library-check.yml@php-library-check-v1
+    name: check (PHP ${{ matrix.php-version }}${{ matrix.dependency-versions == 'highest' && ', highest' || '' }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     permissions:
       contents: read
-    with:
-      php-versions: '["8.3", "8.4", "8.5"]'
-      composer-validate-strict: true
-      lint-script: check:lint
-      composer-scripts: check:schemas
-      tool-cache-paths: .cache
-      audit-blocking-severities: critical, high
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php-version: "8.3"
+            dependency-versions: locked
+            static-checks: true
+          - php-version: "8.4"
+            dependency-versions: locked
+            static-checks: false
+          - php-version: "8.5"
+            dependency-versions: locked
+            static-checks: false
+          - php-version: "8.4"
+            dependency-versions: highest
+            static-checks: false
+          - php-version: "8.5"
+            dependency-versions: highest
+            static-checks: false
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-  # Second call of the same component: removes the platform pin and resolves
-  # the highest dependency versions on the PHP of each job. ui depends on no
-  # Symfony package, so expect-majors is empty: the job proves the PHP range
-  # only. The static checks already run in the locked job.
-  php-library-check-highest:
-    uses: middag-io/actions/.github/workflows/php-library-check.yml@php-library-check-v1
-    permissions:
-      contents: read
-    with:
-      php-versions: '["8.4", "8.5"]'
-      dependency-versions: highest
-      unset-platform-php: true
-      composer-validate: false
-      strict-psr: false
-      phpstan-script: ""
-      cs-fixer-script: ""
-      rector-script: ""
-      audit-blocking-severities: critical, high
+      - name: Check the library
+        uses: middag-io/actions/php-library-check@php-library-check-v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          static-checks: ${{ matrix.static-checks }}
+          dependency-versions: ${{ matrix.dependency-versions }}
+          unset-platform-php: ${{ matrix.dependency-versions == 'highest' }}
+          composer-validate-strict: true
+          lint-script: check:lint
+          composer-scripts: check:schemas
+          tool-cache-paths: .cache
+          audit-blocking-severities: critical, high
