@@ -141,8 +141,8 @@ final class SchemaRegistry
         'FieldError' => FieldError::class,
         'FormErrors' => FormErrors::class,
         // Form schema tree (the canonical form-field union; the form-panel block
-        // payload stays a lenient passthrough until producers migrate, so these
-        // are a standalone island — not yet referenced from the page tree).
+        // builder accepts only these nodes, while the generic block payload is
+        // untyped, so the tree is a standalone island in the page schema).
         'FormSchemaNode' => FormSchemaNode::class,
         'FormFieldNode' => FormFieldNode::class,
         'FormSectionNode' => FormSectionNode::class,

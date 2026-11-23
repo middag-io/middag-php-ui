@@ -47,10 +47,10 @@ interface RegionBuilderInterface
     public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): static;
 
     /**
-     * @param array<int, array<string, mixed>|FormSchemaNodeInterface> $schema Form schema nodes (VO or legacy loose array)
-     * @param array<string, mixed>                                     $values
-     * @param null|array<int, FormStep>                                $steps  Wizard steps; when set, the form renders multi-step
-     * @param array<string, mixed>                                     $data   Extra data merged into the block payload
+     * @param list<FormSchemaNodeInterface> $schema Form schema nodes (value objects; see {@see BlockBuilder::formPanel})
+     * @param array<string, mixed>          $values
+     * @param null|array<int, FormStep>     $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>          $data   Extra data merged into the block payload
      */
     public function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): static;
 
