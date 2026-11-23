@@ -14,6 +14,7 @@ namespace Middag\Ui\Tests\Action;
 
 use Middag\Ui\Action\ActionResult;
 use Middag\Ui\Block\BlockDescriptor;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
@@ -63,6 +64,22 @@ final class ActionResultTest extends TestCase
         self::assertSame('/back', $payload['redirect']);
         self::assertSame(['table'], $payload['refreshBlocks']);
         self::assertSame(['name' => 'Required'], $payload['errors']);
+    }
+
+    #[Test]
+    public function testNormalizesStructuredErrorMessages(): void
+    {
+        $result = new ActionResult(
+            success: false,
+            errors: ['email' => new FieldMessage('Invalid email.', 'validation.email', 'validators'), 'name' => ['Required', new FieldMessage('Too short.', 'validation.min', 'validators', ['min' => 2])]],
+        );
+
+        $payload = $result->jsonSerialize();
+
+        self::assertSame(['message' => 'Invalid email.', 'key' => 'validation.email', 'domain' => 'validators'], $payload['errors']['email']);
+        self::assertSame('Required', $payload['errors']['name'][0]);
+        self::assertSame(['min' => 2], $payload['errors']['name'][1]['params']);
+        $this->assertValidAgainst('ActionResult', $result);
     }
 
     #[Test]

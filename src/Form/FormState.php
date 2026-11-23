@@ -25,9 +25,9 @@ namespace Middag\Ui\Form;
 final readonly class FormState
 {
     /**
-     * @param array<string, mixed>           $values    Hydrated input keyed by field name
-     * @param array<string, string|string[]> $errors    Per-field validation errors
-     * @param bool                           $submitted Whether the form received input
+     * @param array<string, mixed>                                                                                                                                                                                                               $values    Hydrated input keyed by field name
+     * @param array<string, array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|list<array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|string>|string> $errors    Per-field validation errors (see FormErrors)
+     * @param bool                                                                                                                                                                                                                               $submitted Whether the form received input
      */
     public function __construct(
         private array $values = [],
@@ -41,7 +41,7 @@ final readonly class FormState
         return $this->values;
     }
 
-    /** @return array<string, string|string[]> */
+    /** @return array<string, array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|list<array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|string>|string> */
     public function errors(): array
     {
         return $this->errors;
@@ -58,7 +58,7 @@ final readonly class FormState
         return new self($values, $this->errors, true);
     }
 
-    /** @param array<string, string|string[]> $errors */
+    /** @param array<string, array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|list<array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|string>|string> $errors */
     public function withErrors(array $errors): self
     {
         return new self($this->values, $errors, $this->submitted);

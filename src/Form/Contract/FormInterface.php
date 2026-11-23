@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Form\Contract;
 
 use Middag\Ui\Block\Contract\LayoutElementInterface;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FormState;
 
 /**
@@ -45,9 +46,10 @@ interface FormInterface
     public function validated(): array;
 
     /**
-     * Per-field validation errors.
+     * Per-field validation errors: a message, a structured message
+     * ({@see FieldMessage}, or its serialized array) or a list of either.
      *
-     * @return array<string, string|string[]>
+     * @return array<string, array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|list<array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|string>|string>
      */
     public function errors(): array;
 

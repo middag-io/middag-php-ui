@@ -66,6 +66,8 @@ The shared props types are `@api`: `Shared\ValueObject\SharedProps`, `SharedAuth
 
 The `errors` slot carries the `FormErrors` of the current request. It does not cover the `X-Inertia-Error-Bag` header, which is handled at the framework edge.
 
+A `FormErrors` value is a `FieldError`: one message, a list of messages or structured messages, or one structured message. The structured message is `Form\FieldMessage` (`@api`), serialized as `{message, key, domain, params?}`: the server-resolved `message` is the fallback, and `key`, `domain` and `params` let the client translate it. `params` is omitted when empty.
+
 Adding an optional key or a new `$def` is additive and ships in a MINOR; clients ignore keys they do not know. Adding a new discriminator value (`kind`, `type`) is additive and ships in a MINOR; clients treat an unknown value as unsupported and degrade that element instead of rejecting the whole payload. Enum values follow the policy in [Enum evolution on the wire](#enum-evolution-on-the-wire). Removing or renaming a key, removing an enum value, changing a type or making a key required is a breaking change: it ships in a MAJOR and raises `ContractEnvelopeInterface::VERSION` and `x-contract-version`. `@middag-io/ui-contracts` mirrors `schema/`, ships the TypeScript types and zod schemas generated from it, and versions on its own line.
 
 ### Enum evolution on the wire

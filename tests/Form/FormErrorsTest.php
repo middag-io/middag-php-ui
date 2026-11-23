@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Form;
 
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -60,6 +61,41 @@ final class FormErrorsTest extends TestCase
             FormErrors::FORM_LEVEL_KEY => 'The whole form failed.',
             'address.zip' => ['Required.'],
         ]));
+    }
+
+    #[Test]
+    public function testSerializeNormalizesStructuredMessagesAloneAndInLists(): void
+    {
+        $email = new FieldMessage('Invalid email.', 'validation.email', 'validators');
+        $unique = new FieldMessage('Tags must be unique.', 'validation.unique', 'validators', ['limit' => 3]);
+
+        $errors = new FormErrors([
+            'email' => $email,
+            'tags' => ['Too many tags', $unique],
+            FormErrors::FORM_LEVEL_KEY => 'The form could not be saved.',
+        ]);
+
+        self::assertSame(
+            '{"email":{"message":"Invalid email.","key":"validation.email","domain":"validators"},'
+            . '"tags":["Too many tags",{"message":"Tags must be unique.","key":"validation.unique","domain":"validators","params":{"limit":3}}],'
+            . '"_":"The form could not be saved."}',
+            json_encode($errors),
+        );
+        $this->assertValidAgainst('FormErrors', $errors);
+    }
+
+    #[Test]
+    public function testSerializedSessionArraysPassThrough(): void
+    {
+        $fromSession = [
+            'email' => ['message' => 'Invalid email.', 'key' => 'validation.email', 'domain' => 'validators'],
+            'tags' => ['Too many tags', ['message' => 'Unique.', 'key' => 'validation.unique', 'domain' => 'validators', 'params' => ['limit' => 3]]],
+        ];
+
+        $errors = new FormErrors($fromSession);
+
+        self::assertSame($fromSession, $errors->jsonSerialize());
+        $this->assertValidAgainst('FormErrors', $errors);
     }
 
     #[Test]

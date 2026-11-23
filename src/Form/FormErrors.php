@@ -18,8 +18,11 @@ use stdClass;
 /**
  * Validation errors for a form submission, keyed by field name.
  *
- * Each value is a {@see FieldError} (one message or a list). Two reserved key
- * conventions the client honors:
+ * Each value is a {@see FieldError}: one message, a list of messages or
+ * structured messages, or one structured message ({@see FieldMessage}). A
+ * structured message may also be given as its serialized array (for example
+ * when the map is rebuilt from the session); it passes through unchanged.
+ * Two reserved key conventions the client honors:
  *  - The form-level key `_` ({@see self::FORM_LEVEL_KEY}) carries errors that
  *    belong to the whole form rather than a single field; the client renders
  *    these as a form-level alert instead of routing them to an input.
@@ -35,16 +38,24 @@ final readonly class FormErrors implements JsonSerializable
     public const string FORM_LEVEL_KEY = '_';
 
     /**
-     * @param array<string, string|string[]> $errors field name → message(s)
+     * @param array<string, array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|list<array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|string>|string> $errors field name → message(s)
      */
     public function __construct(
         public array $errors = [],
     ) {}
 
-    /** @return array<string, string|string[]>|stdClass */
+    /**
+     * Every {@see FieldMessage}, alone or inside a list, becomes its array form.
+     *
+     * @return array<string, mixed>|stdClass
+     */
     public function jsonSerialize(): array|stdClass
     {
-        return $this->errors === [] ? new stdClass() : $this->errors;
+        if ($this->errors === []) {
+            return new stdClass();
+        }
+
+        return array_map($this->normalize(...), $this->errors);
     }
 
     /** @return array<string, mixed> */
@@ -52,8 +63,24 @@ final readonly class FormErrors implements JsonSerializable
     {
         return [
             'type' => 'object',
-            'description' => 'Validation errors keyed by field name. The reserved key "_" carries form-level errors; dotted keys target nested fields.',
+            'description' => 'Validation errors keyed by field name. Each value is a message, a structured message (FieldMessage) or a list of either. The reserved key "_" carries form-level errors; dotted keys target nested fields.',
             'additionalProperties' => ['$ref' => '#/$defs/FieldError'],
         ];
+    }
+
+    private function normalize(mixed $value): mixed
+    {
+        if ($value instanceof FieldMessage) {
+            return $value->jsonSerialize();
+        }
+
+        if (is_array($value) && array_is_list($value)) {
+            return array_map(
+                static fn (mixed $item): mixed => $item instanceof FieldMessage ? $item->jsonSerialize() : $item,
+                $value,
+            );
+        }
+
+        return $value;
     }
 }

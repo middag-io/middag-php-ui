@@ -23,6 +23,7 @@ use Middag\Ui\EditablePanel\EditablePanelDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FieldError;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FieldPropsBase;
 use Middag\Ui\Form\FileValue;
 use Middag\Ui\Form\FormCondition;
@@ -147,6 +148,7 @@ final class SchemaRegistry
         'FieldConstraints' => FieldConstraints::class,
         'FileValue' => FileValue::class,
         'FieldError' => FieldError::class,
+        'FieldMessage' => FieldMessage::class,
         'FormErrors' => FormErrors::class,
         // Form schema tree (the canonical form-field union; the form-panel block
         // builder accepts only these nodes, while the generic block payload is

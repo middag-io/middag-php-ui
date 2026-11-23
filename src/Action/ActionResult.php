@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Action;
 
 use JsonSerializable;
+use Middag\Ui\Form\FieldMessage;
+use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Shared\ValueObject\Notification;
 
@@ -34,10 +36,10 @@ use Middag\Ui\Shared\ValueObject\Notification;
 final readonly class ActionResult implements JsonSerializable
 {
     /**
-     * @param Notification[]                 $notifications
-     * @param string[]                       $refreshBlocks Block keys to reload (pull)
-     * @param array<string, string|string[]> $errors        Validation errors keyed by field; the reserved "_" key carries form-level errors (see FormErrors)
-     * @param Fragment[]                     $fragments     Ready pieces to swap in (push)
+     * @param Notification[]                                                                                                                                                                                                                     $notifications
+     * @param string[]                                                                                                                                                                                                                           $refreshBlocks Block keys to reload (pull)
+     * @param array<string, array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|list<array{message: string, key: string, domain: string, params?: array<string, mixed>}|FieldMessage|string>|string> $errors        Validation errors keyed by field (see FormErrors); the reserved "_" key carries form-level errors
+     * @param Fragment[]                                                                                                                                                                                                                         $fragments     Ready pieces to swap in (push)
      */
     public function __construct(
         public bool $success = true,
@@ -71,7 +73,7 @@ final readonly class ActionResult implements JsonSerializable
         }
 
         if ($this->errors !== []) {
-            $payload['errors'] = $this->errors;
+            $payload['errors'] = (new FormErrors($this->errors))->jsonSerialize();
         }
 
         if ($this->fragments !== []) {

@@ -1042,14 +1042,49 @@
                 {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "$ref": "#/$defs/FieldMessage"
+                            }
+                        ]
                     }
+                },
+                {
+                    "$ref": "#/$defs/FieldMessage"
                 }
             ]
         },
+        "FieldMessage": {
+            "type": "object",
+            "description": "A structured validation message: the server-resolved message plus the translation key, domain and optional params.",
+            "required": [
+                "message",
+                "key",
+                "domain"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": false
+        },
         "FormErrors": {
             "type": "object",
-            "description": "Validation errors keyed by field name. The reserved key \"_\" carries form-level errors; dotted keys target nested fields.",
+            "description": "Validation errors keyed by field name. Each value is a message, a structured message (FieldMessage) or a list of either. The reserved key \"_\" carries form-level errors; dotted keys target nested fields.",
             "additionalProperties": {
                 "$ref": "#/$defs/FieldError"
             }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Form;
 
 use Middag\Ui\Form\FieldError;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -53,6 +54,27 @@ final class FieldErrorTest extends TestCase
     public function testAcceptsAListOfMessages(): void
     {
         $this->assertValidAgainst('FieldError', ['Too short.', 'Must be a number.']);
+    }
+
+    #[Test]
+    public function testAcceptsAStructuredMessage(): void
+    {
+        $this->assertValidAgainst('FieldError', new FieldMessage('Invalid email.', 'validation.email', 'validators'));
+    }
+
+    #[Test]
+    public function testAcceptsAMixedListOfMessagesAndStructuredMessages(): void
+    {
+        $this->assertValidAgainst('FieldError', [
+            'Too many tags',
+            (new FieldMessage('Tags must be unique.', 'validation.unique', 'validators', ['limit' => 3]))->jsonSerialize(),
+        ]);
+    }
+
+    #[Test]
+    public function testRejectsAnIncompleteStructuredMessage(): void
+    {
+        $this->assertInvalidAgainst('FieldError', ['message' => 'x', 'key' => 'k']);
     }
 
     #[Test]

@@ -21,6 +21,7 @@ use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Form\FieldConstraints;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FileValue;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Form\FormStep;
@@ -192,6 +193,12 @@ final class SchemaRoundtripTest extends TestCase
             'address.zip' => 'Bad ZIP',
             FormErrors::FORM_LEVEL_KEY => 'The form could not be saved.',
         ]));
+        // Structured messages, alone and mixed with strings in a list.
+        $this->assertValidAgainst('FormErrors', new FormErrors([
+            'email' => new FieldMessage('Invalid email.', 'validation.email', 'validators'),
+            'tags' => ['Too many tags', new FieldMessage('Unique.', 'validation.unique', 'validators', ['limit' => 3])],
+        ]));
+        $this->assertInvalidAgainst('FormErrors', ['tags' => ['ok', 7]]);
     }
 
     // ── Notification + enum ──────────────────────────────────────────────────

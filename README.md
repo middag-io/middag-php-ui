@@ -253,7 +253,7 @@ $navigation = new NavigationTree(tree: [$node], activeKey: 'audience.segments.in
 | `auth` | `SharedAuth` | Flat: `id` (string), `name`, optional `email`, `avatarUrl`, `roles`; `capabilities` (`list<string>`, always emitted); optional `logoutUrl`. |
 | `theme` | `SharedTheme` | Optional `appearance` (`ThemeMode`) and a `strings` map, `{}` when empty. |
 | `flash` | `FlashMessages` | At most one string per key; the only keys are `success`, `error`, `info`, `warning`. Empty and whitespace-only values are dropped; `fromArray()` also drops other keys and non-string values. `{}` when empty. |
-| `errors` | `FormErrors` | Field name to a message or a list of messages (`string\|string[]`); `_` is form-level. `{}` when empty. |
+| `errors` | `FormErrors` | Field name to a message, a structured message or a list of either (`string \| FieldMessage \| (string\|FieldMessage)[]`); `_` is form-level. `{}` when empty. |
 | `csrf_token` | string | |
 | `locale` | string | |
 | `scope` | object | Open object, `{}` when empty. |
