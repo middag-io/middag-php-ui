@@ -14,7 +14,6 @@ namespace Middag\Ui\Tests\Region;
 
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\RegionUpdate;
 use Middag\Ui\Shared\Enum\FragmentKind;
@@ -140,13 +139,22 @@ final class FragmentTest extends TestCase
     }
 
     #[Test]
-    public function testWithResourcesAttachesPatch(): void
+    public function testWithNotificationsKeepsTheCustomType(): void
     {
-        $payload = Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))
-            ->withResources(new ResourcePatch(featureFlags: ['x' => true]))
+        $payload = Fragment::custom('toast', new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))
+            ->withNotifications(new Notification(NotificationLevel::Info, 'Updated'))
             ->jsonSerialize();
 
-        self::assertSame(['x' => true], $payload['resources']['featureFlags']);
+        self::assertSame('toast', $payload['customType']);
+        self::assertCount(1, $payload['notifications']);
+        self::assertArrayNotHasKey('resources', $payload);
+    }
+
+    #[Test]
+    public function testHasNoResourcesSlot(): void
+    {
+        self::assertFalse(method_exists(Fragment::class, 'withResources'));
+        self::assertArrayNotHasKey('resources', Fragment::jsonSchema()['properties']);
     }
 
     #[Test]

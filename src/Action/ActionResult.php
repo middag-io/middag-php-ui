@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Middag\Ui\Action;
 
 use JsonSerializable;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Shared\ValueObject\Notification;
 
@@ -29,9 +28,6 @@ use Middag\Ui\Shared\ValueObject\Notification;
  * - `fragments` (push) — ready pieces the server already built, so the client
  *   swaps them in without a round-trip. Use push when the server holds the
  *   fresh data anyway; use pull when re-fetching is cheaper or simpler.
- *
- * `resources` carries a partial patch to the feature flags when a
- * mutation changes them mid-flow.
  *
  * @api
  */
@@ -50,7 +46,6 @@ final readonly class ActionResult implements JsonSerializable
         public array $refreshBlocks = [],
         public array $errors = [],
         public array $fragments = [],
-        public ?ResourcePatch $resources = null,
     ) {}
 
     /** @return array<string, mixed> */
@@ -86,10 +81,6 @@ final readonly class ActionResult implements JsonSerializable
             );
         }
 
-        if ($this->resources instanceof ResourcePatch) {
-            $payload['resources'] = $this->resources->jsonSerialize();
-        }
-
         return $payload;
     }
 
@@ -102,8 +93,7 @@ final readonly class ActionResult implements JsonSerializable
                 'redirect' => ['type' => 'string'],
                 'refreshBlocks' => ['type' => 'array', 'items' => ['type' => 'string']],
                 'errors' => ['$ref' => '#/$defs/FormErrors'],
-                'fragments' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Fragment']],
-                'resources' => ['$ref' => '#/$defs/ResourcePatch']],
+                'fragments' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Fragment']]],
             'additionalProperties' => false];
     }
 }

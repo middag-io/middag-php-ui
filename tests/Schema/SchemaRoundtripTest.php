@@ -32,7 +32,6 @@ use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
 use Middag\Ui\Page\PageResources;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\PollConfig;
@@ -277,7 +276,6 @@ final class SchemaRoundtripTest extends TestCase
             redirect: '/x',
             refreshBlocks: ['m1', 'm2'],
             errors: ['name' => 'required', 'tags' => ['too few', 'invalid']],
-            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ));
     }
 
@@ -320,7 +318,6 @@ final class SchemaRoundtripTest extends TestCase
                 actions: [new Action(id: 'help', label: 'Help', target: ActionTarget::route('help.show'))],
             ),
             layout: new LayoutDescriptor(template: 'stack', regions: ['content' => [$table]], meta: ['gap' => 4]),
-            resources: new PageResources(featureFlags: ['beta' => true]),
             notifications: [new Notification(level: NotificationLevel::Info, message: 'Loaded')],
             entities: ['course' => '/courses/{id}', 'user' => '/users/{id}'],
         );
@@ -339,8 +336,6 @@ final class SchemaRoundtripTest extends TestCase
         // serializes `regions` to [].
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'blank', regions: []));
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'stack', regions: ['content' => []]));
-        // An empty resource patch serializes to {}.
-        $this->assertValidAgainst('ResourcePatch', new ResourcePatch());
     }
 
     // ── Negative: required[] enforced (roundtrip alone is forward-only) ──────

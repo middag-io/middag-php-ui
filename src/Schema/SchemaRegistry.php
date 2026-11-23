@@ -44,7 +44,6 @@ use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
 use Middag\Ui\Page\PageResources;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\PollConfig;
@@ -165,7 +164,6 @@ final class SchemaRegistry
         // Server-push slices.
         'RegionUpdate' => RegionUpdate::class,
         'ActionResult' => ActionResult::class,
-        'ResourcePatch' => ResourcePatch::class,
         // Enums.
         'ActionIntent' => ActionIntent::class,
         'ActionTargetKind' => ActionTargetKind::class,

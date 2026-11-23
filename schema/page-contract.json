@@ -27,9 +27,6 @@
                 "layout": {
                     "$ref": "#/$defs/LayoutDescriptor"
                 },
-                "resources": {
-                    "$ref": "#/$defs/PageResources"
-                },
                 "notifications": {
                     "type": "array",
                     "items": {
@@ -67,9 +64,6 @@
                     "items": {
                         "$ref": "#/$defs/Notification"
                     }
-                },
-                "resources": {
-                    "$ref": "#/$defs/ResourcePatch"
                 },
                 "customType": {
                     "type": "string"
@@ -2221,21 +2215,6 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/$defs/Fragment"
-                    }
-                },
-                "resources": {
-                    "$ref": "#/$defs/ResourcePatch"
-                }
-            },
-            "additionalProperties": false
-        },
-        "ResourcePatch": {
-            "type": "object",
-            "properties": {
-                "featureFlags": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "boolean"
                     }
                 }
             },

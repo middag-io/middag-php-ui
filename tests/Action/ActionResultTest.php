@@ -14,7 +14,6 @@ namespace Middag\Ui\Tests\Action;
 
 use Middag\Ui\Action\ActionResult;
 use Middag\Ui\Block\BlockDescriptor;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
@@ -23,6 +22,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionParameter;
 
 /**
  * @internal
@@ -79,12 +79,11 @@ final class ActionResultTest extends TestCase
     {
         $payload = (new ActionResult(
             fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
-            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ))->jsonSerialize();
 
         self::assertCount(1, $payload['fragments']);
         self::assertSame('block', $payload['fragments'][0]['kind']);
-        self::assertSame(['beta' => true], $payload['resources']['featureFlags']);
+        self::assertArrayNotHasKey('resources', $payload);
     }
 
     #[Test]
@@ -110,7 +109,6 @@ final class ActionResultTest extends TestCase
     {
         $this->assertValidAgainst('ActionResult', new ActionResult(
             fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
-            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ));
     }
 
@@ -130,5 +128,22 @@ final class ActionResultTest extends TestCase
     public function testSchemaRejectsAnUnknownProperty(): void
     {
         $this->assertInvalidAgainst('ActionResult', ['success' => true, 'unknown' => 1]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsTheRemovedResourcesSlot(): void
+    {
+        $this->assertInvalidAgainst('ActionResult', ['success' => true, 'resources' => (object) []]);
+    }
+
+    #[Test]
+    public function testHasNoResourcesParameter(): void
+    {
+        $ctor = (new ReflectionClass(ActionResult::class))->getConstructor();
+        self::assertNotNull($ctor);
+
+        $names = array_map(static fn (ReflectionParameter $p): string => $p->getName(), $ctor->getParameters());
+
+        self::assertSame(['success', 'notifications', 'redirect', 'refreshBlocks', 'errors', 'fragments'], $names);
     }
 }

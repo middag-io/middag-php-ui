@@ -42,7 +42,7 @@ This means PHP never renders HTML for pages — it declares structure, and React
 | **CRUD convention builder** | `index`/`create`/`edit`/`show` pages from an entity class: i18n titles, filters, search, per-action `capability` gating. |
 | **Block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
 | **Typed value objects** | `final readonly` + `JsonSerializable`. camelCase wire keys, omit-empty payloads, immutable witters. |
-| **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull), `ResourcePatch`. |
+| **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull). |
 | **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible, delivered as a `NavigationTree` (`tree`, `activeKey`, `footer`). |
 | **Shared props** | `SharedProps` describes the props shared with every page (`auth`, `theme`, `flash`, `errors`, `csrf_token`, `locale`, `scope`, `navigation`), published as `schema/shared-props.json`. |
 | **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters. |
@@ -178,8 +178,6 @@ return new ActionResult(
     refreshBlocks: ['sidebar'],                    // pull: client re-fetches these keys itself
 );
 ```
-
-A `ResourcePatch` rides along on a `Fragment` or `ActionResult` to push a partial change to the feature flags without resending the whole `PageResources`.
 
 ---
 
