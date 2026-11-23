@@ -22,9 +22,17 @@
 
 * clarify that each FormErrors value is a FieldError ([b2e5a09](https://github.com/middag-io/middag-php-ui/commit/b2e5a09a586870b0f91747628848405f7d296135))
 * describe the ui 1.14 navigation registry and error bags in the README ([da857e9](https://github.com/middag-io/middag-php-ui/commit/da857e97043a92d5d4cadfaeb5d765c2a7b6231f))
-* drop the removed PageResources from the README ([1144cca](https://github.com/middag-io/middag-php-ui/commit/1144ccada066dfbdbcc0bbcda62a4e3a801e096e))
-* leave README changes to the docs pass ([ac940ad](https://github.com/middag-io/middag-php-ui/commit/ac940ad680353f3790a562b3441cf423f30d7e74))
 * state the builder subclassing policy ([f906cf4](https://github.com/middag-io/middag-php-ui/commit/f906cf417c69b414051f549c8a436a42119624d4))
+
+### Consumer impact
+
+- **Removed:** `ResourcePatch`, `PageResources`, `PageResourcesInterface`, `Branding`, `Fragment::withResources()` and the `resources` property on `ActionResult`, `Fragment` and `PageContract` (wire and PHP). `PageContract::__construct()` loses `$resources`: `$notifications` moves to position 4 and `$entities` to 5; use named arguments. `ActionResult::__construct()` loses `$resources` too.
+- **FieldError widened:** a field error is a string, a `FieldMessage` (`{message, key, domain, params?}`; `params` omitted when empty) or a list of either. Clients must accept the object form. `FormErrors` always encodes as a JSON object, also for numeric field names.
+- **SharedProps.errors:** `FormErrors` or the new `FormErrorBags` (bag name to `FormErrors`, sent with `X-Inertia-Error-Bag`); the schema is `anyOf [FormErrors, FormErrorBags]`.
+- **NavigationRegistryInterface (implementable, frozen for 2.x):** `group()`/`section()` take `string|Translatable $label` and the optional `entityType`, `badgeVariant`, `statusColor`; `item()` takes a nullable `$route` plus `target` and an external `href` (exactly one of route or href). Implementations must match parameter names and order.
+- **NavigationNode** rejects an `href` with a `javascript:`, `data:` or `vbscript:` scheme (`InvalidArgumentException`).
+- **RegionBuilderInterface::emptyState()** gains `?string $ctaHref = null`. Builders are a call surface: `BlockBuilder` and `RegionBuilder` may be subclassed only without declaring or overriding members.
+- `x-contract-version` stays `"2"`. Pair with `middag-io/core` 1.56 or later; core 1.55 and older still pass `resources:`.
 
 ## [1.13.1](https://github.com/middag-io/middag-php-ui/compare/v1.13.0...v1.13.1) (2026-11-23)
 
