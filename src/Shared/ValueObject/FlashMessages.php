@@ -43,10 +43,10 @@ final readonly class FlashMessages implements JsonSerializable
         ?string $info = null,
         ?string $warning = null,
     ) {
-        $this->success = self::normalize($success);
-        $this->error = self::normalize($error);
-        $this->info = self::normalize($info);
-        $this->warning = self::normalize($warning);
+        $this->success = $this->normalize($success);
+        $this->error = $this->normalize($error);
+        $this->info = $this->normalize($info);
+        $this->warning = $this->normalize($warning);
     }
 
     /**
@@ -97,7 +97,7 @@ final readonly class FlashMessages implements JsonSerializable
             'additionalProperties' => false];
     }
 
-    private static function normalize(?string $message): ?string
+    private function normalize(?string $message): ?string
     {
         return $message === null || trim($message) === '' ? null : $message;
     }
