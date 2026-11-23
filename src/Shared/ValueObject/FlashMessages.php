@@ -19,7 +19,8 @@ use stdClass;
  * One-shot flash messages for the next render: a flat map with at most one
  * string per level (`success`, `error`, `info`, `warning`).
  *
- * Only the keys that are set are emitted; an empty set serializes to `{}`.
+ * Only the keys that carry text are emitted: null, empty and whitespace-only
+ * values are discarded. An empty set serializes to `{}`.
  *
  * @api
  */
@@ -28,16 +29,30 @@ final readonly class FlashMessages implements JsonSerializable
     /** The only keys the wire accepts. */
     public const array KEYS = ['success', 'error', 'info', 'warning'];
 
+    public ?string $success;
+
+    public ?string $error;
+
+    public ?string $info;
+
+    public ?string $warning;
+
     public function __construct(
-        public ?string $success = null,
-        public ?string $error = null,
-        public ?string $info = null,
-        public ?string $warning = null,
-    ) {}
+        ?string $success = null,
+        ?string $error = null,
+        ?string $info = null,
+        ?string $warning = null,
+    ) {
+        $this->success = self::normalize($success);
+        $this->error = self::normalize($error);
+        $this->info = self::normalize($info);
+        $this->warning = self::normalize($warning);
+    }
 
     /**
      * Build from a raw flash map (for example a session flash bag). Keys outside
-     * {@see self::KEYS} and non-string values are discarded, not rejected.
+     * {@see self::KEYS}, non-string values and empty or whitespace-only strings
+     * are discarded, not rejected.
      *
      * @param array<array-key, mixed> $raw
      */
@@ -80,5 +95,10 @@ final readonly class FlashMessages implements JsonSerializable
                 'warning' => ['type' => 'string'],
             ],
             'additionalProperties' => false];
+    }
+
+    private static function normalize(?string $message): ?string
+    {
+        return $message === null || trim($message) === '' ? null : $message;
     }
 }

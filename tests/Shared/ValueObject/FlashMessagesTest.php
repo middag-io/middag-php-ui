@@ -65,6 +65,36 @@ final class FlashMessagesTest extends TestCase
     }
 
     #[Test]
+    public function testFromArrayDiscardsEmptyAndWhitespaceOnlyValues(): void
+    {
+        $flash = FlashMessages::fromArray([
+            'success' => '',
+            'error' => "  \t\n ",
+            'info' => 'Heads up',
+            'warning' => ' ',
+        ]);
+
+        self::assertSame('{"info":"Heads up"}', json_encode($flash));
+    }
+
+    #[Test]
+    public function testConstructorDiscardsEmptyAndWhitespaceOnlyValues(): void
+    {
+        $flash = new FlashMessages(success: '', error: '   ', info: 'Heads up');
+
+        self::assertSame('{"info":"Heads up"}', json_encode($flash));
+        self::assertNull($flash->success);
+        self::assertNull($flash->error);
+        self::assertSame('{}', json_encode(new FlashMessages(success: '', warning: " \n")));
+    }
+
+    #[Test]
+    public function testTextIsKeptVerbatimWhenItHasContent(): void
+    {
+        self::assertSame('{"success":" Saved "}', json_encode(new FlashMessages(success: ' Saved ')));
+    }
+
+    #[Test]
     public function testFromArrayOfNothingUsableIsAnEmptyObject(): void
     {
         self::assertSame('{}', json_encode(FlashMessages::fromArray(['x' => 'y', 'error' => null])));
