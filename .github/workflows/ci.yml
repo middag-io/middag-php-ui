@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   # Steps of the released php-library-check composite of middag-io/actions,
-  # called by its major tag (onda 2, middag-io/infra-terraform#450). One job
+  # called by its major tag. One job
   # per matrix entry. Locked entries keep the platform pin (8.3.0): the static
   # checks (composer validate --strict, strict PSR-4, the PHP 8.3 parse lint,
   # PHPStan, PHP-CS-Fixer, Rector and the schema drift gate) run on 8.3, the

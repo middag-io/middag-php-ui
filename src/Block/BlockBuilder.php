@@ -52,7 +52,7 @@ class BlockBuilder
      *                                                                         is either a {@see FormSchemaNodeInterface} VO (serialized here
      *                                                                         via jsonSerialize) or a legacy loose array (passed through
      *                                                                         untouched). Loose passthrough is removed once every producer
-     *                                                                         builds VOs (Phase 4).
+     *                                                                         builds VOs.
      * @param array<string, mixed>                                     $values
      * @param null|array<int, FormStep>                                $steps  Wizard steps; when set, the form renders multi-step
      * @param array<string, mixed>                                     $data   Extra data merged into the block payload
