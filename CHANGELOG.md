@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.14.0](https://github.com/middag-io/middag-php-ui/compare/v1.13.1...v1.14.0) (2026-11-23)
+
+
+### Features
+
+* **form:** add FormErrorBags for error-bag scoped errors ([3389c02](https://github.com/middag-io/middag-php-ui/commit/3389c02d46ee0b94522ae791a0f337f399fdb48d))
+* **form:** carry structured field messages in FieldError ([8cfd8a4](https://github.com/middag-io/middag-php-ui/commit/8cfd8a432ee2fa0d6306d6234b9ae66b26d2ab4a))
+* **navigation:** let the registry take what NavigationNode carries ([2dc4bb2](https://github.com/middag-io/middag-php-ui/commit/2dc4bb27428b5ea16edd36cb4e8fa816b8e8341e))
+* **region:** add ctaHref to RegionBuilderInterface::emptyState() ([6d4984f](https://github.com/middag-io/middag-php-ui/commit/6d4984f4dad3f5157ef145218f17e9131b723c2b))
+* remove PageResources, PageResourcesInterface and Branding ([c747049](https://github.com/middag-io/middag-php-ui/commit/c747049e8fbff8835afb95d384cc7a641fa7ad63))
+* remove ResourcePatch and the resources slot ([8c5ee93](https://github.com/middag-io/middag-php-ui/commit/8c5ee937ee547788ab338086a1d78d0a53156958))
+
+
+### Bug Fixes
+
+* **form:** serialize structured error arrays through FieldMessage ([16bdb7b](https://github.com/middag-io/middag-php-ui/commit/16bdb7b2766ab2531ee4356da16451b0023a4cb9))
+
+
+### Documentation
+
+* clarify that each FormErrors value is a FieldError ([b2e5a09](https://github.com/middag-io/middag-php-ui/commit/b2e5a09a586870b0f91747628848405f7d296135))
+* describe the ui 1.14 navigation registry and error bags in the README ([da857e9](https://github.com/middag-io/middag-php-ui/commit/da857e97043a92d5d4cadfaeb5d765c2a7b6231f))
+* drop the removed PageResources from the README ([1144cca](https://github.com/middag-io/middag-php-ui/commit/1144ccada066dfbdbcc0bbcda62a4e3a801e096e))
+* leave README changes to the docs pass ([ac940ad](https://github.com/middag-io/middag-php-ui/commit/ac940ad680353f3790a562b3441cf423f30d7e74))
+* state the builder subclassing policy ([f906cf4](https://github.com/middag-io/middag-php-ui/commit/f906cf417c69b414051f549c8a436a42119624d4))
+
 ## [1.13.1](https://github.com/middag-io/middag-php-ui/compare/v1.13.0...v1.13.1) (2026-11-23)
 
 
