@@ -23,7 +23,7 @@ namespace Middag\Ui\Form;
  * NOTE: this schema intentionally omits `additionalProperties` (it stays open)
  * so it can be composed under `allOf` with component-specific props without the
  * JSON Schema allOf + additionalProperties:false pitfall, and so the wire stays
- * lenient (D-04:A). The generated TypeScript is still closed — the react codegen
+ * lenient. The generated TypeScript is still closed — the react codegen
  * compiles objects with no `additionalProperties` as closed types.
  *
  * @api

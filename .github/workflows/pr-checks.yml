@@ -8,8 +8,8 @@ permissions: {}
 
 jobs:
   # Two pull request checks in one job, as steps of released composites of
-  # middag-io/actions called by their major tag (onda 2,
-  # middag-io/infra-terraform#450). Both read the pull request title or its
+  # middag-io/actions called by their major tag.
+  # Both read the pull request title or its
   # history, run on the same trigger and need only contents: read.
   #
   # The job name keeps the status context that the main ruleset requires.

@@ -69,7 +69,7 @@ final class FieldPropsBaseTest extends TestCase
     public function testStaysOpenForAllOfCompositionByAllowingExtraProps(): void
     {
         // FieldPropsBase intentionally omits additionalProperties so it can be
-        // intersected under allOf with component-specific props (D-04:A).
+        // intersected under allOf with component-specific props.
         $this->assertValidAgainst('FieldPropsBase', ['label' => 'X', 'options' => []]);
     }
 }

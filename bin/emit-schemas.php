@@ -8,7 +8,7 @@ declare(strict_types=1);
  *
  * Writes the wire-contract JSON Schemas (page-contract.json, fragment.json) from
  * the PHP value objects' hand-authored jsonSchema() into ./schema/. The PHP VOs
- * are the single source of truth (D-02:A); @middag-io/react reads these to codegen
+ * are the single source of truth; @middag-io/react reads these to codegen
  * its TypeScript types + zod schema, and the MCP server bundles them.
  *
  * Usage:
