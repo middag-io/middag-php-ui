@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.11.0](https://github.com/middag-io/middag-php-ui/compare/v1.10.3...v1.11.0) (2026-11-23)
+
+
+### Features
+
+* **form:** let section labels be translatable or null and add richtext, time and autocomplete components ([1b05752](https://github.com/middag-io/middag-php-ui/commit/1b0575287acbb1c6f3717140d1adb153e8239aaf))
+
+
+### Bug Fixes
+
+* append new form components at the end of the schema lists ([55469e4](https://github.com/middag-io/middag-php-ui/commit/55469e4d06fc247dd6da9db13123e00fd3d1142e))
+
+
+### Documentation
+
+* align hook and template wording with the shared-MAJOR policy ([63fa126](https://github.com/middag-io/middag-php-ui/commit/63fa126621c47fe2dd2002f0339fe7df800937c2))
+* apply the uniform security policy text ([c14dc3a](https://github.com/middag-io/middag-php-ui/commit/c14dc3a350258dce4042a54da3ca1c57be52dd22))
+* apply the version-family support policy ([13b15f5](https://github.com/middag-io/middag-php-ui/commit/13b15f59394989b509b03c43895cd001b9a14706))
+* drop decision-record numbering and private docs repo from AGENTS.md ([7e3f68a](https://github.com/middag-io/middag-php-ui/commit/7e3f68ab6ace7916adbc535bef0d8a06ffdd93cf))
+
+
+### Consumer impact
+
+* Additive: `FormComponent` gains the `richtext`, `time` and `autocomplete` cases, appended at the end of the schema lists. `FormSectionNode` label now accepts a `Translatable` or null. Existing serialized output is unchanged.
+* Schema files are regenerated (additive only).
+* The contracts mirror notification is skipped for prerelease tags.
+* New API stability tag test: every type in `src` carries exactly one of `@api` or `@internal`.
+* Documentation: SECURITY and policy docs updated (uniform security policy text, version-family support policy).
+
 ## [1.10.3](https://github.com/middag-io/middag-php-ui/compare/v1.10.2...v1.10.3) (2026-11-20)
 
 
