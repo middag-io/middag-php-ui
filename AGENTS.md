@@ -85,11 +85,10 @@ Inside each concern:
   Versioning follows the version family of the `middag-php-*` libs (https://docs.middag.dev/libraries/reference/versioning-and-compatibility). On
   `1.x`: fix → patch, feat → minor; never `!` or a `BREAKING CHANGE:` footer (either would cut
   `2.0.0` in this lib alone) and no `Release-As:` outside an open window — the version family
-  check fails them. The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. From `2.0.0`: shared MAJOR.MINOR across the family, patch = fixes only, `feat`
-  waits for a family MINOR window, `!` for a family MAJOR window; the window is the organization
-  variable `PHP_LIBS_OPEN_RELEASE`, set on the order of the product owner, who decides every family
-  MINOR and MAJOR. A window counts as open only when it is ahead of this lib's version; while one is
-  open, merge the Release PR only at the coordinated `X.Y.0`. Keep a waiting PR current by merging `main` (never rebase or force-push) —
+  check fails them. The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut. From `2.0.0`: the family shares only the MAJOR; MINOR and PATCH are per library, patch = fixes only,
+  `feat` = MINOR, `!` only in a MAJOR window; the window is the organization variable
+  `PHP_LIBS_OPEN_RELEASE`, set on the order of the product owner, who decides every MAJOR. While a
+  MAJOR window is open, merge the Release PR only at the coordinated `X.0.0`. Keep a waiting PR current by merging `main` (never rebase or force-push) —
   policy in [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning and [`API-STABILITY.md`](API-STABILITY.md).
 
 ## Decision records

@@ -14,7 +14,7 @@
 #   * ": " then a description of at least 3 chars.
 #
 # Breaking changes: "!" before the colon or a "BREAKING CHANGE:" footer only
-# in a family MAJOR window (version family,
+# in a MAJOR window (version family,
 # https://docs.middag.dev/libraries/reference/versioning-and-compatibility); the
 # PR check php-version-family-check refuses both otherwise. On 1.x a break
 # ships as feat: (a MINOR, never a PATCH) with the break and the migration
@@ -32,7 +32,7 @@ if ! echo "$MSG" | grep -qE "$PATTERN"; then
     echo ""
     echo "  Format: type(scope): description     (scope optional, single + lowercase)"
     echo "  Types:  feat, fix, chore, docs, style, refactor, perf, test, build, ci, revert"
-    echo "  Breaking: '!' or a 'BREAKING CHANGE:' footer only in a family MAJOR window;"
+    echo "  Breaking: '!' or a 'BREAKING CHANGE:' footer only in a MAJOR window;"
     echo "            on 1.x a break is a feat: (never fix:) described in the body."
     echo ""
     echo "  Examples:"

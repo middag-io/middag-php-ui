@@ -31,7 +31,7 @@ jobs:
           persist-credentials: false
 
       # The family window is the organization variable PHP_LIBS_OPEN_RELEASE
-      # (empty = closed, X.Y = family MINOR window, X.0 = family MAJOR window).
+      # (empty = closed, X.0 = MAJOR window).
       - name: Version family check
         uses: middag-io/actions/php-version-family-check@php-version-family-check-v1
         with:

@@ -8,10 +8,9 @@ JSON, and any proprietary consumer built on top — can depend on the contract
 builders without guessing.
 
 The support rules of the whole library family (lifecycle, what each release
-may carry, the compatibility matrix) live in one place:
+may carry, the compatibility matrix) are summarized here and in
 <https://docs.middag.dev/libraries/reference/versioning-and-compatibility>.
-This file lists the public surface of `middag-io/ui` and points there for
-everything else.
+This file lists the public surface of `middag-io/ui`.
 
 `middag-io/ui` is the **foundation layer** of the MIDDAG stack (`ui` →
 `framework` → the Moodle/WordPress adapters). It has **zero external
@@ -32,7 +31,7 @@ Every type carries a class-level annotation that states its stability:
 
 | Annotation | Meaning |
 |---|---|
-| `@api` | **Public, supported surface.** You may implement, extend, type-hint, instantiate and catch these. Changes follow the family rules: a patch carries fixes only, a minor never breaks, and a break ships only in a family MAJOR after a deprecation in a minor. |
+| `@api` | **Public, supported surface.** You may implement, extend, type-hint, instantiate and catch these. Changes follow [Versioning](#versioning-from-200): a patch carries fixes only, a minor is additive, and a break ships only in a MAJOR, following [Deprecation](#deprecation). |
 | `@internal` | **Implementation detail.** Outside the support promise. May change or be removed in any release, including patches. Do not depend on these from outside the package. |
 
 Support covers the `@api` surface only. Anything untagged, or tagged
@@ -61,22 +60,29 @@ JSON shape is the real integration boundary with the client. A PHP-level rename
 that leaves the emitted JSON unchanged is not a wire break; a change to the JSON
 shape is, and follows the same rules as a break of the `@api` surface.
 
-## The version family
+Adding an optional key or a new `$def` is additive and ships in a MINOR; clients ignore keys they do not know. Adding an enum value or a new discriminator value (`kind`, `type`) is additive and ships in a MINOR; clients treat an unknown value as unsupported and degrade that element instead of rejecting the whole payload. Removing or renaming a key, removing an enum value, changing a type or making a key required is a breaking change: it ships in a MAJOR and raises `ContractEnvelopeInterface::VERSION` and `x-contract-version`. `@middag-io/ui-contracts` mirrors `schema/`, ships the TypeScript types and zod schemas generated from it, and versions on its own line.
 
-From `2.0.0`, `middag-io/ui` is one of the `middag-php-*` libraries that form
-one version family. They share MAJOR.MINOR; PATCH is per library and carries
-fixes only. A family MINOR or MAJOR is released in every library, decided by
-the product owner. No library cuts a MAJOR on its own.
+## Versioning from `2.0.0`
 
-**Family rule for consumers:** from `2.0.0`, every library of the family is
-required with the same `^2.N` range. If you depend on `middag-io/ui` and on
-`middag-io/framework`, both carry the same `^2.N`.
+From `2.0.0`, the open-source `middag-php-*` libraries (`ui`, `framework`, `moodle`, `wordpress` and the `demo-standalone` example) share the MAJOR version. MINOR and PATCH releases are per library. Each library requires its siblings with `^2.N`, where `N` is the lowest MINOR it needs, so Composer installs a compatible set. Require each package you import with `^2.0`, or with the MINOR whose features you use.
 
-Releases are cut by
-[release-please](https://github.com/googleapis/release-please) from
-[Conventional Commits](https://www.conventionalcommits.org/); the commit rules
-and the version family check are in [`CONTRIBUTING.md`](CONTRIBUTING.md)
-§Versioning.
+A PATCH carries fixes only. A MINOR carries additive `@api` changes. A MAJOR carries breaking `@api` changes, following [Deprecation](#deprecation).
+
+A platform floor (the lowest PHP version or the lowest Symfony line) rises only in a MAJOR. Support for a new PHP version or a new Symfony LTS line is added in a MINOR.
+
+The next MAJOR (`3.0`) drops the PHP versions that no longer receive security support.
+
+## Deprecation
+
+A removal or incompatible change of an `@api` element ships only in a MAJOR. Where possible it is announced first in a MINOR of the current MAJOR: the element carries `@deprecated` naming its replacement, the changelog lists it, and code that still runs emits an `E_USER_DEPRECATED` notice where PHP can raise one. A change that cannot be deprecated in place, such as a new abstract method on an interface or a changed signature, ships in a MAJOR with an entry in `UPGRADING.md`.
+
+## Support
+
+Fixes go to the latest MINOR of the current MAJOR, as PATCH releases. When the next MAJOR ships, the last MINOR of the previous MAJOR receives critical and high severity security fixes only, from an `N.x` branch opened at the cut, for 6 months or until the end of life of the PHP or host version that motivated the new MAJOR, whichever comes first. Releases before `2.0.0` are unsupported.
+
+## Releases and contributing
+
+Releases are cut by release-please from Conventional Commits. The contributor rules, the version check included, are in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## The cross-package seam
 
@@ -94,9 +100,8 @@ serialize to the `PageContract` wire JSON; no host or transport is imported.
 
 - Depend only on `@api` types. If you need behaviour exposed only by an
   `@internal` symbol, open an issue to have it promoted rather than reaching in.
-  A promotion is an additive change for a family MINOR.
-- Require `middag-io/ui` with the same `^2.N` as every other `middag-io/*`
-  library of the family you depend on.
+  A promotion is an additive change that ships in a MINOR.
+- Require `middag-io/ui` with `^2.0`, or with the MINOR whose features you use.
 - The dependency direction only ever points downward: `ui` is the foundation and
   imports nothing from the rest of the stack; `framework` and the adapters
   depend on `ui`, never the reverse.
