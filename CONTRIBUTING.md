@@ -99,9 +99,9 @@ Longer body when the "why" isn't obvious.
   `ci`, `chore`, `revert` — the set `release-please` maps to CHANGELOG sections.
 - One scope per commit, lowercase — the `commit-msg` hook rejects
   comma-separated multi-scope subjects.
-- Do not mark a break with `!` or a `BREAKING CHANGE:` footer unless a family
-  MAJOR window is open (see Versioning below). The hook accepts both markers;
-  the version family check rejects them outside a MAJOR window.
+- Do not mark a break with `!` or a `BREAKING CHANGE:` footer unless a MAJOR
+  window is open (see Versioning below). The hook accepts both markers; the
+  version family check rejects them outside a MAJOR window.
 - **Never** add `Co-Authored-By` trailers.
 - The branch base is **`main`**.
 
@@ -115,33 +115,33 @@ the public surface of this lib in [`API-STABILITY.md`](API-STABILITY.md).
 | Commit | Bump on `1.x` (now) | Bump from `2.0.0` |
 | ------ | ------------------- | ----------------- |
 | `fix:` | PATCH | PATCH |
-| `feat:` | MINOR | none by itself: waits for a family MINOR window |
-| `!` or `BREAKING CHANGE:` | not allowed (would cut `2.0.0` in this lib alone) | only in a family MAJOR window |
+| `feat:` | MINOR | MINOR, per library |
+| `!` or `BREAKING CHANGE:` | not allowed (would cut `2.0.0` in this lib alone) | only in a MAJOR window, announced by a deprecation in an earlier MINOR where possible |
 
 **On `1.x`:** The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut.
 
-**From `2.0.0`:** this lib is part of the `middag-php-*` version family. Every
-lib shares MAJOR.MINOR, a patch carries fixes only, and a minor never breaks
-(deprecate in a minor, remove in the next family MAJOR). A family MINOR or
-MAJOR is a coordinated `Release-As: X.Y.0` in every lib, decided by the
-product owner. No lib cuts `2.0.0` or any other MAJOR on its own.
+**From `2.0.0`:** this lib is part of the `middag-php-*` version family. The
+libraries share only the MAJOR; MINOR and PATCH releases are per library. Each
+library requires its siblings with `^2.N`, where `N` is the lowest MINOR it
+needs. A patch carries fixes only, a MINOR carries additive changes, and a
+MAJOR is a coordinated `Release-As: X.0.0` in every library of the family,
+decided by the product owner. No lib cuts a MAJOR on its own.
 
 **The version family check.** The `php-version-family-check / check` job runs
 on every PR and reads the PR title and every non-merge commit. The window is
-the organization variable `PHP_LIBS_OPEN_RELEASE` (empty = closed, `X.Y` =
-family MINOR window, `X.0` = family MAJOR window), set and cleared on the
-order of the product owner. To pass:
+the organization variable `PHP_LIBS_OPEN_RELEASE`, set and cleared on the order
+of the product owner. The family no longer has a shared MINOR window; the check
+and its ruleset are being aligned with that policy, so follow the status it
+reports until then. To pass:
 
-- never use `!`, `BREAKING CHANGE:` or `Release-As:` outside the matching
-  window;
-- from `2.0.0`, keep a `feat` PR open until a family MINOR window opens. Keep it
-  current by merging `main` into it (never rebase or force-push), then re-run
-  the check.
+- never use `!`, `BREAKING CHANGE:` or `Release-As:` outside a MAJOR window;
+- give each commit the type that matches the change; do not relabel a feature
+  as `fix:` or `refactor:`.
 
-A window counts as open only when it is ahead of this lib's current version; a
-stale value reads as closed. While a window is open, merge this lib's Release
-PR only at the coordinated `X.Y.0`. After the `2.0.0` cut, a PR opened before
-it must merge `main` in so that the check reads the new version.
+A PR that waits on the check stays open and is kept current by merging `main`
+into it, never by rebase or force-push; re-run the check afterwards. A re-run
+reads the base of the original event, so a PR opened before a release must
+merge `main` in so that the check reads the new version.
 
 ## Pull request checklist
 
