@@ -1794,6 +1794,57 @@
                         }
                     },
                     "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "richtext",
+                                "time"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "autocomplete"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/OptionFieldProps"
+                        }
+                    },
+                    "additionalProperties": false
                 }
             ]
         },
@@ -1813,7 +1864,17 @@
                     "type": "string"
                 },
                 "label": {
-                    "type": "string"
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/$defs/Translatable"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 },
                 "defaultCollapsed": {
                     "type": "boolean"
@@ -2252,7 +2313,10 @@
                 "date_range",
                 "hidden",
                 "static",
-                "header"
+                "header",
+                "richtext",
+                "time",
+                "autocomplete"
             ]
         },
         "FragmentKind": {

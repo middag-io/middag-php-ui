@@ -149,6 +149,12 @@ final readonly class FormFieldNode implements FormSchemaNodeInterface
                     'properties' => ['label' => $str],
                     'additionalProperties' => false,
                 ]),
+                // Appended last so earlier variant indices stay stable for
+                // index-based schema compat checks.
+                // richtext | time — base props only.
+                self::branch(['richtext', 'time'], self::base()),
+                // autocomplete — option props (options folded in by the host mapper).
+                self::branch('autocomplete', self::option()),
             ],
         ];
     }
