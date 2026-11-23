@@ -51,12 +51,16 @@ jobs:
   # mirror workflow copies the schemas, regenerates the TypeScript and opens a
   # pull request when they changed. Nothing here builds or reads React code.
   #
+  # A prerelease tag (for example v2.0.0-rc.1) must not notify: the mirror
+  # regenerates only on a stable tag. A SemVer prerelease always carries a
+  # hyphen, a stable tag never does.
+  #
   # This repository is public, so the job mints the release App token itself
   # instead of calling the private dispatch component. repository_dispatch
   # needs contents: write on the target; the App holds it on middag-react.
   notify-contracts:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.release-created == 'true' && !contains(needs.release-please.outputs.tag-name, '-') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions: {}
