@@ -75,10 +75,6 @@ final readonly class FormFieldNode implements FormSchemaNodeInterface
                 self::branch(['text', 'email', 'url', 'password', 'color'], self::base()),
                 // textarea — base + rows.
                 self::branch('textarea', self::baseWith(['rows' => $int])),
-                // richtext | time — base props only.
-                self::branch(['richtext', 'time'], self::base()),
-                // autocomplete — option props (options folded in by the host mapper).
-                self::branch('autocomplete', self::option()),
                 // otp — base + segmented-input props.
                 self::branch('otp', self::baseWith([
                     'maxLength' => $int,
@@ -153,6 +149,12 @@ final readonly class FormFieldNode implements FormSchemaNodeInterface
                     'properties' => ['label' => $str],
                     'additionalProperties' => false,
                 ]),
+                // Appended last so earlier variant indices stay stable for
+                // index-based schema compat checks.
+                // richtext | time — base props only.
+                self::branch(['richtext', 'time'], self::base()),
+                // autocomplete — option props (options folded in by the host mapper).
+                self::branch('autocomplete', self::option()),
             ],
         ];
     }

@@ -35,8 +35,6 @@ enum FormComponent: string
 
     case Textarea = 'textarea';
 
-    case Richtext = 'richtext';
-
     case Password = 'password';
 
     case Otp = 'otp';
@@ -67,15 +65,11 @@ enum FormComponent: string
 
     case Datetime = 'datetime';
 
-    case Time = 'time';
-
     case Duration = 'duration';
 
     case File = 'file';
 
     case EntityPicker = 'entity_picker';
-
-    case Autocomplete = 'autocomplete';
 
     case Phone = 'phone';
 
@@ -98,4 +92,10 @@ enum FormComponent: string
     case Static = 'static';
 
     case Header = 'header';
+
+    case Richtext = 'richtext';
+
+    case Time = 'time';
+
+    case Autocomplete = 'autocomplete';
 }

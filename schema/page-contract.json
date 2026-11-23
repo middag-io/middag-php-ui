@@ -1075,57 +1075,6 @@
                             "type": "string"
                         },
                         "component": {
-                            "enum": [
-                                "richtext",
-                                "time"
-                            ]
-                        },
-                        "props": {
-                            "$ref": "#/$defs/FieldPropsBase"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                {
-                    "type": "object",
-                    "required": [
-                        "kind",
-                        "key",
-                        "component",
-                        "props"
-                    ],
-                    "properties": {
-                        "kind": {
-                            "const": "field"
-                        },
-                        "key": {
-                            "type": "string"
-                        },
-                        "component": {
-                            "const": "autocomplete"
-                        },
-                        "props": {
-                            "$ref": "#/$defs/OptionFieldProps"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                {
-                    "type": "object",
-                    "required": [
-                        "kind",
-                        "key",
-                        "component",
-                        "props"
-                    ],
-                    "properties": {
-                        "kind": {
-                            "const": "field"
-                        },
-                        "key": {
-                            "type": "string"
-                        },
-                        "component": {
                             "const": "otp"
                         },
                         "props": {
@@ -1845,6 +1794,57 @@
                         }
                     },
                     "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "enum": [
+                                "richtext",
+                                "time"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "autocomplete"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/OptionFieldProps"
+                        }
+                    },
+                    "additionalProperties": false
                 }
             ]
         },
@@ -2285,7 +2285,6 @@
             "enum": [
                 "text",
                 "textarea",
-                "richtext",
                 "password",
                 "otp",
                 "email",
@@ -2301,11 +2300,9 @@
                 "switch",
                 "date",
                 "datetime",
-                "time",
                 "duration",
                 "file",
                 "entity_picker",
-                "autocomplete",
                 "phone",
                 "document",
                 "currency",
@@ -2316,7 +2313,10 @@
                 "date_range",
                 "hidden",
                 "static",
-                "header"
+                "header",
+                "richtext",
+                "time",
+                "autocomplete"
             ]
         },
         "FragmentKind": {
