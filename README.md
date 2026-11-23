@@ -343,7 +343,7 @@ Releases managed by [release-please](https://github.com/googleapis/release-pleas
 
 ## Versioning
 
-Support starts at `2.0.0`; the 1.x line is pre-stable and unsupported, and the cut to `2.0.0` is clean. From `2.0.0`, all `middag-php-*` libraries form one version family: they share MAJOR.MINOR, a patch carries fixes only, a minor never breaks, and a family MINOR or MAJOR is released in every library on the decision of the product owner. Every library of the family is required with the same `^2.N`. Support covers the `@api` surface only. Rules: https://docs.middag.dev/libraries/reference/versioning-and-compatibility. Details: [`API-STABILITY.md`](API-STABILITY.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
+Support starts at `2.0.0`; the 1.x line is pre-stable and unsupported, and the cut to `2.0.0` is clean. From `2.0.0`, the open-source `middag-php-*` libraries form one version family that shares only the MAJOR: MINOR and PATCH releases are per library, a patch carries fixes only and a minor never breaks. Require `middag-io/ui` with `^2.0`, or with the MINOR whose features you use. The PHP API and the wire JSON follow the same rules; the wire evolution and enum policy are in [`API-STABILITY.md`](API-STABILITY.md#the-wire-contract). Support covers the `@api` surface only. Rules: https://docs.middag.dev/libraries/reference/versioning-and-compatibility. Details: [`API-STABILITY.md`](API-STABILITY.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md) §Versioning.
 
 ---
 
