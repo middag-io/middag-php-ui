@@ -282,7 +282,7 @@ $shared = new SharedProps(
 // {auth: {id: '42', name: 'Ada', capabilities: ['orders.view']}, flash: {success: 'Saved.'}, scope: {}, navigation: {...}}
 ```
 
-`ui` defines these shapes only; filling them is the host adapter's job. `PageResources` carries only `featureFlags` and `branding`: identity, capabilities, theme and locale travel in the shared props.
+`ui` defines these shapes only; filling them is the host adapter's job. Identity, capabilities, theme and locale travel in the shared props.
 
 ---
 
