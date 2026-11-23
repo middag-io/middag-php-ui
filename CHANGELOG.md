@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.13.0](https://github.com/middag-io/middag-php-ui/compare/v1.12.0...v1.13.0) (2026-11-23)
+
+
+### Features
+
+* add shared props and navigation tree value objects ([9ab3dd9](https://github.com/middag-io/middag-php-ui/commit/9ab3dd9f551645e81dd3d3998ba8340b29af81a0))
+
+
+### Bug Fixes
+
+* discard empty and whitespace-only flash messages ([1d47a06](https://github.com/middag-io/middag-php-ui/commit/1d47a06bcd99c06a73bb9666945db161b3c09f91))
+* emit empty PageResources featureFlags as a JSON object ([a81d753](https://github.com/middag-io/middag-php-ui/commit/a81d7532e94c6c872c96b871d6f55270e62a2522))
+
+
+### Refactoring
+
+* drop preferences from ResourcePatch and remove UserPreferences ([62b6f0d](https://github.com/middag-io/middag-php-ui/commit/62b6f0df6b52358db2149d2cd5b4a07aa0a3945e))
+* satisfy rector on the flash message normalizer ([00c1a67](https://github.com/middag-io/middag-php-ui/commit/00c1a678d2776b450e9587a261efb47698af63c2))
+
+
+### Documentation
+
+* describe the shared-MAJOR family in the README ([0836ad4](https://github.com/middag-io/middag-php-ui/commit/0836ad4d61656103ee96bf68c1226f1134ac20bd))
+* fix the fragment version example and the ResourcePatch wording ([b974c58](https://github.com/middag-io/middag-php-ui/commit/b974c58444f699c90c264b7cfe4a041bb56f0e5d))
+
 ## [1.12.0](https://github.com/middag-io/middag-php-ui/compare/v1.11.0...v1.12.0) (2026-11-23)
 
 
