@@ -21,7 +21,7 @@ use Middag\Ui\Shared\ValueObject\UserPreferences;
  * Lets the server push a change to preferences or feature flags
  * alongside a Fragment or ActionResult, without resending the whole
  * PageResources envelope. Every field is optional; the wire payload omits
- * what is unset, and the keys mirror PageResources so the client can merge.
+ * what is unset, and the client merges it into its current resources.
  *
  * @api
  */

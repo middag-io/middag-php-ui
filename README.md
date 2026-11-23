@@ -162,7 +162,7 @@ use Middag\Ui\Region\RegionUpdate;
 
 // after a filter/paginate, swap a region's content without reloading the page
 $fragment = Fragment::region(RegionUpdate::replace('orders', $block1, $block2));
-// {version: '1', kind: 'region', payload: {region: 'orders', mode: 'replace', blocks: [...]}}
+// {version: '2', kind: 'region', payload: {region: 'orders', mode: 'replace', blocks: [...]}}
 ```
 
 `RegionUpdate` modes: `replace` / `append` / `prepend` / `remove` (by key) / `update` (match by key).
