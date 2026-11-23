@@ -12,6 +12,10 @@
 
 * state the enum evolution policy in API-STABILITY ([945fe84](https://github.com/middag-io/middag-php-ui/commit/945fe84093baa38cda10a9f6b247677c485fa993))
 
+### Consumer impact
+
+`BlockBuilder::formPanel()` and `RegionBuilder::formPanel()` now accept only `list<FormSchemaNodeInterface>`; a loose array raises a `TypeError`. Callers must build `FormFieldNode`, `FormSectionNode`, `FormGroupNode` or `FormHeaderNode` (framework 1.21 emits them). The emitted wire schema is unchanged. `API-STABILITY.md` now states the enum evolution policy.
+
 ## [1.11.0](https://github.com/middag-io/middag-php-ui/compare/v1.10.3...v1.11.0) (2026-11-23)
 
 
