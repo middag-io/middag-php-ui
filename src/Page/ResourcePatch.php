@@ -13,67 +13,44 @@ declare(strict_types=1);
 namespace Middag\Ui\Page;
 
 use JsonSerializable;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
+use stdClass;
 
 /**
  * Partial update to the shared page resources.
  *
- * Lets the server push a change to preferences, capabilities, or feature flags
- * alongside a Fragment or ActionResult, without resending the whole
- * PageResources envelope. Every field is optional; the wire payload omits
- * what is unset, and the keys mirror PageResources so the client can merge.
+ * Lets the server push a change to the feature flags alongside a Fragment
+ * or ActionResult, without resending the whole PageResources envelope. The
+ * wire payload omits what is unset and is always a JSON object (an empty
+ * patch is `{}`); the client merges it into its current resources.
  *
  * @api
  */
 final readonly class ResourcePatch implements JsonSerializable
 {
     /**
-     * @param array<string, bool> $capabilities
      * @param array<string, bool> $featureFlags
      */
     public function __construct(
-        public ?UserPreferences $preferences = null,
-        public array $capabilities = [],
         public array $featureFlags = [],
     ) {}
 
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
+    /** @return array<string, array<string, bool>>|stdClass */
+    public function jsonSerialize(): array|stdClass
     {
-        $payload = [];
-
-        if ($this->preferences instanceof UserPreferences) {
-            $payload['preferences'] = $this->preferences->jsonSerialize();
+        if ($this->featureFlags === []) {
+            return new stdClass();
         }
 
-        if ($this->capabilities !== []) {
-            $payload['capabilities'] = $this->capabilities;
-        }
-
-        if ($this->featureFlags !== []) {
-            $payload['featureFlags'] = $this->featureFlags;
-        }
-
-        return $payload;
+        return ['featureFlags' => $this->featureFlags];
     }
 
     /** @return array<string, mixed> */
     public static function jsonSchema(): array
     {
-        return [
-            'oneOf' => [
-                [
-                    'type' => 'object',
-                    'properties' => [
-                        'preferences' => ['$ref' => '#/$defs/UserPreferences'],
-                        'capabilities' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
-                        'featureFlags' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
-                    ],
-                    'additionalProperties' => false,
-                ],
-                // An empty patch serializes to an empty PHP array → JSON [].
-                ['type' => 'array', 'maxItems' => 0],
+        return ['type' => 'object',
+            'properties' => [
+                'featureFlags' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
             ],
-        ];
+            'additionalProperties' => false];
     }
 }

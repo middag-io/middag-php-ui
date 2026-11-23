@@ -27,6 +27,7 @@ use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
 use Middag\Ui\Navigation\NavigationNode;
+use Middag\Ui\Navigation\NavigationTree;
 use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
@@ -40,11 +41,15 @@ use Middag\Ui\Schema\SchemaRegistry;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\NotificationLevel;
+use Middag\Ui\Shared\Enum\ThemeMode;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Shared\ValueObject\FlashMessages;
 use Middag\Ui\Shared\ValueObject\Identity;
 use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Shared\ValueObject\SharedAuth;
+use Middag\Ui\Shared\ValueObject\SharedProps;
+use Middag\Ui\Shared\ValueObject\SharedTheme;
 use Middag\Ui\Shared\ValueObject\Translatable;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
 use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\Pagination;
@@ -181,8 +186,7 @@ final class SchemaRoundtripTest extends TestCase
     #[Test]
     public function testFormErrors(): void
     {
-        // Empty errors are never serialized (ActionResult omits them), so the
-        // schema only needs to accept the populated object form.
+        // The empty set serializes to {} and is covered by the shared props tests.
         $this->assertValidAgainst('FormErrors', new FormErrors([
             'email' => 'Required',
             'tags' => ['Too few', 'Invalid value'],
@@ -220,20 +224,36 @@ final class SchemaRoundtripTest extends TestCase
         $this->assertValidAgainst('Pagination', new Pagination(1, 25, 100, 4));
     }
 
-    // ── Resources (capabilities non-empty + empty) ───────────────────────────
+    // ── Resources (flags non-empty + empty) ───────────────────────────
 
     #[Test]
     public function testPageResources(): void
     {
         $this->assertValidAgainst('PageResources', new PageResources(
-            preferences: new UserPreferences(locale: 'pt-BR', timezone: 'America/Sao_Paulo'),
-            capabilities: ['manage_x' => true],
             featureFlags: ['beta' => false],
-            user: new Identity(id: '1', name: 'Ana', email: 'a@x.io', roles: ['admin']),
             branding: new Branding(appName: 'Helico', logoUrl: '/logo.svg'),
         ));
-        // Empty capability/featureFlag maps serialize as [] — must still validate.
+        // An empty featureFlags map serializes as {} and must still validate.
         $this->assertValidAgainst('PageResources', new PageResources());
+    }
+
+    // ── Shared props ─────────────────────────────────────────────────────────
+
+    #[Test]
+    public function testSharedPropsSlots(): void
+    {
+        $this->assertValidAgainst('NavigationTree', new NavigationTree(
+            tree: [new NavigationNode(key: 'a', label: 'A', entityType: 'course', badgeVariant: 'count', statusColor: 'red', target: '_blank')],
+            activeKey: 'a',
+        ));
+        $this->assertValidAgainst('SharedAuth', new SharedAuth(new Identity(id: '1', name: 'Ana', roles: ['admin']), ['x:view'], '/out'));
+        $this->assertValidAgainst('SharedTheme', new SharedTheme(ThemeMode::Dark, ['k' => 'v']));
+        $this->assertValidAgainst('FlashMessages', new FlashMessages(error: 'Nope'));
+        $this->assertValidAgainst('SharedProps', new SharedProps(
+            auth: new SharedAuth(new Identity(id: '1', name: 'Ana')),
+            errors: new FormErrors(),
+            navigation: new NavigationTree(),
+        ));
     }
 
     // ── Server-push slices ───────────────────────────────────────────────────
@@ -257,7 +277,7 @@ final class SchemaRoundtripTest extends TestCase
             redirect: '/x',
             refreshBlocks: ['m1', 'm2'],
             errors: ['name' => 'required', 'tags' => ['too few', 'invalid']],
-            resources: new ResourcePatch(capabilities: ['x' => true], featureFlags: ['beta' => true]),
+            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ));
     }
 
@@ -300,7 +320,7 @@ final class SchemaRoundtripTest extends TestCase
                 actions: [new Action(id: 'help', label: 'Help', target: ActionTarget::route('help.show'))],
             ),
             layout: new LayoutDescriptor(template: 'stack', regions: ['content' => [$table]], meta: ['gap' => 4]),
-            resources: new PageResources(capabilities: ['manage_courses' => true]),
+            resources: new PageResources(featureFlags: ['beta' => true]),
             notifications: [new Notification(level: NotificationLevel::Info, message: 'Loaded')],
             entities: ['course' => '/courses/{id}', 'user' => '/users/{id}'],
         );
@@ -319,7 +339,7 @@ final class SchemaRoundtripTest extends TestCase
         // serializes `regions` to [].
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'blank', regions: []));
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'stack', regions: ['content' => []]));
-        // An empty resource patch serializes to [].
+        // An empty resource patch serializes to {}.
         $this->assertValidAgainst('ResourcePatch', new ResourcePatch());
     }
 
@@ -380,7 +400,7 @@ final class SchemaRoundtripTest extends TestCase
      */
     public static function emittedBundleProvider(): array
     {
-        return ['page-contract.json' => ['pageContract'], 'fragment.json' => ['fragment']];
+        return ['page-contract.json' => ['pageContract'], 'fragment.json' => ['fragment'], 'shared-props.json' => ['sharedProps']];
     }
 
     /**

@@ -36,7 +36,7 @@ final class FormErrorsTest extends TestCase
     #[Test]
     public function testIsEmptyByDefault(): void
     {
-        self::assertSame([], (new FormErrors())->jsonSerialize());
+        self::assertSame('{}', json_encode(new FormErrors()));
     }
 
     #[Test]

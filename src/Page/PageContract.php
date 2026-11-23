@@ -72,7 +72,7 @@ readonly class PageContract implements PageContractInterface
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['version', 'shell', 'page', 'layout'],
-            'properties' => ['version' => ['const' => '1'], 'shell' => ['type' => 'string'],
+            'properties' => ['version' => ['const' => '2'], 'shell' => ['type' => 'string'],
                 'page' => ['$ref' => '#/$defs/PageMeta'], 'layout' => ['$ref' => '#/$defs/LayoutDescriptor'],
                 'resources' => ['$ref' => '#/$defs/PageResources'],
                 'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],

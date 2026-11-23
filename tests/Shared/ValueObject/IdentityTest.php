@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Shared\ValueObject;
 
+use InvalidArgumentException;
 use Middag\Ui\Shared\ValueObject\Identity;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -64,5 +65,21 @@ final class IdentityTest extends TestCase
         self::assertSame('object', $schema['type']);
         self::assertSame(['id', 'name'], $schema['required']);
         self::assertFalse($schema['additionalProperties']);
+    }
+
+    #[Test]
+    public function testRejectsNonStringRoles(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        (new ReflectionClass(Identity::class))->newInstanceArgs(['id' => '1', 'name' => 'Ada', 'roles' => [1]]);
+    }
+
+    #[Test]
+    public function testRejectsANonListRoleMap(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        (new ReflectionClass(Identity::class))->newInstanceArgs(['id' => '1', 'name' => 'Ada', 'roles' => ['admin' => 'x']]);
     }
 }

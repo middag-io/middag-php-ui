@@ -39,6 +39,7 @@ use Middag\Ui\Form\OptionFieldProps;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
 use Middag\Ui\Navigation\NavigationNode;
+use Middag\Ui\Navigation\NavigationTree;
 use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
@@ -63,11 +64,14 @@ use Middag\Ui\Shared\Enum\RegionUpdateMode;
 use Middag\Ui\Shared\Enum\RenderTarget;
 use Middag\Ui\Shared\Enum\ThemeMode;
 use Middag\Ui\Shared\Enum\ValueFormat;
+use Middag\Ui\Shared\ValueObject\FlashMessages;
 use Middag\Ui\Shared\ValueObject\Identity;
 use Middag\Ui\Shared\ValueObject\Label;
 use Middag\Ui\Shared\ValueObject\Notification;
+use Middag\Ui\Shared\ValueObject\SharedAuth;
+use Middag\Ui\Shared\ValueObject\SharedProps;
+use Middag\Ui\Shared\ValueObject\SharedTheme;
 use Middag\Ui\Shared\ValueObject\Translatable;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
 use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\Pagination;
@@ -119,11 +123,16 @@ final class SchemaRegistry
         // Notifications + resources.
         'Notification' => Notification::class,
         'PageResources' => PageResources::class,
-        'UserPreferences' => UserPreferences::class,
         'Identity' => Identity::class,
         'Branding' => Branding::class,
         // Navigation.
         'NavigationNode' => NavigationNode::class,
+        'NavigationTree' => NavigationTree::class,
+        // Shared props (second root bundle).
+        'SharedProps' => SharedProps::class,
+        'SharedAuth' => SharedAuth::class,
+        'SharedTheme' => SharedTheme::class,
+        'FlashMessages' => FlashMessages::class,
         // Tables.
         'TableConfig' => TableConfig::class,
         'TableDisplayOptions' => TableDisplayOptions::class,
@@ -241,6 +250,21 @@ final class SchemaRegistry
     }
 
     /**
+     * The shared props wire contract (SharedProps as root).
+     *
+     * @return array<string, mixed>
+     */
+    public static function sharedProps(): array
+    {
+        return self::bundle(
+            'SharedProps',
+            'shared-props.json',
+            'MIDDAG Shared Props',
+            'Wire contract for the shared props sent with every page: auth, theme, flash, errors, csrf_token, locale, scope and navigation. The root is open so hosts and products can add their own keys. Generated from middag-io/ui PHP value objects (jsonSchema()).',
+        );
+    }
+
+    /**
      * Bundle file name → bundle, for the emitter to iterate.
      *
      * @return array<string, array<string, mixed>>
@@ -250,6 +274,7 @@ final class SchemaRegistry
         return [
             'page-contract.json' => self::pageContract(),
             'fragment.json' => self::fragment(),
+            'shared-props.json' => self::sharedProps(),
         ];
     }
 

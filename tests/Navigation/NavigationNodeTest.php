@@ -151,4 +151,46 @@ final class NavigationNodeTest extends TestCase
         self::assertSame(['key', 'label'], $schema['required']);
         self::assertFalse($schema['additionalProperties']);
     }
+
+    #[Test]
+    public function testNewOptionalFieldsDefaultToNullAndAreOmitted(): void
+    {
+        $node = new NavigationNode(key: 'home', label: 'Home');
+
+        self::assertNull($node->entityType);
+        self::assertNull($node->badgeVariant);
+        self::assertNull($node->statusColor);
+        self::assertNull($node->target);
+        self::assertSame('{"key":"home","label":"Home"}', json_encode($node));
+    }
+
+    #[Test]
+    public function testNewOptionalFieldsAreEmittedWhenSet(): void
+    {
+        $node = new NavigationNode(
+            key: 'inbox',
+            label: 'Inbox',
+            badge: '3',
+            entityType: 'course',
+            badgeVariant: 'alert',
+            statusColor: 'green',
+            target: '_blank',
+        );
+
+        self::assertSame(
+            '{"key":"inbox","label":"Inbox","badge":"3","entityType":"course","badgeVariant":"alert",'
+            . '"statusColor":"green","target":"_blank"}',
+            json_encode($node),
+        );
+    }
+
+    #[Test]
+    public function testSchemaTypesTheNewFieldsAsOpenStrings(): void
+    {
+        $properties = NavigationNode::jsonSchema()['properties'];
+
+        foreach (['entityType', 'badgeVariant', 'statusColor', 'target'] as $field) {
+            self::assertSame(['type' => 'string'], $properties[$field]);
+        }
+    }
 }

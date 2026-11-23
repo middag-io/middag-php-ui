@@ -14,9 +14,6 @@ namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageResources;
-use Middag\Ui\Shared\Enum\ThemeMode;
-use Middag\Ui\Shared\ValueObject\Identity;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -33,54 +30,49 @@ final class PageResourcesTest extends TestCase
     #[Test]
     public function testSerializesDefaults(): void
     {
-        $resources = new PageResources();
-
-        $payload = $resources->jsonSerialize();
-
-        self::assertArrayHasKey('preferences', $payload);
-        self::assertArrayHasKey('capabilities', $payload);
-        self::assertArrayHasKey('featureFlags', $payload);
-        self::assertArrayNotHasKey('user', $payload);
-        self::assertArrayNotHasKey('branding', $payload);
-        self::assertSame([], $payload['capabilities']);
-        self::assertSame([], $payload['featureFlags']);
-        self::assertSame('en', $payload['preferences']['locale']);
-        self::assertSame('system', $payload['preferences']['theme']);
+        self::assertSame('{"featureFlags":{}}', json_encode(new PageResources()));
     }
 
     #[Test]
     public function testSerializesCustomValues(): void
     {
         $resources = new PageResources(
-            preferences: new UserPreferences(theme: ThemeMode::Dark, locale: 'pt-BR'),
-            capabilities: ['manage_users' => true],
             featureFlags: ['dark_mode' => true, 'beta' => false],
-            user: new Identity(id: '1', name: 'Admin'),
             branding: new Branding(appName: 'Helico'),
         );
 
         $payload = $resources->jsonSerialize();
 
-        self::assertSame('dark', $payload['preferences']['theme']);
-        self::assertSame('pt-BR', $payload['preferences']['locale']);
-        self::assertSame(['manage_users' => true], $payload['capabilities']);
         self::assertSame(['dark_mode' => true, 'beta' => false], $payload['featureFlags']);
-        self::assertSame('Admin', $payload['user']['name']);
         self::assertSame('Helico', $payload['branding']['appName']);
+    }
+
+    #[Test]
+    public function testNoLongerCarriesUserCapabilitiesOrPreferences(): void
+    {
+        $payload = (new PageResources(branding: new Branding(appName: 'Helico')))->jsonSerialize();
+        $schema = PageResources::jsonSchema();
+
+        foreach (['user', 'capabilities', 'preferences'] as $removed) {
+            self::assertArrayNotHasKey($removed, $payload);
+            self::assertArrayNotHasKey($removed, $schema['properties']);
+            self::assertNotContains($removed, $schema['required']);
+        }
+        self::assertSame(['featureFlags'], $schema['required']);
     }
 
     #[Test]
     public function testFeatureFlagsCamelCase(): void
     {
-        $resources = new PageResources(
-            featureFlags: ['new_dashboard' => true],
-        );
+        $resources = new PageResources(featureFlags: ['new_dashboard' => true]);
 
-        $payload = $resources->jsonSerialize();
+        self::assertSame('{"featureFlags":{"new_dashboard":true}}', json_encode($resources));
+    }
 
-        self::assertArrayHasKey('featureFlags', $payload);
-        self::assertArrayNotHasKey('feature_flags', $payload);
-        self::assertSame(['new_dashboard' => true], $payload['featureFlags']);
+    #[Test]
+    public function testSchemaRejectsEmptyFeatureFlagsAsAnArray(): void
+    {
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => []]);
     }
 
     #[Test]
@@ -93,31 +85,23 @@ final class PageResourcesTest extends TestCase
     public function testSchemaAcceptsResourcesWithPopulatedMaps(): void
     {
         $this->assertValidAgainst('PageResources', new PageResources(
-            preferences: new UserPreferences(theme: ThemeMode::Dark, locale: 'pt-BR'),
-            capabilities: ['manage_users' => true],
             featureFlags: ['dark_mode' => true, 'beta' => false],
-            user: new Identity(id: '1', name: 'Admin'),
             branding: new Branding(appName: 'Helico'),
         ));
     }
 
     #[Test]
-    public function testSchemaRejectsResourcesMissingPreferences(): void
+    public function testSchemaRejectsResourcesMissingFeatureFlags(): void
     {
-        $payload = (new PageResources())->jsonSerialize();
-        unset($payload['preferences']);
-
-        $this->assertInvalidAgainst('PageResources', $payload);
+        $this->assertInvalidAgainst('PageResources', []);
     }
 
     #[Test]
-    public function testSchemaRejectsNonBooleanCapabilityValues(): void
+    public function testSchemaRejectsTheRemovedKeys(): void
     {
-        $this->assertInvalidAgainst('PageResources', [
-            'preferences' => (new UserPreferences())->jsonSerialize(),
-            'capabilities' => ['manage_users' => 'yes'],
-            'featureFlags' => [],
-        ]);
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => (object) [], 'capabilities' => []]);
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => (object) [], 'user' => ['id' => '1', 'name' => 'A']]);
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => (object) [], 'preferences' => ['theme' => 'dark', 'locale' => 'en']]);
     }
 
     #[Test]

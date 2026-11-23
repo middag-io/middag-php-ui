@@ -46,9 +46,9 @@ each concern's `Contract/` sub-namespace (`Page/Contract/`, `Form/Contract/`,
 `Navigation/Contract/`, `Inspector/Contract/`, `Envelope/Contract/`,
 `EditablePanel/Contract/`), the concern builders and their value objects
 (including `Condition\Condition` and `EditablePanel\EditablePanelDescriptor`), and the cross-cutting types under
-`Shared/`, except `Shared/Concerns/ProvidesJsonSchema`.
+`Shared/`, except the two `Shared/Concerns/` traits.
 
-`Shared/Concerns/ProvidesJsonSchema` and everything under `Schema/` (the JSON
+`Shared/Concerns/ProvidesJsonSchema`, `Shared/Concerns/AssertsStringList` and everything under `Schema/` (the JSON
 Schema registry) are `@internal`: they support schema export inside the
 package and are not part of the public surface.
 
@@ -59,6 +59,12 @@ contract: the **`PageContract` wire JSON** emitted for `@middag-io/react`. The
 JSON shape is the real integration boundary with the client. A PHP-level rename
 that leaves the emitted JSON unchanged is not a wire break; a change to the JSON
 shape is, and follows the same rules as a break of the `@api` surface.
+
+The wire contract has two root bundles under `schema/`: `page-contract.json` (the `PageContract` envelope, with `fragment.json` for the `Fragment` envelope) and `shared-props.json`, whose root is `SharedProps`, the props shared with every page. Its slots are `auth`, `theme`, `flash`, `errors`, `csrf_token`, `locale`, `scope` and `navigation`. The root is open (`additionalProperties: true`), so hosts and products can add their own keys such as `middag.*`; the typed slots stay strict. All bundles carry the same `$defs` and the same `x-contract-version`.
+
+The shared props types are `@api`: `Shared\ValueObject\SharedProps`, `SharedAuth`, `SharedTheme` and `FlashMessages`, and `Navigation\NavigationTree` (the return type of `NavigationRegistryInterface::build()`). Identity, capabilities, theme and locale travel in the shared props only; `PageResources` carries feature flags and branding.
+
+The `errors` slot carries the `FormErrors` of the current request. It does not cover the `X-Inertia-Error-Bag` header, which is handled at the framework edge.
 
 Adding an optional key or a new `$def` is additive and ships in a MINOR; clients ignore keys they do not know. Adding a new discriminator value (`kind`, `type`) is additive and ships in a MINOR; clients treat an unknown value as unsupported and degrade that element instead of rejecting the whole payload. Enum values follow the policy in [Enum evolution on the wire](#enum-evolution-on-the-wire). Removing or renaming a key, removing an enum value, changing a type or making a key required is a breaking change: it ships in a MAJOR and raises `ContractEnvelopeInterface::VERSION` and `x-contract-version`. `@middag-io/ui-contracts` mirrors `schema/`, ships the TypeScript types and zod schemas generated from it, and versions on its own line.
 

@@ -3,7 +3,7 @@
     "$id": "https://ui-docs.middag.io/schemas/page-contract.json",
     "title": "MIDDAG Page Contract",
     "description": "Wire contract for a full page render. Generated from middag-io/ui PHP value objects (jsonSchema()). Source of truth for the TypeScript types and zod schema in @middag-io/react.",
-    "x-contract-version": "1",
+    "x-contract-version": "2",
     "$ref": "#/$defs/PageContract",
     "$defs": {
         "PageContract": {
@@ -16,7 +16,7 @@
             ],
             "properties": {
                 "version": {
-                    "const": "1"
+                    "const": "2"
                 },
                 "shell": {
                     "type": "string"
@@ -53,7 +53,7 @@
             ],
             "properties": {
                 "version": {
-                    "const": "1"
+                    "const": "2"
                 },
                 "kind": {
                     "$ref": "#/$defs/FragmentKind"
@@ -465,75 +465,20 @@
         "PageResources": {
             "type": "object",
             "required": [
-                "preferences",
-                "capabilities",
                 "featureFlags"
             ],
             "properties": {
-                "preferences": {
-                    "$ref": "#/$defs/UserPreferences"
-                },
-                "capabilities": {
-                    "oneOf": [
-                        {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "maxItems": 0
-                        }
-                    ]
-                },
                 "featureFlags": {
-                    "oneOf": [
-                        {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "maxItems": 0
-                        }
-                    ]
-                },
-                "user": {
-                    "$ref": "#/$defs/Identity"
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "boolean"
+                    }
                 },
                 "branding": {
                     "$ref": "#/$defs/Branding"
                 }
             },
             "additionalProperties": false
-        },
-        "UserPreferences": {
-            "type": "object",
-            "required": [
-                "theme",
-                "locale"
-            ],
-            "properties": {
-                "theme": {
-                    "$ref": "#/$defs/ThemeMode"
-                },
-                "locale": {
-                    "type": "string"
-                },
-                "timezone": {
-                    "type": "string"
-                },
-                "dateFormat": {
-                    "type": "string"
-                },
-                "numberFormat": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": true
         },
         "Identity": {
             "type": "object",
@@ -603,6 +548,18 @@
                 "badge": {
                     "type": "string"
                 },
+                "entityType": {
+                    "type": "string"
+                },
+                "badgeVariant": {
+                    "type": "string"
+                },
+                "statusColor": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "string"
+                },
                 "active": {
                     "const": true
                 },
@@ -620,6 +577,134 @@
                     "items": {
                         "$ref": "#/$defs/NavigationNode"
                     }
+                }
+            },
+            "additionalProperties": false
+        },
+        "NavigationTree": {
+            "type": "object",
+            "required": [
+                "tree",
+                "activeKey",
+                "footer"
+            ],
+            "properties": {
+                "tree": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/NavigationNode"
+                    }
+                },
+                "activeKey": {
+                    "type": "string"
+                },
+                "footer": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/NavigationNode"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "SharedProps": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "$ref": "#/$defs/SharedAuth"
+                },
+                "theme": {
+                    "$ref": "#/$defs/SharedTheme"
+                },
+                "flash": {
+                    "$ref": "#/$defs/FlashMessages"
+                },
+                "errors": {
+                    "$ref": "#/$defs/FormErrors"
+                },
+                "csrf_token": {
+                    "type": "string"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "navigation": {
+                    "$ref": "#/$defs/NavigationTree"
+                }
+            },
+            "additionalProperties": true
+        },
+        "SharedAuth": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "capabilities"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "avatarUrl": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "capabilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "logoutUrl": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "SharedTheme": {
+            "type": "object",
+            "properties": {
+                "appearance": {
+                    "$ref": "#/$defs/ThemeMode"
+                },
+                "strings": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "FlashMessages": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "warning": {
+                    "type": "string"
                 }
             },
             "additionalProperties": false
@@ -2145,33 +2230,16 @@
             "additionalProperties": false
         },
         "ResourcePatch": {
-            "oneOf": [
-                {
+            "type": "object",
+            "properties": {
+                "featureFlags": {
                     "type": "object",
-                    "properties": {
-                        "preferences": {
-                            "$ref": "#/$defs/UserPreferences"
-                        },
-                        "capabilities": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        },
-                        "featureFlags": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                {
-                    "type": "array",
-                    "maxItems": 0
+                    "additionalProperties": {
+                        "type": "boolean"
+                    }
                 }
-            ]
+            },
+            "additionalProperties": false
         },
         "ActionIntent": {
             "type": "string",

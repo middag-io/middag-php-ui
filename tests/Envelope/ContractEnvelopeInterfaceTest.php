@@ -60,7 +60,7 @@ final class ContractEnvelopeInterfaceTest extends TestCase
     {
         $reflection = new ReflectionClass(ContractEnvelopeInterface::class);
 
-        self::assertSame(['VERSION' => '1'], $reflection->getConstants());
+        self::assertSame(['VERSION' => '2'], $reflection->getConstants());
         self::assertTrue($reflection->getReflectionConstant('VERSION')->isPublic());
     }
 
@@ -97,7 +97,7 @@ final class ContractEnvelopeInterfaceTest extends TestCase
 
         self::assertIsArray($decoded);
         self::assertSame(ContractEnvelopeInterface::VERSION, $decoded['version']);
-        self::assertSame('1', $decoded['version']);
+        self::assertSame('2', $decoded['version']);
         self::assertSame('probe', $decoded['kind']);
     }
 }

@@ -30,7 +30,7 @@ use Middag\Ui\Shared\ValueObject\Notification;
  *   swaps them in without a round-trip. Use push when the server holds the
  *   fresh data anyway; use pull when re-fetching is cheaper or simpler.
  *
- * `resources` carries a partial patch to preferences/capabilities/flags when a
+ * `resources` carries a partial patch to the feature flags when a
  * mutation changes them mid-flow.
  *
  * @api
