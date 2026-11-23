@@ -17,15 +17,18 @@ use Middag\Ui\Action\ActionTarget;
 use Middag\Ui\Block\BlockBuilder;
 use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
+use Middag\Ui\Form\FormFieldNode;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\ChartType;
+use Middag\Ui\Shared\Enum\FormComponent;
 use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\ValueObject\Translatable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 /**
  * @internal
@@ -123,6 +126,23 @@ final class BlockBuilderTest extends TestCase
         $block = BlockBuilder::tabs('t', [new Tab('a', 'A')], 'a');
 
         self::assertSame('a', $block->data['defaultTab']);
+    }
+
+    #[Test]
+    public function testFormPanelSerializesSchemaNodes(): void
+    {
+        $node = new FormFieldNode('a', FormComponent::Text, ['label' => 'A']);
+        $payload = BlockBuilder::formPanel('f', '/submit', 'POST', [$node])->jsonSerialize();
+
+        self::assertEquals([$node->jsonSerialize()], $payload['data']['schema']);
+    }
+
+    #[Test]
+    public function testFormPanelRejectsLooseArrayNodes(): void
+    {
+        $this->expectException(TypeError::class);
+
+        BlockBuilder::formPanel('f', '/submit', 'POST', [['name' => 'a']]);
     }
 
     #[Test]

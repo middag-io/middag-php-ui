@@ -19,8 +19,7 @@ namespace Middag\Ui\Form;
  * {@see FormSectionNode} and {@see FormGroupNode} children, and the single
  * `$def` @middag-io/react codegen turns into the `FormSchemaNode` discriminated
  * union. Standalone by design: it is NOT referenced from the PageContract /
- * Fragment trees (the form-panel block payload stays a lenient passthrough
- * during the migration window), so the recursive cycle never reaches
+ * Fragment trees (the generic block payload is untyped), so the recursive cycle never reaches
  * the zod roots — only the TypeScript types and the opis roundtrip.
  *
  * @api

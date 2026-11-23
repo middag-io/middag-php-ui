@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Block;
 
+use InvalidArgumentException;
 use Middag\Ui\Action\Action;
 use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
 use Middag\Ui\Form\FormStep;
@@ -47,15 +48,13 @@ class BlockBuilder
     }
 
     /**
-     * @param array<int, array<string, mixed>|FormSchemaNodeInterface> $schema Form schema nodes.
-     *                                                                         Dual-accept during the form-on-wire migration: each element
-     *                                                                         is either a {@see FormSchemaNodeInterface} VO (serialized here
-     *                                                                         via jsonSerialize) or a legacy loose array (passed through
-     *                                                                         untouched). Loose passthrough is removed once every producer
-     *                                                                         builds VOs.
-     * @param array<string, mixed>                                     $values
-     * @param null|array<int, FormStep>                                $steps  Wizard steps; when set, the form renders multi-step
-     * @param array<string, mixed>                                     $data   Extra data merged into the block payload
+     * @param list<FormSchemaNodeInterface> $schema Form schema nodes: each element is a {@see FormSchemaNodeInterface}
+     *                                              value object, serialized here via jsonSerialize. Loose arrays are rejected.
+     * @param array<string, mixed>          $values
+     * @param null|array<int, FormStep>     $steps  Wizard steps; when set, the form renders multi-step
+     * @param array<string, mixed>          $data   Extra data merged into the block payload
+     *
+     * @throws InvalidArgumentException when a schema element is not a FormSchemaNodeInterface
      */
     public static function formPanel(string $key, string $action, string $method = 'POST', array $schema = [], array $values = [], ?array $steps = null, array $data = []): BlockDescriptor
     {
@@ -70,7 +69,7 @@ class BlockBuilder
                     // exactly, so an uppercase "PUT" silently falls back to POST.
                     'method' => strtolower($method),
                     'schema' => array_map(
-                        static fn (mixed $node): mixed => $node instanceof FormSchemaNodeInterface ? $node->jsonSerialize() : $node,
+                        static fn (FormSchemaNodeInterface $node): array => $node->jsonSerialize(),
                         $schema,
                     ),
                     'values' => $values,
