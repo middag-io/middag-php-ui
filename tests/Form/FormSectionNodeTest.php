@@ -15,6 +15,7 @@ namespace Middag\Ui\Tests\Form;
 use Middag\Ui\Form\FormFieldNode;
 use Middag\Ui\Form\FormSectionNode;
 use Middag\Ui\Shared\Enum\FormComponent;
+use Middag\Ui\Shared\ValueObject\Translatable;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -65,6 +66,53 @@ final class FormSectionNodeTest extends TestCase
             children: [new FormFieldNode('secret', FormComponent::Password, ['label' => 'Secret'])],
             defaultCollapsed: true,
         ));
+    }
+
+    #[Test]
+    public function testExistingStringSectionShapeIsByteIdentical(): void
+    {
+        $json = json_encode(new FormSectionNode(
+            id: 'advanced',
+            label: 'Advanced',
+            children: [new FormFieldNode('secret', FormComponent::Password, ['label' => 'Secret'])],
+            defaultCollapsed: true,
+        ), JSON_THROW_ON_ERROR);
+
+        self::assertSame(
+            '{"kind":"section","id":"advanced","label":"Advanced","children":[{"kind":"field","key":"secret","component":"password","props":{"label":"Secret"}}],"defaultCollapsed":true}',
+            $json,
+        );
+    }
+
+    #[Test]
+    public function testTranslatableLabelSerializesAsKeyAndDomain(): void
+    {
+        $json = json_encode(new FormSectionNode('s', Translatable::of('section.title', 'local_x')), JSON_THROW_ON_ERROR);
+
+        self::assertSame('{"kind":"section","id":"s","label":{"key":"section.title","domain":"local_x"},"children":[]}', $json);
+    }
+
+    #[Test]
+    public function testTranslatableLabelKeepsParams(): void
+    {
+        $payload = (new FormSectionNode('s', Translatable::of('k', 'd', ['n' => 2])))->jsonSerialize();
+
+        self::assertSame(['key' => 'k', 'domain' => 'd', 'params' => ['n' => 2]], $payload['label']);
+    }
+
+    #[Test]
+    public function testNullLabelSerializesAsExplicitNull(): void
+    {
+        $json = json_encode(new FormSectionNode('s', null), JSON_THROW_ON_ERROR);
+
+        self::assertSame('{"kind":"section","id":"s","label":null,"children":[]}', $json);
+    }
+
+    #[Test]
+    public function testSchemaAcceptsTranslatableAndNullLabels(): void
+    {
+        $this->assertValidAgainst('FormSectionNode', new FormSectionNode('s', Translatable::of('k', 'd')));
+        $this->assertValidAgainst('FormSectionNode', new FormSectionNode('s', null));
     }
 
     #[Test]

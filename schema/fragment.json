@@ -1075,6 +1075,57 @@
                             "type": "string"
                         },
                         "component": {
+                            "enum": [
+                                "richtext",
+                                "time"
+                            ]
+                        },
+                        "props": {
+                            "$ref": "#/$defs/FieldPropsBase"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
+                            "const": "autocomplete"
+                        },
+                        "props": {
+                            "$ref": "#/$defs/OptionFieldProps"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "key",
+                        "component",
+                        "props"
+                    ],
+                    "properties": {
+                        "kind": {
+                            "const": "field"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "component": {
                             "const": "otp"
                         },
                         "props": {
@@ -1813,7 +1864,17 @@
                     "type": "string"
                 },
                 "label": {
-                    "type": "string"
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/$defs/Translatable"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 },
                 "defaultCollapsed": {
                     "type": "boolean"
@@ -2224,6 +2285,7 @@
             "enum": [
                 "text",
                 "textarea",
+                "richtext",
                 "password",
                 "otp",
                 "email",
@@ -2239,9 +2301,11 @@
                 "switch",
                 "date",
                 "datetime",
+                "time",
                 "duration",
                 "file",
                 "entity_picker",
+                "autocomplete",
                 "phone",
                 "document",
                 "currency",

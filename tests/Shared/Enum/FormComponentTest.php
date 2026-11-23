@@ -30,6 +30,7 @@ final class FormComponentTest extends TestCase
         'text', 'textarea', 'password', 'otp', 'email', 'url', 'int', 'float',
         'slider', 'select', 'native_select', 'multiselect', 'radio', 'checkbox',
         'switch', 'date', 'datetime', 'duration', 'file', 'entity_picker',
+        'richtext', 'time', 'autocomplete',
         'phone', 'document', 'currency', 'color', 'slug', 'tags', 'rating',
         'date_range', 'hidden', 'static', 'header',
     ];
@@ -47,7 +48,7 @@ final class FormComponentTest extends TestCase
     #[Test]
     public function totalComponentCount(): void
     {
-        $this->assertCount(31, FormComponent::cases());
+        $this->assertCount(34, FormComponent::cases());
     }
 
     #[Test]
@@ -58,6 +59,14 @@ final class FormComponentTest extends TestCase
         $this->assertSame('entity_picker', FormComponent::EntityPicker->value);
         $this->assertSame('date_range', FormComponent::DateRange->value);
         $this->assertSame('header', FormComponent::Header->value);
+    }
+
+    #[Test]
+    public function builderIntentComponentsMatchTheHostEmittedStrings(): void
+    {
+        $this->assertSame('richtext', FormComponent::Richtext->value);
+        $this->assertSame('time', FormComponent::Time->value);
+        $this->assertSame('autocomplete', FormComponent::Autocomplete->value);
     }
 
     #[Test]

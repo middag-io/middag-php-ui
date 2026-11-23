@@ -13,13 +13,16 @@ declare(strict_types=1);
 namespace Middag\Ui\Form;
 
 use Middag\Ui\Form\Contract\FormSchemaNodeInterface;
+use Middag\Ui\Shared\ValueObject\Label;
+use Middag\Ui\Shared\ValueObject\Translatable;
 
 /**
  * A collapsible section grouping nodes under a label.
  *
  * Wire shape: `{ kind: 'section', id, label, defaultCollapsed?, children }`.
- * Mirrors @middag-io/react's `FormSectionNode`. `label` is a plain wire string
- * (resolved host-side before building the form), matching the renderer.
+ * Mirrors @middag-io/react's `FormSectionNode`. `label` is a literal string, a
+ * {@see Translatable} (serialized as `{key, domain, params?}`) or null (an
+ * unlabelled section, serialized as `label: null`).
  *
  * @api
  */
@@ -30,7 +33,7 @@ final readonly class FormSectionNode implements FormSchemaNodeInterface
      */
     public function __construct(
         public string $id,
-        public string $label,
+        public string|Translatable|null $label,
         public array $children = [],
         public bool $defaultCollapsed = false,
     ) {}
@@ -41,7 +44,7 @@ final readonly class FormSectionNode implements FormSchemaNodeInterface
         $payload = [
             'kind' => 'section',
             'id' => $this->id,
-            'label' => $this->label,
+            'label' => Label::serializeNullable($this->label),
             'children' => array_map(
                 static fn (FormSchemaNodeInterface $child): array => $child->jsonSerialize(),
                 $this->children,
@@ -64,7 +67,7 @@ final readonly class FormSectionNode implements FormSchemaNodeInterface
             'properties' => [
                 'kind' => ['const' => 'section'],
                 'id' => ['type' => 'string'],
-                'label' => ['type' => 'string'],
+                'label' => ['oneOf' => [['type' => 'string'], ['$ref' => '#/$defs/Translatable'], ['type' => 'null']]],
                 // `boolean` (not const:true) for parity with the react FormSectionNode
                 // type; the serializer still omits it when false (wire carries
                 // true-or-absent), but a consumer's `defaultCollapsed: false` stays

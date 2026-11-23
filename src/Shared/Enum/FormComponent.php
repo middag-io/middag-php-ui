@@ -22,8 +22,8 @@ use Middag\Ui\Shared\Concerns\ProvidesJsonSchema;
  * catalog, NOT the builder catalog. It is deliberately distinct from
  * {@see FieldType} (the MVP builder catalog used by FieldDefinition): the wire
  * catalog adds renderer-only components (phone, document, currency, color,
- * slug, rating, date_range) and omits builder-only intents (richtext, time,
- * autocomplete) that map onto these components host-side.
+ * slug, rating, date_range) and also carries the builder intents richtext,
+ * time and autocomplete, which hosts emit verbatim as component values.
  *
  * @api
  */
@@ -34,6 +34,8 @@ enum FormComponent: string
     case Text = 'text';
 
     case Textarea = 'textarea';
+
+    case Richtext = 'richtext';
 
     case Password = 'password';
 
@@ -65,11 +67,15 @@ enum FormComponent: string
 
     case Datetime = 'datetime';
 
+    case Time = 'time';
+
     case Duration = 'duration';
 
     case File = 'file';
 
     case EntityPicker = 'entity_picker';
+
+    case Autocomplete = 'autocomplete';
 
     case Phone = 'phone';
 
