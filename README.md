@@ -42,7 +42,7 @@ This means PHP never renders HTML for pages — it declares structure, and React
 | **CRUD convention builder** | `index`/`create`/`edit`/`show` pages from an entity class: i18n titles, filters, search, per-action `capability` gating. |
 | **Block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
 | **Typed value objects** | `final readonly` + `JsonSerializable`. camelCase wire keys, omit-empty payloads, immutable witters. |
-| **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull). |
+| **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull), `ResourcePatch`. |
 | **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible, delivered as a `NavigationTree` (`tree`, `activeKey`, `footer`). |
 | **Shared props** | `SharedProps` describes the props shared with every page (`auth`, `theme`, `flash`, `errors`, `csrf_token`, `locale`, `scope`, `navigation`), published as `schema/shared-props.json`. |
 | **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters. |
@@ -179,6 +179,8 @@ return new ActionResult(
 );
 ```
 
+A `ResourcePatch` rides along on a `Fragment` or `ActionResult` to push a partial change to the feature flags without resending the whole `PageResources`.
+
 ---
 
 ## Block Types
@@ -228,19 +230,10 @@ $node = new NavigationNode(
     active: true,
     weight: 10,
 );
+// Registered in AbstractNavigationRegistry implementations (in framework)
 ```
 
-`NavigationNode` also takes the optional `entityType`, `badgeVariant`, `statusColor` and `target` (an HTML link target such as `_blank`). They are open strings the client interprets, omitted when unset. The constructor rejects an `href` with a `javascript:`, `data:` or `vbscript:` scheme.
-
-Hosts build nodes through their implementation of `NavigationRegistryInterface`. Labels are a string or a `Translatable`, stored as given; the client resolves a `Translatable`. The three styling strings work on every level; `target` and `href` are for items. An item has either a route or an external `href` (an absolute `http://` or `https://` URL), never both:
-
-```php
-$registry
-    ->group('audience', Translatable::of('nav.audience', 'app'), icon: 'users', statusColor: 'blue')
-    ->section('audience.segments', 'Segments')
-    ->item('audience.segments.index', 'All segments', 'segments.index')
-    ->item('audience.segments.docs', 'Docs', null, href: 'https://docs.example', target: '_blank');
-```
+`NavigationNode` also takes the optional `entityType`, `badgeVariant`, `statusColor` and `target` (an HTML link target such as `_blank`). They are open strings the client interprets, omitted when unset.
 
 `NavigationRegistryInterface::build()` returns a `NavigationTree`. It always serializes three keys: `tree` (the main node list), `activeKey` (the dot-notation key of the active node, `''` when none is active) and `footer` (the secondary node list).
 
@@ -262,7 +255,7 @@ $navigation = new NavigationTree(tree: [$node], activeKey: 'audience.segments.in
 | `auth` | `SharedAuth` | Flat: `id` (string), `name`, optional `email`, `avatarUrl`, `roles`; `capabilities` (`list<string>`, always emitted); optional `logoutUrl`. |
 | `theme` | `SharedTheme` | Optional `appearance` (`ThemeMode`) and a `strings` map, `{}` when empty. |
 | `flash` | `FlashMessages` | At most one string per key; the only keys are `success`, `error`, `info`, `warning`. Empty and whitespace-only values are dropped; `fromArray()` also drops other keys and non-string values. `{}` when empty. |
-| `errors` | `FormErrors` or `FormErrorBags` | With the `X-Inertia-Error-Bag` header, bag name to a `FormErrors` map; otherwise field name to a message, a structured message or a list of either (`string \| FieldMessage \| (string\|FieldMessage)[]`); `_` is form-level. `{}` when empty. |
+| `errors` | `FormErrors` | Field name to a message or a list of messages (`string\|string[]`); `_` is form-level. `{}` when empty. |
 | `csrf_token` | string | |
 | `locale` | string | |
 | `scope` | object | Open object, `{}` when empty. |
@@ -282,7 +275,7 @@ $shared = new SharedProps(
 // {auth: {id: '42', name: 'Ada', capabilities: ['orders.view']}, flash: {success: 'Saved.'}, scope: {}, navigation: {...}}
 ```
 
-`ui` defines these shapes only; filling them is the host adapter's job. Identity, capabilities, theme and locale travel in the shared props.
+`ui` defines these shapes only; filling them is the host adapter's job. `PageResources` carries only `featureFlags` and `branding`: identity, capabilities, theme and locale travel in the shared props.
 
 ---
 
