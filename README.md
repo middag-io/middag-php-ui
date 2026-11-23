@@ -43,7 +43,8 @@ This means PHP never renders HTML for pages — it declares structure, and React
 | **Block types** | `denseTable`, `formPanel`, `detailPanel`, `metricCard`, `emptyState`, `statusStrip`, `activityTimeline`, `markdownPanel`, `cardGrid`, `actionGrid`, `linkList`, `chart`, `tabs` — via `BlockBuilder` or the fluent `RegionBuilder`. |
 | **Typed value objects** | `final readonly` + `JsonSerializable`. camelCase wire keys, omit-empty payloads, immutable witters. |
 | **Partial fragments** | Server-push slices: `Fragment`, `RegionUpdate`, `ActionResult` (push + pull), `ResourcePatch`. |
-| **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible. |
+| **Navigation tree** | 3-level `NavigationNode` (group / section / item), capability-filtered, drill-down + collapsible, delivered as a `NavigationTree` (`tree`, `activeKey`, `footer`). |
+| **Shared props** | `SharedProps` describes the props shared with every page (`auth`, `theme`, `flash`, `errors`, `csrf_token`, `locale`, `scope`, `navigation`), published as `schema/shared-props.json`. |
 | **Form system** | Contracts + VOs (`FieldDefinition`, `Condition`, `FormState`, `Section`, `Group`). Renderers live in adapters. |
 | **i18n intents** | `Translatable` `{key, domain, params}`. The library never resolves translations — the client does. |
 | **Quality gates** | Full test suite, high coverage, PHPStan L6, php-cs-fixer, Rector — enforced per commit. |
@@ -231,6 +232,50 @@ $node = new NavigationNode(
 );
 // Registered in AbstractNavigationRegistry implementations (in framework)
 ```
+
+`NavigationNode` also takes the optional `entityType`, `badgeVariant`, `statusColor` and `target` (an HTML link target such as `_blank`). They are open strings the client interprets, omitted when unset.
+
+`NavigationRegistryInterface::build()` returns a `NavigationTree`. It always serializes three keys: `tree` (the main node list), `activeKey` (the dot-notation key of the active node, `''` when none is active) and `footer` (the secondary node list).
+
+```php
+use Middag\Ui\Navigation\NavigationTree;
+
+$navigation = new NavigationTree(tree: [$node], activeKey: 'audience.segments.index');
+// {tree: [...], activeKey: 'audience.segments.index', footer: []}
+```
+
+---
+
+## Shared Props
+
+`SharedProps` describes the props shared with every page, next to the page contract. `schema/shared-props.json` publishes it, with the same `x-contract-version` as the page and fragment bundles. Every slot is optional and a `null` slot is omitted from the wire; `scope` is always emitted. The root is open, so hosts and products can add their own keys; the typed slots stay strict.
+
+| Slot | Type | Wire shape |
+|------|------|------------|
+| `auth` | `SharedAuth` | Flat: `id` (string), `name`, optional `email`, `avatarUrl`, `roles`; `capabilities` (`list<string>`, always emitted); optional `logoutUrl`. |
+| `theme` | `SharedTheme` | Optional `appearance` (`ThemeMode`) and a `strings` map, `{}` when empty. |
+| `flash` | `FlashMessages` | At most one string per key; the only keys are `success`, `error`, `info`, `warning`. Empty and whitespace-only values are dropped; `fromArray()` also drops other keys and non-string values. `{}` when empty. |
+| `errors` | `FormErrors` | Field name to a message or a list of messages (`string\|string[]`); `_` is form-level. `{}` when empty. |
+| `csrf_token` | string | |
+| `locale` | string | |
+| `scope` | object | Open object, `{}` when empty. |
+| `navigation` | `NavigationTree` | See [Navigation](#navigation). |
+
+```php
+use Middag\Ui\Shared\ValueObject\FlashMessages;
+use Middag\Ui\Shared\ValueObject\Identity;
+use Middag\Ui\Shared\ValueObject\SharedAuth;
+use Middag\Ui\Shared\ValueObject\SharedProps;
+
+$shared = new SharedProps(
+    auth: new SharedAuth(new Identity(id: '42', name: 'Ada'), capabilities: ['orders.view']),
+    flash: new FlashMessages(success: 'Saved.'),
+    navigation: $navigation,
+);
+// {auth: {id: '42', name: 'Ada', capabilities: ['orders.view']}, flash: {success: 'Saved.'}, scope: {}, navigation: {...}}
+```
+
+`ui` defines these shapes only; filling them is the host adapter's job. `PageResources` carries only `featureFlags` and `branding`: identity, capabilities, theme and locale travel in the shared props.
 
 ---
 
