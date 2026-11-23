@@ -72,7 +72,6 @@ use Middag\Ui\Shared\ValueObject\SharedAuth;
 use Middag\Ui\Shared\ValueObject\SharedProps;
 use Middag\Ui\Shared\ValueObject\SharedTheme;
 use Middag\Ui\Shared\ValueObject\Translatable;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
 use Middag\Ui\Table\Column;
 use Middag\Ui\Table\FilterDefinition;
 use Middag\Ui\Table\Pagination;
@@ -124,7 +123,6 @@ final class SchemaRegistry
         // Notifications + resources.
         'Notification' => Notification::class,
         'PageResources' => PageResources::class,
-        'UserPreferences' => UserPreferences::class,
         'Identity' => Identity::class,
         'Branding' => Branding::class,
         // Navigation.

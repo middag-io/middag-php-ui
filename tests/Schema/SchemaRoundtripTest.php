@@ -233,7 +233,7 @@ final class SchemaRoundtripTest extends TestCase
             featureFlags: ['beta' => false],
             branding: new Branding(appName: 'Helico', logoUrl: '/logo.svg'),
         ));
-        // An empty featureFlags map serializes as [] — must still validate.
+        // An empty featureFlags map serializes as {} and must still validate.
         $this->assertValidAgainst('PageResources', new PageResources());
     }
 
@@ -339,7 +339,7 @@ final class SchemaRoundtripTest extends TestCase
         // serializes `regions` to [].
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'blank', regions: []));
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'stack', regions: ['content' => []]));
-        // An empty resource patch serializes to [].
+        // An empty resource patch serializes to {}.
         $this->assertValidAgainst('ResourcePatch', new ResourcePatch());
     }
 

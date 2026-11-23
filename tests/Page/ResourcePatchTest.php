@@ -13,8 +13,6 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Page\ResourcePatch;
-use Middag\Ui\Shared\Enum\ThemeMode;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -36,46 +34,23 @@ final class ResourcePatchTest extends TestCase
     }
 
     #[Test]
-    public function testEmptyPatchSerializesToEmptyArray(): void
+    public function testEmptyPatchSerializesToAnEmptyObject(): void
     {
-        self::assertSame([], (new ResourcePatch())->jsonSerialize());
+        self::assertSame('{}', json_encode(new ResourcePatch()));
     }
 
     #[Test]
-    public function testSerializesPreferencesWhenSet(): void
+    public function testSerializesFlags(): void
     {
-        $payload = (new ResourcePatch(
-            preferences: new UserPreferences(theme: ThemeMode::Dark),
-        ))->jsonSerialize();
+        $patch = new ResourcePatch(featureFlags: ['beta' => false]);
 
-        self::assertArrayHasKey('preferences', $payload);
-        self::assertSame('dark', $payload['preferences']['theme']);
-        self::assertArrayNotHasKey('featureFlags', $payload);
+        self::assertSame('{"featureFlags":{"beta":false}}', json_encode($patch));
     }
 
     #[Test]
-    public function testSerializesFlagsWithMirroredKeys(): void
-    {
-        $payload = (new ResourcePatch(
-            featureFlags: ['beta' => false],
-        ))->jsonSerialize();
-
-        self::assertSame(['beta' => false], $payload['featureFlags']);
-        self::assertArrayNotHasKey('preferences', $payload);
-    }
-
-    #[Test]
-    public function testSchemaAcceptsAnEmptyPatchAsEmptyArray(): void
+    public function testSchemaAcceptsAnEmptyPatch(): void
     {
         $this->assertValidAgainst('ResourcePatch', new ResourcePatch());
-    }
-
-    #[Test]
-    public function testSchemaAcceptsAPatchWithPreferences(): void
-    {
-        $this->assertValidAgainst('ResourcePatch', new ResourcePatch(
-            preferences: new UserPreferences(theme: ThemeMode::Dark),
-        ));
     }
 
     #[Test]
@@ -84,6 +59,18 @@ final class ResourcePatchTest extends TestCase
         $this->assertValidAgainst('ResourcePatch', new ResourcePatch(
             featureFlags: ['beta' => false],
         ));
+    }
+
+    #[Test]
+    public function testSchemaRejectsTheRemovedPreferencesKey(): void
+    {
+        $this->assertInvalidAgainst('ResourcePatch', ['preferences' => ['theme' => 'dark']]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsAnEmptyArray(): void
+    {
+        $this->assertInvalidAgainst('ResourcePatch', []);
     }
 
     #[Test]

@@ -17,8 +17,8 @@ use JsonSerializable;
 /**
  * White-label branding for the page shell.
  *
- * `appName` is raw data, not a label. Color/theme live in
- * {@see UserPreferences} and the client.
+ * `appName` is raw data, not a label. Color/theme live in the shared
+ * theme props and the client.
  *
  * @api
  */
