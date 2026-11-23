@@ -7,6 +7,10 @@
 
 * describe NavigationTree and shared props in the README ([ca58ea5](https://github.com/middag-io/middag-php-ui/commit/ca58ea590885514ed996a3b288d9cb8ad6a8a0b8))
 
+### Consumer impact
+
+No consumer impact: documentation-only release.
+
 ## [1.13.0](https://github.com/middag-io/middag-php-ui/compare/v1.12.0...v1.13.0) (2026-11-23)
 
 
