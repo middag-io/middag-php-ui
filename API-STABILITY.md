@@ -58,6 +58,8 @@ package and are not part of the public surface.
 
 `Block\BlockBuilder`, `Region\RegionBuilder` and `Region\Contract\RegionBuilderInterface` are `@api` for calling: type-hint them, instantiate `RegionBuilder` and call their methods. They are not for implementing. From `2.0.0`, adding a method, or adding an optional parameter to an existing method, is a MINOR change for these three types. If your code implements `RegionBuilderInterface`, a MINOR may break it. Removing a method or parameter, renaming one, reordering parameters or making one required is still a MAJOR change. Named arguments are part of the call surface, so parameter names follow the same rule.
 
+You may extend `BlockBuilder` or `RegionBuilder` only without declaring or overriding members; a subclass that declares a method may fail to load after a MINOR that adds or extends a method of the same name. The classes stay non-final so that empty pass-through subclasses keep working.
+
 ## The wire contract
 
 Beyond the PHP surface, `middag-io/ui` has a second, stronger compatibility
