@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Navigation;
 
+use InvalidArgumentException;
 use Middag\Ui\Navigation\NavigationNode;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -192,5 +194,53 @@ final class NavigationNodeTest extends TestCase
         foreach (['entityType', 'badgeVariant', 'statusColor', 'target'] as $field) {
             self::assertSame(['type' => 'string'], $properties[$field]);
         }
+    }
+
+    #[Test]
+    #[DataProvider('unsafeHrefs')]
+    public function testRejectsAnUnsafeHrefScheme(string $href): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new NavigationNode(key: 'x', label: 'X', href: $href);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function unsafeHrefs(): iterable
+    {
+        yield 'javascript' => ['javascript:alert(1)'];
+
+        yield 'mixed case with leading space' => [' JavaScript:alert(1)'];
+
+        yield 'tab inside the scheme' => ["java\tscript:alert(1)"];
+
+        yield 'control character prefix' => ["\x01javascript:alert(1)"];
+
+        yield 'data' => ['data:text/plain;base64,SGk='];
+
+        yield 'vbscript' => ['VBScript:msgbox(1)'];
+    }
+
+    #[Test]
+    #[DataProvider('safeHrefs')]
+    public function testAcceptsASafeHref(string $href): void
+    {
+        self::assertSame($href, (new NavigationNode(key: 'x', label: 'X', href: $href))->jsonSerialize()['href']);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function safeHrefs(): iterable
+    {
+        yield 'root-relative' => ['/courses'];
+
+        yield 'http' => ['http://example.test/a'];
+
+        yield 'https' => ['https://docs.example/guide'];
+
+        yield 'relative path that mentions data' => ['/data:export'];
     }
 }

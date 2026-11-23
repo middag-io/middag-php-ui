@@ -228,10 +228,19 @@ $node = new NavigationNode(
     active: true,
     weight: 10,
 );
-// Registered in AbstractNavigationRegistry implementations (in framework)
 ```
 
-`NavigationNode` also takes the optional `entityType`, `badgeVariant`, `statusColor` and `target` (an HTML link target such as `_blank`). They are open strings the client interprets, omitted when unset.
+`NavigationNode` also takes the optional `entityType`, `badgeVariant`, `statusColor` and `target` (an HTML link target such as `_blank`). They are open strings the client interprets, omitted when unset. The constructor rejects an `href` with a `javascript:`, `data:` or `vbscript:` scheme.
+
+Hosts build nodes through their implementation of `NavigationRegistryInterface`. Labels are a string or a `Translatable`, stored as given; the client resolves a `Translatable`. The three styling strings work on every level; `target` and `href` are for items. An item has either a route or an external `href` (an absolute `http://` or `https://` URL), never both:
+
+```php
+$registry
+    ->group('audience', Translatable::of('nav.audience', 'app'), icon: 'users', statusColor: 'blue')
+    ->section('audience.segments', 'Segments')
+    ->item('audience.segments.index', 'All segments', 'segments.index')
+    ->item('audience.segments.docs', 'Docs', null, href: 'https://docs.example', target: '_blank');
+```
 
 `NavigationRegistryInterface::build()` returns a `NavigationTree`. It always serializes three keys: `tree` (the main node list), `activeKey` (the dot-notation key of the active node, `''` when none is active) and `footer` (the secondary node list).
 

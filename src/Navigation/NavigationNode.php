@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Navigation;
 
+use InvalidArgumentException;
 use JsonSerializable;
 use Middag\Ui\Shared\ValueObject\Label;
 use Middag\Ui\Shared\ValueObject\Translatable;
@@ -22,15 +23,22 @@ use Middag\Ui\Shared\ValueObject\Translatable;
  * Can represent any level: group (N1), section (N2), or item (N3).
  * Serialized for the client navigation component.
  *
+ * The constructor rejects an `href` whose scheme is `javascript:`, `data:` or
+ * `vbscript:`, checked after removing whitespace and control characters and
+ * lowercasing. Root-relative and http(s) URLs are accepted.
+ *
  * @api
  */
 readonly class NavigationNode implements JsonSerializable
 {
+    /** Schemes that run code or embed content in the client; refused in `href`. */
+    private const array UNSAFE_SCHEMES = ['javascript:', 'data:', 'vbscript:'];
+
     /**
      * @param string              $key          Unique dot-notation key (e.g. 'audience.segments.index')
      * @param string|Translatable $label        Display label (i18n intent or raw literal)
      * @param null|string         $icon         Client icon-set name
-     * @param null|string         $href         URL (leaf nodes only)
+     * @param null|string         $href         URL (leaf nodes only); a javascript:, data: or vbscript: URL is rejected
      * @param null|string         $badge        Badge value (lazy-resolved before serialization)
      * @param bool                $active       Whether this node is active (server-resolved)
      * @param bool                $drilldown    Whether clicking replaces sidebar with children + back
@@ -44,6 +52,8 @@ readonly class NavigationNode implements JsonSerializable
      * @param null|string         $badgeVariant Client-defined badge variant (open string)
      * @param null|string         $statusColor  Client-defined status color (open string)
      * @param null|string         $target       HTML link target (for example '_blank')
+     *
+     * @throws InvalidArgumentException when $href uses a javascript:, data: or vbscript: scheme
      */
     public function __construct(
         public string $key,
@@ -62,7 +72,9 @@ readonly class NavigationNode implements JsonSerializable
         public ?string $badgeVariant = null,
         public ?string $statusColor = null,
         public ?string $target = null,
-    ) {}
+    ) {
+        $this->assertSafeHref($href);
+    }
 
     /**
      * @return array<string, mixed>
@@ -134,5 +146,20 @@ readonly class NavigationNode implements JsonSerializable
         return ['type' => 'object', 'required' => ['key', 'label'],
             'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'icon' => ['type' => 'string'], 'href' => ['type' => 'string'], 'badge' => ['type' => 'string'], 'entityType' => ['type' => 'string'], 'badgeVariant' => ['type' => 'string'], 'statusColor' => ['type' => 'string'], 'target' => ['type' => 'string'], 'active' => ['const' => true], 'drilldown' => ['const' => true], 'collapsible' => ['const' => true], 'defaultOpen' => ['const' => true], 'children' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/NavigationNode']]],
             'additionalProperties' => false];
+    }
+
+    private function assertSafeHref(?string $href): void
+    {
+        if ($href === null) {
+            return;
+        }
+
+        $normalized = strtolower((string) preg_replace('/[\x00-\x20\x7F]+/', '', $href));
+
+        foreach (self::UNSAFE_SCHEMES as $scheme) {
+            if (str_starts_with($normalized, $scheme)) {
+                throw new InvalidArgumentException(sprintf('NavigationNode href must not use the %s scheme.', rtrim($scheme, ':')));
+            }
+        }
     }
 }

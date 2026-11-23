@@ -38,6 +38,8 @@ Support covers the `@api` surface only. Anything untagged, or tagged
 `@internal`, is outside the promise. Every type in `src/` carries exactly one
 of the two tags.
 
+`NavigationRegistryInterface` is an implementable contract: its method signatures, including parameter names, are frozen for 2.x. It is not a call surface like the builders, so it gains no method or parameter in a 2.x MINOR. Registration methods take `string|Translatable` labels and the optional `entityType`, `badgeVariant`, `statusColor` (all levels) and `target`, `href` (items) that `NavigationNode` carries. Labels are never translated by the registry; a `Translatable` reaches the client as `{key, domain, params?}`. An item has either a route or an external `href`, never both, and `href` takes no `routeParams`; `href` must be an absolute URL starting with lowercase `http://` or `https://`. Implementations must use the interface's parameter names, so named arguments work against any implementation.
+
 ## The public surface
 
 The public surface is the set of `@api`-annotated types: the interfaces under
