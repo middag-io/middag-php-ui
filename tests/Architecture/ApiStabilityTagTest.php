@@ -37,6 +37,7 @@ final class ApiStabilityTagTest extends TestCase
     private const array INTERNAL_PREFIXES = [
         'Schema/',
         'Shared/Concerns/ProvidesJsonSchema.php',
+        'Shared/Concerns/AssertsStringList.php',
     ];
 
     #[Test]

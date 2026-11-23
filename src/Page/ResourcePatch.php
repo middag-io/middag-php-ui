@@ -18,7 +18,7 @@ use Middag\Ui\Shared\ValueObject\UserPreferences;
 /**
  * Partial update to the shared page resources.
  *
- * Lets the server push a change to preferences, capabilities, or feature flags
+ * Lets the server push a change to preferences or feature flags
  * alongside a Fragment or ActionResult, without resending the whole
  * PageResources envelope. Every field is optional; the wire payload omits
  * what is unset, and the keys mirror PageResources so the client can merge.
@@ -28,12 +28,10 @@ use Middag\Ui\Shared\ValueObject\UserPreferences;
 final readonly class ResourcePatch implements JsonSerializable
 {
     /**
-     * @param array<string, bool> $capabilities
      * @param array<string, bool> $featureFlags
      */
     public function __construct(
         public ?UserPreferences $preferences = null,
-        public array $capabilities = [],
         public array $featureFlags = [],
     ) {}
 
@@ -44,10 +42,6 @@ final readonly class ResourcePatch implements JsonSerializable
 
         if ($this->preferences instanceof UserPreferences) {
             $payload['preferences'] = $this->preferences->jsonSerialize();
-        }
-
-        if ($this->capabilities !== []) {
-            $payload['capabilities'] = $this->capabilities;
         }
 
         if ($this->featureFlags !== []) {
@@ -66,7 +60,6 @@ final readonly class ResourcePatch implements JsonSerializable
                     'type' => 'object',
                     'properties' => [
                         'preferences' => ['$ref' => '#/$defs/UserPreferences'],
-                        'capabilities' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
                         'featureFlags' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
                     ],
                     'additionalProperties' => false,

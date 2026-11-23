@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Form;
 
 use JsonSerializable;
+use stdClass;
 
 /**
  * Validation errors for a form submission, keyed by field name.
@@ -23,6 +24,8 @@ use JsonSerializable;
  *    belong to the whole form rather than a single field; the client renders
  *    these as a form-level alert instead of routing them to an input.
  *  - Dotted keys (e.g. `address.zip`) target nested fields.
+ *
+ * An empty set serializes to `{}`, never `[]`.
  *
  * @api
  */
@@ -38,10 +41,10 @@ final readonly class FormErrors implements JsonSerializable
         public array $errors = [],
     ) {}
 
-    /** @return array<string, string|string[]> */
-    public function jsonSerialize(): array
+    /** @return array<string, string|string[]>|stdClass */
+    public function jsonSerialize(): array|stdClass
     {
-        return $this->errors;
+        return $this->errors === [] ? new stdClass() : $this->errors;
     }
 
     /** @return array<string, mixed> */

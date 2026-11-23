@@ -128,7 +128,7 @@ final readonly class Fragment implements ContractEnvelopeInterface
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['version', 'kind'],
-            'properties' => ['version' => ['const' => '1'], 'kind' => ['$ref' => '#/$defs/FragmentKind'],
+            'properties' => ['version' => ['const' => '2'], 'kind' => ['$ref' => '#/$defs/FragmentKind'],
                 'payload' => ['type' => 'object', 'additionalProperties' => true],
                 'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],
                 'resources' => ['$ref' => '#/$defs/ResourcePatch'], 'customType' => ['type' => 'string']],

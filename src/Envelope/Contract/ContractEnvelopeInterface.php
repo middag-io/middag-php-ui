@@ -26,5 +26,5 @@ use JsonSerializable;
  */
 interface ContractEnvelopeInterface extends JsonSerializable
 {
-    public const VERSION = '1';
+    public const VERSION = '2';
 }

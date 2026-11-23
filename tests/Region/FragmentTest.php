@@ -48,7 +48,7 @@ final class FragmentTest extends TestCase
 
         $payload = $fragment->jsonSerialize();
 
-        self::assertSame('1', $payload['version']);
+        self::assertSame('2', $payload['version']);
         self::assertSame('block', $payload['kind']);
         self::assertSame('metric_card', $payload['payload']['type']);
         self::assertArrayNotHasKey('notifications', $payload);
@@ -143,10 +143,10 @@ final class FragmentTest extends TestCase
     public function testWithResourcesAttachesPatch(): void
     {
         $payload = Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))
-            ->withResources(new ResourcePatch(capabilities: ['x' => true]))
+            ->withResources(new ResourcePatch(featureFlags: ['x' => true]))
             ->jsonSerialize();
 
-        self::assertSame(['x' => true], $payload['resources']['capabilities']);
+        self::assertSame(['x' => true], $payload['resources']['featureFlags']);
     }
 
     #[Test]

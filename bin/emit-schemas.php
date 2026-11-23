@@ -6,7 +6,8 @@ declare(strict_types=1);
 /**
  * middag-io/ui — JSON Schema emitter.
  *
- * Writes the wire-contract JSON Schemas (page-contract.json, fragment.json) from
+ * Writes the wire-contract JSON Schemas (page-contract.json, fragment.json,
+ * shared-props.json) from
  * the PHP value objects' hand-authored jsonSchema() into ./schema/. The PHP VOs
  * are the single source of truth; @middag-io/react reads these to codegen
  * its TypeScript types + zod schema, and the MCP server bundles them.

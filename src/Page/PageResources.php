@@ -13,26 +13,23 @@ declare(strict_types=1);
 namespace Middag\Ui\Page;
 
 use Middag\Ui\Page\Contract\PageResourcesInterface;
-use Middag\Ui\Shared\ValueObject\Identity;
-use Middag\Ui\Shared\ValueObject\UserPreferences;
+use Middag\Ui\Shared\ValueObject\SharedProps;
 
 /**
- * Shared page resources: user preferences, capabilities, feature flags,
- * identity, and branding.
+ * Shared page resources: feature flags and branding.
+ *
+ * Identity, capabilities, theme and locale travel in the shared props
+ * ({@see SharedProps}), not here.
  *
  * @api
  */
 readonly class PageResources implements PageResourcesInterface
 {
     /**
-     * @param array<string, bool> $capabilities
      * @param array<string, bool> $featureFlags
      */
     public function __construct(
-        public UserPreferences $preferences = new UserPreferences(),
-        public array $capabilities = [],
         public array $featureFlags = [],
-        public ?Identity $user = null,
         public ?Branding $branding = null,
     ) {}
 
@@ -40,14 +37,8 @@ readonly class PageResources implements PageResourcesInterface
     public function jsonSerialize(): array
     {
         $payload = [
-            'preferences' => $this->preferences->jsonSerialize(),
-            'capabilities' => $this->capabilities,
             'featureFlags' => $this->featureFlags,
         ];
-
-        if ($this->user instanceof Identity) {
-            $payload['user'] = $this->user->jsonSerialize();
-        }
 
         if ($this->branding instanceof Branding) {
             $payload['branding'] = $this->branding->jsonSerialize();
@@ -59,11 +50,10 @@ readonly class PageResources implements PageResourcesInterface
     /** @return array<string, mixed> */
     public static function jsonSchema(): array
     {
-        return ['type' => 'object', 'required' => ['preferences', 'capabilities', 'featureFlags'],
-            'properties' => ['preferences' => ['$ref' => '#/$defs/UserPreferences'],
-                'capabilities' => ['oneOf' => [['type' => 'object', 'additionalProperties' => ['type' => 'boolean']], ['type' => 'array', 'maxItems' => 0]]],
+        return ['type' => 'object', 'required' => ['featureFlags'],
+            'properties' => [
                 'featureFlags' => ['oneOf' => [['type' => 'object', 'additionalProperties' => ['type' => 'boolean']], ['type' => 'array', 'maxItems' => 0]]],
-                'user' => ['$ref' => '#/$defs/Identity'], 'branding' => ['$ref' => '#/$defs/Branding']],
+                'branding' => ['$ref' => '#/$defs/Branding']],
             'additionalProperties' => false];
     }
 }

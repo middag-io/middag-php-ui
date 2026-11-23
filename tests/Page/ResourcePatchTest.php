@@ -50,19 +50,16 @@ final class ResourcePatchTest extends TestCase
 
         self::assertArrayHasKey('preferences', $payload);
         self::assertSame('dark', $payload['preferences']['theme']);
-        self::assertArrayNotHasKey('capabilities', $payload);
         self::assertArrayNotHasKey('featureFlags', $payload);
     }
 
     #[Test]
-    public function testSerializesCapabilitiesAndFlagsWithMirroredKeys(): void
+    public function testSerializesFlagsWithMirroredKeys(): void
     {
         $payload = (new ResourcePatch(
-            capabilities: ['user:edit' => true],
             featureFlags: ['beta' => false],
         ))->jsonSerialize();
 
-        self::assertSame(['user:edit' => true], $payload['capabilities']);
         self::assertSame(['beta' => false], $payload['featureFlags']);
         self::assertArrayNotHasKey('preferences', $payload);
     }
@@ -82,10 +79,9 @@ final class ResourcePatchTest extends TestCase
     }
 
     #[Test]
-    public function testSchemaAcceptsAPatchWithCapabilitiesAndFlags(): void
+    public function testSchemaAcceptsAPatchWithFlags(): void
     {
         $this->assertValidAgainst('ResourcePatch', new ResourcePatch(
-            capabilities: ['user:edit' => true],
             featureFlags: ['beta' => false],
         ));
     }
@@ -97,8 +93,8 @@ final class ResourcePatchTest extends TestCase
     }
 
     #[Test]
-    public function testSchemaRejectsNonBooleanCapabilityValues(): void
+    public function testSchemaRejectsTheRemovedCapabilitiesKey(): void
     {
-        $this->assertInvalidAgainst('ResourcePatch', ['capabilities' => ['user:edit' => 'yes']]);
+        $this->assertInvalidAgainst('ResourcePatch', ['capabilities' => ['user:edit' => true]]);
     }
 }

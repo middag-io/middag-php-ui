@@ -178,7 +178,7 @@ return new ActionResult(
 );
 ```
 
-A `ResourcePatch` rides along on a `Fragment` or `ActionResult` to push a partial change to preferences / capabilities / feature flags without resending the whole `PageResources`.
+A `ResourcePatch` rides along on a `Fragment` or `ActionResult` to push a partial change to preferences / feature flags without resending the whole `PageResources`.
 
 ---
 

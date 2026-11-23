@@ -57,7 +57,7 @@ final class PageContractTest extends TestCase
 
         $payload = $contract->jsonSerialize();
 
-        self::assertSame('1', $payload['version']);
+        self::assertSame('2', $payload['version']);
         self::assertSame('product', $payload['shell']);
         self::assertSame('users.index', $payload['page']['key']);
         self::assertSame('Users', $payload['page']['title']);
@@ -133,7 +133,7 @@ final class PageContractTest extends TestCase
     #[Test]
     public function testVersionConstant(): void
     {
-        self::assertSame('1', PageContract::VERSION);
+        self::assertSame('2', PageContract::VERSION);
     }
 
     #[Test]
@@ -193,7 +193,7 @@ final class PageContractTest extends TestCase
     public function testSchemaRejectsAWrongVersionConstant(): void
     {
         $payload = $this->minimalContract()->jsonSerialize();
-        $payload['version'] = '2';
+        $payload['version'] = '1';
 
         $this->assertInvalidAgainst('PageContract', $payload);
     }

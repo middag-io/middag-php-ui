@@ -79,12 +79,12 @@ final class ActionResultTest extends TestCase
     {
         $payload = (new ActionResult(
             fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
-            resources: new ResourcePatch(capabilities: ['user:edit' => true]),
+            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ))->jsonSerialize();
 
         self::assertCount(1, $payload['fragments']);
         self::assertSame('block', $payload['fragments'][0]['kind']);
-        self::assertSame(['user:edit' => true], $payload['resources']['capabilities']);
+        self::assertSame(['beta' => true], $payload['resources']['featureFlags']);
     }
 
     #[Test]
@@ -110,7 +110,7 @@ final class ActionResultTest extends TestCase
     {
         $this->assertValidAgainst('ActionResult', new ActionResult(
             fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
-            resources: new ResourcePatch(capabilities: ['user:edit' => true]),
+            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ));
     }
 

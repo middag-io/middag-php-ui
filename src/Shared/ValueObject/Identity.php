@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Shared\ValueObject;
 
+use InvalidArgumentException;
 use JsonSerializable;
+use Middag\Ui\Shared\Concerns\AssertsStringList;
 
 /**
  * Authenticated user identity for the page shell.
@@ -23,8 +25,12 @@ use JsonSerializable;
  */
 final readonly class Identity implements JsonSerializable
 {
+    use AssertsStringList;
+
     /**
-     * @param string[] $roles
+     * @param list<string> $roles
+     *
+     * @throws InvalidArgumentException when `roles` is not a list of strings
      */
     public function __construct(
         public string $id,
@@ -32,7 +38,9 @@ final readonly class Identity implements JsonSerializable
         public ?string $email = null,
         public ?string $avatarUrl = null,
         public array $roles = [],
-    ) {}
+    ) {
+        self::assertStringList($roles, 'Identity::$roles');
+    }
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array

@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Navigation\Contract;
 
 use Closure;
+use Middag\Ui\Navigation\NavigationNode;
+use Middag\Ui\Navigation\NavigationTree;
 
 /**
  * Registry for the 3-level navigation tree.
@@ -106,13 +108,9 @@ interface NavigationRegistryInterface
      *
      * @param string $activeRoute Current route name (used to resolve activeKey)
      *
-     * @return array{
-     *     tree: list<array<string, mixed>>,
-     *     activeKey: string,
-     *     footer: list<array<string, mixed>>
-     * } `tree` and `footer` are serialized {@see NavigationNode} arrays (footer = the
-     *   secondary/bottom node list); `activeKey` is the dot-notation key of the node
-     *   resolved active for `$activeRoute`
+     * @return NavigationTree `tree` and `footer` are {@see NavigationNode} lists (footer =
+     *                        the secondary/bottom node list); `activeKey` is the dot-notation
+     *                        key of the node resolved active for `$activeRoute`, or '' when none
      */
-    public function build(string $activeRoute): array;
+    public function build(string $activeRoute): NavigationTree;
 }

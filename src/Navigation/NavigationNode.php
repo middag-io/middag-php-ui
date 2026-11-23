@@ -27,19 +27,23 @@ use Middag\Ui\Shared\ValueObject\Translatable;
 readonly class NavigationNode implements JsonSerializable
 {
     /**
-     * @param string              $key         Unique dot-notation key (e.g. 'audience.segments.index')
-     * @param string|Translatable $label       Display label (i18n intent or raw literal)
-     * @param null|string         $icon        Client icon-set name
-     * @param null|string         $href        URL (leaf nodes only)
-     * @param null|string         $badge       Badge value (lazy-resolved before serialization)
-     * @param bool                $active      Whether this node is active (server-resolved)
-     * @param bool                $drilldown   Whether clicking replaces sidebar with children + back
-     * @param bool                $collapsible Whether the group renders with a toggle to expand/collapse
-     * @param bool                $defaultOpen Whether a collapsible group starts expanded (default: false)
-     * @param self[]              $children    Child nodes
-     * @param int                 $weight      Sort order (lower = higher)
-     * @param null|string         $capability  Opaque authorization token mapped by the adapter (not a host
-     *                                         API call); node hidden if the current user lacks it
+     * @param string              $key          Unique dot-notation key (e.g. 'audience.segments.index')
+     * @param string|Translatable $label        Display label (i18n intent or raw literal)
+     * @param null|string         $icon         Client icon-set name
+     * @param null|string         $href         URL (leaf nodes only)
+     * @param null|string         $badge        Badge value (lazy-resolved before serialization)
+     * @param bool                $active       Whether this node is active (server-resolved)
+     * @param bool                $drilldown    Whether clicking replaces sidebar with children + back
+     * @param bool                $collapsible  Whether the group renders with a toggle to expand/collapse
+     * @param bool                $defaultOpen  Whether a collapsible group starts expanded (default: false)
+     * @param self[]              $children     Child nodes
+     * @param int                 $weight       Sort order (lower = higher)
+     * @param null|string         $capability   Opaque authorization token mapped by the adapter (not a host
+     *                                          API call); node hidden if the current user lacks it
+     * @param null|string         $entityType   Client-defined entity type hint (open string)
+     * @param null|string         $badgeVariant Client-defined badge variant (open string)
+     * @param null|string         $statusColor  Client-defined status color (open string)
+     * @param null|string         $target       HTML link target (for example '_blank')
      */
     public function __construct(
         public string $key,
@@ -54,6 +58,10 @@ readonly class NavigationNode implements JsonSerializable
         public array $children = [],
         public int $weight = 50,
         public ?string $capability = null,
+        public ?string $entityType = null,
+        public ?string $badgeVariant = null,
+        public ?string $statusColor = null,
+        public ?string $target = null,
     ) {}
 
     /**
@@ -76,6 +84,22 @@ readonly class NavigationNode implements JsonSerializable
 
         if ($this->badge !== null) {
             $payload['badge'] = $this->badge;
+        }
+
+        if ($this->entityType !== null) {
+            $payload['entityType'] = $this->entityType;
+        }
+
+        if ($this->badgeVariant !== null) {
+            $payload['badgeVariant'] = $this->badgeVariant;
+        }
+
+        if ($this->statusColor !== null) {
+            $payload['statusColor'] = $this->statusColor;
+        }
+
+        if ($this->target !== null) {
+            $payload['target'] = $this->target;
         }
 
         if ($this->active) {
@@ -108,7 +132,7 @@ readonly class NavigationNode implements JsonSerializable
     public static function jsonSchema(): array
     {
         return ['type' => 'object', 'required' => ['key', 'label'],
-            'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'icon' => ['type' => 'string'], 'href' => ['type' => 'string'], 'badge' => ['type' => 'string'], 'active' => ['const' => true], 'drilldown' => ['const' => true], 'collapsible' => ['const' => true], 'defaultOpen' => ['const' => true], 'children' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/NavigationNode']]],
+            'properties' => ['key' => ['type' => 'string'], 'label' => ['$ref' => '#/$defs/Label'], 'icon' => ['type' => 'string'], 'href' => ['type' => 'string'], 'badge' => ['type' => 'string'], 'entityType' => ['type' => 'string'], 'badgeVariant' => ['type' => 'string'], 'statusColor' => ['type' => 'string'], 'target' => ['type' => 'string'], 'active' => ['const' => true], 'drilldown' => ['const' => true], 'collapsible' => ['const' => true], 'defaultOpen' => ['const' => true], 'children' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/NavigationNode']]],
             'additionalProperties' => false];
     }
 }
