@@ -37,8 +37,8 @@ way? If so, describe the break below. Rules (https://docs.middag.dev/libraries/r
   The 1.x line is pre-stable and unsupported: it gets no backports or security fixes, and the move to 2.0.0 is a clean cut.
 - From `2.0.0`: a break needs a MAJOR window (organization variable
   `PHP_LIBS_OPEN_RELEASE` = `X.0`, set on the order of the product owner) and, where possible, a
-  deprecation in an earlier minor; a `feat` is a MINOR. Until a window
-  opens, keep the PR current by merging `main` (never rebase or force-push).
+  deprecation in an earlier minor. Until a MAJOR window opens, a PR with a break
+  waits; keep it current by merging `main` (never rebase or force-push).
 -->
 
 - [ ] This PR introduces a breaking change (described above)
