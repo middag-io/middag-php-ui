@@ -94,16 +94,10 @@ Inside each concern:
 
 ## Decision records
 
-Architecture decisions live in [`docs/decisions/`](docs/decisions/) as `UI-NNN` records in the
-MIDDAG-MADR compact format: frontmatter, then Context → Considered Options
-→ Decision → Consequences → Enforcement. A record states **why** (the choice, the alternatives, the
-consequences); specification (class lists, catalogs, wire shapes) lives in the reference docs its
-Enforcement table points to, mostly at docs.middag.dev (`docs-middag-dev`, `docs/framework/`). Ids are
-never reused. OSS records never cite proprietary record ids. `deciders` is a role id (`leadership`),
-never a person.
-
-**`domains` vocabulary** (a record uses only these): `ui`, `frontend`, `contract`, `schema`,
-`portability`.
+Architecture decisions live in [`docs/decisions/`](docs/decisions/). A record states **why** (the
+choice, the alternatives, the consequences); specification (class lists, catalogs, wire shapes)
+lives in the reference docs at docs.middag.dev. OSS records never cite proprietary records.
+`deciders` is a role id (`leadership`), never a person.
 
 ## Relationship to other packages
 
