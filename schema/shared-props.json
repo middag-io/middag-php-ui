@@ -456,24 +456,6 @@
             },
             "additionalProperties": false
         },
-        "PageResources": {
-            "type": "object",
-            "required": [
-                "featureFlags"
-            ],
-            "properties": {
-                "featureFlags": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "boolean"
-                    }
-                },
-                "branding": {
-                    "$ref": "#/$defs/Branding"
-                }
-            },
-            "additionalProperties": false
-        },
         "Identity": {
             "type": "object",
             "required": [
@@ -498,24 +480,6 @@
                     "items": {
                         "type": "string"
                     }
-                }
-            },
-            "additionalProperties": false
-        },
-        "Branding": {
-            "type": "object",
-            "required": [
-                "appName"
-            ],
-            "properties": {
-                "appName": {
-                    "type": "string"
-                },
-                "logoUrl": {
-                    "type": "string"
-                },
-                "logoCompactUrl": {
-                    "type": "string"
                 }
             },
             "additionalProperties": false

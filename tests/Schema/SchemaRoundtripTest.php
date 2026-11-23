@@ -30,10 +30,8 @@ use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
 use Middag\Ui\Navigation\NavigationNode;
 use Middag\Ui\Navigation\NavigationTree;
-use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
-use Middag\Ui\Page\PageResources;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\PollConfig;
@@ -229,19 +227,6 @@ final class SchemaRoundtripTest extends TestCase
         );
         $this->assertValidAgainst('TableConfig', $table);
         $this->assertValidAgainst('Pagination', new Pagination(1, 25, 100, 4));
-    }
-
-    // ── Resources (flags non-empty + empty) ───────────────────────────
-
-    #[Test]
-    public function testPageResources(): void
-    {
-        $this->assertValidAgainst('PageResources', new PageResources(
-            featureFlags: ['beta' => false],
-            branding: new Branding(appName: 'Helico', logoUrl: '/logo.svg'),
-        ));
-        // An empty featureFlags map serializes as {} and must still validate.
-        $this->assertValidAgainst('PageResources', new PageResources());
     }
 
     // ── Shared props ─────────────────────────────────────────────────────────
