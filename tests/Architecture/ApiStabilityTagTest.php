@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Architecture;
 
+use PhpToken;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -30,8 +31,6 @@ use SplFileInfo;
 #[CoversNothing]
 final class ApiStabilityTagTest extends TestCase
 {
-    private const string DECLARATION = '~/\*\*((?:(?!\*/).)*?)\*/\s*(?:#\[[^\]]*\]\s*)*(?:(?:final|abstract|readonly)\s+)*(?:class|interface|trait|enum)\s+(\w+)~s';
-
     /**
      * Types that API-STABILITY.md declares `@internal`, as path prefixes under src/.
      */
@@ -94,16 +93,91 @@ final class ApiStabilityTagTest extends TestCase
                 continue;
             }
 
-            preg_match_all(self::DECLARATION, $code, $matches, PREG_SET_ORDER);
-            foreach ($matches as $match) {
+            foreach ($this->declarationsIn($code) as $declaration) {
                 $types[] = [
-                    'name' => $namespace[1] . '\\' . $match[2],
+                    'name' => $namespace[1] . '\\' . $declaration['name'],
                     'path' => substr($file->getPathname(), strlen($src) + 1),
-                    'doc' => $match[1],
+                    'doc' => $declaration['doc'],
                 ];
             }
         }
 
         return $types;
+    }
+
+    /**
+     * Finds every class-like declaration with the PHP tokenizer, so a type
+     * without a docblock is still found (its doc is then the empty string).
+     *
+     * @return list<array{name: string, doc: string}>
+     */
+    private function declarationsIn(string $code): array
+    {
+        $tokens = array_values(array_filter(
+            PhpToken::tokenize($code),
+            static fn (PhpToken $token): bool => !$token->is([T_WHITESPACE, T_COMMENT]),
+        ));
+        $declarations = [];
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->is([T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM])) {
+                continue;
+            }
+
+            $previous = $tokens[$index - 1] ?? null;
+            $next = $tokens[$index + 1] ?? null;
+            // Skip Foo::class, new class {...} and anonymous classes.
+            if ($previous?->is([T_DOUBLE_COLON, T_NEW]) || !$next?->is(T_STRING)) {
+                continue;
+            }
+
+            $declarations[] = ['name' => $next->text, 'doc' => $this->docBefore($tokens, $index)];
+        }
+
+        return $declarations;
+    }
+
+    /**
+     * Returns the docblock directly before a declaration, skipping modifiers
+     * and attributes, or '' when there is none.
+     *
+     * @param list<PhpToken> $tokens
+     */
+    private function docBefore(array $tokens, int $declaration): string
+    {
+        $cursor = $declaration - 1;
+        while ($cursor >= 0) {
+            $token = $tokens[$cursor];
+            if ($token->is([T_FINAL, T_ABSTRACT, T_READONLY])) {
+                --$cursor;
+
+                continue;
+            }
+
+            if ($token->is(']')) {
+                $depth = 0;
+                for (; $cursor >= 0; --$cursor) {
+                    if ($tokens[$cursor]->is('[')) {
+                        ++$depth;
+                    } elseif ($tokens[$cursor]->is(']')) {
+                        --$depth;
+                    } elseif ($tokens[$cursor]->is(T_ATTRIBUTE)) {
+                        // T_ATTRIBUTE "#[" opens one bracket that no "[" token matched.
+                        ++$depth;
+                    }
+
+                    if (0 === $depth) {
+                        break;
+                    }
+                }
+                --$cursor;
+
+                continue;
+            }
+
+            return $token->is(T_DOC_COMMENT) ? $token->text : '';
+        }
+
+        return '';
     }
 }
