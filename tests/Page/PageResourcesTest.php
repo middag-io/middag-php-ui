@@ -30,9 +30,7 @@ final class PageResourcesTest extends TestCase
     #[Test]
     public function testSerializesDefaults(): void
     {
-        $payload = (new PageResources())->jsonSerialize();
-
-        self::assertSame(['featureFlags' => []], $payload);
+        self::assertSame('{"featureFlags":{}}', json_encode(new PageResources()));
     }
 
     #[Test]
@@ -66,11 +64,15 @@ final class PageResourcesTest extends TestCase
     #[Test]
     public function testFeatureFlagsCamelCase(): void
     {
-        $payload = (new PageResources(featureFlags: ['new_dashboard' => true]))->jsonSerialize();
+        $resources = new PageResources(featureFlags: ['new_dashboard' => true]);
 
-        self::assertArrayHasKey('featureFlags', $payload);
-        self::assertArrayNotHasKey('feature_flags', $payload);
-        self::assertSame(['new_dashboard' => true], $payload['featureFlags']);
+        self::assertSame('{"featureFlags":{"new_dashboard":true}}', json_encode($resources));
+    }
+
+    #[Test]
+    public function testSchemaRejectsEmptyFeatureFlagsAsAnArray(): void
+    {
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => []]);
     }
 
     #[Test]
@@ -97,9 +99,9 @@ final class PageResourcesTest extends TestCase
     #[Test]
     public function testSchemaRejectsTheRemovedKeys(): void
     {
-        $this->assertInvalidAgainst('PageResources', ['featureFlags' => [], 'capabilities' => []]);
-        $this->assertInvalidAgainst('PageResources', ['featureFlags' => [], 'user' => ['id' => '1', 'name' => 'A']]);
-        $this->assertInvalidAgainst('PageResources', ['featureFlags' => [], 'preferences' => ['theme' => 'dark', 'locale' => 'en']]);
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => (object) [], 'capabilities' => []]);
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => (object) [], 'user' => ['id' => '1', 'name' => 'A']]);
+        $this->assertInvalidAgainst('PageResources', ['featureFlags' => (object) [], 'preferences' => ['theme' => 'dark', 'locale' => 'en']]);
     }
 
     #[Test]

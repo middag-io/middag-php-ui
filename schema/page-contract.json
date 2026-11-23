@@ -469,18 +469,10 @@
             ],
             "properties": {
                 "featureFlags": {
-                    "oneOf": [
-                        {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "maxItems": 0
-                        }
-                    ]
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "boolean"
+                    }
                 },
                 "branding": {
                     "$ref": "#/$defs/Branding"

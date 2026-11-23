@@ -14,6 +14,7 @@ namespace Middag\Ui\Page;
 
 use Middag\Ui\Page\Contract\PageResourcesInterface;
 use Middag\Ui\Shared\ValueObject\SharedProps;
+use stdClass;
 
 /**
  * Shared page resources: feature flags and branding.
@@ -37,7 +38,8 @@ readonly class PageResources implements PageResourcesInterface
     public function jsonSerialize(): array
     {
         $payload = [
-            'featureFlags' => $this->featureFlags,
+            // An empty map must stay a JSON object, never `[]`.
+            'featureFlags' => $this->featureFlags === [] ? new stdClass() : $this->featureFlags,
         ];
 
         if ($this->branding instanceof Branding) {
@@ -52,7 +54,7 @@ readonly class PageResources implements PageResourcesInterface
     {
         return ['type' => 'object', 'required' => ['featureFlags'],
             'properties' => [
-                'featureFlags' => ['oneOf' => [['type' => 'object', 'additionalProperties' => ['type' => 'boolean']], ['type' => 'array', 'maxItems' => 0]]],
+                'featureFlags' => ['type' => 'object', 'additionalProperties' => ['type' => 'boolean']],
                 'branding' => ['$ref' => '#/$defs/Branding']],
             'additionalProperties' => false];
     }
