@@ -20,6 +20,15 @@
 * apply the version-family support policy ([13b15f5](https://github.com/middag-io/middag-php-ui/commit/13b15f59394989b509b03c43895cd001b9a14706))
 * drop decision-record numbering and private docs repo from AGENTS.md ([7e3f68a](https://github.com/middag-io/middag-php-ui/commit/7e3f68ab6ace7916adbc535bef0d8a06ffdd93cf))
 
+
+### Consumer impact
+
+* Additive: `FormComponent` gains the `richtext`, `time` and `autocomplete` cases, appended at the end of the schema lists. `FormSectionNode` label now accepts a `Translatable` or null. Existing serialized output is unchanged.
+* Schema files are regenerated (additive only).
+* The contracts mirror notification is skipped for prerelease tags.
+* New API stability tag test: every type in `src` carries exactly one of `@api` or `@internal`.
+* Documentation: SECURITY and policy docs updated (uniform security policy text, version-family support policy).
+
 ## [1.10.3](https://github.com/middag-io/middag-php-ui/compare/v1.10.2...v1.10.3) (2026-11-20)
 
 
