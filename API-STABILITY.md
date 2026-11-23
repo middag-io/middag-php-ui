@@ -60,7 +60,37 @@ JSON shape is the real integration boundary with the client. A PHP-level rename
 that leaves the emitted JSON unchanged is not a wire break; a change to the JSON
 shape is, and follows the same rules as a break of the `@api` surface.
 
-Adding an optional key or a new `$def` is additive and ships in a MINOR; clients ignore keys they do not know. Adding an enum value or a new discriminator value (`kind`, `type`) is additive and ships in a MINOR; clients treat an unknown value as unsupported and degrade that element instead of rejecting the whole payload. Removing or renaming a key, removing an enum value, changing a type or making a key required is a breaking change: it ships in a MAJOR and raises `ContractEnvelopeInterface::VERSION` and `x-contract-version`. `@middag-io/ui-contracts` mirrors `schema/`, ships the TypeScript types and zod schemas generated from it, and versions on its own line.
+Adding an optional key or a new `$def` is additive and ships in a MINOR; clients ignore keys they do not know. Adding a new discriminator value (`kind`, `type`) is additive and ships in a MINOR; clients treat an unknown value as unsupported and degrade that element instead of rejecting the whole payload. Enum values follow the policy in [Enum evolution on the wire](#enum-evolution-on-the-wire). Removing or renaming a key, removing an enum value, changing a type or making a key required is a breaking change: it ships in a MAJOR and raises `ContractEnvelopeInterface::VERSION` and `x-contract-version`. `@middag-io/ui-contracts` mirrors `schema/`, ships the TypeScript types and zod schemas generated from it, and versions on its own line.
+
+### Enum evolution on the wire
+
+Not every enum can grow in a MINOR. It depends on what happens to an unknown value.
+
+**Control enums** drive behavior, so the contract rejects an unknown value instead of guessing. Adding a value to one is a **MAJOR** change:
+
+- `HttpMethod` (also the form `submitMethod`)
+- `ActionTargetKind`
+- `FragmentKind`
+- `RegionUpdateMode`
+- `RenderTarget`
+- `ConditionOperator` (the condition `operator`)
+- `documentScope`
+
+**Open enums** reach the client renderer, which falls back to a safe default for a value it does not know. Adding a value to one is a **MINOR** change. Removing or renaming a value is a **MAJOR** change:
+
+- `ActionIntent`
+- `NotificationLevel`
+- `ThemeMode`
+- `ValueFormat`
+- `ColumnVariant`
+- `FilterType`
+- `ChartType`
+- `FormComponent`
+- `FieldType`
+
+Removing or renaming a value of a control enum is a MAJOR change too.
+
+The `form_panel` block takes its schema nodes as `FormSchemaNodeInterface` value objects. A loose array raises a `TypeError`.
 
 ## Versioning from `2.0.0`
 
