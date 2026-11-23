@@ -64,7 +64,7 @@ The wire contract has two root bundles under `schema/`: `page-contract.json` (th
 
 The shared props types are `@api`: `Shared\ValueObject\SharedProps`, `SharedAuth`, `SharedTheme` and `FlashMessages`, and `Navigation\NavigationTree` (the return type of `NavigationRegistryInterface::build()`). Identity, capabilities, theme and locale travel in the shared props only; `PageResources` carries feature flags and branding.
 
-The `errors` slot carries the `FormErrors` of the current request. It does not cover the `X-Inertia-Error-Bag` header, which is handled at the framework edge.
+The `errors` slot carries the validation errors of the current request: a `FormErrors` map or, when the request carried the `X-Inertia-Error-Bag` header, a `FormErrorBags` map of bag name to `FormErrors`. The schema accepts either (`anyOf`), and this shape is frozen for 2.x. The two shapes can overlap on the wire (an empty object, or a bag whose fields are named like a `FieldMessage`), so the wire does not say which one it is: a client that sent `X-Inertia-Error-Bag` reads `errors[bag]`, and every other client reads the map as flat. On the PHP side the type (`FormErrors|FormErrorBags`) is unambiguous.
 
 A `FormErrors` value is a `FieldError`: one message, a list of messages or structured messages, or one structured message. The structured message is `Form\FieldMessage` (`@api`), serialized as `{message, key, domain, params?}`: the server-resolved `message` is the fallback, and `key`, `domain` and `params` let the client translate it. `params` is omitted when empty.
 

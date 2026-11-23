@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Middag\Ui\Tests\Shared\ValueObject;
 
+use Middag\Ui\Form\FieldMessage;
+use Middag\Ui\Form\FormErrorBags;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Navigation\NavigationNode;
 use Middag\Ui\Navigation\NavigationTree;
@@ -86,6 +88,40 @@ final class SharedPropsTest extends TestCase
             json_encode($props),
         );
         $this->assertValidAgainst('SharedProps', $props);
+    }
+
+    #[Test]
+    public function testSerializesBaggedErrors(): void
+    {
+        $props = new SharedProps(errors: new FormErrorBags(['login' => new FormErrors(['email' => 'Required'])]));
+
+        self::assertSame('{"errors":{"login":{"email":"Required"}},"scope":{}}', json_encode($props));
+        $this->assertValidAgainst('SharedProps', $props);
+    }
+
+    #[Test]
+    public function testErrorsSlotAcceptsFlatBaggedAndOverlappingShapes(): void
+    {
+        // Empty: matches both branches, which is why the slot is anyOf, not oneOf.
+        $this->assertValidAgainst('SharedProps', ['errors' => (object) []]);
+        // Flat.
+        $this->assertValidAgainst('SharedProps', ['errors' => ['email' => 'Required', 'tags' => ['a', 'b']]]);
+        // Bagged.
+        $this->assertValidAgainst('SharedProps', ['errors' => ['login' => ['email' => 'Required']]]);
+        // A bag whose fields are named like a FieldMessage also reads as a flat map.
+        $collision = new FieldMessage('x', 'y', 'z');
+        $this->assertValidAgainst('SharedProps', ['errors' => ['b' => $collision->jsonSerialize()]]);
+        // Neither shape.
+        $this->assertInvalidAgainst('SharedProps', ['errors' => ['b' => ['f' => 42]]]);
+    }
+
+    #[Test]
+    public function testErrorsSchemaListsFormErrorsFirst(): void
+    {
+        self::assertSame(
+            [['$ref' => '#/$defs/FormErrors'], ['$ref' => '#/$defs/FormErrorBags']],
+            SharedProps::jsonSchema()['properties']['errors']['anyOf'],
+        );
     }
 
     #[Test]

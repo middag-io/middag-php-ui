@@ -614,7 +614,15 @@
                     "$ref": "#/$defs/FlashMessages"
                 },
                 "errors": {
-                    "$ref": "#/$defs/FormErrors"
+                    "description": "Validation errors of the current request: a FormErrors map or, when the request carried the X-Inertia-Error-Bag header, a FormErrorBags map of bag name to FormErrors. The wire is not self-describing: the reader that sent the header reads errors[bag]; any other reader treats the map as flat.",
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FormErrors"
+                        },
+                        {
+                            "$ref": "#/$defs/FormErrorBags"
+                        }
+                    ]
                 },
                 "csrf_token": {
                     "type": "string"
@@ -1087,6 +1095,13 @@
             "description": "Validation errors keyed by field name. Each value is a message, a structured message (FieldMessage) or a list of either. The reserved key \"_\" carries form-level errors; dotted keys target nested fields.",
             "additionalProperties": {
                 "$ref": "#/$defs/FieldError"
+            }
+        },
+        "FormErrorBags": {
+            "type": "object",
+            "description": "Validation errors scoped to error bags: bag name to FormErrors.",
+            "additionalProperties": {
+                "$ref": "#/$defs/FormErrors"
             }
         },
         "FormSchemaNode": {

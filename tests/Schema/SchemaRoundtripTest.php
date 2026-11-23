@@ -23,6 +23,7 @@ use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FileValue;
+use Middag\Ui\Form\FormErrorBags;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;
@@ -259,6 +260,9 @@ final class SchemaRoundtripTest extends TestCase
             auth: new SharedAuth(new Identity(id: '1', name: 'Ana')),
             errors: new FormErrors(),
             navigation: new NavigationTree(),
+        ));
+        $this->assertValidAgainst('SharedProps', new SharedProps(
+            errors: new FormErrorBags(['login' => new FormErrors(['email' => 'Required'])]),
         ));
     }
 

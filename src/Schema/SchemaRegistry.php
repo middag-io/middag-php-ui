@@ -27,6 +27,7 @@ use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FieldPropsBase;
 use Middag\Ui\Form\FileValue;
 use Middag\Ui\Form\FormCondition;
+use Middag\Ui\Form\FormErrorBags;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Form\FormFieldDocumentMask;
 use Middag\Ui\Form\FormFieldNode;
@@ -150,6 +151,7 @@ final class SchemaRegistry
         'FieldError' => FieldError::class,
         'FieldMessage' => FieldMessage::class,
         'FormErrors' => FormErrors::class,
+        'FormErrorBags' => FormErrorBags::class,
         // Form schema tree (the canonical form-field union; the form-panel block
         // builder accepts only these nodes, while the generic block payload is
         // untyped, so the tree is a standalone island in the page schema).

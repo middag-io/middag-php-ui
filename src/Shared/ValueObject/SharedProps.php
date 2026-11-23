@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Shared\ValueObject;
 
 use JsonSerializable;
+use Middag\Ui\Form\FormErrorBags;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Navigation\NavigationTree;
 
@@ -24,9 +25,12 @@ use Middag\Ui\Navigation\NavigationTree;
  * is true) so hosts and products can add their own keys, such as `middag.*`.
  * This class describes the typed slots for the schema bundle.
  *
- * The `errors` slot carries the validation errors of the current request. It
- * does not cover the `X-Inertia-Error-Bag` header, which is handled at the
- * framework edge.
+ * The `errors` slot carries the validation errors of the current request: a
+ * {@see FormErrors} map or, when the request carried the `X-Inertia-Error-Bag`
+ * header, a {@see FormErrorBags} map of bag name to FormErrors. The two shapes
+ * can overlap on the wire, so the wire does not say which one it is: a client
+ * that sent the header reads `errors[bag]`, and every other client reads the
+ * map as flat. On the PHP side the type is unambiguous.
  *
  * @api
  */
@@ -39,7 +43,7 @@ final readonly class SharedProps implements JsonSerializable
         public ?SharedAuth $auth = null,
         public ?SharedTheme $theme = null,
         public ?FlashMessages $flash = null,
-        public ?FormErrors $errors = null,
+        public FormErrorBags|FormErrors|null $errors = null,
         public ?string $csrfToken = null,
         public ?string $locale = null,
         public array $scope = [],
@@ -63,7 +67,7 @@ final readonly class SharedProps implements JsonSerializable
             $payload['flash'] = $this->flash->jsonSerialize();
         }
 
-        if ($this->errors instanceof FormErrors) {
+        if ($this->errors !== null) {
             $payload['errors'] = $this->errors->jsonSerialize();
         }
 
@@ -92,7 +96,10 @@ final readonly class SharedProps implements JsonSerializable
                 'auth' => ['$ref' => '#/$defs/SharedAuth'],
                 'theme' => ['$ref' => '#/$defs/SharedTheme'],
                 'flash' => ['$ref' => '#/$defs/FlashMessages'],
-                'errors' => ['$ref' => '#/$defs/FormErrors'],
+                'errors' => [
+                    'description' => 'Validation errors of the current request: a FormErrors map or, when the request carried the X-Inertia-Error-Bag header, a FormErrorBags map of bag name to FormErrors. The wire is not self-describing: the reader that sent the header reads errors[bag]; any other reader treats the map as flat.',
+                    'anyOf' => [['$ref' => '#/$defs/FormErrors'], ['$ref' => '#/$defs/FormErrorBags']],
+                ],
                 'csrf_token' => ['type' => 'string'],
                 'locale' => ['type' => 'string'],
                 'scope' => ['type' => 'object', 'additionalProperties' => true],
