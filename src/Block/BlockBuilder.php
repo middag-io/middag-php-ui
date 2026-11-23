@@ -25,6 +25,8 @@ use Middag\Ui\Shared\Enum\ChartType;
  * Provides named constructors for each standard block type,
  * avoiding the need to remember block type strings and data shapes.
  *
+ * Call surface: see API-STABILITY.md, Builders are a call surface.
+ *
  * @api
  */
 class BlockBuilder

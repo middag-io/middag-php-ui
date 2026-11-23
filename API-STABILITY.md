@@ -31,7 +31,7 @@ Every type carries a class-level annotation that states its stability:
 
 | Annotation | Meaning |
 |---|---|
-| `@api` | **Public, supported surface.** You may implement, extend, type-hint, instantiate and catch these. Changes follow [Versioning](#versioning-from-200): a patch carries fixes only, a minor is additive, and a break ships only in a MAJOR, following [Deprecation](#deprecation). |
+| `@api` | **Public, supported surface.** You may implement, extend, type-hint, instantiate and catch these. Changes follow [Versioning](#versioning-from-200): a patch carries fixes only, a minor is additive, and a break ships only in a MAJOR, following [Deprecation](#deprecation). The builders are the exception: see [Builders are a call surface](#builders-are-a-call-surface). |
 | `@internal` | **Implementation detail.** Outside the support promise. May change or be removed in any release, including patches. Do not depend on these from outside the package. |
 
 Support covers the `@api` surface only. Anything untagged, or tagged
@@ -51,6 +51,10 @@ each concern's `Contract/` sub-namespace (`Page/Contract/`, `Form/Contract/`,
 `Shared/Concerns/ProvidesJsonSchema`, `Shared/Concerns/AssertsStringList` and everything under `Schema/` (the JSON
 Schema registry) are `@internal`: they support schema export inside the
 package and are not part of the public surface.
+
+### Builders are a call surface
+
+`Block\BlockBuilder`, `Region\RegionBuilder` and `Region\Contract\RegionBuilderInterface` are `@api` for calling: type-hint them, instantiate `RegionBuilder` and call their methods. They are not for implementing. From `2.0.0`, adding a method, or adding an optional parameter to an existing method, is a MINOR change for these three types. If your code implements `RegionBuilderInterface`, a MINOR may break it. Removing a method or parameter, renaming one, reordering parameters or making one required is still a MAJOR change. Named arguments are part of the call surface, so parameter names follow the same rule.
 
 ## The wire contract
 
@@ -112,7 +116,7 @@ The next MAJOR (`3.0`) drops the PHP versions that no longer receive security su
 
 ## Deprecation
 
-A removal or incompatible change of an `@api` element ships only in a MAJOR. Where possible it is announced first in a MINOR of the current MAJOR: the element carries `@deprecated` naming its replacement, the changelog lists it, and code that still runs emits an `E_USER_DEPRECATED` notice where PHP can raise one. A change that cannot be deprecated in place, such as a new abstract method on an interface or a changed signature, ships in a MAJOR with an entry in `UPGRADING.md`.
+A removal or incompatible change of an `@api` element ships only in a MAJOR. Where possible it is announced first in a MINOR of the current MAJOR: the element carries `@deprecated` naming its replacement, the changelog lists it, and code that still runs emits an `E_USER_DEPRECATED` notice where PHP can raise one. A change that cannot be deprecated in place, such as a new abstract method on an interface or a changed signature, ships in a MAJOR with an entry in `UPGRADING.md`. This does not apply to the builders in [Builders are a call surface](#builders-are-a-call-surface): there, a new method or a new optional parameter ships in a MINOR.
 
 ## Support
 

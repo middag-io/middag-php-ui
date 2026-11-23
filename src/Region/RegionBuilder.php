@@ -30,6 +30,8 @@ use Middag\Ui\Shared\Enum\ChartType;
  * Provides shorthand methods for common block types. Used via callback
  * in PageBuilder::region().
  *
+ * Call surface: see API-STABILITY.md, Builders are a call surface.
+ *
  * @api
  */
 class RegionBuilder implements RegionBuilderInterface
@@ -97,7 +99,8 @@ class RegionBuilder implements RegionBuilderInterface
 
     /**
      * Add an empty state block. `$cta` is the button label and `$ctaHref` where
-     * it leads (see {@see BlockBuilder::emptyState}).
+     * it leads (see {@see BlockBuilder::emptyState}). `$ctaHref` without `$cta`
+     * is dropped: the wire button needs a label.
      */
     public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): static
     {
