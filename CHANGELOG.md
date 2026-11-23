@@ -25,6 +25,10 @@
 * describe the shared-MAJOR family in the README ([0836ad4](https://github.com/middag-io/middag-php-ui/commit/0836ad4d61656103ee96bf68c1226f1134ac20bd))
 * fix the fragment version example and the ResourcePatch wording ([b974c58](https://github.com/middag-io/middag-php-ui/commit/b974c58444f699c90c264b7cfe4a041bb56f0e5d))
 
+### Consumer impact
+
+Breaking for hosts and implementors, shipped as a MINOR before 2.0. `NavigationRegistryInterface::build()` now returns a `NavigationTree` (`tree`, `activeKey`, `footer`), so implementors must build it and callers can no longer index the result as an array. `NavigationNode` gains the optional `entityType`, `badgeVariant`, `statusColor` and `target`. The new `SharedProps`, `SharedAuth`, `SharedTheme` and `FlashMessages` value objects and the `shared-props.json` bundle describe the shared props; the session now travels only there, so `PageResources` loses `user`, `capabilities` and `preferences`, `ResourcePatch` keeps only `featureFlags`, and `UserPreferences` is removed. Empty maps serialize as `{}`. `ContractEnvelopeInterface::VERSION` is now `'2'`. `Identity.id` is a string and the capability and role lists are validated.
+
 ## [1.12.0](https://github.com/middag-io/middag-php-ui/compare/v1.11.0...v1.12.0) (2026-11-23)
 
 
