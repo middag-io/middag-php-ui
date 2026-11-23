@@ -63,7 +63,7 @@ final class ActionResultTest extends TestCase
         self::assertSame('error', $payload['notifications'][0]['level']);
         self::assertSame('/back', $payload['redirect']);
         self::assertSame(['table'], $payload['refreshBlocks']);
-        self::assertSame(['name' => 'Required'], $payload['errors']);
+        self::assertEquals((object) ['name' => 'Required'], $payload['errors']);
     }
 
     #[Test]
@@ -74,11 +74,26 @@ final class ActionResultTest extends TestCase
             errors: ['email' => new FieldMessage('Invalid email.', 'validation.email', 'validators'), 'name' => ['Required', new FieldMessage('Too short.', 'validation.min', 'validators', ['min' => 2])]],
         );
 
-        $payload = $result->jsonSerialize();
+        $payload = json_decode((string) json_encode($result), true);
 
         self::assertSame(['message' => 'Invalid email.', 'key' => 'validation.email', 'domain' => 'validators'], $payload['errors']['email']);
         self::assertSame('Required', $payload['errors']['name'][0]);
         self::assertSame(['min' => 2], $payload['errors']['name'][1]['params']);
+        $this->assertValidAgainst('ActionResult', $result);
+    }
+
+    #[Test]
+    public function testStructuredErrorArrayWithEmptyParamsValidates(): void
+    {
+        $result = new ActionResult(
+            success: false,
+            errors: ['a' => ['message' => 'm', 'key' => 'k', 'domain' => 'd', 'params' => []]],
+        );
+
+        self::assertSame(
+            '{"message":"m","key":"k","domain":"d"}',
+            json_encode($result->jsonSerialize()['errors']->a),
+        );
         $this->assertValidAgainst('ActionResult', $result);
     }
 

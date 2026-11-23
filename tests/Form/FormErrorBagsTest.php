@@ -71,6 +71,15 @@ final class FormErrorBagsTest extends TestCase
     }
 
     #[Test]
+    public function testABagWithNumericFieldNamesStaysAnObject(): void
+    {
+        $bags = new FormErrorBags(['login' => new FormErrors(['0' => 'x', '1' => 'y'])]);
+
+        self::assertSame('{"login":{"0":"x","1":"y"}}', json_encode($bags));
+        $this->assertValidAgainst('FormErrorBags', $bags);
+    }
+
+    #[Test]
     public function testRejectsAnEmptyBagName(): void
     {
         $this->expectException(InvalidArgumentException::class);

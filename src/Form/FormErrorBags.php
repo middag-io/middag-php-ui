@@ -42,7 +42,7 @@ final readonly class FormErrorBags implements JsonSerializable
     public function jsonSerialize(): stdClass
     {
         return (object) array_map(
-            static fn (FormErrors $errors): array|stdClass => $errors->jsonSerialize(),
+            static fn (FormErrors $errors): stdClass => $errors->jsonSerialize(),
             $this->bags,
         );
     }
