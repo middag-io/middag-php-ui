@@ -21,18 +21,17 @@ use Middag\Ui\Block\BlockDescriptor;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Form\FieldConstraints;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FileValue;
+use Middag\Ui\Form\FormErrorBags;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Form\FormStep;
 use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
 use Middag\Ui\Navigation\NavigationNode;
 use Middag\Ui\Navigation\NavigationTree;
-use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
-use Middag\Ui\Page\PageResources;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\PollConfig;
@@ -193,6 +192,12 @@ final class SchemaRoundtripTest extends TestCase
             'address.zip' => 'Bad ZIP',
             FormErrors::FORM_LEVEL_KEY => 'The form could not be saved.',
         ]));
+        // Structured messages, alone and mixed with strings in a list.
+        $this->assertValidAgainst('FormErrors', new FormErrors([
+            'email' => new FieldMessage('Invalid email.', 'validation.email', 'validators'),
+            'tags' => ['Too many tags', new FieldMessage('Unique.', 'validation.unique', 'validators', ['limit' => 3])],
+        ]));
+        $this->assertInvalidAgainst('FormErrors', ['tags' => ['ok', 7]]);
     }
 
     // ── Notification + enum ──────────────────────────────────────────────────
@@ -224,19 +229,6 @@ final class SchemaRoundtripTest extends TestCase
         $this->assertValidAgainst('Pagination', new Pagination(1, 25, 100, 4));
     }
 
-    // ── Resources (flags non-empty + empty) ───────────────────────────
-
-    #[Test]
-    public function testPageResources(): void
-    {
-        $this->assertValidAgainst('PageResources', new PageResources(
-            featureFlags: ['beta' => false],
-            branding: new Branding(appName: 'Helico', logoUrl: '/logo.svg'),
-        ));
-        // An empty featureFlags map serializes as {} and must still validate.
-        $this->assertValidAgainst('PageResources', new PageResources());
-    }
-
     // ── Shared props ─────────────────────────────────────────────────────────
 
     #[Test]
@@ -253,6 +245,9 @@ final class SchemaRoundtripTest extends TestCase
             auth: new SharedAuth(new Identity(id: '1', name: 'Ana')),
             errors: new FormErrors(),
             navigation: new NavigationTree(),
+        ));
+        $this->assertValidAgainst('SharedProps', new SharedProps(
+            errors: new FormErrorBags(['login' => new FormErrors(['email' => 'Required'])]),
         ));
     }
 
@@ -277,7 +272,6 @@ final class SchemaRoundtripTest extends TestCase
             redirect: '/x',
             refreshBlocks: ['m1', 'm2'],
             errors: ['name' => 'required', 'tags' => ['too few', 'invalid']],
-            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ));
     }
 
@@ -320,7 +314,6 @@ final class SchemaRoundtripTest extends TestCase
                 actions: [new Action(id: 'help', label: 'Help', target: ActionTarget::route('help.show'))],
             ),
             layout: new LayoutDescriptor(template: 'stack', regions: ['content' => [$table]], meta: ['gap' => 4]),
-            resources: new PageResources(featureFlags: ['beta' => true]),
             notifications: [new Notification(level: NotificationLevel::Info, message: 'Loaded')],
             entities: ['course' => '/courses/{id}', 'user' => '/users/{id}'],
         );
@@ -339,8 +332,6 @@ final class SchemaRoundtripTest extends TestCase
         // serializes `regions` to [].
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'blank', regions: []));
         $this->assertValidAgainst('LayoutDescriptor', new LayoutDescriptor(template: 'stack', regions: ['content' => []]));
-        // An empty resource patch serializes to {}.
-        $this->assertValidAgainst('ResourcePatch', new ResourcePatch());
     }
 
     // ── Negative: required[] enforced (roundtrip alone is forward-only) ──────

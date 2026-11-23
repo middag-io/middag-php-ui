@@ -31,12 +31,14 @@ Every type carries a class-level annotation that states its stability:
 
 | Annotation | Meaning |
 |---|---|
-| `@api` | **Public, supported surface.** You may implement, extend, type-hint, instantiate and catch these. Changes follow [Versioning](#versioning-from-200): a patch carries fixes only, a minor is additive, and a break ships only in a MAJOR, following [Deprecation](#deprecation). |
+| `@api` | **Public, supported surface.** You may implement, extend, type-hint, instantiate and catch these. Changes follow [Versioning](#versioning-from-200): a patch carries fixes only, a minor is additive, and a break ships only in a MAJOR, following [Deprecation](#deprecation). The builders are the exception: see [Builders are a call surface](#builders-are-a-call-surface). |
 | `@internal` | **Implementation detail.** Outside the support promise. May change or be removed in any release, including patches. Do not depend on these from outside the package. |
 
 Support covers the `@api` surface only. Anything untagged, or tagged
 `@internal`, is outside the promise. Every type in `src/` carries exactly one
 of the two tags.
+
+`NavigationRegistryInterface` is an implementable contract: its method signatures, including parameter names, are frozen for 2.x. It is not a call surface like the builders, so it gains no method or parameter in a 2.x MINOR. Registration methods take `string|Translatable` labels and the optional `entityType`, `badgeVariant`, `statusColor` (all levels) and `target`, `href` (items) that `NavigationNode` carries. Labels are never translated by the registry; a `Translatable` reaches the client as `{key, domain, params?}`. An item has either a route or an external `href`, never both, and `href` takes no `routeParams`; `href` must be an absolute URL starting with lowercase `http://` or `https://`. Implementations must use the interface's parameter names, so named arguments work against any implementation.
 
 ## The public surface
 
@@ -52,6 +54,12 @@ each concern's `Contract/` sub-namespace (`Page/Contract/`, `Form/Contract/`,
 Schema registry) are `@internal`: they support schema export inside the
 package and are not part of the public surface.
 
+### Builders are a call surface
+
+`Block\BlockBuilder`, `Region\RegionBuilder` and `Region\Contract\RegionBuilderInterface` are `@api` for calling: type-hint them, instantiate `RegionBuilder` and call their methods. They are not for implementing. From `2.0.0`, adding a method, or adding an optional parameter to an existing method, is a MINOR change for these three types. If your code implements `RegionBuilderInterface`, a MINOR may break it. Removing a method or parameter, renaming one, reordering parameters or making one required is still a MAJOR change. Named arguments are part of the call surface, so parameter names follow the same rule.
+
+You may extend `BlockBuilder` or `RegionBuilder` only without declaring or overriding members; a subclass that declares a method may fail to load after a MINOR that adds or extends a method of the same name. The classes stay non-final so that empty pass-through subclasses keep working.
+
 ## The wire contract
 
 Beyond the PHP surface, `middag-io/ui` has a second, stronger compatibility
@@ -62,9 +70,11 @@ shape is, and follows the same rules as a break of the `@api` surface.
 
 The wire contract has two root bundles under `schema/`: `page-contract.json` (the `PageContract` envelope, with `fragment.json` for the `Fragment` envelope) and `shared-props.json`, whose root is `SharedProps`, the props shared with every page. Its slots are `auth`, `theme`, `flash`, `errors`, `csrf_token`, `locale`, `scope` and `navigation`. The root is open (`additionalProperties: true`), so hosts and products can add their own keys such as `middag.*`; the typed slots stay strict. All bundles carry the same `$defs` and the same `x-contract-version`.
 
-The shared props types are `@api`: `Shared\ValueObject\SharedProps`, `SharedAuth`, `SharedTheme` and `FlashMessages`, and `Navigation\NavigationTree` (the return type of `NavigationRegistryInterface::build()`). Identity, capabilities, theme and locale travel in the shared props only; `PageResources` carries feature flags and branding.
+The shared props types are `@api`: `Shared\ValueObject\SharedProps`, `SharedAuth`, `SharedTheme` and `FlashMessages`, and `Navigation\NavigationTree` (the return type of `NavigationRegistryInterface::build()`). Identity, capabilities, theme and locale travel in the shared props only.
 
-The `errors` slot carries the `FormErrors` of the current request. It does not cover the `X-Inertia-Error-Bag` header, which is handled at the framework edge.
+The `errors` slot carries the validation errors of the current request: a `FormErrors` map or, when the request carried the `X-Inertia-Error-Bag` header, a `FormErrorBags` map of bag name to `FormErrors`. The schema accepts either (`anyOf`), and this shape is frozen for 2.x. The two shapes can overlap on the wire (an empty object, or a bag whose fields are named like a `FieldMessage`), so the wire does not say which one it is: a client that sent `X-Inertia-Error-Bag` reads `errors[bag]`, and every other client reads the map as flat. On the PHP side the type (`FormErrors|FormErrorBags`) is unambiguous.
+
+Each value in a `FormErrors` map is a `FieldError`: one message, a list of messages or structured messages, or one structured message. The structured message is `Form\FieldMessage` (`@api`), serialized as `{message, key, domain, params?}`: the server-resolved `message` is the fallback, and `key`, `domain` and `params` let the client translate it. `params` is omitted when empty. A structured message given as its array form (for example rebuilt from the session) is serialized through `FieldMessage` too, so the same rules apply to it. `FormErrors::jsonSerialize()` and `FormErrorBags::jsonSerialize()` return `stdClass`, so a map always encodes as a JSON object, even with numeric field names.
 
 Adding an optional key or a new `$def` is additive and ships in a MINOR; clients ignore keys they do not know. Adding a new discriminator value (`kind`, `type`) is additive and ships in a MINOR; clients treat an unknown value as unsupported and degrade that element instead of rejecting the whole payload. Enum values follow the policy in [Enum evolution on the wire](#enum-evolution-on-the-wire). Removing or renaming a key, removing an enum value, changing a type or making a key required is a breaking change: it ships in a MAJOR and raises `ContractEnvelopeInterface::VERSION` and `x-contract-version`. `@middag-io/ui-contracts` mirrors `schema/`, ships the TypeScript types and zod schemas generated from it, and versions on its own line.
 
@@ -110,7 +120,7 @@ The next MAJOR (`3.0`) drops the PHP versions that no longer receive security su
 
 ## Deprecation
 
-A removal or incompatible change of an `@api` element ships only in a MAJOR. Where possible it is announced first in a MINOR of the current MAJOR: the element carries `@deprecated` naming its replacement, the changelog lists it, and code that still runs emits an `E_USER_DEPRECATED` notice where PHP can raise one. A change that cannot be deprecated in place, such as a new abstract method on an interface or a changed signature, ships in a MAJOR with an entry in `UPGRADING.md`.
+A removal or incompatible change of an `@api` element ships only in a MAJOR. Where possible it is announced first in a MINOR of the current MAJOR: the element carries `@deprecated` naming its replacement, the changelog lists it, and code that still runs emits an `E_USER_DEPRECATED` notice where PHP can raise one. A change that cannot be deprecated in place, such as a new abstract method on an interface or a changed signature, ships in a MAJOR with an entry in `UPGRADING.md`. This does not apply to the builders in [Builders are a call surface](#builders-are-a-call-surface): there, a new method or a new optional parameter ships in a MINOR.
 
 ## Support
 

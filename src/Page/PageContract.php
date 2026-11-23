@@ -19,9 +19,9 @@ use Middag\Ui\Shared\ValueObject\Notification;
 /**
  * Top-level page contract envelope.
  *
- * Describes a complete server-driven page: shell, page identity,
- * layout with regions and blocks, and shared resources. Serialized to JSON
- * and consumed by the client renderer.
+ * Describes a complete server-driven page: shell, page identity, layout with
+ * regions and blocks, notifications and the entity route map. Serialized to
+ * JSON and consumed by the client renderer.
  *
  * @api
  */
@@ -35,7 +35,6 @@ readonly class PageContract implements PageContractInterface
         public string $shell,
         public PageMeta $page,
         public LayoutDescriptor $layout,
-        public ?PageResources $resources = null,
         public array $notifications = [],
         public array $entities = [],
     ) {}
@@ -49,10 +48,6 @@ readonly class PageContract implements PageContractInterface
             'page' => $this->page->jsonSerialize(),
             'layout' => $this->layout->jsonSerialize(),
         ];
-
-        if ($this->resources instanceof PageResources) {
-            $data['resources'] = $this->resources->jsonSerialize();
-        }
 
         if ($this->notifications !== []) {
             $data['notifications'] = array_map(
@@ -74,7 +69,6 @@ readonly class PageContract implements PageContractInterface
         return ['type' => 'object', 'required' => ['version', 'shell', 'page', 'layout'],
             'properties' => ['version' => ['const' => '2'], 'shell' => ['type' => 'string'],
                 'page' => ['$ref' => '#/$defs/PageMeta'], 'layout' => ['$ref' => '#/$defs/LayoutDescriptor'],
-                'resources' => ['$ref' => '#/$defs/PageResources'],
                 'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],
                 'entities' => ['type' => 'object', 'additionalProperties' => ['type' => 'string']]],
             'additionalProperties' => false];

@@ -15,7 +15,6 @@ namespace Middag\Ui\Region;
 use JsonSerializable;
 use Middag\Ui\Block\Contract\BlockDescriptorInterface;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Shared\Enum\FragmentKind;
 use Middag\Ui\Shared\ValueObject\Notification;
 use Middag\Ui\Table\TableConfig;
@@ -42,7 +41,6 @@ final readonly class Fragment implements ContractEnvelopeInterface
         public FragmentKind $kind,
         public ?JsonSerializable $payload = null,
         public array $notifications = [],
-        public ?ResourcePatch $resources = null,
         public ?string $customType = null,
     ) {}
 
@@ -86,12 +84,12 @@ final readonly class Fragment implements ContractEnvelopeInterface
 
     public function withNotifications(Notification ...$notifications): self
     {
-        return new self($this->kind, $this->payload, $notifications, $this->resources, $this->customType);
-    }
-
-    public function withResources(ResourcePatch $resources): self
-    {
-        return new self($this->kind, $this->payload, $this->notifications, $resources, $this->customType);
+        return new self(
+            kind: $this->kind,
+            payload: $this->payload,
+            notifications: $notifications,
+            customType: $this->customType,
+        );
     }
 
     /** @return array<string, mixed> */
@@ -113,10 +111,6 @@ final readonly class Fragment implements ContractEnvelopeInterface
             );
         }
 
-        if ($this->resources instanceof ResourcePatch) {
-            $payload['resources'] = $this->resources->jsonSerialize();
-        }
-
         if ($this->kind === FragmentKind::Custom && $this->customType !== null) {
             $payload['customType'] = $this->customType;
         }
@@ -131,7 +125,7 @@ final readonly class Fragment implements ContractEnvelopeInterface
             'properties' => ['version' => ['const' => '2'], 'kind' => ['$ref' => '#/$defs/FragmentKind'],
                 'payload' => ['type' => 'object', 'additionalProperties' => true],
                 'notifications' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/Notification']],
-                'resources' => ['$ref' => '#/$defs/ResourcePatch'], 'customType' => ['type' => 'string']],
+                'customType' => ['type' => 'string']],
             'additionalProperties' => false];
     }
 }

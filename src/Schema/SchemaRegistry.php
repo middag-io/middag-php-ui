@@ -23,9 +23,11 @@ use Middag\Ui\EditablePanel\EditablePanelDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
 use Middag\Ui\Form\FieldError;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Form\FieldPropsBase;
 use Middag\Ui\Form\FileValue;
 use Middag\Ui\Form\FormCondition;
+use Middag\Ui\Form\FormErrorBags;
 use Middag\Ui\Form\FormErrors;
 use Middag\Ui\Form\FormFieldDocumentMask;
 use Middag\Ui\Form\FormFieldNode;
@@ -40,11 +42,8 @@ use Middag\Ui\Inspector\InspectorDescriptor;
 use Middag\Ui\Navigation\Breadcrumb;
 use Middag\Ui\Navigation\NavigationNode;
 use Middag\Ui\Navigation\NavigationTree;
-use Middag\Ui\Page\Branding;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
-use Middag\Ui\Page\PageResources;
-use Middag\Ui\Page\ResourcePatch;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Region\PollConfig;
@@ -120,11 +119,9 @@ final class SchemaRegistry
         'Action' => Action::class,
         'ActionTarget' => ActionTarget::class,
         'Confirmation' => Confirmation::class,
-        // Notifications + resources.
+        // Notifications + identity.
         'Notification' => Notification::class,
-        'PageResources' => PageResources::class,
         'Identity' => Identity::class,
-        'Branding' => Branding::class,
         // Navigation.
         'NavigationNode' => NavigationNode::class,
         'NavigationTree' => NavigationTree::class,
@@ -148,7 +145,9 @@ final class SchemaRegistry
         'FieldConstraints' => FieldConstraints::class,
         'FileValue' => FileValue::class,
         'FieldError' => FieldError::class,
+        'FieldMessage' => FieldMessage::class,
         'FormErrors' => FormErrors::class,
+        'FormErrorBags' => FormErrorBags::class,
         // Form schema tree (the canonical form-field union; the form-panel block
         // builder accepts only these nodes, while the generic block payload is
         // untyped, so the tree is a standalone island in the page schema).
@@ -165,7 +164,6 @@ final class SchemaRegistry
         // Server-push slices.
         'RegionUpdate' => RegionUpdate::class,
         'ActionResult' => ActionResult::class,
-        'ResourcePatch' => ResourcePatch::class,
         // Enums.
         'ActionIntent' => ActionIntent::class,
         'ActionTargetKind' => ActionTargetKind::class,

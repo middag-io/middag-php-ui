@@ -17,13 +17,14 @@ use Middag\Ui\Block\LayoutDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Page\PageContract;
 use Middag\Ui\Page\PageMeta;
-use Middag\Ui\Page\PageResources;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionParameter;
 
 /**
  * @internal
@@ -66,7 +67,7 @@ final class PageContractTest extends TestCase
     }
 
     #[Test]
-    public function testOmitsResourcesWhenNull(): void
+    public function testNeverEmitsAResourcesSlot(): void
     {
         $layout = new LayoutDescriptor(template: 'stack', regions: ['main' => []]);
         $page = new PageMeta(key: 'home', title: 'Home');
@@ -83,23 +84,14 @@ final class PageContractTest extends TestCase
     }
 
     #[Test]
-    public function testIncludesResourcesWhenSet(): void
+    public function testConstructorParametersAreInWireOrder(): void
     {
-        $layout = new LayoutDescriptor(template: 'stack', regions: ['main' => []]);
-        $page = new PageMeta(key: 'home', title: 'Home');
-        $resources = new PageResources();
+        $ctor = (new ReflectionClass(PageContract::class))->getConstructor();
+        self::assertNotNull($ctor);
 
-        $contract = new PageContract(
-            shell: 'product',
-            page: $page,
-            layout: $layout,
-            resources: $resources,
-        );
+        $names = array_map(static fn (ReflectionParameter $p): string => $p->getName(), $ctor->getParameters());
 
-        $payload = $contract->jsonSerialize();
-
-        self::assertArrayHasKey('resources', $payload);
-        self::assertIsArray($payload['resources']);
+        self::assertSame(['shell', 'page', 'layout', 'notifications', 'entities'], $names);
     }
 
     #[Test]
@@ -166,13 +158,12 @@ final class PageContractTest extends TestCase
     }
 
     #[Test]
-    public function testSchemaAcceptsAContractWithResourcesAndNotifications(): void
+    public function testSchemaAcceptsAContractWithNotificationsAndEntities(): void
     {
         $contract = new PageContract(
             shell: 'product',
             page: new PageMeta(key: 'home', title: 'Home'),
             layout: new LayoutDescriptor(template: 'stack', regions: ['main' => []]),
-            resources: new PageResources(),
             notifications: [new Notification(NotificationLevel::Success, 'Saved')],
             entities: ['user' => '/users/:id'],
         );
@@ -203,6 +194,15 @@ final class PageContractTest extends TestCase
     {
         $payload = $this->minimalContract()->jsonSerialize();
         $payload['extra'] = true;
+
+        $this->assertInvalidAgainst('PageContract', $payload);
+    }
+
+    #[Test]
+    public function testSchemaRejectsTheRemovedResourcesSlot(): void
+    {
+        $payload = $this->minimalContract()->jsonSerialize();
+        $payload['resources'] = ['featureFlags' => (object) []];
 
         $this->assertInvalidAgainst('PageContract', $payload);
     }

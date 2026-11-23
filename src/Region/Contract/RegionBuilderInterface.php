@@ -20,7 +20,13 @@ use Middag\Ui\Form\FormStep;
 use Middag\Ui\Page\Tab;
 use Middag\Ui\Shared\Enum\ChartType;
 
-/** @api */
+/**
+ * Fluent region builder: one method per block type.
+ *
+ * Call surface: see API-STABILITY.md, Builders are a call surface.
+ *
+ * @api
+ */
 interface RegionBuilderInterface
 {
     public function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): static;
@@ -44,7 +50,12 @@ interface RegionBuilderInterface
 
     public function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): static;
 
-    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null): static;
+    /**
+     * Add an empty state block. `$cta` is the button label and `$ctaHref`
+     * where it leads. `$ctaHref` without `$cta` is dropped: the wire button
+     * needs a label.
+     */
+    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): static;
 
     /**
      * @param list<FormSchemaNodeInterface> $schema Form schema nodes (value objects; see {@see BlockBuilder::formPanel})

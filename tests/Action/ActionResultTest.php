@@ -14,7 +14,7 @@ namespace Middag\Ui\Tests\Action;
 
 use Middag\Ui\Action\ActionResult;
 use Middag\Ui\Block\BlockDescriptor;
-use Middag\Ui\Page\ResourcePatch;
+use Middag\Ui\Form\FieldMessage;
 use Middag\Ui\Region\Fragment;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\ValueObject\Notification;
@@ -23,6 +23,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionParameter;
 
 /**
  * @internal
@@ -62,7 +63,38 @@ final class ActionResultTest extends TestCase
         self::assertSame('error', $payload['notifications'][0]['level']);
         self::assertSame('/back', $payload['redirect']);
         self::assertSame(['table'], $payload['refreshBlocks']);
-        self::assertSame(['name' => 'Required'], $payload['errors']);
+        self::assertEquals((object) ['name' => 'Required'], $payload['errors']);
+    }
+
+    #[Test]
+    public function testNormalizesStructuredErrorMessages(): void
+    {
+        $result = new ActionResult(
+            success: false,
+            errors: ['email' => new FieldMessage('Invalid email.', 'validation.email', 'validators'), 'name' => ['Required', new FieldMessage('Too short.', 'validation.min', 'validators', ['min' => 2])]],
+        );
+
+        $payload = json_decode((string) json_encode($result), true);
+
+        self::assertSame(['message' => 'Invalid email.', 'key' => 'validation.email', 'domain' => 'validators'], $payload['errors']['email']);
+        self::assertSame('Required', $payload['errors']['name'][0]);
+        self::assertSame(['min' => 2], $payload['errors']['name'][1]['params']);
+        $this->assertValidAgainst('ActionResult', $result);
+    }
+
+    #[Test]
+    public function testStructuredErrorArrayWithEmptyParamsValidates(): void
+    {
+        $result = new ActionResult(
+            success: false,
+            errors: ['a' => ['message' => 'm', 'key' => 'k', 'domain' => 'd', 'params' => []]],
+        );
+
+        self::assertSame(
+            '{"message":"m","key":"k","domain":"d"}',
+            json_encode($result->jsonSerialize()['errors']->a),
+        );
+        $this->assertValidAgainst('ActionResult', $result);
     }
 
     #[Test]
@@ -79,12 +111,11 @@ final class ActionResultTest extends TestCase
     {
         $payload = (new ActionResult(
             fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
-            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ))->jsonSerialize();
 
         self::assertCount(1, $payload['fragments']);
         self::assertSame('block', $payload['fragments'][0]['kind']);
-        self::assertSame(['beta' => true], $payload['resources']['featureFlags']);
+        self::assertArrayNotHasKey('resources', $payload);
     }
 
     #[Test]
@@ -110,7 +141,6 @@ final class ActionResultTest extends TestCase
     {
         $this->assertValidAgainst('ActionResult', new ActionResult(
             fragments: [Fragment::block(new BlockDescriptor(type: 'metric_card', key: 'rev', data: []))],
-            resources: new ResourcePatch(featureFlags: ['beta' => true]),
         ));
     }
 
@@ -130,5 +160,22 @@ final class ActionResultTest extends TestCase
     public function testSchemaRejectsAnUnknownProperty(): void
     {
         $this->assertInvalidAgainst('ActionResult', ['success' => true, 'unknown' => 1]);
+    }
+
+    #[Test]
+    public function testSchemaRejectsTheRemovedResourcesSlot(): void
+    {
+        $this->assertInvalidAgainst('ActionResult', ['success' => true, 'resources' => (object) []]);
+    }
+
+    #[Test]
+    public function testHasNoResourcesParameter(): void
+    {
+        $ctor = (new ReflectionClass(ActionResult::class))->getConstructor();
+        self::assertNotNull($ctor);
+
+        $names = array_map(static fn (ReflectionParameter $p): string => $p->getName(), $ctor->getParameters());
+
+        self::assertSame(['success', 'notifications', 'redirect', 'refreshBlocks', 'errors', 'fragments'], $names);
     }
 }

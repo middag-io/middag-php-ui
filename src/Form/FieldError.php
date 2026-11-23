@@ -13,7 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Form;
 
 /**
- * The error value for a single form field: one message or a list of messages.
+ * The error value for a single form field: one message, a list of messages or
+ * structured messages, or one structured message ({@see FieldMessage}).
  *
  * A schema-only value shape (no instances) — it is referenced by
  * {@see FormErrors} as the value type of the error map.
@@ -30,7 +31,8 @@ final class FieldError
         return [
             'oneOf' => [
                 ['type' => 'string'],
-                ['type' => 'array', 'items' => ['type' => 'string']],
+                ['type' => 'array', 'items' => ['oneOf' => [['type' => 'string'], ['$ref' => '#/$defs/FieldMessage']]]],
+                ['$ref' => '#/$defs/FieldMessage'],
             ],
         ];
     }
