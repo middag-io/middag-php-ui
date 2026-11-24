@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-rc.1](https://github.com/middag-io/middag-php-ui/compare/v1.15.0...v2.0.0-rc.1) (2026-11-24)
+
+
+### Miscellaneous
+
+* cut the first 2.0 release candidate ([6f2a810](https://github.com/middag-io/middag-php-ui/commit/6f2a810d01cfb1127fa84067ce6177c4f02ce8c5))
+
 ## [1.15.0](https://github.com/middag-io/middag-php-ui/compare/v1.14.1...v1.15.0) (2026-11-24)
 
 
