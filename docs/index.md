@@ -6,6 +6,6 @@ The architecture (PageContract system, concern-first layout, composition levels,
 
 This repository keeps only the [README](../README.md), [API-STABILITY](../API-STABILITY.md) and the decision records:
 
-- [UI-001 — UI contracts are a separate zero-dependency package at the bottom of the stack](decisions/UI-001-react-typescript-inertia-stack.md)
+- [UI-001 — UI contracts are a separate zero-dependency package at the bottom of the stack](decisions/UI-001-zero-dependency-contracts-package.md)
 - [UI-002 — A versioned data contract, published as schema](decisions/UI-002-page-contract-composition-model.md)
 - [UI-003 — The first-party UI client is React + TypeScript + Inertia + ReUI](decisions/UI-003-first-party-client-stack.md)
