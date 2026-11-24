@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/middag-io/middag-php-ui/compare/v1.14.0...v1.14.1) (2026-11-24)
+
+
+### Documentation
+
+* title AGENTS.md after its own file name ([a58ab5d](https://github.com/middag-io/middag-php-ui/commit/a58ab5dc73b359f701f1327c544d63fc59359f70))
+
 ## [1.14.0](https://github.com/middag-io/middag-php-ui/compare/v1.13.1...v1.14.0) (2026-11-23)
 
 
