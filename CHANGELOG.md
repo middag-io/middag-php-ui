@@ -12,6 +12,10 @@
 
 * reword the toProps docblock so it holds no API tag ([e7f2012](https://github.com/middag-io/middag-php-ui/commit/e7f2012c63b26b8fc6022ed1f7a7afdc9c449147))
 
+### Consumer impact
+
+None; PHP 8.6 is now tested.
+
 ## [1.14.1](https://github.com/middag-io/middag-php-ui/compare/v1.14.0...v1.14.1) (2026-11-24)
 
 
