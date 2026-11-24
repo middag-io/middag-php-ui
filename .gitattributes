@@ -13,6 +13,7 @@
 /.php-cs-fixer.dist.php             export-ignore
 /.php-rector.php                    export-ignore
 /.phpstan.neon                      export-ignore
+/.phpstan-ceiling.neon              export-ignore
 /.phpunit.cache                     export-ignore
 /.release-please-manifest.json      export-ignore
 /release-please-config.json         export-ignore
