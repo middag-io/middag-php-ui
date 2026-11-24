@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.15.0](https://github.com/middag-io/middag-php-ui/compare/v1.14.1...v1.15.0) (2026-11-24)
+
+
+### Features
+
+* support PHP 8.6 ([46168af](https://github.com/middag-io/middag-php-ui/commit/46168af25a04ff6d3a2397511ec1c8574d52a10f))
+
+
+### Documentation
+
+* reword the toProps docblock so it holds no API tag ([e7f2012](https://github.com/middag-io/middag-php-ui/commit/e7f2012c63b26b8fc6022ed1f7a7afdc9c449147))
+
+### Consumer impact
+
+None; PHP 8.6 is now tested.
+
 ## [1.14.1](https://github.com/middag-io/middag-php-ui/compare/v1.14.0...v1.14.1) (2026-11-24)
 
 
