@@ -1,0 +1,8 @@
+# Ceiling pass: the same analysis as .phpstan.neon, targeting the highest PHP
+# version in the supported range (PHP 8.6). CI runs it in the PHP 8.6 job;
+# .phpstan.neon keeps targeting the floor (PHP 8.3).
+includes:
+    - .phpstan.neon
+
+parameters:
+    phpVersion: 80600

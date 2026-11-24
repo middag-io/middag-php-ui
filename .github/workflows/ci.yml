@@ -23,6 +23,10 @@ jobs:
   # Highest entries remove the platform pin and resolve the highest
   # dependency versions on the PHP of each job. ui depends on no Symfony
   # package, so expect-majors is empty: these jobs prove the PHP range only.
+  #
+  # The locked PHP 8.6 entry also runs the ceiling PHPStan pass
+  # (.phpstan-ceiling.neon, phpVersion 80600) after the composite, so the code
+  # is checked against both ends of the supported range.
   php-library-check:
     name: check (PHP ${{ matrix.php-version }}${{ matrix.dependency-versions == 'highest' && ', highest' || '' }})
     runs-on: ubuntu-24.04
@@ -42,10 +46,17 @@ jobs:
           - php-version: "8.5"
             dependency-versions: locked
             static-checks: false
+          - php-version: "8.6"
+            dependency-versions: locked
+            static-checks: false
+            ceiling-stan: true
           - php-version: "8.4"
             dependency-versions: highest
             static-checks: false
           - php-version: "8.5"
+            dependency-versions: highest
+            static-checks: false
+          - php-version: "8.6"
             dependency-versions: highest
             static-checks: false
     steps:
@@ -66,3 +77,7 @@ jobs:
           composer-scripts: check:schemas
           tool-cache-paths: .cache
           audit-blocking-severities: critical, high
+
+      - name: PHPStan ceiling pass (PHP 8.6)
+        if: ${{ matrix.ceiling-stan }}
+        run: composer check:stan:ceiling

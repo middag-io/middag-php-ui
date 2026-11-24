@@ -379,8 +379,10 @@ syntax such as `new X()->method()` parses on 8.4 but is a fatal error on 8.3, so
 source, tests, and the `.php-cs-fixer.dist.php` / `.php-rector.php` configs; and
 the static checks of the CI run on PHP 8.3, the floor. PHPStan targets the
 floor (`phpVersion: 80300`); it does not catch syntax-level issues, which is
-the lint's job. CI runs the tests on PHP 8.3, 8.4 and 8.5, and a `highest` job
-resolves the highest dependency versions on 8.4 and 8.5 without the platform pin.
+the lint's job. A second PHPStan pass targets the ceiling (`phpVersion: 80600`,
+`composer check:stan:ceiling`) and runs in the PHP 8.6 CI job. CI runs the tests
+on PHP 8.3 to 8.6, and a `highest` job resolves the highest dependency versions
+on 8.4, 8.5 and 8.6 without the platform pin.
 
 Git hooks configured automatically via `post-install-cmd`. `commit-msg` enforces Conventional Commits.
 
