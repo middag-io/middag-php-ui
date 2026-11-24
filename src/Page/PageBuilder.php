@@ -351,7 +351,7 @@ class PageBuilder implements PageBuilderInterface
      * Build a props array (contract + overlay + help as separate props).
      *
      * Use this when you need overlay/help metadata alongside the contract.
-     * The PageContract itself remains unchanged (@api safe).
+     * The PageContract itself remains unchanged, so this stays safe for the public API.
      *
      * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor, editablePanel?: EditablePanelDescriptor}
      */
