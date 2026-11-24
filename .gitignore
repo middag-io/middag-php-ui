@@ -22,44 +22,10 @@ ui*/.npmrc
 __pycache__/
 logs/
 
-# VitePress
-docs/.vitepress/dist/
-docs/.vitepress/cache/
-docs-site/.vitepress/dist/
-docs-site/.vitepress/cache/
-docs-site/.vitepress/.temp/
-
-# local agent state
-# Versioned: all .vigim/ except data/
-# Ephemeral: .vigim/content/data/ (inventory, snapshots, reports, cache)
-.vigim/content/data/*
-!.vigim/content/data/.gitkeep
-!.vigim/content/data/*.csv
-
-###############################
-#### IA tools and runtimes ####
-###############################
-
-# AIOX Local (AIOX)
-# npx aiox-core install
+# Local agent and tool state (never versioned)
+.vigim/
+.aiox/
 .aiox-core/
-.aiox-core/local/
-.claude/settings.local.json
-.aiox/install-log.txt
-
-# Ralph runtime/state artifacts (ralph-loop plugin)
-.ralph/.call_count
-.ralph/.circuit_breaker_history
-.ralph/.circuit_breaker_state
-.ralph/.claude_session_id
-.ralph/.exit_signals
-.ralph/.last_reset
-.ralph/.loop_start_sha
-.ralph/.ralph_session
-.ralph/.ralph_session_history
-.ralph/live.log
-.ralph/logs/
-.ralph/progress.json
-.ralph/status.json
-.ralph/docs/generated/
+.ralph/
 .gstack/
+.claude/settings.local.json

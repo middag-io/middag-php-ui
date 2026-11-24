@@ -1,4 +1,4 @@
-# CLAUDE.md — middag-io/ui
+# AGENTS.md — middag-io/ui
 
 > A **durable** orientation guide for the agent: what this package is, its boundaries, conventions and
 > workflow. **Not a file index** (an index breaks on every move). To locate symbols, use Glob/Grep.
