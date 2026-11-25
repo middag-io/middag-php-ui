@@ -134,6 +134,10 @@ These `$defs` follow the wire rules above: adding an optional key or a `$def` is
 
 The builders take the optional keys of these payloads as trailing optional parameters: `metricCard(deltaDirection:)`, `emptyState(ctaSecondary:)`, `statusStrip(score:)` and `activityTimeline(limit:)`, on `BlockBuilder`, `RegionBuilder` and `RegionBuilderInterface`.
 
+### Page help and inspector
+
+`PageContract` has two optional slots: `help` (`{title, body, learnMore?}`) and `inspector` (an `InspectorDescriptor`). `PageBuilder::build()` fills them from `help()` and `inspector()`, so a page built with `build()` alone keeps them. `PageBuilder::toProps()` still returns them as sibling props next to `contract`, unchanged.
+
 ### Page builder factories
 
 `PageBuilder::page()` and `CrudBuilder::for()` instantiate the called class, so an empty pass-through subclass gets an instance of itself. Their constructors are `protected`.

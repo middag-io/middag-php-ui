@@ -13,29 +13,48 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Page;
 
 use Middag\Ui\Page\PageBuilder;
+use Middag\Ui\Page\PageContract;
+use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Where `help` and `inspector` go: `build()` returns the bare PageContract,
- * which has no slot for them, and `toProps()` carries them as sibling props.
+ * Where `help` and `inspector` go: `build()` keeps them in the PageContract,
+ * and `toProps()` still carries them as sibling props.
  *
  * @internal
  */
 #[CoversClass(PageBuilder::class)]
+#[CoversClass(PageContract::class)]
 class PageBuilderSidePropsTest extends TestCase
 {
+    use ValidatesAgainstSchema;
+
     #[Test]
-    public function buildLeavesHelpAndInspectorOutOfTheContract(): void
+    public function buildKeepsHelpAndInspectorInTheContract(): void
     {
-        $builder = PageBuilder::page('p')->help('Title', 'Body')->inspector('/inspect/{id}');
+        $builder = PageBuilder::page('p')->help('Title', 'Body', 'https://example.test/docs')->inspector('/inspect/{id}', 500);
 
         $wire = json_decode(json_encode($builder->build()) ?: 'null', true);
 
         self::assertIsArray($wire);
-        self::assertArrayNotHasKey('help', $wire);
-        self::assertArrayNotHasKey('inspector', $wire);
+        self::assertSame(['title' => 'Title', 'body' => 'Body', 'learnMore' => 'https://example.test/docs'], $wire['help'] ?? null);
+        self::assertSame(['endpoint' => '/inspect/{id}', 'width' => 500], $wire['inspector'] ?? null);
+        self::assertValidAgainst('PageContract', $builder->build());
+    }
+
+    #[Test]
+    public function buildOmitsANullLearnMoreAndUnsetSlots(): void
+    {
+        $withHelp = json_decode(json_encode(PageBuilder::page('p')->help('T', 'B')->build()) ?: 'null', true);
+        $bare = json_decode(json_encode(PageBuilder::page('p')->build()) ?: 'null', true);
+
+        self::assertIsArray($withHelp);
+        self::assertSame(['title' => 'T', 'body' => 'B'], $withHelp['help'] ?? null);
+        self::assertIsArray($bare);
+        self::assertArrayNotHasKey('help', $bare);
+        self::assertArrayNotHasKey('inspector', $bare);
     }
 
     #[Test]
@@ -43,7 +62,7 @@ class PageBuilderSidePropsTest extends TestCase
     {
         $props = PageBuilder::page('p')->help('Title', 'Body')->inspector('/inspect/{id}')->toProps();
 
-        self::assertSame('Title', $props['help']['title'] ?? null);
+        self::assertSame(['title' => 'Title', 'body' => 'Body', 'learnMore' => null], $props['help'] ?? null);
         self::assertSame('/inspect/{id}', ($props['inspector'] ?? null)?->endpoint);
     }
 }

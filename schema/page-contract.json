@@ -38,6 +38,28 @@
                     "additionalProperties": {
                         "type": "string"
                     }
+                },
+                "help": {
+                    "type": "object",
+                    "required": [
+                        "title",
+                        "body"
+                    ],
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        },
+                        "learnMore": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "inspector": {
+                    "$ref": "#/$defs/InspectorDescriptor"
                 }
             },
             "additionalProperties": false

@@ -330,7 +330,8 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Build the PageContract.
+     * Build the PageContract, including the `help` and `inspector` set on
+     * this builder.
      */
     public function build(): PageContract
     {
@@ -349,6 +350,8 @@ class PageBuilder implements PageBuilderInterface
                 meta: $this->layoutMeta,
             ),
             notifications: $this->notifications,
+            help: $this->helpData,
+            inspector: $this->inspector,
         );
     }
 
@@ -356,7 +359,8 @@ class PageBuilder implements PageBuilderInterface
      * Build a props array (contract + overlay + help as separate props).
      *
      * Use this when you need overlay/help metadata alongside the contract.
-     * The PageContract itself remains unchanged, so this stays safe for the public API.
+     * `help` and `inspector` are also inside the contract (see {@see build()});
+     * the sibling props stay for clients that read them there.
      *
      * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor, editablePanel?: EditablePanelDescriptor}
      */
