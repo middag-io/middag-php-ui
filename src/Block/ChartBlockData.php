@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class ChartBlockData
+final class ChartBlockData
 {
     private function __construct() {}
 

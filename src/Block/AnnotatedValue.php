@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class AnnotatedValue
+final class AnnotatedValue
 {
     private function __construct() {}
 

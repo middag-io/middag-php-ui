@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class DenseTableFilterDef
+final class DenseTableFilterDef
 {
     private function __construct() {}
 

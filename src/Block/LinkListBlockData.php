@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class LinkListBlockData
+final class LinkListBlockData
 {
     private function __construct() {}
 

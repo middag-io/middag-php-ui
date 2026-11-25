@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class CardGridColumnDef
+final class CardGridColumnDef
 {
     private function __construct() {}
 

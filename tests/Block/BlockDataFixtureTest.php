@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
  * @internal
  */
 #[CoversClass(SchemaRegistry::class)]
-class BlockDataFixtureTest extends TestCase
+final class BlockDataFixtureTest extends TestCase
 {
     use ValidatesAgainstSchema;
 

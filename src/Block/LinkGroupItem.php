@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class LinkGroupItem
+final class LinkGroupItem
 {
     private function __construct() {}
 

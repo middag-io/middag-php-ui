@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class DenseTableSort
+final class DenseTableSort
 {
     private function __construct() {}
 

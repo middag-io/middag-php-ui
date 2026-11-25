@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class ActivityTimelineBlockData
+final class ActivityTimelineBlockData
 {
     private function __construct() {}
 

@@ -23,7 +23,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class DenseTableBlockData
+final class DenseTableBlockData
 {
     private function __construct() {}
 

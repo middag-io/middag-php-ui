@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class RichStatusValue
+final class RichStatusValue
 {
     private function __construct() {}
 

@@ -27,7 +27,7 @@ use ReflectionMethod;
  */
 #[CoversClass(PageBuilder::class)]
 #[CoversClass(CrudBuilder::class)]
-class BuilderSubclassTest extends TestCase
+final class BuilderSubclassTest extends TestCase
 {
     #[Test]
     public function pageFactoryReturnsTheCalledClass(): void
@@ -62,9 +62,9 @@ class BuilderSubclassTest extends TestCase
 /**
  * @internal
  */
-class SubclassedPageBuilder extends PageBuilder {}
+final class SubclassedPageBuilder extends PageBuilder {}
 
 /**
  * @internal
  */
-class SubclassedCrudBuilder extends CrudBuilder {}
+final class SubclassedCrudBuilder extends CrudBuilder {}

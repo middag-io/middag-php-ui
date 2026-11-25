@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class ActionGridBlockData
+final class ActionGridBlockData
 {
     private function __construct() {}
 

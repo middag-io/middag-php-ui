@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(PageBuilder::class)]
 #[CoversClass(PageContract::class)]
-class PageBuilderSidePropsTest extends TestCase
+final class PageBuilderSidePropsTest extends TestCase
 {
     use ValidatesAgainstSchema;
 

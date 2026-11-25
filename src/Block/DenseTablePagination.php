@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class DenseTablePagination
+final class DenseTablePagination
 {
     private function __construct() {}
 

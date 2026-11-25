@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class EmptyStateDef
+final class EmptyStateDef
 {
     private function __construct() {}
 

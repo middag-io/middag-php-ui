@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class TabsBlockData
+final class TabsBlockData
 {
     private function __construct() {}
 

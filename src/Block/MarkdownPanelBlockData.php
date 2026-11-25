@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class MarkdownPanelBlockData
+final class MarkdownPanelBlockData
 {
     private function __construct() {}
 

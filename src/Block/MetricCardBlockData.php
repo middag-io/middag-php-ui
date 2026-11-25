@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class MetricCardBlockData
+final class MetricCardBlockData
 {
     private function __construct() {}
 

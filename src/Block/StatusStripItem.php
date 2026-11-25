@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class StatusStripItem
+final class StatusStripItem
 {
     private function __construct() {}
 

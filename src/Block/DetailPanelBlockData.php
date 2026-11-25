@@ -20,7 +20,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class DetailPanelBlockData
+final class DetailPanelBlockData
 {
     private function __construct() {}
 

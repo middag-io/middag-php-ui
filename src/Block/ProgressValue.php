@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class ProgressValue
+final class ProgressValue
 {
     private function __construct() {}
 

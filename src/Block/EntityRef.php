@@ -22,7 +22,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class EntityRef
+final class EntityRef
 {
     private function __construct() {}
 

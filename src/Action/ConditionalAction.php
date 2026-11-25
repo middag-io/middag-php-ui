@@ -28,7 +28,7 @@ use Middag\Ui\Form\FormCondition;
  *
  * @api
  */
-class ConditionalAction
+final class ConditionalAction
 {
     private function __construct() {}
 

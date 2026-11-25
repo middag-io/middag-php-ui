@@ -25,7 +25,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class CardGridBlockData
+final class CardGridBlockData
 {
     private function __construct() {}
 

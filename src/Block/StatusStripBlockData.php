@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class StatusStripBlockData
+final class StatusStripBlockData
 {
     private function __construct() {}
 

@@ -23,7 +23,7 @@ use Middag\Ui\Action\Action;
  *
  * @api
  */
-class ActionGridItem
+final class ActionGridItem
 {
     private function __construct() {}
 

@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class DetailPanelFieldDef
+final class DetailPanelFieldDef
 {
     private function __construct() {}
 

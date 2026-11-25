@@ -21,7 +21,7 @@ namespace Middag\Ui\Block;
  *
  * @api
  */
-class LinkListItem
+final class LinkListItem
 {
     private function __construct() {}
 

@@ -27,7 +27,7 @@ use Middag\Ui\Table\Column;
  *
  * @api
  */
-class DenseTableColumnDef
+final class DenseTableColumnDef
 {
     private function __construct() {}
 

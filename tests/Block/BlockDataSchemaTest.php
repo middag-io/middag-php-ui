@@ -39,7 +39,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CardGridVariant::class)]
 #[CoversClass(EmptyStateDef::class)]
 #[CoversClass(ConditionalAction::class)]
-class BlockDataSchemaTest extends TestCase
+final class BlockDataSchemaTest extends TestCase
 {
     use ValidatesAgainstSchema;
 
