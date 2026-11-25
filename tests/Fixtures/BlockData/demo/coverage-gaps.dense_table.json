@@ -19,8 +19,8 @@
         ],
         "rows": [
             {
-                "symbol": "block:pro",
-                "reason": "PRO blocks (chart_panel, workflow_progress, kanban_board, flow_editor, form_builder, condition_tree, sentence_builder) + the product shell ship in @middag-io/react-pro, out of the free OSS surface",
+                "symbol": "block:outside",
+                "reason": "blocks and the product shell outside this demo",
                 "filed": "n/a (by design)"
             },
             {
