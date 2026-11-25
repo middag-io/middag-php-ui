@@ -2293,10 +2293,7 @@
                     "const": true
                 },
                 "variant": {
-                    "enum": [
-                        "icon",
-                        "button"
-                    ]
+                    "$ref": "#/$defs/ConditionalActionVariant"
                 },
                 "visible_when": {
                     "$ref": "#/$defs/FormCondition"
@@ -2360,8 +2357,16 @@
                 "rows": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "additionalProperties": true
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "additionalProperties": true
+                            },
+                            {
+                                "type": "array",
+                                "maxItems": 0
+                            }
+                        ]
                     }
                 },
                 "variant": {
@@ -2454,13 +2459,7 @@
                     ]
                 },
                 "timestampFormat": {
-                    "enum": [
-                        "relative",
-                        "datetime",
-                        "date",
-                        "time",
-                        "iso"
-                    ]
+                    "$ref": "#/$defs/TimestampFormat"
                 },
                 "href": {
                     "type": "string"
@@ -2475,28 +2474,45 @@
                     "type": "number"
                 },
                 "statusMap": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "enum": [
-                            "success",
-                            "warning",
-                            "destructive",
-                            "secondary",
-                            "info",
-                            "default"
-                        ]
-                    }
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/$defs/StatusIntent"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
                 },
                 "format": {
                     "$ref": "#/$defs/ValueFormat"
                 },
                 "formatOptions": {
-                    "type": "object",
-                    "additionalProperties": true
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
                 },
                 "options": {
-                    "type": "object",
-                    "additionalProperties": true
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
+                        }
+                    ]
                 }
             },
             "additionalProperties": false
@@ -2607,8 +2623,16 @@
                 "rows": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "additionalProperties": true
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "additionalProperties": true
+                            },
+                            {
+                                "type": "array",
+                                "maxItems": 0
+                            }
+                        ]
                     }
                 },
                 "pagination": {
@@ -2618,44 +2642,52 @@
                     "$ref": "#/$defs/DenseTableSort"
                 },
                 "filters": {
-                    "type": "object",
-                    "required": [
-                        "available",
-                        "applied"
-                    ],
-                    "properties": {
-                        "available": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/DenseTableFilterDef"
-                            }
-                        },
-                        "applied": {
-                            "anyOf": [
-                                {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "anyOf": [
-                                            {
-                                                "type": "string"
-                                            },
-                                            {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        ]
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "available",
+                                "applied"
+                            ],
+                            "properties": {
+                                "available": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/$defs/DenseTableFilterDef"
                                     }
                                 },
-                                {
-                                    "type": "array",
-                                    "maxItems": 0
+                                "applied": {
+                                    "anyOf": [
+                                        {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "type": "array",
+                                            "maxItems": 0
+                                        }
+                                    ]
                                 }
-                            ]
+                            },
+                            "additionalProperties": false
+                        },
+                        {
+                            "type": "array",
+                            "maxItems": 0
                         }
-                    },
-                    "additionalProperties": false
+                    ]
                 },
                 "rowHref": {
                     "type": "string"
@@ -2825,11 +2857,7 @@
                     "type": "string"
                 },
                 "deltaDirection": {
-                    "enum": [
-                        "positive",
-                        "negative",
-                        "neutral"
-                    ]
+                    "$ref": "#/$defs/DeltaDirection"
                 },
                 "label": {
                     "type": "string"
@@ -2851,17 +2879,9 @@
         },
         "EmptyStateBlockData": {
             "type": "object",
-            "required": [
-                "description"
-            ],
             "properties": {
                 "variant": {
-                    "enum": [
-                        "first-use",
-                        "no-results",
-                        "error",
-                        "permission"
-                    ]
+                    "$ref": "#/$defs/EmptyStateVariant"
                 },
                 "icon": {
                     "type": "string"
@@ -2958,12 +2978,7 @@
                     "type": "number"
                 },
                 "tone": {
-                    "enum": [
-                        "success",
-                        "warning",
-                        "danger",
-                        "neutral"
-                    ]
+                    "$ref": "#/$defs/StatusStripTone"
                 },
                 "items": {
                     "type": "array",
@@ -3266,8 +3281,16 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "additionalProperties": true
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "additionalProperties": true
+                            },
+                            {
+                                "type": "array",
+                                "maxItems": 0
+                            }
+                        ]
                     }
                 },
                 "options": {
@@ -3416,6 +3439,60 @@
                 "default",
                 "store",
                 "connector"
+            ]
+        },
+        "ConditionalActionVariant": {
+            "type": "string",
+            "enum": [
+                "icon",
+                "button"
+            ]
+        },
+        "DeltaDirection": {
+            "type": "string",
+            "enum": [
+                "positive",
+                "negative",
+                "neutral"
+            ]
+        },
+        "EmptyStateVariant": {
+            "type": "string",
+            "enum": [
+                "first-use",
+                "no-results",
+                "error",
+                "permission"
+            ]
+        },
+        "StatusIntent": {
+            "type": "string",
+            "enum": [
+                "success",
+                "warning",
+                "destructive",
+                "secondary",
+                "info",
+                "default"
+            ]
+        },
+        "StatusStripTone": {
+            "type": "string",
+            "enum": [
+                "success",
+                "warning",
+                "danger",
+                "neutral"
+            ]
+        },
+        "TimestampFormat": {
+            "type": "string",
+            "enum": [
+                "relative",
+                "datetime",
+                "date",
+                "time",
+                "iso"
             ]
         },
         "ChartType": {

@@ -36,9 +36,7 @@ final class MetricCardBlockData
                     'type' => ['string', 'number'],
                 ],
                 'delta' => ['type' => 'string'],
-                'deltaDirection' => [
-                    'enum' => ['positive', 'negative', 'neutral'],
-                ],
+                'deltaDirection' => ['$ref' => '#/$defs/DeltaDirection'],
                 'label' => ['type' => 'string'],
                 'icon' => ['type' => 'string'],
                 'href' => ['type' => 'string'],

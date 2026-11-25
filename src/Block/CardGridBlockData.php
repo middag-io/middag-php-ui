@@ -14,7 +14,8 @@ namespace Middag\Ui\Block;
 
 /**
  * The `data` of a `card_grid` block: the `columns` each card shows, the
- * `rows` (one card each), and the optional `variant`, `emptyState`,
+ * `rows` (one card each; a row may be an empty list, the JSON form of an empty
+ * PHP array), and the optional `variant`, `emptyState`,
  * `editHref` (a per-card edit link pattern, interpolated per row) and
  * `rowActions`.
  *
@@ -37,7 +38,7 @@ final class CardGridBlockData
             'required' => ['columns', 'rows'],
             'properties' => [
                 'columns' => ['type' => 'array', 'items' => ['$ref' => '#/$defs/CardGridColumnDef']],
-                'rows' => ['type' => 'array', 'items' => ['type' => 'object', 'additionalProperties' => true]],
+                'rows' => ['type' => 'array', 'items' => ['anyOf' => [['type' => 'object', 'additionalProperties' => true], ['type' => 'array', 'maxItems' => 0]]]],
                 'variant' => ['$ref' => '#/$defs/CardGridVariant'],
                 'emptyState' => ['$ref' => '#/$defs/EmptyStateDef'],
                 'editHref' => ['type' => 'string'],

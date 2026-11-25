@@ -13,7 +13,8 @@ declare(strict_types=1);
 namespace Middag\Ui\Block;
 
 /**
- * The `data` of a `chart` block, as {@see BlockBuilder::chart()} emits it.
+ * The `data` of a `chart` block, as {@see BlockBuilder::chart()} emits it. A
+ * data row may be an empty list, the JSON form of an empty PHP array.
  *
  * A schema-only value shape (no instances): it types block data for schema
  * consumers. {@see BlockBuilder} keeps taking plain arrays.
@@ -40,8 +41,16 @@ final class ChartBlockData
                 'data' => [
                     'type' => 'array',
                     'items' => [
-                        'type' => 'object',
-                        'additionalProperties' => true,
+                        'anyOf' => [
+                            [
+                                'type' => 'object',
+                                'additionalProperties' => true,
+                            ],
+                            [
+                                'type' => 'array',
+                                'maxItems' => 0,
+                            ],
+                        ],
                     ],
                 ],
                 'options' => [

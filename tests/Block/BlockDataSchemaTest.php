@@ -21,6 +21,7 @@ use Middag\Ui\Block\CardGridColumnDef;
 use Middag\Ui\Block\ChartSeries;
 use Middag\Ui\Block\EmptyStateDef;
 use Middag\Ui\Page\Tab;
+use Middag\Ui\Schema\SchemaRegistry;
 use Middag\Ui\Shared\Enum\CardGridVariant;
 use Middag\Ui\Shared\Enum\ChartType;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
@@ -181,5 +182,49 @@ final class BlockDataSchemaTest extends TestCase
         self::assertInvalidAgainst('RichStatusValue', ['label' => 'Up']);
         self::assertInvalidAgainst('DenseTableSort', ['column' => 'a', 'direction' => 'up']);
         self::assertInvalidAgainst('ActionGridItem', ['id' => 'a', 'label' => 'A', 'target' => ['kind' => 'link', 'href' => '/a'], 'intent' => 'primary']);
+    }
+
+    #[Test]
+    public function emptyStateValidatesWithOnlyTheBuilderDefaults(): void
+    {
+        $data = BlockBuilder::emptyState('e')->jsonSerialize()['data'];
+
+        self::assertSame(['variant' => 'first-use'], $data);
+        self::assertValidAgainst('EmptyStateBlockData', $data);
+    }
+
+    #[Test]
+    public function emptyPhpMapsSerializedAsListsAreAccepted(): void
+    {
+        $columns = [['key' => 'a', 'label' => 'A', 'statusMap' => [], 'formatOptions' => [], 'options' => []]];
+
+        self::assertValidAgainst('DenseTableBlockData', ['columns' => $columns, 'rows' => [[]], 'filters' => []]);
+        self::assertValidAgainst('DenseTableBlockData', ['columns' => $columns, 'rows' => [], 'filters' => ['available' => [], 'applied' => []]]);
+        self::assertValidAgainst('CardGridBlockData', ['columns' => [], 'rows' => [[]]]);
+        self::assertValidAgainst('ChartBlockData', ['chartType' => 'line', 'categoryKey' => 'x', 'series' => [], 'data' => [[]]]);
+        self::assertInvalidAgainst('DenseTableBlockData', ['columns' => [], 'rows' => [['a']]]);
+        self::assertInvalidAgainst('DenseTableBlockData', ['columns' => [], 'rows' => [], 'filters' => [['key' => 'a']]]);
+    }
+
+    #[Test]
+    public function openBlockEnumsAreTopLevelStringEnums(): void
+    {
+        $expected = [
+            'DeltaDirection' => ['positive', 'negative', 'neutral'],
+            'StatusStripTone' => ['success', 'warning', 'danger', 'neutral'],
+            'EmptyStateVariant' => ['first-use', 'no-results', 'error', 'permission'],
+            'TimestampFormat' => ['relative', 'datetime', 'date', 'time', 'iso'],
+            'StatusIntent' => ['success', 'warning', 'destructive', 'secondary', 'info', 'default'],
+            'ConditionalActionVariant' => ['icon', 'button'],
+            'CardGridVariant' => ['default', 'store', 'connector'],
+        ];
+        $defs = SchemaRegistry::defs();
+
+        foreach ($expected as $name => $values) {
+            self::assertSame(['type' => 'string', 'enum' => $values], $defs[$name] ?? null, $name);
+        }
+
+        self::assertInvalidAgainst('MetricCardBlockData', ['value' => 1, 'label' => 'A', 'deltaDirection' => 'sideways']);
+        self::assertInvalidAgainst('EmptyStateBlockData', ['cta' => ['label' => 'Go', 'method' => 'delete']]);
     }
 }

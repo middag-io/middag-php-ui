@@ -30,11 +30,8 @@ final class EmptyStateBlockData
     {
         return [
             'type' => 'object',
-            'required' => ['description'],
             'properties' => [
-                'variant' => [
-                    'enum' => ['first-use', 'no-results', 'error', 'permission'],
-                ],
+                'variant' => ['$ref' => '#/$defs/EmptyStateVariant'],
                 'icon' => ['type' => 'string'],
                 'lottieUrl' => ['type' => 'string'],
                 'description' => ['type' => 'string'],

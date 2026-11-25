@@ -15,8 +15,8 @@ namespace Middag\Ui\Block;
 /**
  * The `data` of a `dense_table` block: `columns` and `rows`, plus the optional
  * pagination, sort, filters, row and bulk actions, empty state, saved-view
- * control and display `options`. `filters.applied` may be an empty list, the
- * JSON form of an empty PHP array.
+ * control and display `options`. `filters`, `filters.applied` and each row may
+ * be an empty list, the JSON form of an empty PHP array.
  *
  * A schema-only value shape (no instances): it types block data for schema
  * consumers. {@see BlockBuilder} keeps taking plain arrays.
@@ -41,42 +41,58 @@ final class DenseTableBlockData
                 'rows' => [
                     'type' => 'array',
                     'items' => [
-                        'type' => 'object',
-                        'additionalProperties' => true,
+                        'anyOf' => [
+                            [
+                                'type' => 'object',
+                                'additionalProperties' => true,
+                            ],
+                            [
+                                'type' => 'array',
+                                'maxItems' => 0,
+                            ],
+                        ],
                     ],
                 ],
                 'pagination' => ['$ref' => '#/$defs/DenseTablePagination'],
                 'sort' => ['$ref' => '#/$defs/DenseTableSort'],
                 'filters' => [
-                    'type' => 'object',
-                    'required' => ['available', 'applied'],
-                    'properties' => [
-                        'available' => [
-                            'type' => 'array',
-                            'items' => ['$ref' => '#/$defs/DenseTableFilterDef'],
-                        ],
-                        'applied' => [
-                            'anyOf' => [
-                                [
-                                    'type' => 'object',
-                                    'additionalProperties' => [
-                                        'anyOf' => [
-                                            ['type' => 'string'],
-                                            [
-                                                'type' => 'array',
-                                                'items' => ['type' => 'string'],
+                    'anyOf' => [
+                        [
+                            'type' => 'object',
+                            'required' => ['available', 'applied'],
+                            'properties' => [
+                                'available' => [
+                                    'type' => 'array',
+                                    'items' => ['$ref' => '#/$defs/DenseTableFilterDef'],
+                                ],
+                                'applied' => [
+                                    'anyOf' => [
+                                        [
+                                            'type' => 'object',
+                                            'additionalProperties' => [
+                                                'anyOf' => [
+                                                    ['type' => 'string'],
+                                                    [
+                                                        'type' => 'array',
+                                                        'items' => ['type' => 'string'],
+                                                    ],
+                                                ],
                                             ],
+                                        ],
+                                        [
+                                            'type' => 'array',
+                                            'maxItems' => 0,
                                         ],
                                     ],
                                 ],
-                                [
-                                    'type' => 'array',
-                                    'maxItems' => 0,
-                                ],
                             ],
+                            'additionalProperties' => false,
+                        ],
+                        [
+                            'type' => 'array',
+                            'maxItems' => 0,
                         ],
                     ],
-                    'additionalProperties' => false,
                 ],
                 'rowHref' => ['type' => 'string'],
                 'rowActions' => [

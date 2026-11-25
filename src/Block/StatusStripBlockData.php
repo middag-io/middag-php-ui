@@ -33,9 +33,7 @@ final class StatusStripBlockData
             'required' => ['items'],
             'properties' => [
                 'score' => ['type' => 'number'],
-                'tone' => [
-                    'enum' => ['success', 'warning', 'danger', 'neutral'],
-                ],
+                'tone' => ['$ref' => '#/$defs/StatusStripTone'],
                 'items' => [
                     'type' => 'array',
                     'items' => ['$ref' => '#/$defs/StatusStripItem'],

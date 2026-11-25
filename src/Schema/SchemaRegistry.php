@@ -83,7 +83,10 @@ use Middag\Ui\Shared\Enum\ActionTargetKind;
 use Middag\Ui\Shared\Enum\CardGridVariant;
 use Middag\Ui\Shared\Enum\ChartType;
 use Middag\Ui\Shared\Enum\ColumnVariant;
+use Middag\Ui\Shared\Enum\ConditionalActionVariant;
 use Middag\Ui\Shared\Enum\ConditionOperator;
+use Middag\Ui\Shared\Enum\DeltaDirection;
+use Middag\Ui\Shared\Enum\EmptyStateVariant;
 use Middag\Ui\Shared\Enum\FieldType;
 use Middag\Ui\Shared\Enum\FilterType;
 use Middag\Ui\Shared\Enum\FormComponent;
@@ -92,7 +95,10 @@ use Middag\Ui\Shared\Enum\HttpMethod;
 use Middag\Ui\Shared\Enum\NotificationLevel;
 use Middag\Ui\Shared\Enum\RegionUpdateMode;
 use Middag\Ui\Shared\Enum\RenderTarget;
+use Middag\Ui\Shared\Enum\StatusIntent;
+use Middag\Ui\Shared\Enum\StatusStripTone;
 use Middag\Ui\Shared\Enum\ThemeMode;
+use Middag\Ui\Shared\Enum\TimestampFormat;
 use Middag\Ui\Shared\Enum\ValueFormat;
 use Middag\Ui\Shared\ValueObject\FlashMessages;
 use Middag\Ui\Shared\ValueObject\Identity;
@@ -231,6 +237,12 @@ final class SchemaRegistry
         'ActionIntent' => ActionIntent::class,
         'ActionTargetKind' => ActionTargetKind::class,
         'CardGridVariant' => CardGridVariant::class,
+        'ConditionalActionVariant' => ConditionalActionVariant::class,
+        'DeltaDirection' => DeltaDirection::class,
+        'EmptyStateVariant' => EmptyStateVariant::class,
+        'StatusIntent' => StatusIntent::class,
+        'StatusStripTone' => StatusStripTone::class,
+        'TimestampFormat' => TimestampFormat::class,
         'ChartType' => ChartType::class,
         'ColumnVariant' => ColumnVariant::class,
         'ConditionOperator' => ConditionOperator::class,

@@ -38,7 +38,7 @@ final class ConditionalAction
         $schema = Action::jsonSchema();
         $schema['properties'] = [
             ...$schema['properties'],
-            'variant' => ['enum' => ['icon', 'button']],
+            'variant' => ['$ref' => '#/$defs/ConditionalActionVariant'],
             'visible_when' => ['$ref' => '#/$defs/FormCondition'],
             'disabled_when' => ['$ref' => '#/$defs/FormCondition'],
             'loading_when' => ['$ref' => '#/$defs/FormCondition'],

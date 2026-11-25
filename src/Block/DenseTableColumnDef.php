@@ -48,27 +48,47 @@ final class DenseTableColumnDef
                         ['type' => 'string'],
                     ],
                 ],
-                'timestampFormat' => [
-                    'enum' => ['relative', 'datetime', 'date', 'time', 'iso'],
-                ],
+                'timestampFormat' => ['$ref' => '#/$defs/TimestampFormat'],
                 'href' => ['type' => 'string'],
                 'entity' => ['$ref' => '#/$defs/EntityRef'],
                 'minWidth' => ['type' => 'number'],
                 'maxWidth' => ['type' => 'number'],
                 'statusMap' => [
-                    'type' => 'object',
-                    'additionalProperties' => [
-                        'enum' => ['success', 'warning', 'destructive', 'secondary', 'info', 'default'],
+                    'anyOf' => [
+                        [
+                            'type' => 'object',
+                            'additionalProperties' => ['$ref' => '#/$defs/StatusIntent'],
+                        ],
+                        [
+                            'type' => 'array',
+                            'maxItems' => 0,
+                        ],
                     ],
                 ],
                 'format' => ['$ref' => '#/$defs/ValueFormat'],
                 'formatOptions' => [
-                    'type' => 'object',
-                    'additionalProperties' => true,
+                    'anyOf' => [
+                        [
+                            'type' => 'object',
+                            'additionalProperties' => true,
+                        ],
+                        [
+                            'type' => 'array',
+                            'maxItems' => 0,
+                        ],
+                    ],
                 ],
                 'options' => [
-                    'type' => 'object',
-                    'additionalProperties' => true,
+                    'anyOf' => [
+                        [
+                            'type' => 'object',
+                            'additionalProperties' => true,
+                        ],
+                        [
+                            'type' => 'array',
+                            'maxItems' => 0,
+                        ],
+                    ],
                 ],
             ],
             'additionalProperties' => false,
