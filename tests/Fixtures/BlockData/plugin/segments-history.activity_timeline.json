@@ -3,9 +3,9 @@
     "source": "host plugin, segments area, block history.activity_timeline (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/groups/0/entries/0: The required properties (id, icon, color) are missing",
-        "/groups/0/entries/1: The required properties (id, icon, color) are missing",
-        "/groups/1/entries/0: The required properties (id, icon, color) are missing"
+        "/groups/0/entries/0 [required] The required properties (id, icon, color) are missing",
+        "/groups/0/entries/1 [required] The required properties (id, icon, color) are missing",
+        "/groups/1/entries/0 [required] The required properties (id, icon, color) are missing"
     ],
     "data": {
         "groups": [

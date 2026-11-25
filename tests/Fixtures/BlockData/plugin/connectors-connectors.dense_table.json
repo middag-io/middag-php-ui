@@ -3,8 +3,9 @@
     "source": "host plugin, connectors area, block connectors.dense_table (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/sort: The required properties (column) are missing",
-        "/filters: The data (array) must match the type: object"
+        "/sort [required] The required properties (column) are missing",
+        "/filters [type] The data (array) must match the type: object",
+        "/filters [maxItems] Array should have at most 0 items, 2 found"
     ],
     "data": {
         "columns": [

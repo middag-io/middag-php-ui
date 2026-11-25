@@ -3,8 +3,8 @@
     "source": "host plugin, segments area, block info.detail_panel (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/sections/0: The required properties (id) are missing",
-        "/sections/1: The required properties (id) are missing"
+        "/sections/0 [required] The required properties (id) are missing",
+        "/sections/1 [required] The required properties (id) are missing"
     ],
     "data": {
         "sections": [

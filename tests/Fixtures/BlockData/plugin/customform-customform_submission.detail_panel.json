@@ -3,7 +3,7 @@
     "source": "host plugin, customform area, block customform_submission.detail_panel (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/sections/0: The required properties (id, fields) are missing"
+        "/sections/0 [required] The required properties (id, fields) are missing"
     ],
     "data": {
         "sections": [

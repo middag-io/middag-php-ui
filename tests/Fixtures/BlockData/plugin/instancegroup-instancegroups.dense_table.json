@@ -3,8 +3,8 @@
     "source": "host plugin, instancegroup area, block instancegroups.dense_table (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/columns/2: Additional object properties are not allowed: align",
-        "/sort: The required properties (column) are missing"
+        "/columns/2 [additionalProperties] Additional object properties are not allowed: align",
+        "/sort [required] The required properties (column) are missing"
     ],
     "data": {
         "columns": [

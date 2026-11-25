@@ -3,8 +3,8 @@
     "source": "host plugin, segments area, block health.status_strip (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/items/0: The required properties (key) are missing",
-        "/items/1: The required properties (key) are missing"
+        "/items/0 [required] The required properties (key) are missing",
+        "/items/1 [required] The required properties (key) are missing"
     ],
     "data": {
         "items": [

@@ -3,7 +3,7 @@
     "source": "host plugin, webhooks area, block webhooks_deliveries.dense_table (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "(root): Additional object properties are not allowed: search"
+        "/ [additionalProperties] Additional object properties are not allowed: search"
     ],
     "data": {
         "columns": [

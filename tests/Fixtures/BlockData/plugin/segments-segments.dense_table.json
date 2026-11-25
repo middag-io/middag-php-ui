@@ -3,12 +3,13 @@
     "source": "host plugin, segments area, block segments.dense_table (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/columns/3: Additional object properties are not allowed: align",
-        "/columns/4: Additional object properties are not allowed: align",
-        "/sort: The required properties (column) are missing",
-        "/filters: The data (array) must match the type: object",
-        "/bulkActions/0: The required properties (id, target, intent) are missing",
-        "/bulkActions/1: The required properties (id, target) are missing"
+        "/columns/3 [additionalProperties] Additional object properties are not allowed: align",
+        "/columns/4 [additionalProperties] Additional object properties are not allowed: align",
+        "/sort [required] The required properties (column) are missing",
+        "/filters [type] The data (array) must match the type: object",
+        "/filters [maxItems] Array should have at most 0 items, 2 found",
+        "/bulkActions/0 [required] The required properties (id, target, intent) are missing",
+        "/bulkActions/1 [required] The required properties (id, target) are missing"
     ],
     "data": {
         "columns": [

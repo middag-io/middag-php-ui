@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Middag\Ui\Tests\Block;
 
 use Middag\Ui\Schema\SchemaRegistry;
+use Middag\Ui\Tests\Support\SchemaErrors;
 use Middag\Ui\Tests\Support\ValidatesAgainstSchema;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -25,9 +26,11 @@ use PHPUnit\Framework\TestCase;
  *
  * Each fixture under `tests/Fixtures/BlockData/` names the `$def` it is checked
  * against and what to expect. `valid` means the schema accepts the payload.
- * `divergent` records a payload the schema does not accept on purpose (the
- * fixture says why): the test asserts it is still rejected, so a later change
- * that starts accepting it has to update the fixture.
+ * `divergent` records a payload the schema does not accept on purpose, with
+ * the exact errors it raises in `divergence` (see {@see SchemaErrors}): the
+ * test asserts the validator still reports exactly those errors, so a schema
+ * change that accepts the payload, or rejects it for another reason, has to
+ * update the record.
  *
  * @internal
  */
@@ -40,22 +43,27 @@ final class BlockDataFixtureTest extends TestCase
 
     #[Test]
     #[DataProvider('fixtureProvider')]
-    public function fixtureMatchesItsExpectation(string $def, string $expect, object $data): void
+    /**
+     * @param list<string> $divergence
+     */
+    public function fixtureMatchesItsExpectation(string $def, string $expect, object $data, array $divergence): void
     {
         self::assertArrayHasKey($def, SchemaRegistry::defs(), $def . ' is not a registered $def.');
 
         if ($expect === 'divergent') {
-            self::assertInvalidAgainst($def, $data);
+            self::assertNotSame([], $divergence, 'A divergent fixture must record its errors.');
+            self::assertSame($divergence, SchemaErrors::of($def, $data), 'The recorded divergence is stale.');
 
             return;
         }
 
         self::assertSame('valid', $expect);
+        self::assertSame([], $divergence, 'A valid fixture records no divergence.');
         self::assertValidAgainst($def, $data);
     }
 
     /**
-     * @return array<string, array{string, string, object}>
+     * @return array<string, array{string, string, object, list<string>}>
      */
     public static function fixtureProvider(): array
     {
@@ -64,12 +72,26 @@ final class BlockDataFixtureTest extends TestCase
         sort($files);
 
         foreach ($files as $file) {
-            /** @var object{def: string, expect: string, data: object} $fixture */
+            /** @var object{def: string, expect: string, data: object, divergence?: list<string>} $fixture */
             $fixture = json_decode((string) file_get_contents($file), false, 512, JSON_THROW_ON_ERROR);
-            $cases[basename(dirname($file)) . '/' . basename($file)] = [$fixture->def, $fixture->expect, $fixture->data];
+            $cases[basename(dirname($file)) . '/' . basename($file)] = [$fixture->def, $fixture->expect, $fixture->data, $fixture->divergence ?? []];
         }
 
         return $cases;
+    }
+
+    #[Test]
+    public function schemaErrorsListsEachLeafErrorWithPointerAndKeyword(): void
+    {
+        self::assertSame(
+            ['/cta [required] The required properties (href) are missing'],
+            SchemaErrors::of('EmptyStateDef', json_decode('{"cta": {"label": "Go"}}')),
+        );
+        self::assertSame(
+            ['/ [additionalProperties] Additional object properties are not allowed: extra'],
+            SchemaErrors::of('EmptyStateDef', json_decode('{"extra": 1}')),
+        );
+        self::assertSame([], SchemaErrors::of('EmptyStateDef', json_decode('{}')));
     }
 
     #[Test]

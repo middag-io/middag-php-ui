@@ -3,8 +3,8 @@
     "source": "host plugin, workflow area, block workflow_unpublished.status_strip (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/tone: The data should match one item from enum",
-        "/items/0: The required properties (key, value, appearance) are missing"
+        "/tone [enum] The data should match one item from enum",
+        "/items/0 [required] The required properties (key, value, appearance) are missing"
     ],
     "data": {
         "items": [

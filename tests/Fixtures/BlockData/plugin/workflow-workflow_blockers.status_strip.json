@@ -3,8 +3,8 @@
     "source": "host plugin, workflow area, block workflow_blockers.status_strip (reconstructed from the producer code; sample values)",
     "expect": "divergent",
     "divergence": [
-        "/items/0: The required properties (key, value, appearance) are missing",
-        "/items/1: The required properties (key, value, appearance) are missing"
+        "/items/0 [required] The required properties (key, value, appearance) are missing",
+        "/items/1 [required] The required properties (key, value, appearance) are missing"
     ],
     "data": {
         "items": [
