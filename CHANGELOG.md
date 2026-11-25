@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.0.0-rc.2](https://github.com/middag-io/middag-php-ui/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2026-11-25)
+
+
+### Features
+
+* declare a static return type on the PageBuilder and CrudBuilder factories ([2f139fc](https://github.com/middag-io/middag-php-ui/commit/2f139fc9ff5748ec8ac9fd7bb3f8467e0d4f3952))
+* let PageBuilder and CrudBuilder subclasses use the static factories ([8c6c13f](https://github.com/middag-io/middag-php-ui/commit/8c6c13fca6c990858f7e571c05054e65203420e2))
+* name the open block data enums and accept empty PHP maps ([e9eb00e](https://github.com/middag-io/middag-php-ui/commit/e9eb00efd404f4e840fd6b4333b6c953574521aa))
+* schema-only value objects for block data ([d2c8ca6](https://github.com/middag-io/middag-php-ui/commit/d2c8ca6ee43d6b5483407fe2e3fd3cbf7aa346da))
+
+
+### Bug Fixes
+
+* drop the {slug}_page alias promise from the page docblocks ([1c11697](https://github.com/middag-io/middag-php-ui/commit/1c1169797132cc8ea727be6cc97f5cad944403dd))
+* keep help and inspector in the PageContract built by build() ([1f3507c](https://github.com/middag-io/middag-php-ui/commit/1f3507c11492ae86ff57aad26fcd1755fb7dfcb5))
+* make the schema-only block data classes final ([e2d4f11](https://github.com/middag-io/middag-php-ui/commit/e2d4f119fb5fdf2c57f88acd5415262e21a2cff3))
+
+### Consumer impact
+
+- Additive contract only: the three schema bundles gain 39 definitions and properties, nothing is renamed, removed or narrowed (contract compat check: additive, 0 breaking). `FormSchemaNode` and `FormErrors` are unchanged.
+- New schema-only `@api` classes for the block payloads the React client renders (`*BlockData` and their nested shapes, `EmptyStateDef`, `Action\ConditionalAction`) and new open enums `CardGridVariant`, `DeltaDirection`, `StatusStripTone`, `EmptyStateVariant`, `TimestampFormat`, `StatusIntent`, `ConditionalActionVariant`. They are standalone definitions: `BlockDescriptor.data` keeps its open shape. Payloads that PHP serializes as an empty array (`[]`) are accepted where an empty map is meant.
+- New optional trailing builder parameters: `metricCard(deltaDirection:)`, `emptyState(ctaSecondary:)`, `statusStrip(score:)`, `activityTimeline(limit:)`, also on `RegionBuilder` and `RegionBuilderInterface`. Third-party implementers of `RegionBuilderInterface` add them (builders are a call surface, see API-STABILITY.md).
+- `PageContract` gains optional `help` and `inspector` slots, and `PageBuilder::build()` now keeps them instead of dropping them silently. `toProps()` is unchanged.
+- `PageBuilder` and `CrudBuilder` constructors are `protected`, and their static factories use `new static` and declare a `static` return type, so subclasses get their own type. Pages that `CrudBuilder` builds internally are still plain `PageBuilder` instances.
+- The docblocks no longer promise a `{slug}_page` alias.
+- No dependency range change.
+
 ## [2.0.0-rc.1](https://github.com/middag-io/middag-php-ui/compare/v1.15.0...v2.0.0-rc.1) (2026-11-24)
 
 
