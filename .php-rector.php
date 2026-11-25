@@ -16,12 +16,6 @@ use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
-use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
-use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
-use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
-use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
-use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchExprVariableRector;
-use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php55\Rector\FuncCall\GetCalledClassToStaticClassRector;
 use Rector\Php73\Rector\FuncCall\RegexDashEscapeRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
@@ -48,11 +42,8 @@ return RectorConfig::configure()
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
-        SetList::NAMING,
         SetList::PRIVATIZATION,
         SetList::TYPE_DECLARATION,
-        SetList::EARLY_RETURN,
-        SetList::INSTANCEOF,
     ])
     // Versioned PHPUnit sets (PHPUNIT_120) were removed in rector 2.6 —
     // composer-based detection replaces them and follows the installed
@@ -75,11 +66,5 @@ return RectorConfig::configure()
         RemoveUselessParamTagRector::class,
         RemoveUselessReturnTagRector::class,
         RemoveUselessVarTagRector::class,
-        RenameForeachValueVariableToMatchExprVariableRector::class,
-        RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
-        RenameParamToMatchTypeRector::class,
-        RenamePropertyToMatchTypeRector::class,
-        RenameVariableToMatchMethodCallReturnTypeRector::class,
-        RenameVariableToMatchNewTypeRector::class,
         VariableConstFetchToClassConstFetchRector::class,
     ]);

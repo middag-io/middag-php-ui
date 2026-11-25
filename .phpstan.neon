@@ -1,3 +1,8 @@
+includes:
+    # Report calls to and uses of @deprecated symbols (classes, methods,
+    # functions, constants) so a new deprecation fails the static checks.
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
 parameters:
     # Per-repo cache. PHPStan's default `tmpDir` is
     # `sys_get_temp_dir() . '/phpstan'` — ONE cache for the whole machine. Since
