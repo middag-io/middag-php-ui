@@ -1,0 +1,40 @@
+{
+    "def": "ActivityTimelineBlockData",
+    "source": "host plugin, segments area, block history.activity_timeline (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/groups/0/entries/0: The required properties (id, icon, color) are missing",
+        "/groups/0/entries/1: The required properties (id, icon, color) are missing",
+        "/groups/1/entries/0: The required properties (id, icon, color) are missing"
+    ],
+    "data": {
+        "groups": [
+            {
+                "label": "Hoje",
+                "entries": [
+                    {
+                        "actor": "Sistema",
+                        "action": "Cache atualizado",
+                        "timestamp": "2026-04-17 08:30"
+                    },
+                    {
+                        "actor": "Admin",
+                        "action": "Critérios editados",
+                        "timestamp": "2026-04-17 07:15"
+                    }
+                ]
+            },
+            {
+                "label": "Ontem",
+                "entries": [
+                    {
+                        "actor": "Admin",
+                        "action": "Segmento criado",
+                        "timestamp": "2026-04-16 14:00"
+                    }
+                ]
+            }
+        ],
+        "hasMore": false
+    }
+}

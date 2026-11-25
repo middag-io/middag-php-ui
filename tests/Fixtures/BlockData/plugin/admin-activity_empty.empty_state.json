@@ -1,0 +1,10 @@
+{
+    "def": "EmptyStateBlockData",
+    "source": "host plugin, admin area, block activity_empty.empty_state (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "variant": "first-use",
+        "description": "There are no activity entries to display yet.",
+        "icon": "clock"
+    }
+}

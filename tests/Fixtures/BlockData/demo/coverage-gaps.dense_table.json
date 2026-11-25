@@ -1,0 +1,38 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/coverage.json, block gaps",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "symbol",
+                "label": "Gap"
+            },
+            {
+                "key": "reason",
+                "label": "Why"
+            },
+            {
+                "key": "filed",
+                "label": "Filed"
+            }
+        ],
+        "rows": [
+            {
+                "symbol": "block:pro",
+                "reason": "PRO blocks (chart_panel, workflow_progress, kanban_board, flow_editor, form_builder, condition_tree, sentence_builder) + the product shell ship in @middag-io/react-pro, out of the free OSS surface",
+                "filed": "n/a (by design)"
+            },
+            {
+                "symbol": "cell:link_group",
+                "reason": "the free link_group cell renders icon-only ghost-button links (the label is only a tooltip), not readable text chips; the help-desk domain has no natural icon-link-group column, and ticket tags read far better as the custom tag_chips cell",
+                "filed": "n/a (custom tag_chips cell preferred over a contrived icon-link column)"
+            },
+            {
+                "symbol": "field:duration",
+                "reason": "emittable via FieldDefinition::duration() but no free React field renderer (would hit \"Unknown field component\")",
+                "filed": "react: duration renderer"
+            }
+        ]
+    }
+}

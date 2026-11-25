@@ -1,0 +1,57 @@
+{
+    "def": "ActionGridBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/help.json, block links",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "id": "go-dashboard",
+                "title": "Dashboard",
+                "description": "SLA health, metrics and the ticket trend chart.",
+                "label": "Open dashboard",
+                "icon": "layout-dashboard",
+                "intent": "primary",
+                "target": {
+                    "kind": "link",
+                    "href": "/"
+                }
+            },
+            {
+                "id": "go-tickets",
+                "title": "Tickets",
+                "description": "The queue: hand-built cell renderers + the form pipeline.",
+                "label": "Open tickets",
+                "icon": "inbox",
+                "intent": "secondary",
+                "target": {
+                    "kind": "link",
+                    "href": "/tickets"
+                }
+            },
+            {
+                "id": "go-parity",
+                "title": "Dual-ORM parity",
+                "description": "The same dataset read the data-mapper and active-record ways.",
+                "label": "Open parity",
+                "icon": "columns",
+                "intent": "secondary",
+                "target": {
+                    "kind": "link",
+                    "href": "/parity"
+                }
+            },
+            {
+                "id": "go-coverage",
+                "title": "Coverage",
+                "description": "The CI-enforced surface manifest + the catalogued gaps.",
+                "label": "Open coverage",
+                "icon": "shield-check",
+                "intent": "secondary",
+                "target": {
+                    "kind": "link",
+                    "href": "/coverage"
+                }
+            }
+        ]
+    }
+}

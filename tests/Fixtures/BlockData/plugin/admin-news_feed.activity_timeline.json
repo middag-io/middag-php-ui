@@ -1,0 +1,35 @@
+{
+    "def": "ActivityTimelineBlockData",
+    "source": "host plugin, admin area, block news_feed.activity_timeline (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/groups/0/entries/0: The required properties (id) are missing",
+        "/groups/0/entries/1: The required properties (id) are missing"
+    ],
+    "data": {
+        "groups": [
+            {
+                "label": "Product News",
+                "entries": [
+                    {
+                        "actor": "Release",
+                        "action": "MIDDAG 10.0 disponível",
+                        "detail": "Resumo da versão.",
+                        "timestamp": "2026-11-20",
+                        "icon": "newspaper",
+                        "color": "info"
+                    },
+                    {
+                        "actor": "MIDDAG",
+                        "action": "Nova extensão de e-commerce",
+                        "detail": "",
+                        "timestamp": "2026-11-02",
+                        "icon": "newspaper",
+                        "color": "info"
+                    }
+                ]
+            }
+        ],
+        "hasMore": false
+    }
+}

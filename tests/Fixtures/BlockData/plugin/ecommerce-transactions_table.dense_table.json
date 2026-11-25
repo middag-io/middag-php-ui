@@ -1,0 +1,151 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, ecommerce area, block transactions_table.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "(root): Additional object properties are not allowed: search"
+    ],
+    "data": {
+        "columns": [
+            {
+                "key": "id",
+                "label": "ID"
+            },
+            {
+                "key": "external_order_id",
+                "label": "External ID"
+            },
+            {
+                "key": "customer_email",
+                "label": "Customer",
+                "variant": "html"
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status",
+                "statusMap": {
+                    "received": "secondary",
+                    "recebido": "secondary",
+                    "processing": "warning",
+                    "processando": "warning",
+                    "approved": "success",
+                    "aprovado": "success",
+                    "granted": "success",
+                    "concedido": "success",
+                    "revoked": "destructive",
+                    "revogado": "destructive",
+                    "failed": "destructive",
+                    "falhou": "destructive",
+                    "cancelled": "destructive",
+                    "cancelado": "destructive"
+                }
+            },
+            {
+                "key": "store_status",
+                "label": "Store status column"
+            },
+            {
+                "key": "products",
+                "label": "Products column",
+                "variant": "html"
+            },
+            {
+                "key": "source",
+                "label": "Source"
+            },
+            {
+                "key": "timecreated",
+                "label": "Created",
+                "variant": "timestamp"
+            }
+        ],
+        "rows": [
+            {
+                "id": 501,
+                "external_order_id": "1042",
+                "customer_email": "<a href=\"/users/31\" style=\"text-decoration:underline\">comprador-exemplo</a>",
+                "status": "Concedido",
+                "store_status": "Concluído",
+                "source": "webhook",
+                "products": "<div><a href=\"/app/ecommerce/offerings/1001/edit\">EXCEL-01</a> <span style=\"color:var(--success)\">Configurado</span></div>",
+                "timecreated": 1795600000
+            },
+            {
+                "id": 502,
+                "external_order_id": "",
+                "customer_email": "",
+                "status": "Recebido",
+                "store_status": "",
+                "source": "",
+                "products": "",
+                "timecreated": 1795590000
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "column": null,
+            "direction": null
+        },
+        "search": "",
+        "filters": {
+            "available": [
+                {
+                    "key": "store",
+                    "label": "Store filter label",
+                    "type": "select",
+                    "options": [
+                        {
+                            "value": "1",
+                            "label": "Loja principal"
+                        },
+                        {
+                            "value": "2",
+                            "label": "Loja Acme"
+                        }
+                    ]
+                }
+            ],
+            "applied": []
+        },
+        "rowActions": [
+            {
+                "id": "process",
+                "label": "Process action",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/ecommerce/transactions/{id}/process",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "play",
+                "confirmation": {
+                    "title": "Process confirm title",
+                    "message": "Process confirm message",
+                    "variant": "default"
+                }
+            },
+            {
+                "id": "force_process",
+                "label": "Force process action",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/ecommerce/transactions/{id}/force-process",
+                    "method": "post"
+                },
+                "intent": "danger",
+                "icon": "zap",
+                "confirmation": {
+                    "title": "Force process confirm title",
+                    "message": "Force process confirm message",
+                    "variant": "default"
+                }
+            }
+        ]
+    }
+}

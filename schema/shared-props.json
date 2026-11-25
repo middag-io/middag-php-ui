@@ -2234,6 +2234,1138 @@
             },
             "additionalProperties": false
         },
+        "ConditionalAction": {
+            "type": "object",
+            "required": [
+                "id",
+                "label",
+                "target",
+                "intent"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "target": {
+                    "$ref": "#/$defs/ActionTarget"
+                },
+                "intent": {
+                    "$ref": "#/$defs/ActionIntent"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "confirmation": {
+                    "$ref": "#/$defs/Confirmation"
+                },
+                "capability": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "const": true
+                },
+                "loading": {
+                    "const": true
+                },
+                "variant": {
+                    "enum": [
+                        "icon",
+                        "button"
+                    ]
+                },
+                "visible_when": {
+                    "$ref": "#/$defs/FormCondition"
+                },
+                "disabled_when": {
+                    "$ref": "#/$defs/FormCondition"
+                },
+                "loading_when": {
+                    "$ref": "#/$defs/FormCondition"
+                },
+                "disabled_reason_field": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "EmptyStateDef": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "cta": {
+                    "type": "object",
+                    "required": [
+                        "label",
+                        "href"
+                    ],
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "href": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "CardGridBlockData": {
+            "type": "object",
+            "required": [
+                "columns",
+                "rows"
+            ],
+            "properties": {
+                "columns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/CardGridColumnDef"
+                    }
+                },
+                "rows": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "variant": {
+                    "$ref": "#/$defs/CardGridVariant"
+                },
+                "emptyState": {
+                    "$ref": "#/$defs/EmptyStateDef"
+                },
+                "editHref": {
+                    "type": "string"
+                },
+                "rowActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/ConditionalAction"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "CardGridColumnDef": {
+            "type": "object",
+            "required": [
+                "key",
+                "label"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "kind": {
+                    "enum": [
+                        "text",
+                        "status",
+                        "badge",
+                        "boolean",
+                        "timestamp",
+                        "number"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "EntityRef": {
+            "type": "object",
+            "required": [
+                "type",
+                "id"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "DenseTableColumnDef": {
+            "type": "object",
+            "required": [
+                "key",
+                "label"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "sortable": {
+                    "type": "boolean"
+                },
+                "searchable": {
+                    "type": "boolean"
+                },
+                "variant": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ColumnVariant"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "timestampFormat": {
+                    "enum": [
+                        "relative",
+                        "datetime",
+                        "date",
+                        "time",
+                        "iso"
+                    ]
+                },
+                "href": {
+                    "type": "string"
+                },
+                "entity": {
+                    "$ref": "#/$defs/EntityRef"
+                },
+                "minWidth": {
+                    "type": "number"
+                },
+                "maxWidth": {
+                    "type": "number"
+                },
+                "statusMap": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "enum": [
+                            "success",
+                            "warning",
+                            "destructive",
+                            "secondary",
+                            "info",
+                            "default"
+                        ]
+                    }
+                },
+                "format": {
+                    "$ref": "#/$defs/ValueFormat"
+                },
+                "formatOptions": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "options": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "DenseTablePagination": {
+            "type": "object",
+            "required": [
+                "page",
+                "perPage",
+                "total",
+                "lastPage"
+            ],
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "lastPage": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "DenseTableSort": {
+            "type": "object",
+            "required": [
+                "column",
+                "direction"
+            ],
+            "properties": {
+                "column": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "direction": {
+                    "enum": [
+                        "asc",
+                        "desc",
+                        null
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "DenseTableFilterDef": {
+            "type": "object",
+            "required": [
+                "key",
+                "label",
+                "type"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "select",
+                        "multiselect",
+                        "date_range"
+                    ]
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "value",
+                            "label"
+                        ],
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            },
+                            "label": {
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "DenseTableBlockData": {
+            "type": "object",
+            "required": [
+                "columns",
+                "rows"
+            ],
+            "properties": {
+                "columns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/DenseTableColumnDef"
+                    }
+                },
+                "rows": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "pagination": {
+                    "$ref": "#/$defs/DenseTablePagination"
+                },
+                "sort": {
+                    "$ref": "#/$defs/DenseTableSort"
+                },
+                "filters": {
+                    "type": "object",
+                    "required": [
+                        "available",
+                        "applied"
+                    ],
+                    "properties": {
+                        "available": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/DenseTableFilterDef"
+                            }
+                        },
+                        "applied": {
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "array",
+                                    "maxItems": 0
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "rowHref": {
+                    "type": "string"
+                },
+                "rowActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/ConditionalAction"
+                    }
+                },
+                "bulkActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Action"
+                    }
+                },
+                "searchPlaceholder": {
+                    "type": "string"
+                },
+                "emptyState": {
+                    "$ref": "#/$defs/EmptyStateDef"
+                },
+                "saveViewAction": {
+                    "$ref": "#/$defs/Action"
+                },
+                "saveViewActive": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "$ref": "#/$defs/TableDisplayOptions"
+                }
+            },
+            "additionalProperties": false
+        },
+        "RichStatusValue": {
+            "type": "object",
+            "required": [
+                "label",
+                "appearance"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "appearance": {
+                    "enum": [
+                        "success",
+                        "warning",
+                        "danger",
+                        "info",
+                        "neutral"
+                    ]
+                },
+                "icon": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "AnnotatedValue": {
+            "type": "object",
+            "required": [
+                "text"
+            ],
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "badge": {
+                    "type": "object",
+                    "required": [
+                        "label",
+                        "color"
+                    ],
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "color": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "sublabel": {
+                    "type": "string"
+                },
+                "appearance": {
+                    "enum": [
+                        "success",
+                        "warning",
+                        "danger",
+                        "info",
+                        "neutral"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "ProgressValue": {
+            "type": "object",
+            "required": [
+                "value"
+            ],
+            "properties": {
+                "value": {
+                    "type": "number"
+                },
+                "max": {
+                    "type": "number"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "appearance": {
+                    "enum": [
+                        "success",
+                        "warning",
+                        "danger",
+                        "info",
+                        "neutral"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "LinkGroupItem": {
+            "type": "object",
+            "required": [
+                "icon",
+                "href",
+                "label"
+            ],
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                },
+                "external": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "MetricCardBlockData": {
+            "type": "object",
+            "required": [
+                "value",
+                "label"
+            ],
+            "properties": {
+                "value": {
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "delta": {
+                    "type": "string"
+                },
+                "deltaDirection": {
+                    "enum": [
+                        "positive",
+                        "negative",
+                        "neutral"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "compact": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "EmptyStateBlockData": {
+            "type": "object",
+            "required": [
+                "description"
+            ],
+            "properties": {
+                "variant": {
+                    "enum": [
+                        "first-use",
+                        "no-results",
+                        "error",
+                        "permission"
+                    ]
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "lottieUrl": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "cta": {
+                    "type": "object",
+                    "required": [
+                        "label"
+                    ],
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "href": {
+                            "type": "string"
+                        },
+                        "method": {
+                            "enum": [
+                                "get",
+                                "post"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "ctaSecondary": {
+                    "type": "object",
+                    "required": [
+                        "label",
+                        "href"
+                    ],
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "href": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "StatusStripItem": {
+            "type": "object",
+            "required": [
+                "key",
+                "label",
+                "value",
+                "appearance"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "appearance": {
+                    "enum": [
+                        "success",
+                        "warning",
+                        "danger",
+                        "info",
+                        "neutral"
+                    ]
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "StatusStripBlockData": {
+            "type": "object",
+            "required": [
+                "items"
+            ],
+            "properties": {
+                "score": {
+                    "type": "number"
+                },
+                "tone": {
+                    "enum": [
+                        "success",
+                        "warning",
+                        "danger",
+                        "neutral"
+                    ]
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/StatusStripItem"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "DetailPanelFieldDef": {
+            "type": "object",
+            "required": [
+                "key",
+                "label",
+                "value"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": [
+                        "string",
+                        "number",
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "kind": {
+                    "enum": [
+                        "text",
+                        "status",
+                        "timestamp",
+                        "boolean",
+                        "link",
+                        "code",
+                        "email"
+                    ]
+                },
+                "copyable": {
+                    "type": "boolean"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "entity": {
+                    "type": "object",
+                    "required": [
+                        "type",
+                        "id"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": [
+                                "string",
+                                "number"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "DetailPanelSectionDef": {
+            "type": "object",
+            "required": [
+                "id",
+                "title",
+                "fields"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/DetailPanelFieldDef"
+                    }
+                },
+                "defaultCollapsed": {
+                    "type": "boolean"
+                },
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Action"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "DetailPanelBlockData": {
+            "type": "object",
+            "required": [
+                "sections"
+            ],
+            "properties": {
+                "sections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/DetailPanelSectionDef"
+                    }
+                },
+                "columns": {
+                    "enum": [
+                        1,
+                        2
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "ActivityTimelineEntry": {
+            "type": "object",
+            "required": [
+                "id",
+                "actor",
+                "action",
+                "icon",
+                "color",
+                "timestamp"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "actor": {
+                    "type": "string"
+                },
+                "actorHref": {
+                    "type": "string"
+                },
+                "action": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "color": {
+                    "enum": [
+                        "success",
+                        "info",
+                        "warning",
+                        "destructive",
+                        "neutral"
+                    ]
+                },
+                "timestamp": {
+                    "type": "number"
+                },
+                "read": {
+                    "type": "boolean"
+                },
+                "markReadHref": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ActivityTimelineBlockData": {
+            "type": "object",
+            "required": [
+                "groups"
+            ],
+            "properties": {
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "label",
+                            "entries"
+                        ],
+                        "properties": {
+                            "label": {
+                                "type": "string"
+                            },
+                            "entries": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/$defs/ActivityTimelineEntry"
+                                }
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "hasMore": {
+                    "type": "boolean"
+                },
+                "loadMoreHref": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "MarkdownPanelBlockData": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "maxHeight": {
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "LinkListItem": {
+            "type": "object",
+            "required": [
+                "label",
+                "href"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "external": {
+                    "type": "boolean"
+                },
+                "trailing": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "LinkListBlockData": {
+            "type": "object",
+            "required": [
+                "items"
+            ],
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/LinkListItem"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "ChartBlockData": {
+            "type": "object",
+            "required": [
+                "chartType",
+                "categoryKey",
+                "series",
+                "data"
+            ],
+            "properties": {
+                "chartType": {
+                    "$ref": "#/$defs/ChartType"
+                },
+                "categoryKey": {
+                    "type": "string"
+                },
+                "series": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/ChartSeries"
+                    }
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "options": {
+                    "type": "object",
+                    "properties": {
+                        "showLegend": {
+                            "type": "boolean"
+                        },
+                        "showGrid": {
+                            "type": "boolean"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "TabsBlockData": {
+            "type": "object",
+            "required": [
+                "tabs"
+            ],
+            "properties": {
+                "tabs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Tab"
+                    }
+                },
+                "defaultTab": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ActionGridBlockData": {
+            "type": "object",
+            "required": [
+                "items"
+            ],
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/ActionGridItem"
+                    }
+                },
+                "flash": {
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "success",
+                                "message"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "ActionGridItem": {
+            "type": "object",
+            "required": [
+                "id",
+                "label",
+                "target",
+                "intent",
+                "title",
+                "description"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/$defs/Label"
+                },
+                "target": {
+                    "$ref": "#/$defs/ActionTarget"
+                },
+                "intent": {
+                    "$ref": "#/$defs/ActionIntent"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "confirmation": {
+                    "$ref": "#/$defs/Confirmation"
+                },
+                "capability": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "const": true
+                },
+                "loading": {
+                    "const": true
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
         "ActionIntent": {
             "type": "string",
             "enum": [
@@ -2254,6 +3386,14 @@
                 "route",
                 "request",
                 "panel"
+            ]
+        },
+        "CardGridVariant": {
+            "type": "string",
+            "enum": [
+                "default",
+                "store",
+                "connector"
             ]
         },
         "ChartType": {

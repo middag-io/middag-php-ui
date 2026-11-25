@@ -1,0 +1,8 @@
+{
+    "def": "MarkdownPanelBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/ticket-detail.json, block sla",
+    "expect": "valid",
+    "data": {
+        "content": "### Urgent SLA\n\n- **Priority tier:** urgent\n- **Response target:** 15 min\n- **Resolution target:** 240 min\n- **Due:** 2026-11-17 14:53\n- **Resolved:** not yet"
+    }
+}

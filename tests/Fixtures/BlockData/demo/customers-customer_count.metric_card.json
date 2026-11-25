@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/customers.json, block customer_count",
+    "expect": "valid",
+    "data": {
+        "value": 6,
+        "label": "Customers",
+        "icon": "building"
+    }
+}

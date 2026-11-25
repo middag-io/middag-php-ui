@@ -1,0 +1,56 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, workflow area, block workflow_run_nodes.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "nodeCode",
+                "label": "Col node",
+                "variant": "text"
+            },
+            {
+                "key": "status",
+                "label": "Col status",
+                "variant": "rich_status"
+            },
+            {
+                "key": "input",
+                "label": "Col input",
+                "variant": "text"
+            },
+            {
+                "key": "output",
+                "label": "Col output",
+                "variant": "text"
+            },
+            {
+                "key": "error",
+                "label": "Col error",
+                "variant": "text"
+            }
+        ],
+        "rows": [
+            {
+                "nodeCode": "formulario_enviado",
+                "status": {
+                    "label": "Concluída",
+                    "appearance": "success"
+                },
+                "input": "",
+                "output": "{\n    \"nome\": \"Aluno\"\n}",
+                "error": ""
+            },
+            {
+                "nodeCode": "enviar_email",
+                "status": {
+                    "label": "Falhou",
+                    "appearance": "danger"
+                },
+                "input": "{\n    \"to\": \"\"\n}",
+                "output": "",
+                "error": "Destinatário inválido"
+            }
+        ]
+    }
+}

@@ -29,12 +29,12 @@ use Middag\Ui\Shared\Enum\ChartType;
  */
 interface RegionBuilderInterface
 {
-    public function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): static;
+    public function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null, ?string $deltaDirection = null): static;
 
     /**
      * @param array<int, mixed> $items
      */
-    public function statusStrip(string $key, array $items, ?string $tone = null): static;
+    public function statusStrip(string $key, array $items, ?string $tone = null, float|int|null $score = null): static;
 
     /**
      * @param array<string, mixed> $data Extra data merged into the block payload
@@ -48,14 +48,16 @@ interface RegionBuilderInterface
      */
     public function detailPanel(string $key, array $sections, array $data = []): static;
 
-    public function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): static;
+    public function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null, ?int $limit = null): static;
 
     /**
      * Add an empty state block. `$cta` is the button label and `$ctaHref`
      * where it leads. `$ctaHref` without `$cta` is dropped: the wire button
-     * needs a label.
+     * needs a label. `$ctaSecondary` is a second link, `['label' => .., 'href' => ..]`.
+     *
+     * @param null|array{label: string, href: string} $ctaSecondary
      */
-    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): static;
+    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null, ?array $ctaSecondary = null): static;
 
     /**
      * @param list<FormSchemaNodeInterface> $schema Form schema nodes (value objects; see {@see BlockBuilder::formPanel})

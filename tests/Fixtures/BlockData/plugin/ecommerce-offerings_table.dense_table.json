@@ -1,0 +1,102 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, ecommerce area, block offerings_table.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "(root): Additional object properties are not allowed: search"
+    ],
+    "data": {
+        "columns": [
+            {
+                "key": "fullname",
+                "label": "Nome"
+            },
+            {
+                "key": "external_product_id",
+                "label": "Offering external id label"
+            },
+            {
+                "key": "product_sku",
+                "label": "Offering sku label"
+            },
+            {
+                "key": "product_type",
+                "label": "Offering type label"
+            },
+            {
+                "key": "status",
+                "label": "Offering status label",
+                "variant": "status",
+                "statusMap": {
+                    "mapped": "success",
+                    "mapeado": "success",
+                    "unmapped": "secondary",
+                    "não mapeado": "secondary",
+                    "disabled": "destructive",
+                    "desativado": "destructive"
+                }
+            }
+        ],
+        "rows": [
+            {
+                "id": 1001,
+                "fullname": "Curso de Excel",
+                "external_product_id": "345",
+                "product_sku": "EXCEL-01",
+                "product_type": "simple",
+                "status": "Mapeado"
+            },
+            {
+                "id": 1002,
+                "fullname": "Pacote anual",
+                "external_product_id": "",
+                "product_sku": "",
+                "product_type": "subscription",
+                "status": "Não mapeado"
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "column": null,
+            "direction": null
+        },
+        "search": "",
+        "filters": {
+            "available": [
+                {
+                    "key": "store",
+                    "label": "Store filter label",
+                    "type": "select",
+                    "options": [
+                        {
+                            "value": "1",
+                            "label": "Loja principal"
+                        },
+                        {
+                            "value": "2",
+                            "label": "Loja Acme"
+                        }
+                    ]
+                }
+            ],
+            "applied": []
+        },
+        "rowActions": [
+            {
+                "id": "edit",
+                "label": "Map course action",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/ecommerce/offerings/{id}/edit"
+                },
+                "intent": "secondary",
+                "icon": "link"
+            }
+        ]
+    }
+}

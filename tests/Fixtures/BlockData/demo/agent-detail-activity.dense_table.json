@@ -1,0 +1,43 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/agent-detail.json, block activity",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "email",
+                "label": "Email",
+                "variant": "link",
+                "href": "mailto:{email}"
+            },
+            {
+                "key": "assigned",
+                "label": "Assigned tickets",
+                "sortable": false,
+                "searchable": false,
+                "format": "text"
+            },
+            {
+                "key": "intake",
+                "label": "7-day intake",
+                "variant": "sparkline"
+            }
+        ],
+        "rows": [
+            {
+                "id": 1,
+                "email": "user@example.test",
+                "assigned": 2,
+                "intake": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0
+                ]
+            }
+        ]
+    }
+}

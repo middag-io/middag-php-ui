@@ -1,0 +1,65 @@
+{
+    "def": "DetailPanelBlockData",
+    "source": "host plugin, admin area, block status_report.detail_panel (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "sections": [
+            {
+                "id": "environment",
+                "title": "Environment",
+                "fields": [
+                    {
+                        "key": "php_version",
+                        "label": "php_version",
+                        "value": "8.3.14",
+                        "kind": "code"
+                    },
+                    {
+                        "key": "host_release",
+                        "label": "host_release",
+                        "value": "4.5.3",
+                        "kind": "code"
+                    },
+                    {
+                        "key": "extensions",
+                        "label": "extensions",
+                        "value": "[\"ecommerce\",\"webhooks\"]",
+                        "kind": "code"
+                    }
+                ],
+                "defaultCollapsed": false
+            },
+            {
+                "id": "coexistencia",
+                "title": "Coexistencia",
+                "fields": [
+                    {
+                        "key": "modo_de_instalacao",
+                        "label": "modo_de_instalacao",
+                        "value": "zip",
+                        "kind": "code"
+                    },
+                    {
+                        "key": "arvore_do_plugin",
+                        "label": "arvore_do_plugin",
+                        "value": "/srv/app",
+                        "kind": "code"
+                    },
+                    {
+                        "key": "itens_verificados",
+                        "label": "itens_verificados",
+                        "value": "42",
+                        "kind": "code"
+                    },
+                    {
+                        "key": "colisoes",
+                        "label": "colisoes",
+                        "value": "nenhuma",
+                        "kind": "code"
+                    }
+                ],
+                "defaultCollapsed": false
+            }
+        ]
+    }
+}

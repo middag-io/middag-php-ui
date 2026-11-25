@@ -1,0 +1,39 @@
+{
+    "def": "StatusStripBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/ticket-detail.json, block state",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "key": "new",
+                "label": "New",
+                "value": "Current",
+                "appearance": "info"
+            },
+            {
+                "key": "open",
+                "label": "Open",
+                "value": "Pending",
+                "appearance": "neutral"
+            },
+            {
+                "key": "pending",
+                "label": "Pending",
+                "value": "Pending",
+                "appearance": "neutral"
+            },
+            {
+                "key": "resolved",
+                "label": "Resolved",
+                "value": "Pending",
+                "appearance": "neutral"
+            },
+            {
+                "key": "closed",
+                "label": "Closed",
+                "value": "Pending",
+                "appearance": "neutral"
+            }
+        ]
+    }
+}

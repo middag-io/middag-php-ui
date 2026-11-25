@@ -1,0 +1,14 @@
+{
+    "def": "EmptyStateBlockData",
+    "source": "host plugin, instancegroup area, block no_groups.empty_state (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "variant": "first-use",
+        "description": "Create instance groups to organize courses and activities.",
+        "cta": {
+            "label": "Create first group",
+            "href": "/app/instancegroups/create"
+        },
+        "icon": "layers"
+    }
+}

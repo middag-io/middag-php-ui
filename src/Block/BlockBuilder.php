@@ -98,12 +98,18 @@ class BlockBuilder
         );
     }
 
-    public static function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): BlockDescriptor
+    /**
+     * Build a metric-card block.
+     *
+     * `$deltaDirection` tells the client how to colour `$delta`: `positive`,
+     * `negative` or `neutral`.
+     */
+    public static function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null, ?string $deltaDirection = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'metric_card',
             key: $key,
-            data: array_filter(['value' => $value, 'label' => $label, 'delta' => $delta, 'icon' => $icon, 'href' => $href], static fn ($v): bool => $v !== null),
+            data: array_filter(['value' => $value, 'label' => $label, 'delta' => $delta, 'deltaDirection' => $deltaDirection, 'icon' => $icon, 'href' => $href], static fn ($v): bool => $v !== null),
         );
     }
 
@@ -113,24 +119,34 @@ class BlockBuilder
      * `$cta` is the label of the call-to-action button and `$ctaHref` where it
      * leads. On the wire the button is an object, `{label, href?}`: the client
      * reads `cta.label`, so a bare string would render a button with no text.
+     *
+     * `$ctaSecondary` adds a second, secondary link next to the button:
+     * `['label' => string, 'href' => string]`.
+     *
+     * @param null|array{label: string, href: string} $ctaSecondary
      */
-    public static function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): BlockDescriptor
+    public static function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null, ?array $ctaSecondary = null): BlockDescriptor
     {
         $button = $cta === null ? null : array_filter(['label' => $cta, 'href' => $ctaHref], static fn (?string $v): bool => $v !== null);
 
         return new BlockDescriptor(
             type: 'empty_state',
             key: $key,
-            data: array_filter(['variant' => $variant, 'description' => $description, 'cta' => $button, 'icon' => $icon], static fn (array|string|null $v): bool => $v !== null),
+            data: array_filter(['variant' => $variant, 'description' => $description, 'cta' => $button, 'ctaSecondary' => $ctaSecondary, 'icon' => $icon], static fn (array|string|null $v): bool => $v !== null),
         );
     }
 
-    public static function statusStrip(string $key, array $items, ?string $tone = null): BlockDescriptor
+    /**
+     * Build a status-strip block.
+     *
+     * `$score` is the optional overall score the strip shows next to its items.
+     */
+    public static function statusStrip(string $key, array $items, ?string $tone = null, float|int|null $score = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'status_strip',
             key: $key,
-            data: array_filter(['items' => $items, 'tone' => $tone], static fn (array|string|null $v): bool => $v !== null),
+            data: array_filter(['items' => $items, 'tone' => $tone, 'score' => $score], static fn (array|float|int|string|null $v): bool => $v !== null),
         );
     }
 
@@ -146,13 +162,15 @@ class BlockBuilder
      *   `markReadHref` (string — the endpoint the client POSTs to) and `read`
      *   (bool — current acknowledged state). Both are additive and passthrough;
      *   entries without them render unchanged.
+     *
+     * `$limit` caps how many entries the client shows before it offers more.
      */
-    public static function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): BlockDescriptor
+    public static function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null, ?int $limit = null): BlockDescriptor
     {
         return new BlockDescriptor(
             type: 'activity_timeline',
             key: $key,
-            data: array_filter(['groups' => $groups, 'hasMore' => $hasMore, 'loadMoreHref' => $loadMoreHref], static fn (array|bool|string|null $v): bool => $v !== null),
+            data: array_filter(['groups' => $groups, 'hasMore' => $hasMore, 'loadMoreHref' => $loadMoreHref, 'limit' => $limit], static fn (array|bool|int|string|null $v): bool => $v !== null),
         );
     }
 

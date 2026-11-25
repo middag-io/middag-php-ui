@@ -1,0 +1,191 @@
+{
+    "def": "ActivityTimelineBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/ticket-detail.json, block activity",
+    "expect": "valid",
+    "data": {
+        "groups": [
+            {
+                "label": "Comments",
+                "entries": [
+                    {
+                        "id": "21",
+                        "actor": "Person 7",
+                        "action": "Opening this ticket. Refund processed for duplicate charge.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1793937262
+                    },
+                    {
+                        "id": "22",
+                        "actor": "Person 8",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1793940802
+                    },
+                    {
+                        "id": "19",
+                        "actor": "Person 9",
+                        "action": "Opening this ticket. Update billing address.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794027262
+                    },
+                    {
+                        "id": "20",
+                        "actor": "Person 3",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794030802
+                    },
+                    {
+                        "id": "17",
+                        "actor": "Person 10",
+                        "action": "Opening this ticket. How to invite a teammate.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794117262
+                    },
+                    {
+                        "id": "18",
+                        "actor": "Person 2",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794120802
+                    },
+                    {
+                        "id": "15",
+                        "actor": "Person 6",
+                        "action": "Opening this ticket. CSV upload encoding fixed.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794293662
+                    },
+                    {
+                        "id": "16",
+                        "actor": "Person 1",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794297202
+                    },
+                    {
+                        "id": "13",
+                        "actor": "Person 5",
+                        "action": "Opening this ticket. Typo on settings page.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794383662
+                    },
+                    {
+                        "id": "14",
+                        "actor": "Person 8",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794387202
+                    },
+                    {
+                        "id": "11",
+                        "actor": "Person 4",
+                        "action": "Opening this ticket. Clarify pricing tiers.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794473662
+                    },
+                    {
+                        "id": "12",
+                        "actor": "Person 3",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794477202
+                    },
+                    {
+                        "id": "9",
+                        "actor": "Person 7",
+                        "action": "Opening this ticket. Awaiting customer logs for sync issue.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794563662
+                    },
+                    {
+                        "id": "10",
+                        "actor": "Person 2",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794567202
+                    },
+                    {
+                        "id": "5",
+                        "actor": "Person 10",
+                        "action": "Opening this ticket. Feature request: dark mode.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794657262
+                    },
+                    {
+                        "id": "6",
+                        "actor": "Person 8",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794660802
+                    },
+                    {
+                        "id": "7",
+                        "actor": "Person 9",
+                        "action": "Opening this ticket. Production dashboard not loading.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794740062
+                    },
+                    {
+                        "id": "8",
+                        "actor": "Person 1",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794743602
+                    },
+                    {
+                        "id": "3",
+                        "actor": "Person 6",
+                        "action": "Opening this ticket. API returns 500 on bulk import.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794747262
+                    },
+                    {
+                        "id": "4",
+                        "actor": "Person 3",
+                        "action": "🔒 Picked this up — investigating now.",
+                        "icon": "lock",
+                        "color": "warning",
+                        "timestamp": 1794750802
+                    },
+                    {
+                        "id": "2",
+                        "actor": "Person 5",
+                        "action": "Opening this ticket. Invoice PDF export is blank.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794837262
+                    },
+                    {
+                        "id": "1",
+                        "actor": "Person 4",
+                        "action": "Opening this ticket. Cannot log in after password reset.",
+                        "icon": "message-circle",
+                        "color": "info",
+                        "timestamp": 1794840862
+                    }
+                ]
+            }
+        ],
+        "hasMore": false
+    }
+}

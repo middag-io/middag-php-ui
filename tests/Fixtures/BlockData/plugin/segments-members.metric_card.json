@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "host plugin, segments area, block members.metric_card (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "value": "0",
+        "label": "Membros ativos",
+        "icon": "users"
+    }
+}

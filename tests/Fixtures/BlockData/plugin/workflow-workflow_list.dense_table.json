@@ -1,0 +1,89 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, workflow area, block workflow_list.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "fullname",
+                "label": "Col name",
+                "variant": "text",
+                "sortable": true,
+                "searchable": true
+            },
+            {
+                "key": "status",
+                "label": "Col status",
+                "variant": "rich_status",
+                "sortable": true
+            },
+            {
+                "key": "trigger",
+                "label": "Col trigger",
+                "variant": "text"
+            }
+        ],
+        "rows": [
+            {
+                "id": 7,
+                "fullname": "Boas-vindas",
+                "status": {
+                    "label": "Ativa",
+                    "appearance": "success"
+                },
+                "trigger": "Formulário enviado",
+                "href": "/app/workflow/7/edit"
+            },
+            {
+                "id": 8,
+                "fullname": "Rascunho",
+                "status": {
+                    "label": "Rascunho",
+                    "appearance": "neutral"
+                },
+                "trigger": "—",
+                "href": "/app/workflow/8/edit"
+            }
+        ],
+        "rowActions": [
+            {
+                "id": "edit",
+                "label": "Action edit",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/workflow/{id}/edit"
+                },
+                "intent": "secondary",
+                "icon": "edit"
+            },
+            {
+                "id": "runs",
+                "label": "Action runs",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/workflow/{id}/runs"
+                },
+                "intent": "secondary",
+                "icon": "list"
+            },
+            {
+                "id": "delete",
+                "label": "Action delete",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/workflow/{id}",
+                    "method": "delete"
+                },
+                "intent": "danger",
+                "icon": "delete",
+                "confirmation": {
+                    "title": "Delete title",
+                    "message": "Delete message",
+                    "variant": "danger",
+                    "confirmLabel": "Action delete",
+                    "cancelLabel": "Action cancel"
+                }
+            }
+        ]
+    }
+}

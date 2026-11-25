@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/ticket-detail.json, block comments",
+    "expect": "valid",
+    "data": {
+        "value": 22,
+        "label": "Comments",
+        "icon": "messages-square"
+    }
+}

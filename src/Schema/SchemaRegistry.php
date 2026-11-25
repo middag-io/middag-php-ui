@@ -15,10 +15,40 @@ namespace Middag\Ui\Schema;
 use Middag\Ui\Action\Action;
 use Middag\Ui\Action\ActionResult;
 use Middag\Ui\Action\ActionTarget;
+use Middag\Ui\Action\ConditionalAction;
 use Middag\Ui\Action\Confirmation;
+use Middag\Ui\Block\ActionGridBlockData;
+use Middag\Ui\Block\ActionGridItem;
+use Middag\Ui\Block\ActivityTimelineBlockData;
+use Middag\Ui\Block\ActivityTimelineEntry;
+use Middag\Ui\Block\AnnotatedValue;
 use Middag\Ui\Block\BlockDescriptor;
+use Middag\Ui\Block\CardGridBlockData;
+use Middag\Ui\Block\CardGridColumnDef;
+use Middag\Ui\Block\ChartBlockData;
 use Middag\Ui\Block\ChartSeries;
+use Middag\Ui\Block\DenseTableBlockData;
+use Middag\Ui\Block\DenseTableColumnDef;
+use Middag\Ui\Block\DenseTableFilterDef;
+use Middag\Ui\Block\DenseTablePagination;
+use Middag\Ui\Block\DenseTableSort;
+use Middag\Ui\Block\DetailPanelBlockData;
+use Middag\Ui\Block\DetailPanelFieldDef;
+use Middag\Ui\Block\DetailPanelSectionDef;
+use Middag\Ui\Block\EmptyStateBlockData;
+use Middag\Ui\Block\EmptyStateDef;
+use Middag\Ui\Block\EntityRef;
 use Middag\Ui\Block\LayoutDescriptor;
+use Middag\Ui\Block\LinkGroupItem;
+use Middag\Ui\Block\LinkListBlockData;
+use Middag\Ui\Block\LinkListItem;
+use Middag\Ui\Block\MarkdownPanelBlockData;
+use Middag\Ui\Block\MetricCardBlockData;
+use Middag\Ui\Block\ProgressValue;
+use Middag\Ui\Block\RichStatusValue;
+use Middag\Ui\Block\StatusStripBlockData;
+use Middag\Ui\Block\StatusStripItem;
+use Middag\Ui\Block\TabsBlockData;
 use Middag\Ui\EditablePanel\EditablePanelDescriptor;
 use Middag\Ui\Envelope\Contract\ContractEnvelopeInterface;
 use Middag\Ui\Form\FieldConstraints;
@@ -50,6 +80,7 @@ use Middag\Ui\Region\PollConfig;
 use Middag\Ui\Region\RegionUpdate;
 use Middag\Ui\Shared\Enum\ActionIntent;
 use Middag\Ui\Shared\Enum\ActionTargetKind;
+use Middag\Ui\Shared\Enum\CardGridVariant;
 use Middag\Ui\Shared\Enum\ChartType;
 use Middag\Ui\Shared\Enum\ColumnVariant;
 use Middag\Ui\Shared\Enum\ConditionOperator;
@@ -164,9 +195,42 @@ final class SchemaRegistry
         // Server-push slices.
         'RegionUpdate' => RegionUpdate::class,
         'ActionResult' => ActionResult::class,
+        // Block data shapes (schema-only, like the form schema tree: the generic
+        // block payload stays untyped, so these are standalone islands).
+        'ConditionalAction' => ConditionalAction::class,
+        'EmptyStateDef' => EmptyStateDef::class,
+        'CardGridBlockData' => CardGridBlockData::class,
+        'CardGridColumnDef' => CardGridColumnDef::class,
+        'EntityRef' => EntityRef::class,
+        'DenseTableColumnDef' => DenseTableColumnDef::class,
+        'DenseTablePagination' => DenseTablePagination::class,
+        'DenseTableSort' => DenseTableSort::class,
+        'DenseTableFilterDef' => DenseTableFilterDef::class,
+        'DenseTableBlockData' => DenseTableBlockData::class,
+        'RichStatusValue' => RichStatusValue::class,
+        'AnnotatedValue' => AnnotatedValue::class,
+        'ProgressValue' => ProgressValue::class,
+        'LinkGroupItem' => LinkGroupItem::class,
+        'MetricCardBlockData' => MetricCardBlockData::class,
+        'EmptyStateBlockData' => EmptyStateBlockData::class,
+        'StatusStripItem' => StatusStripItem::class,
+        'StatusStripBlockData' => StatusStripBlockData::class,
+        'DetailPanelFieldDef' => DetailPanelFieldDef::class,
+        'DetailPanelSectionDef' => DetailPanelSectionDef::class,
+        'DetailPanelBlockData' => DetailPanelBlockData::class,
+        'ActivityTimelineEntry' => ActivityTimelineEntry::class,
+        'ActivityTimelineBlockData' => ActivityTimelineBlockData::class,
+        'MarkdownPanelBlockData' => MarkdownPanelBlockData::class,
+        'LinkListItem' => LinkListItem::class,
+        'LinkListBlockData' => LinkListBlockData::class,
+        'ChartBlockData' => ChartBlockData::class,
+        'TabsBlockData' => TabsBlockData::class,
+        'ActionGridBlockData' => ActionGridBlockData::class,
+        'ActionGridItem' => ActionGridItem::class,
         // Enums.
         'ActionIntent' => ActionIntent::class,
         'ActionTargetKind' => ActionTargetKind::class,
+        'CardGridVariant' => CardGridVariant::class,
         'ChartType' => ChartType::class,
         'ColumnVariant' => ColumnVariant::class,
         'ConditionOperator' => ConditionOperator::class,

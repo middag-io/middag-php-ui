@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/agent-detail.json, block workload",
+    "expect": "valid",
+    "data": {
+        "value": 1,
+        "label": "Open assigned",
+        "icon": "briefcase"
+    }
+}

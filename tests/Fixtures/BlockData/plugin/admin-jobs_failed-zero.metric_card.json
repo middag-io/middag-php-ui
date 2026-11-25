@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "host plugin, admin area, block jobs_failed-zero.metric_card (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "value": 0,
+        "label": "Failed",
+        "icon": "alert-triangle"
+    }
+}

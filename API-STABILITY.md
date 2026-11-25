@@ -103,10 +103,36 @@ Not every enum can grow in a MINOR. It depends on what happens to an unknown val
 - `ChartType`
 - `FormComponent`
 - `FieldType`
+- `CardGridVariant` (the `card_grid` `data.variant`)
 
 Removing or renaming a value of a control enum is a MAJOR change too.
 
 The `form_panel` block takes its schema nodes as `FormSchemaNodeInterface` value objects. A loose array raises a `TypeError`.
+
+### Block data shapes
+
+The `data` of a block stays an open object in `BlockDescriptor`, and the block builders keep taking plain arrays. Alongside, the schema carries one `$def` per block payload that `@middag-io/react` renders, so clients can generate types for them. These are schema-only classes (no instances, like `FormCondition`), all `@api`:
+
+| Block `type` | Payload `$def` | Nested `$defs` |
+|---|---|---|
+| `dense_table` | `Block\DenseTableBlockData` | `Block\DenseTableColumnDef`, `Block\DenseTablePagination`, `Block\DenseTableSort`, `Block\DenseTableFilterDef`, `Block\EntityRef`; cell values `Block\RichStatusValue`, `Block\AnnotatedValue`, `Block\ProgressValue`, `Block\LinkGroupItem` |
+| `metric_card` | `Block\MetricCardBlockData` | |
+| `empty_state` | `Block\EmptyStateBlockData` | |
+| `status_strip` | `Block\StatusStripBlockData` | `Block\StatusStripItem` |
+| `detail_panel` | `Block\DetailPanelBlockData` | `Block\DetailPanelSectionDef`, `Block\DetailPanelFieldDef` |
+| `activity_timeline` | `Block\ActivityTimelineBlockData` | `Block\ActivityTimelineEntry` |
+| `markdown_panel` | `Block\MarkdownPanelBlockData` | |
+| `card_grid` | `Block\CardGridBlockData` | `Block\CardGridColumnDef`, `Shared\Enum\CardGridVariant` |
+| `link_list` | `Block\LinkListBlockData` | `Block\LinkListItem` |
+| `chart` | `Block\ChartBlockData` | `Block\ChartSeries` |
+| `tabs` | `Block\TabsBlockData` | `Page\Tab` |
+| `action_grid` | `Block\ActionGridBlockData` | `Block\ActionGridItem` |
+
+Shared by several payloads: `Block\EmptyStateDef` (the `emptyState` key) and `Action\ConditionalAction` (row actions: an `Action` plus `variant`, `visible_when`, `disabled_when`, `loading_when` and `disabled_reason_field`; a plain `Action` is a valid `ConditionalAction`).
+
+These `$defs` follow the wire rules above: adding an optional key or a `$def` is a MINOR change; removing a key or making one required is a MAJOR change. `DenseTableColumnDef.variant` takes a `ColumnVariant` value or any other string.
+
+The builders take the optional keys of these payloads as trailing optional parameters: `metricCard(deltaDirection:)`, `emptyState(ctaSecondary:)`, `statusStrip(score:)` and `activityTimeline(limit:)`, on `BlockBuilder`, `RegionBuilder` and `RegionBuilderInterface`.
 
 ## Versioning from `2.0.0`
 

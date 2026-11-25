@@ -1,0 +1,14 @@
+{
+    "def": "EmptyStateBlockData",
+    "source": "host plugin, connectors area, block connectors_empty.empty_state (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "variant": "first-use",
+        "description": "Nenhum conector configurado ainda.",
+        "cta": {
+            "label": "Adicionar conector",
+            "href": "/app/admin/connectors/create"
+        },
+        "icon": "plug"
+    }
+}

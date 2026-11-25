@@ -1,0 +1,36 @@
+{
+    "def": "DetailPanelBlockData",
+    "source": "host plugin, admin area, block license_info.detail_panel (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "sections": [
+            {
+                "id": "license",
+                "title": "License",
+                "fields": [
+                    {
+                        "key": "status",
+                        "label": "Status",
+                        "value": "(not configured)",
+                        "kind": "status"
+                    },
+                    {
+                        "key": "type",
+                        "label": "Type",
+                        "value": "-"
+                    },
+                    {
+                        "key": "domain",
+                        "label": "Domain",
+                        "value": "lms.example.test"
+                    },
+                    {
+                        "key": "expiration",
+                        "label": "Expiration",
+                        "value": "-"
+                    }
+                ]
+            }
+        ]
+    }
+}

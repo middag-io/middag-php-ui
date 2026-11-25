@@ -1,0 +1,53 @@
+{
+    "def": "CardGridBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/customers.json, block customers",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "email",
+                "label": "Email"
+            },
+            {
+                "key": "company",
+                "label": "Company"
+            },
+            {
+                "key": "phone",
+                "label": "Phone"
+            }
+        ],
+        "rows": [
+            {
+                "id": 1,
+                "name": "Person 4",
+                "email": "user@example.test",
+                "company": "Acme Corp",
+                "phone": "+55 11 99999-0001"
+            },
+            {
+                "id": 4,
+                "name": "Person 5",
+                "email": "user@example.test",
+                "company": "Umbrella",
+                "phone": "+55 31 97777-0003"
+            },
+            {
+                "id": 2,
+                "name": "Person 6",
+                "email": "user@example.test",
+                "company": "Globex",
+                "phone": "+55 21 98888-0002"
+            }
+        ],
+        "emptyState": {
+            "icon": "building",
+            "title": "No customers yet",
+            "description": "Customers are created with their first ticket.",
+            "cta": {
+                "label": "Open a ticket",
+                "href": "/tickets/new"
+            }
+        }
+    }
+}

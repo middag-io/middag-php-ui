@@ -1,0 +1,21 @@
+{
+    "def": "LinkListBlockData",
+    "source": "host plugin, admin area, block quick_links.link_list (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "label": "",
+                "href": "",
+                "icon": "link",
+                "description": "Core"
+            },
+            {
+                "label": "",
+                "href": "",
+                "icon": "link",
+                "description": "E-commerce"
+            }
+        ]
+    }
+}

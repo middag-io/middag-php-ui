@@ -42,9 +42,9 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add a metric card block.
      */
-    public function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null): static
+    public function metricCard(string $key, mixed $value, string $label, ?string $delta = null, ?string $icon = null, ?string $href = null, ?string $deltaDirection = null): static
     {
-        $this->blocks[] = BlockBuilder::metricCard($key, $value, $label, $delta, $icon, $href);
+        $this->blocks[] = BlockBuilder::metricCard($key, $value, $label, $delta, $icon, $href, $deltaDirection);
 
         return $this;
     }
@@ -54,9 +54,9 @@ class RegionBuilder implements RegionBuilderInterface
      *
      * @param array<int, mixed> $items
      */
-    public function statusStrip(string $key, array $items, ?string $tone = null): static
+    public function statusStrip(string $key, array $items, ?string $tone = null, float|int|null $score = null): static
     {
-        $this->blocks[] = BlockBuilder::statusStrip($key, $items, $tone);
+        $this->blocks[] = BlockBuilder::statusStrip($key, $items, $tone, $score);
 
         return $this;
     }
@@ -90,9 +90,9 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add an activity timeline block.
      */
-    public function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null): static
+    public function activityTimeline(string $key, array $groups, bool $hasMore = false, ?string $loadMoreHref = null, ?int $limit = null): static
     {
-        $this->blocks[] = BlockBuilder::activityTimeline($key, $groups, $hasMore, $loadMoreHref);
+        $this->blocks[] = BlockBuilder::activityTimeline($key, $groups, $hasMore, $loadMoreHref, $limit);
 
         return $this;
     }
@@ -100,11 +100,14 @@ class RegionBuilder implements RegionBuilderInterface
     /**
      * Add an empty state block. `$cta` is the button label and `$ctaHref` where
      * it leads (see {@see BlockBuilder::emptyState}). `$ctaHref` without `$cta`
-     * is dropped: the wire button needs a label.
+     * is dropped: the wire button needs a label. `$ctaSecondary` is a second
+     * link, `['label' => .., 'href' => ..]`.
+     *
+     * @param null|array{label: string, href: string} $ctaSecondary
      */
-    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null): static
+    public function emptyState(string $key, string $variant = 'first-use', ?string $description = null, ?string $cta = null, ?string $icon = null, ?string $ctaHref = null, ?array $ctaSecondary = null): static
     {
-        $this->blocks[] = BlockBuilder::emptyState($key, $variant, $description, $cta, $icon, $ctaHref);
+        $this->blocks[] = BlockBuilder::emptyState($key, $variant, $description, $cta, $icon, $ctaHref, $ctaSecondary);
 
         return $this;
     }

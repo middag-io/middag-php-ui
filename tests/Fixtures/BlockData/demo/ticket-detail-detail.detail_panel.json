@@ -1,0 +1,75 @@
+{
+    "def": "DetailPanelBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/ticket-detail.json, block detail",
+    "expect": "valid",
+    "data": {
+        "sections": [
+            {
+                "id": "summary",
+                "title": "Ticket details",
+                "fields": [
+                    {
+                        "key": "ref",
+                        "label": "Reference",
+                        "value": "69a5bbceda07"
+                    },
+                    {
+                        "key": "subject",
+                        "label": "Subject",
+                        "value": "Cannot log in after password reset"
+                    },
+                    {
+                        "key": "status",
+                        "label": "Status",
+                        "value": "new"
+                    },
+                    {
+                        "key": "priority",
+                        "label": "Priority",
+                        "value": "urgent"
+                    },
+                    {
+                        "key": "channel",
+                        "label": "Channel",
+                        "value": "phone"
+                    },
+                    {
+                        "key": "customer",
+                        "label": "Reporter",
+                        "value": "Person 4"
+                    },
+                    {
+                        "key": "agent",
+                        "label": "Assignee",
+                        "value": "Unassigned"
+                    },
+                    {
+                        "key": "tags",
+                        "label": "Tags",
+                        "value": "auth, login"
+                    },
+                    {
+                        "key": "opened_by",
+                        "label": "Opened by",
+                        "value": "Person 4"
+                    },
+                    {
+                        "key": "created",
+                        "label": "Created",
+                        "value": "2026-11-16 14:53"
+                    },
+                    {
+                        "key": "resolved",
+                        "label": "Resolved",
+                        "value": null
+                    },
+                    {
+                        "key": "satisfaction",
+                        "label": "CSAT",
+                        "value": null
+                    }
+                ]
+            }
+        ]
+    }
+}
