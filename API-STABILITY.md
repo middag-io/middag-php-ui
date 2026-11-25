@@ -134,6 +134,10 @@ These `$defs` follow the wire rules above: adding an optional key or a `$def` is
 
 The builders take the optional keys of these payloads as trailing optional parameters: `metricCard(deltaDirection:)`, `emptyState(ctaSecondary:)`, `statusStrip(score:)` and `activityTimeline(limit:)`, on `BlockBuilder`, `RegionBuilder` and `RegionBuilderInterface`.
 
+### Page builder factories
+
+`PageBuilder::page()` and `CrudBuilder::for()` instantiate the called class, so an empty pass-through subclass gets an instance of itself. Their constructors are `protected`.
+
 ## Versioning from `2.0.0`
 
 From `2.0.0`, the open-source `middag-php-*` libraries (`ui`, `framework`, `moodle`, `wordpress` and the `demo-standalone` example) share the MAJOR version. MINOR and PATCH releases are per library. Each library requires its siblings with `^2.N`, where `N` is the lowest MINOR it needs, so Composer installs a compatible set. Require each package you import with `^2.0`, or with the MINOR whose features you use.

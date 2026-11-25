@@ -45,7 +45,12 @@ use Middag\Ui\Table\CrudBuilder;
  *       ->region('content', [BlockBuilder::denseTable(...)])
  *       ->build();
  *
+ * `page()` instantiates the called class, so a subclass gets an instance of
+ * itself.
+ *
  * @api
+ *
+ * @phpstan-consistent-constructor
  */
 class PageBuilder implements PageBuilderInterface
 {
@@ -80,7 +85,7 @@ class PageBuilder implements PageBuilderInterface
     /** @var Notification[] */
     private array $notifications = [];
 
-    private function __construct(
+    protected function __construct(
         private readonly string $key,
     ) {}
 
@@ -89,7 +94,7 @@ class PageBuilder implements PageBuilderInterface
      */
     public static function page(string $key): self
     {
-        return new self($key);
+        return new static($key);
     }
 
     /**

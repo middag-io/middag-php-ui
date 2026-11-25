@@ -37,7 +37,12 @@ use Middag\Ui\Table\Contract\CrudBuilderInterface;
  * following convention-over-configuration. Override methods allow point-of-use
  * customization without dropping to Level 3 composable.
  *
+ * `for()` instantiates the called class, so a subclass gets an instance of
+ * itself.
+ *
  * @api
+ *
+ * @phpstan-consistent-constructor
  */
 class CrudBuilder implements CrudBuilderInterface
 {
@@ -102,7 +107,7 @@ class CrudBuilder implements CrudBuilderInterface
     /** @var null|Closure(PageBuilder, string): void Runs on the page builder before every build */
     private ?Closure $pageConfigurator = null;
 
-    private function __construct(private readonly string $entityClass, ?string $slug = null)
+    protected function __construct(private readonly string $entityClass, ?string $slug = null)
     {
         // The class basename is treated as a SINGULAR noun. The library never
         // fabricates a plural (impossible without a locale inflector): the slug
@@ -115,7 +120,7 @@ class CrudBuilder implements CrudBuilderInterface
 
     public static function for(string $entityClass, ?string $slug = null): self
     {
-        return new self($entityClass, $slug);
+        return new static($entityClass, $slug);
     }
 
     // --- Level 2 Override API ---
