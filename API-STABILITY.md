@@ -140,7 +140,7 @@ The builders take the optional keys of these payloads as trailing optional param
 
 ### Page builder factories
 
-`PageBuilder::page()` and `CrudBuilder::for()` instantiate the called class, so an empty pass-through subclass gets an instance of itself. Their constructors are `protected`.
+`PageBuilder::page()` and `CrudBuilder::for()` instantiate the called class and declare a `static` return type, so an empty pass-through subclass gets, and is typed as, an instance of itself. Their constructors are `protected`. The pages a `CrudBuilder` builds still start from `PageBuilder::page()`, so they are plain `PageBuilder` instances.
 
 ## Versioning from `2.0.0`
 

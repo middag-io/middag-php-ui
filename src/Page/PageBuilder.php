@@ -92,7 +92,7 @@ class PageBuilder implements PageBuilderInterface
     /**
      * Start building a page.
      */
-    public static function page(string $key): self
+    public static function page(string $key): static
     {
         return new static($key);
     }

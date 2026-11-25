@@ -118,7 +118,7 @@ class CrudBuilder implements CrudBuilderInterface
         $this->slug = $slug ?? $this->singular;
     }
 
-    public static function for(string $entityClass, ?string $slug = null): self
+    public static function for(string $entityClass, ?string $slug = null): static
     {
         return new static($entityClass, $slug);
     }

@@ -17,6 +17,7 @@ use Middag\Ui\Table\CrudBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 
 /**
  * The static factories instantiate the called class, so an empty
@@ -41,6 +42,13 @@ class BuilderSubclassTest extends TestCase
     public function crudFactoryReturnsTheCalledClass(): void
     {
         self::assertInstanceOf(SubclassedCrudBuilder::class, SubclassedCrudBuilder::for('App\Entity\Ticket'));
+    }
+
+    #[Test]
+    public function factoriesDeclareAStaticReturnType(): void
+    {
+        self::assertSame('static', (string) (new ReflectionMethod(PageBuilder::class, 'page'))->getReturnType());
+        self::assertSame('static', (string) (new ReflectionMethod(CrudBuilder::class, 'for'))->getReturnType());
     }
 
     #[Test]
