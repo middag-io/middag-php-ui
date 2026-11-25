@@ -1,0 +1,152 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, customform area, block customform_list.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "fullname",
+                "label": "Col name",
+                "variant": "text",
+                "sortable": true,
+                "searchable": true
+            },
+            {
+                "key": "status",
+                "label": "Col status",
+                "variant": "rich_status",
+                "sortable": true
+            },
+            {
+                "key": "submissions",
+                "label": "Col submissions",
+                "variant": "text",
+                "sortable": true
+            },
+            {
+                "key": "access",
+                "label": "Col access",
+                "variant": "text"
+            }
+        ],
+        "rows": [
+            {
+                "id": 3,
+                "fullname": "Inscrição",
+                "idnumber": "inscricao",
+                "status": {
+                    "label": "Publicado",
+                    "appearance": "success"
+                },
+                "submissions": 12,
+                "access": "Anônimo",
+                "href": "/app/customform/3/edit"
+            },
+            {
+                "id": 4,
+                "fullname": "Pesquisa",
+                "idnumber": "pesquisa",
+                "status": {
+                    "label": "Rascunho",
+                    "appearance": "neutral"
+                },
+                "submissions": 0,
+                "access": "Autenticado",
+                "href": "/app/customform/4/edit"
+            }
+        ],
+        "rowActions": [
+            {
+                "id": "view",
+                "label": "Action view",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/customform/{idnumber}/view"
+                },
+                "intent": "secondary",
+                "icon": "eye"
+            },
+            {
+                "id": "report",
+                "label": "Action report",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/customform/{id}/submissions"
+                },
+                "intent": "secondary",
+                "icon": "file-text"
+            },
+            {
+                "id": "edit",
+                "label": "Action edit",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/customform/{id}/edit"
+                },
+                "intent": "secondary",
+                "icon": "edit"
+            },
+            {
+                "id": "delete",
+                "label": "Action delete",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/customform/{id}",
+                    "method": "delete"
+                },
+                "intent": "danger",
+                "icon": "delete",
+                "confirmation": {
+                    "title": "Excluir formulário",
+                    "message": "Esta ação não pode ser desfeita. As respostas já enviadas também deixam de ficar acessíveis.",
+                    "variant": "danger",
+                    "confirmLabel": "Excluir",
+                    "cancelLabel": "Cancelar"
+                }
+            }
+        ],
+        "filters": {
+            "available": [
+                {
+                    "key": "status",
+                    "label": "Col status",
+                    "type": "select",
+                    "options": [
+                        {
+                            "value": "draft",
+                            "label": "Rascunho"
+                        },
+                        {
+                            "value": "published",
+                            "label": "Publicado"
+                        },
+                        {
+                            "value": "archived",
+                            "label": "Arquivado"
+                        }
+                    ]
+                },
+                {
+                    "key": "access",
+                    "label": "Col access",
+                    "type": "select",
+                    "options": [
+                        {
+                            "value": "Anônimo",
+                            "label": "Anônimo"
+                        },
+                        {
+                            "value": "Autenticado",
+                            "label": "Autenticado"
+                        },
+                        {
+                            "value": "Autenticado com permissão",
+                            "label": "Autenticado com permissão"
+                        }
+                    ]
+                }
+            ],
+            "applied": {}
+        }
+    }
+}

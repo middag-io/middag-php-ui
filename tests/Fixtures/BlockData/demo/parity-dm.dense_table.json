@@ -1,0 +1,32 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/parity.json, block dm",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status"
+            },
+            {
+                "key": "count",
+                "label": "Tickets"
+            }
+        ],
+        "rows": [
+            {
+                "status": "new",
+                "count": 2
+            },
+            {
+                "status": "open",
+                "count": 3
+            },
+            {
+                "status": "pending",
+                "count": 2
+            }
+        ]
+    }
+}

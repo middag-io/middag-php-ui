@@ -1,0 +1,15 @@
+{
+    "def": "StatusStripBlockData",
+    "source": "host plugin, ecommerce area, block bindings_limit_notice.status_strip (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "key": "limit",
+                "label": "Conector",
+                "value": "Esta loja já tem um conector vinculado.",
+                "appearance": "info"
+            }
+        ]
+    }
+}

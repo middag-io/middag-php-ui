@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "host plugin, admin area, block health_score.metric_card (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "value": "87",
+        "label": "Health Score",
+        "icon": "heart-pulse"
+    }
+}

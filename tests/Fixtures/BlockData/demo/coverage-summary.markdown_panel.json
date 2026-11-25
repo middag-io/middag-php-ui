@@ -1,0 +1,8 @@
+{
+    "def": "MarkdownPanelBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/coverage.json, block summary",
+    "expect": "valid",
+    "data": {
+        "content": "### Surface coverage\n\nExercises **42** documented free symbols; **5** catalogued gaps.\n\nCovered by kind:\n\n- **block**: 13\n- **cell**: 10\n- **engine**: 7\n- **field**: 5\n- **layout**: 4\n- **provider**: 1\n- **shell**: 2\n\nEach covered symbol below maps to the route that emits it; CoverageManifestTest boots those routes on every push and fails if a covered symbol stops emitting, or a gap symbol is silently shipped."
+    }
+}

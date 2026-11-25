@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "host plugin, admin area, block jobs_pending.metric_card (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "value": 3,
+        "label": "Pending",
+        "icon": "clock"
+    }
+}

@@ -91,7 +91,7 @@ final class PageContractTest extends TestCase
 
         $names = array_map(static fn (ReflectionParameter $p): string => $p->getName(), $ctor->getParameters());
 
-        self::assertSame(['shell', 'page', 'layout', 'notifications', 'entities'], $names);
+        self::assertSame(['shell', 'page', 'layout', 'notifications', 'entities', 'help', 'inspector'], $names);
     }
 
     #[Test]

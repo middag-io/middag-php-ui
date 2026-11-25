@@ -91,6 +91,7 @@ Not every enum can grow in a MINOR. It depends on what happens to an unknown val
 - `RenderTarget`
 - `ConditionOperator` (the condition `operator`)
 - `documentScope`
+- the `empty_state` button `cta.method` (`get`, `post`)
 
 **Open enums** reach the client renderer, which falls back to a safe default for a value it does not know. Adding a value to one is a **MINOR** change. Removing or renaming a value is a **MAJOR** change:
 
@@ -103,10 +104,50 @@ Not every enum can grow in a MINOR. It depends on what happens to an unknown val
 - `ChartType`
 - `FormComponent`
 - `FieldType`
+- `CardGridVariant` (the `card_grid` `data.variant`)
+- `DeltaDirection` (the `metric_card` `data.deltaDirection`)
+- `StatusStripTone` (the `status_strip` `data.tone`)
+- `EmptyStateVariant` (the `empty_state` `data.variant`)
+- `TimestampFormat` (a `dense_table` column `timestampFormat`)
+- `StatusIntent` (the values of a `dense_table` column `statusMap`)
+- `ConditionalActionVariant` (a row action `variant`)
 
 Removing or renaming a value of a control enum is a MAJOR change too.
 
 The `form_panel` block takes its schema nodes as `FormSchemaNodeInterface` value objects. A loose array raises a `TypeError`.
+
+### Block data shapes
+
+The `data` of a block stays an open object in `BlockDescriptor`, and the block builders keep taking plain arrays. Alongside, the schema carries one `$def` per block payload that `@middag-io/react` renders, so clients can generate types for them. These are schema-only classes (no instances, like `FormCondition`), all `@api`:
+
+| Block `type` | Payload `$def` | Nested `$defs` |
+|---|---|---|
+| `dense_table` | `Block\DenseTableBlockData` | `Block\DenseTableColumnDef`, `Block\DenseTablePagination`, `Block\DenseTableSort`, `Block\DenseTableFilterDef`, `Block\EntityRef`, `Shared\Enum\TimestampFormat`, `Shared\Enum\StatusIntent`; cell values `Block\RichStatusValue`, `Block\AnnotatedValue`, `Block\ProgressValue`, `Block\LinkGroupItem` |
+| `metric_card` | `Block\MetricCardBlockData` | `Shared\Enum\DeltaDirection` |
+| `empty_state` | `Block\EmptyStateBlockData` | `Shared\Enum\EmptyStateVariant` |
+| `status_strip` | `Block\StatusStripBlockData` | `Block\StatusStripItem`, `Shared\Enum\StatusStripTone` |
+| `detail_panel` | `Block\DetailPanelBlockData` | `Block\DetailPanelSectionDef`, `Block\DetailPanelFieldDef` |
+| `activity_timeline` | `Block\ActivityTimelineBlockData` | `Block\ActivityTimelineEntry` |
+| `markdown_panel` | `Block\MarkdownPanelBlockData` | |
+| `card_grid` | `Block\CardGridBlockData` | `Block\CardGridColumnDef`, `Shared\Enum\CardGridVariant` |
+| `link_list` | `Block\LinkListBlockData` | `Block\LinkListItem` |
+| `chart` | `Block\ChartBlockData` | `Block\ChartSeries` |
+| `tabs` | `Block\TabsBlockData` | `Page\Tab` |
+| `action_grid` | `Block\ActionGridBlockData` | `Block\ActionGridItem` |
+
+Shared by several payloads: `Block\EmptyStateDef` (the `emptyState` key) and `Action\ConditionalAction` (row actions: an `Action` plus `variant` (`Shared\Enum\ConditionalActionVariant`), `visible_when`, `disabled_when`, `loading_when` and `disabled_reason_field`; a plain `Action` is a valid `ConditionalAction`).
+
+These `$defs` follow the wire rules above: adding an optional key or a `$def` is a MINOR change; removing a key or making one required is a MAJOR change. `DenseTableColumnDef.variant` takes a `ColumnVariant` value or any other string. Where PHP encodes an empty map as `[]`, the shapes accept an empty list too: `dense_table` `filters` and `filters.applied`, the rows of `dense_table` and `card_grid`, the `chart` data rows, and a column's `statusMap`, `formatOptions` and `options`. The other enums inside these shapes (appearances, colors, kinds) stay inline and closed.
+
+The builders take the optional keys of these payloads as trailing optional parameters: `metricCard(deltaDirection:)`, `emptyState(ctaSecondary:)`, `statusStrip(score:)` and `activityTimeline(limit:)`, on `BlockBuilder`, `RegionBuilder` and `RegionBuilderInterface`.
+
+### Page help and inspector
+
+`PageContract` has two optional slots: `help` (`{title, body, learnMore?}`) and `inspector` (an `InspectorDescriptor`). `PageBuilder::build()` fills them from `help()` and `inspector()`, so a page built with `build()` alone keeps them. `PageBuilder::toProps()` still returns them as sibling props next to `contract`, unchanged.
+
+### Page builder factories
+
+`PageBuilder::page()` and `CrudBuilder::for()` instantiate the called class and declare a `static` return type, so an empty pass-through subclass gets, and is typed as, an instance of itself. Their constructors are `protected`. The pages a `CrudBuilder` builds still start from `PageBuilder::page()`, so they are plain `PageBuilder` instances.
 
 ## Versioning from `2.0.0`
 

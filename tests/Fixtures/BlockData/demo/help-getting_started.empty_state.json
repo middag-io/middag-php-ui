@@ -1,0 +1,14 @@
+{
+    "def": "EmptyStateBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/help.json, block getting_started",
+    "expect": "valid",
+    "data": {
+        "variant": "first-use",
+        "icon": "sparkles",
+        "description": "New here? Open your first ticket to watch the form pipeline, dual-ORM writes and async SLA escalation in action.",
+        "cta": {
+            "label": "Open a ticket",
+            "href": "/tickets/new"
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "def": "ActivityTimelineBlockData",
+    "source": "host plugin, admin area, block activity_feed.activity_timeline (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "groups": [
+            {
+                "label": "Recent",
+                "entries": [
+                    {
+                        "id": "0",
+                        "actor": "ecommerce",
+                        "action": "Pedido processado",
+                        "detail": "Pedido 1042 concedeu acesso.",
+                        "icon": "activity",
+                        "color": "success",
+                        "timestamp": 1795600000
+                    },
+                    {
+                        "id": "1",
+                        "actor": "Sistema",
+                        "action": "Falha no conector",
+                        "detail": "",
+                        "icon": "activity",
+                        "color": "destructive",
+                        "timestamp": 1795590000
+                    }
+                ]
+            }
+        ],
+        "hasMore": false
+    }
+}

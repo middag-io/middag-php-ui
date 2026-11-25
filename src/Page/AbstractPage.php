@@ -23,9 +23,6 @@ use Middag\Ui\Page\Contract\PageInterface;
  * the SLUG constant for container discovery and implement build() to compose
  * blocks/regions via a PageBuilder (or any PageContractInterface producer).
  *
- * Container resolution: any service implementing PageInterface is discoverable
- * by slug → FQN; the kernel binds `{slug}_page` aliases at boot time.
- *
  * @api
  */
 abstract class AbstractPage implements PageInterface

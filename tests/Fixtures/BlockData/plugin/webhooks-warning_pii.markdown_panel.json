@@ -1,0 +1,8 @@
+{
+    "def": "MarkdownPanelBlockData",
+    "source": "host plugin, webhooks area, block warning_pii.markdown_panel (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "content": "**Aviso.** Os payloads podem conter dados pessoais."
+    }
+}

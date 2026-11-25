@@ -1,0 +1,44 @@
+{
+    "def": "TabsBlockData",
+    "source": "host plugin, ecommerce area, block store_tabs-create.tabs (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "tabs": [
+            {
+                "id": "details",
+                "label": "Detalhes",
+                "blocks": [
+                    {
+                        "type": "form_panel",
+                        "key": "stores.create_form",
+                        "data": []
+                    }
+                ]
+            },
+            {
+                "id": "connectors",
+                "label": "Conectores",
+                "blocks": [],
+                "disabled": true
+            },
+            {
+                "id": "mapping",
+                "label": "Mapeamento",
+                "blocks": [],
+                "disabled": true
+            },
+            {
+                "id": "sync",
+                "label": "Sincronização",
+                "blocks": [],
+                "disabled": true
+            },
+            {
+                "id": "notify",
+                "label": "Notificação",
+                "blocks": [],
+                "disabled": true
+            }
+        ]
+    }
+}

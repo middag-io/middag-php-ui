@@ -1,0 +1,35 @@
+{
+    "def": "DetailPanelBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/agent-detail.json, block detail",
+    "expect": "valid",
+    "data": {
+        "sections": [
+            {
+                "id": "agent",
+                "title": "Agent",
+                "fields": [
+                    {
+                        "key": "name",
+                        "label": "Name",
+                        "value": "Person 1"
+                    },
+                    {
+                        "key": "email",
+                        "label": "Email",
+                        "value": "user@example.test"
+                    },
+                    {
+                        "key": "role",
+                        "label": "Role",
+                        "value": "supervisor"
+                    },
+                    {
+                        "key": "active",
+                        "label": "Active",
+                        "value": true
+                    }
+                ]
+            }
+        ]
+    }
+}

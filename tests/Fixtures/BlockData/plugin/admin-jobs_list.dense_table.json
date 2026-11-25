@@ -1,0 +1,75 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, admin area, block jobs_list.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "id",
+                "label": "ID",
+                "sortable": true
+            },
+            {
+                "key": "jobtype",
+                "label": "Command",
+                "sortable": true
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status",
+                "sortable": true
+            },
+            {
+                "key": "attempts",
+                "label": "Attempts"
+            },
+            {
+                "key": "lastmessage",
+                "label": "Message"
+            },
+            {
+                "key": "timecreated",
+                "label": "Time",
+                "variant": "timestamp",
+                "sortable": true
+            }
+        ],
+        "rows": [
+            {
+                "id": 12,
+                "uuid": "3f2a9c1e-7b4d-4e8a-9c2f-1a2b3c4d5e6f",
+                "extension": "ecommerce",
+                "jobtype": "sync_offerings_command",
+                "jobtype_full": "App\\Command\\SyncOfferingsCommand",
+                "status": "failed",
+                "priority": 50,
+                "subjecttype": null,
+                "subjectid": null,
+                "attempts": 3,
+                "maxattempts": 3,
+                "lastmessage": "Timeout",
+                "timecreated": 1795600000,
+                "timemodified": 1795600300
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 50,
+            "total": 1,
+            "lastPage": 1
+        },
+        "sort": {
+            "column": null,
+            "direction": null
+        },
+        "filters": {
+            "available": [],
+            "applied": {}
+        },
+        "emptyState": {
+            "title": "No jobs",
+            "description": "The job queue is empty. Jobs will appear here when commands are dispatched asynchronously."
+        }
+    }
+}

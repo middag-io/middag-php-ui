@@ -1,0 +1,99 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/agents.json, block agents.table",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "name",
+                "label": "Name",
+                "sortable": true,
+                "searchable": false,
+                "format": "text"
+            },
+            {
+                "key": "role",
+                "label": "Role",
+                "sortable": false,
+                "searchable": false,
+                "format": "text",
+                "variant": "badge"
+            },
+            {
+                "key": "active",
+                "label": "Active",
+                "sortable": false,
+                "searchable": false,
+                "format": "text",
+                "variant": "boolean"
+            },
+            {
+                "key": "availability",
+                "label": "Availability",
+                "sortable": false,
+                "searchable": false,
+                "format": "text",
+                "variant": "html"
+            },
+            {
+                "key": "workload",
+                "label": "Open load",
+                "sortable": false,
+                "searchable": false,
+                "format": "text",
+                "variant": "progress"
+            }
+        ],
+        "rowActions": [
+            {
+                "id": "edit",
+                "label": "Edit",
+                "target": {
+                    "kind": "panel"
+                },
+                "intent": "secondary",
+                "icon": "pencil"
+            }
+        ],
+        "options": {
+            "perPage": 25,
+            "sortDirection": "asc",
+            "selectable": false,
+            "searchable": false,
+            "sortColumn": "name"
+        },
+        "rows": [
+            {
+                "id": 1,
+                "name": "Person 1",
+                "role": "supervisor",
+                "active": true,
+                "availability": "<span style=\"display:inline-flex;align-items:center;gap:.4rem\"><span style=\"width:.5rem;height:.5rem;border-radius:9999px;background:#16a34a\"></span><strong>Available</strong> &middot; <span style=\"opacity:.7\">supervisor</span></span>",
+                "workload": 1
+            },
+            {
+                "id": 2,
+                "name": "Person 2",
+                "role": "agent",
+                "active": true,
+                "availability": "<span style=\"display:inline-flex;align-items:center;gap:.4rem\"><span style=\"width:.5rem;height:.5rem;border-radius:9999px;background:#16a34a\"></span><strong>Available</strong> &middot; <span style=\"opacity:.7\">agent</span></span>",
+                "workload": 1
+            },
+            {
+                "id": 3,
+                "name": "Person 3",
+                "role": "agent",
+                "active": true,
+                "availability": "<span style=\"display:inline-flex;align-items:center;gap:.4rem\"><span style=\"width:.5rem;height:.5rem;border-radius:9999px;background:#16a34a\"></span><strong>Available</strong> &middot; <span style=\"opacity:.7\">agent</span></span>",
+                "workload": 2
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 4,
+            "lastPage": 1
+        },
+        "rowHref": "/agents/{id}"
+    }
+}

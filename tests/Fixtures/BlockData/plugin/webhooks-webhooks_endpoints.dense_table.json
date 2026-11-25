@@ -1,0 +1,150 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, webhooks area, block webhooks_endpoints.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "id",
+                "label": "ID"
+            },
+            {
+                "key": "fullname",
+                "label": "Field name"
+            },
+            {
+                "key": "url",
+                "label": "Field url"
+            },
+            {
+                "key": "events",
+                "label": "Field events"
+            },
+            {
+                "key": "status",
+                "label": "Column status",
+                "variant": "status",
+                "statusMap": {
+                    "active": "success",
+                    "ativo": "success",
+                    "inactive": "secondary",
+                    "inativo": "secondary"
+                }
+            }
+        ],
+        "rows": [
+            {
+                "id": 4,
+                "fullname": "CRM",
+                "url": "https://hooks.example.test/crm",
+                "events": 3,
+                "status": "Ativo"
+            },
+            {
+                "id": 5,
+                "fullname": "Data lake",
+                "url": "https://hooks.example.test/lake",
+                "events": 0,
+                "status": "Inativo"
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "column": null,
+            "direction": null
+        },
+        "filters": {
+            "available": [],
+            "applied": []
+        },
+        "rowActions": [
+            {
+                "id": "edit",
+                "label": "Editar",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/admin/webhook/endpoints/{id}/edit"
+                },
+                "intent": "secondary",
+                "icon": "edit"
+            },
+            {
+                "id": "test",
+                "label": "Action test",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/webhook/endpoints/{id}/test",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "zap",
+                "confirmation": {
+                    "title": "Test confirm title",
+                    "message": "Test confirm message",
+                    "variant": "default",
+                    "confirmLabel": "Action test",
+                    "cancelLabel": "Cancelar"
+                }
+            },
+            {
+                "id": "enable",
+                "label": "Action enable",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/webhook/endpoints/{id}/toggle?active=1",
+                    "method": "post"
+                },
+                "intent": "primary",
+                "icon": "check-circle",
+                "confirmation": {
+                    "title": "Enable confirm title",
+                    "message": "Enable confirm message",
+                    "variant": "default",
+                    "confirmLabel": "Action enable",
+                    "cancelLabel": "Cancelar"
+                }
+            },
+            {
+                "id": "disable",
+                "label": "Action disable",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/webhook/endpoints/{id}/toggle?active=0",
+                    "method": "post"
+                },
+                "intent": "danger",
+                "icon": "circle-x",
+                "confirmation": {
+                    "title": "Disable confirm title",
+                    "message": "Disable confirm message",
+                    "variant": "danger",
+                    "confirmLabel": "Action disable",
+                    "cancelLabel": "Cancelar"
+                }
+            },
+            {
+                "id": "delete",
+                "label": "Action delete",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/webhook/endpoints/{id}/delete",
+                    "method": "post"
+                },
+                "intent": "danger",
+                "icon": "delete",
+                "confirmation": {
+                    "title": "Delete confirm title",
+                    "message": "Delete confirm message",
+                    "variant": "danger",
+                    "confirmLabel": "Action delete",
+                    "cancelLabel": "Cancelar"
+                }
+            }
+        ]
+    }
+}

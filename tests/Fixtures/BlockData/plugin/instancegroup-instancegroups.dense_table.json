@@ -1,0 +1,83 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, instancegroup area, block instancegroups.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/columns/2 [additionalProperties] Additional object properties are not allowed: align",
+        "/sort [required] The required properties (column) are missing"
+    ],
+    "data": {
+        "columns": [
+            {
+                "key": "name",
+                "label": "Name",
+                "sortable": true
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "sortable": true,
+                "variant": "badge"
+            },
+            {
+                "key": "item_count",
+                "label": "Items",
+                "align": "right"
+            },
+            {
+                "key": "principal",
+                "label": "Principal"
+            },
+            {
+                "key": "updated_at",
+                "label": "Updated",
+                "sortable": true,
+                "variant": "datetime"
+            }
+        ],
+        "rows": [
+            {
+                "id": 1,
+                "name": "Trilha Onboarding",
+                "status": "active",
+                "item_count": 3,
+                "principal": "Onboarding Course",
+                "updated_at": "2026-04-20"
+            },
+            {
+                "id": 3,
+                "name": "Grupo Compliance",
+                "status": "disabled",
+                "item_count": 2,
+                "principal": "—",
+                "updated_at": "2026-04-10"
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "key": "updated_at",
+            "direction": "desc"
+        },
+        "search": null,
+        "actions": [
+            {
+                "key": "edit",
+                "label": "Edit",
+                "icon": "pencil",
+                "href": "/app/instancegroups/{id}/edit"
+            },
+            {
+                "key": "delete",
+                "label": "Delete",
+                "icon": "trash",
+                "intent": "danger",
+                "requiresConfirmation": true
+            }
+        ]
+    }
+}

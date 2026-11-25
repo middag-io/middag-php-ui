@@ -1,0 +1,66 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/dashboard.json, block open_tickets",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "subject",
+                "label": "Subject"
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status"
+            },
+            {
+                "key": "priority",
+                "label": "Priority",
+                "variant": "badge"
+            },
+            {
+                "key": "customer",
+                "label": "Customer"
+            },
+            {
+                "key": "agent",
+                "label": "Assignee"
+            },
+            {
+                "key": "created",
+                "label": "Created",
+                "variant": "timestamp"
+            }
+        ],
+        "rows": [
+            {
+                "id": 1,
+                "subject": "Cannot log in after password reset",
+                "status": "new",
+                "priority": "urgent",
+                "customer": "Person 4",
+                "agent": "Unassigned",
+                "created": "2026-11-16"
+            },
+            {
+                "id": 2,
+                "subject": "Invoice PDF export is blank",
+                "status": "new",
+                "priority": "high",
+                "customer": "Person 5",
+                "agent": "Unassigned",
+                "created": "2026-11-16"
+            },
+            {
+                "id": 3,
+                "subject": "API returns 500 on bulk import",
+                "status": "open",
+                "priority": "high",
+                "customer": "Person 6",
+                "agent": "Person 3",
+                "created": "2026-11-15"
+            }
+        ],
+        "rowHref": "/tickets/{id}"
+    }
+}

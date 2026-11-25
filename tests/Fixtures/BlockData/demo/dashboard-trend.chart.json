@@ -1,0 +1,29 @@
+{
+    "def": "ChartBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/dashboard.json, block trend",
+    "expect": "valid",
+    "data": {
+        "chartType": "bar",
+        "categoryKey": "date",
+        "series": [
+            {
+                "key": "created",
+                "label": "Created"
+            }
+        ],
+        "data": [
+            {
+                "date": "11-03",
+                "created": 0
+            },
+            {
+                "date": "11-04",
+                "created": 0
+            },
+            {
+                "date": "11-05",
+                "created": 0
+            }
+        ]
+    }
+}

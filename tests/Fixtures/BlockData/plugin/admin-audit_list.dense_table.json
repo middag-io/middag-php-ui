@@ -1,0 +1,93 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, admin area, block audit_list.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "id",
+                "label": "ID",
+                "sortable": true
+            },
+            {
+                "key": "visualid",
+                "label": "Visual ID"
+            },
+            {
+                "key": "extension",
+                "label": "Extension",
+                "variant": "badge",
+                "sortable": true
+            },
+            {
+                "key": "eventname",
+                "label": "Event",
+                "sortable": true
+            },
+            {
+                "key": "subjecttype",
+                "label": "Subject"
+            },
+            {
+                "key": "userid",
+                "label": "User"
+            },
+            {
+                "key": "timecreated",
+                "label": "Time",
+                "variant": "timestamp",
+                "sortable": true
+            }
+        ],
+        "rows": [
+            {
+                "id": 77,
+                "uuid": "9b1d2c3e-4f5a-4b6c-8d7e-0a1b2c3d4e5f",
+                "visualid": "0a1b2c3d4e5f",
+                "extension": "core",
+                "eventname": "connector.updated",
+                "subjecttype": "connector",
+                "subjectid": 3,
+                "subjectkey": "",
+                "userid": 2,
+                "message": "",
+                "has_diff": true,
+                "has_snapshot": false,
+                "timecreated": 1795600000
+            },
+            {
+                "id": 78,
+                "uuid": "c1d2e3f4-a5b6-4c7d-8e9f-001122334455",
+                "visualid": "001122334455",
+                "extension": "ecommerce",
+                "eventname": "order.granted",
+                "subjecttype": "",
+                "subjectid": null,
+                "subjectkey": "order:1042",
+                "userid": null,
+                "message": "Acesso concedido",
+                "has_diff": false,
+                "has_snapshot": true,
+                "timecreated": 1795600100
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 50,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "column": null,
+            "direction": null
+        },
+        "filters": {
+            "available": [],
+            "applied": {}
+        },
+        "emptyState": {
+            "title": "No audit entries",
+            "description": "Audit records will appear here as events are logged."
+        }
+    }
+}

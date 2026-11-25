@@ -1,0 +1,105 @@
+{
+    "def": "TabsBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/parity.json, block sources",
+    "expect": "valid",
+    "data": {
+        "tabs": [
+            {
+                "id": "data_mapper",
+                "label": "Data-mapper",
+                "blocks": [
+                    {
+                        "type": "dense_table",
+                        "key": "dm",
+                        "data": {
+                            "columns": [
+                                {
+                                    "key": "status",
+                                    "label": "Status",
+                                    "variant": "status"
+                                },
+                                {
+                                    "key": "count",
+                                    "label": "Tickets"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "status": "new",
+                                    "count": 2
+                                },
+                                {
+                                    "status": "open",
+                                    "count": 3
+                                },
+                                {
+                                    "status": "pending",
+                                    "count": 2
+                                },
+                                {
+                                    "status": "resolved",
+                                    "count": 2
+                                },
+                                {
+                                    "status": "closed",
+                                    "count": 3
+                                }
+                            ]
+                        },
+                        "meta": {
+                            "clientSide": true
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "active_record",
+                "label": "Active-record",
+                "blocks": [
+                    {
+                        "type": "dense_table",
+                        "key": "ar",
+                        "data": {
+                            "columns": [
+                                {
+                                    "key": "status",
+                                    "label": "Status",
+                                    "variant": "status"
+                                },
+                                {
+                                    "key": "count",
+                                    "label": "Tickets"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "status": "new",
+                                    "count": 2
+                                },
+                                {
+                                    "status": "open",
+                                    "count": 3
+                                },
+                                {
+                                    "status": "pending",
+                                    "count": 2
+                                },
+                                {
+                                    "status": "resolved",
+                                    "count": 2
+                                },
+                                {
+                                    "status": "closed",
+                                    "count": 3
+                                }
+                            ]
+                        },
+                        "meta": {
+                            "clientSide": true
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

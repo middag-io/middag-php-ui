@@ -1,0 +1,34 @@
+{
+    "def": "StatusStripBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/dashboard.json, block sla_health",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "key": "urgent",
+                "label": "Urgent open",
+                "value": "2",
+                "appearance": "danger"
+            },
+            {
+                "key": "high",
+                "label": "High open",
+                "value": "2",
+                "appearance": "warning"
+            },
+            {
+                "key": "normal",
+                "label": "Normal open",
+                "value": "2",
+                "appearance": "info"
+            },
+            {
+                "key": "low",
+                "label": "Low open",
+                "value": "1",
+                "appearance": "neutral"
+            }
+        ],
+        "score": 42
+    }
+}

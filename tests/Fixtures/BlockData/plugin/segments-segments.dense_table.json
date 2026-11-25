@@ -1,0 +1,179 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, segments area, block segments.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/columns/3 [additionalProperties] Additional object properties are not allowed: align",
+        "/columns/4 [additionalProperties] Additional object properties are not allowed: align",
+        "/sort [required] The required properties (column) are missing",
+        "/filters [type] The data (array) must match the type: object",
+        "/filters [maxItems] Array should have at most 0 items, 2 found",
+        "/bulkActions/0 [required] The required properties (id, target, intent) are missing",
+        "/bulkActions/1 [required] The required properties (id, target) are missing"
+    ],
+    "data": {
+        "columns": [
+            {
+                "key": "name",
+                "label": "Nome",
+                "sortable": true
+            },
+            {
+                "key": "type",
+                "label": "Tipo",
+                "sortable": true,
+                "variant": "badge"
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "sortable": true,
+                "variant": "badge"
+            },
+            {
+                "key": "criteria_count",
+                "label": "Critérios",
+                "align": "right"
+            },
+            {
+                "key": "member_count",
+                "label": "Membros",
+                "sortable": true,
+                "align": "right"
+            },
+            {
+                "key": "match_type",
+                "label": "Match",
+                "variant": "badge"
+            },
+            {
+                "key": "updated_at",
+                "label": "Atualizado",
+                "sortable": true,
+                "variant": "datetime"
+            }
+        ],
+        "rows": [
+            {
+                "id": 5,
+                "name": "Alunos inativos",
+                "type": "behavioral",
+                "status": "active",
+                "member_count": 0,
+                "description": "",
+                "created_at": "2026-10-01",
+                "updated_at": "2026-11-20",
+                "criteria": [],
+                "cache_valid": false,
+                "last_evaluated_at": null
+            },
+            {
+                "id": 6,
+                "name": "Gestores",
+                "type": "",
+                "status": "draft",
+                "member_count": 0,
+                "description": "",
+                "created_at": "2026-10-01",
+                "updated_at": "",
+                "criteria": [],
+                "cache_valid": false,
+                "last_evaluated_at": null
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "key": "updated_at",
+            "direction": "desc"
+        },
+        "filters": [
+            {
+                "key": "type",
+                "label": "Tipo",
+                "type": "select",
+                "options": [
+                    {
+                        "value": "behavioral",
+                        "label": "Comportamental"
+                    },
+                    {
+                        "value": "role_based",
+                        "label": "Baseado em papel"
+                    },
+                    {
+                        "value": "compliance",
+                        "label": "Conformidade"
+                    },
+                    {
+                        "value": "lifecycle",
+                        "label": "Ciclo de vida"
+                    },
+                    {
+                        "value": "demographic",
+                        "label": "Demográfico"
+                    },
+                    {
+                        "value": "subscription",
+                        "label": "Assinatura"
+                    }
+                ]
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "type": "select",
+                "options": [
+                    {
+                        "value": "active",
+                        "label": "Ativo"
+                    },
+                    {
+                        "value": "draft",
+                        "label": "Rascunho"
+                    },
+                    {
+                        "value": "paused",
+                        "label": "Pausado"
+                    }
+                ]
+            }
+        ],
+        "search": null,
+        "actions": [
+            {
+                "key": "edit",
+                "label": "Editar",
+                "icon": "pencil"
+            },
+            {
+                "key": "duplicate",
+                "label": "Duplicar",
+                "icon": "copy"
+            },
+            {
+                "key": "delete",
+                "label": "Excluir",
+                "icon": "trash",
+                "intent": "danger",
+                "requiresConfirmation": true
+            }
+        ],
+        "bulkActions": [
+            {
+                "key": "activate",
+                "label": "Ativar selecionados"
+            },
+            {
+                "key": "delete",
+                "label": "Excluir selecionados",
+                "intent": "danger",
+                "requiresConfirmation": true
+            }
+        ]
+    }
+}

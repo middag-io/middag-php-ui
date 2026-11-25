@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/dashboard.json, block total",
+    "expect": "valid",
+    "data": {
+        "value": 12,
+        "label": "Total tickets",
+        "icon": "inbox"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "def": "MarkdownPanelBlockData",
+    "source": "host plugin, webhooks area, block warning_catchall.markdown_panel (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "content": "**⚠** A captura de eventos está desligada nas configurações."
+    }
+}

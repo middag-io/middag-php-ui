@@ -1,0 +1,64 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, ecommerce area, block store_bindings-empty.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "connector_fullname",
+                "label": "Connector"
+            },
+            {
+                "key": "connector_type",
+                "label": "Connector type label"
+            },
+            {
+                "key": "provider_type",
+                "label": "Platform label"
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status"
+            },
+            {
+                "key": "webhook_active",
+                "label": "Webhook",
+                "variant": "boolean"
+            }
+        ],
+        "rows": [],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 0,
+            "lastPage": 1
+        },
+        "sort": {
+            "column": null,
+            "direction": null
+        },
+        "filters": {
+            "available": [],
+            "applied": []
+        },
+        "rowActions": [
+            {
+                "id": "remove",
+                "label": "Remove action",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/ecommerce/stores/1/bindings/{id}",
+                    "method": "delete"
+                },
+                "intent": "danger",
+                "icon": "delete",
+                "confirmation": {
+                    "title": "Remove binding confirm title",
+                    "message": "Remove binding confirm message",
+                    "variant": "default"
+                }
+            }
+        ]
+    }
+}

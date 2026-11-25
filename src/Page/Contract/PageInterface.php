@@ -15,8 +15,8 @@ namespace Middag\Ui\Page\Contract;
 /**
  * Marker interface for page classes resolved by the container.
  *
- * The kernel resolves `{slug}_page` services by tag: any class implementing
- * PageInterface is discoverable as a routable page. Implementations typically
+ * Any class implementing PageInterface is discoverable as a routable page.
+ * Implementations typically
  * produce a PageContractInterface via a PageBuilder, but the marker carries
  * no methods — it exists solely for service discovery and type-tagging.
  *

@@ -1,0 +1,14 @@
+{
+    "def": "LinkListBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/agent-detail.json, block assigned",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "label": "#5 Production dashboard not loading",
+                "href": "/tickets/5",
+                "description": "Open · Urgent"
+            }
+        ]
+    }
+}

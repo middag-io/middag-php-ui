@@ -45,7 +45,12 @@ use Middag\Ui\Table\CrudBuilder;
  *       ->region('content', [BlockBuilder::denseTable(...)])
  *       ->build();
  *
+ * `page()` instantiates the called class, so a subclass gets an instance of
+ * itself.
+ *
  * @api
+ *
+ * @phpstan-consistent-constructor
  */
 class PageBuilder implements PageBuilderInterface
 {
@@ -80,16 +85,16 @@ class PageBuilder implements PageBuilderInterface
     /** @var Notification[] */
     private array $notifications = [];
 
-    private function __construct(
+    protected function __construct(
         private readonly string $key,
     ) {}
 
     /**
      * Start building a page.
      */
-    public static function page(string $key): self
+    public static function page(string $key): static
     {
-        return new self($key);
+        return new static($key);
     }
 
     /**
@@ -325,7 +330,8 @@ class PageBuilder implements PageBuilderInterface
     }
 
     /**
-     * Build the PageContract.
+     * Build the PageContract, including the `help` and `inspector` set on
+     * this builder.
      */
     public function build(): PageContract
     {
@@ -344,6 +350,8 @@ class PageBuilder implements PageBuilderInterface
                 meta: $this->layoutMeta,
             ),
             notifications: $this->notifications,
+            help: $this->helpData,
+            inspector: $this->inspector,
         );
     }
 
@@ -351,7 +359,8 @@ class PageBuilder implements PageBuilderInterface
      * Build a props array (contract + overlay + help as separate props).
      *
      * Use this when you need overlay/help metadata alongside the contract.
-     * The PageContract itself remains unchanged, so this stays safe for the public API.
+     * `help` and `inspector` are also inside the contract (see {@see build()});
+     * the sibling props stay for clients that read them there.
      *
      * @return array{contract: PageContract, overlay?: bool, help?: array, inspector?: InspectorDescriptor, editablePanel?: EditablePanelDescriptor}
      */

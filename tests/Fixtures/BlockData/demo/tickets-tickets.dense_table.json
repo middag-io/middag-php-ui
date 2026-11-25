@@ -1,0 +1,136 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/tickets.json, block tickets",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "subject",
+                "label": "Subject",
+                "sortable": true
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status",
+                "sortable": true
+            },
+            {
+                "key": "priority",
+                "label": "Priority",
+                "variant": "rich_status"
+            },
+            {
+                "key": "channel",
+                "label": "Channel",
+                "sortable": true
+            },
+            {
+                "key": "customer",
+                "label": "Customer",
+                "sortable": true
+            },
+            {
+                "key": "assignee",
+                "label": "Assignee",
+                "variant": "annotated"
+            },
+            {
+                "key": "tags",
+                "label": "Tags",
+                "variant": "tag_chips"
+            },
+            {
+                "key": "created",
+                "label": "Created",
+                "variant": "timestamp",
+                "timestampFormat": "date",
+                "sortable": true
+            }
+        ],
+        "rows": [
+            {
+                "id": 1,
+                "subject": "Cannot log in after password reset",
+                "status": "new",
+                "priority": {
+                    "label": "Urgent",
+                    "appearance": "danger",
+                    "icon": "flame"
+                },
+                "channel": "phone",
+                "customer": "Person 4",
+                "assignee": {
+                    "text": "Unassigned",
+                    "sublabel": "unassigned"
+                },
+                "tags": [
+                    {
+                        "label": "auth",
+                        "href": "/tickets?search=auth"
+                    },
+                    {
+                        "label": "login",
+                        "href": "/tickets?search=login"
+                    }
+                ],
+                "created": 1794840802
+            },
+            {
+                "id": 2,
+                "subject": "Invoice PDF export is blank",
+                "status": "new",
+                "priority": {
+                    "label": "High",
+                    "appearance": "warning",
+                    "icon": "flame"
+                },
+                "channel": "web",
+                "customer": "Person 5",
+                "assignee": {
+                    "text": "Unassigned",
+                    "sublabel": "unassigned"
+                },
+                "tags": [
+                    {
+                        "label": "billing",
+                        "href": "/tickets?search=billing"
+                    },
+                    {
+                        "label": "export",
+                        "href": "/tickets?search=export"
+                    }
+                ],
+                "created": 1794837202
+            },
+            {
+                "id": 3,
+                "subject": "API returns 500 on bulk import",
+                "status": "open",
+                "priority": {
+                    "label": "High",
+                    "appearance": "warning",
+                    "icon": "flame"
+                },
+                "channel": "email",
+                "customer": "Person 6",
+                "assignee": {
+                    "text": "Person 3",
+                    "sublabel": "assigned"
+                },
+                "tags": [
+                    {
+                        "label": "api",
+                        "href": "/tickets?search=api"
+                    },
+                    {
+                        "label": "import",
+                        "href": "/tickets?search=import"
+                    }
+                ],
+                "created": 1794747202
+            }
+        ],
+        "rowHref": "/tickets/{id}"
+    }
+}

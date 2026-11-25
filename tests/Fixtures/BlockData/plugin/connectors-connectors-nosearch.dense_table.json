@@ -1,0 +1,160 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "host plugin, connectors area, block connectors-nosearch.dense_table (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/sort [required] The required properties (column) are missing",
+        "/filters [type] The data (array) must match the type: object",
+        "/filters [maxItems] Array should have at most 0 items, 2 found"
+    ],
+    "data": {
+        "columns": [
+            {
+                "key": "fullname",
+                "label": "Nome",
+                "sortable": true
+            },
+            {
+                "key": "connector_type",
+                "label": "Tipo",
+                "sortable": true
+            },
+            {
+                "key": "extension",
+                "label": "Extensão",
+                "sortable": true
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status",
+                "sortable": true,
+                "statusMap": {
+                    "unconfigured": "secondary",
+                    "não configurado": "secondary",
+                    "configured": "secondary",
+                    "configurado": "secondary",
+                    "connected": "success",
+                    "conectado": "success",
+                    "degraded": "warning",
+                    "degradado": "warning",
+                    "disconnected": "destructive",
+                    "desconectado": "destructive"
+                }
+            },
+            {
+                "key": "latency_ms",
+                "label": "Latência (ms)"
+            },
+            {
+                "key": "last_check_at",
+                "label": "Última verificação",
+                "variant": "timestamp",
+                "sortable": true
+            }
+        ],
+        "rows": [
+            {
+                "id": 3,
+                "fullname": "Loja principal",
+                "connector_type": "woocommerce",
+                "extension": "ecommerce",
+                "status": "Conectado",
+                "enabled": true,
+                "last_check_at": 1795600000,
+                "latency_ms": 182
+            },
+            {
+                "id": 4,
+                "fullname": "Acme",
+                "connector_type": "acme",
+                "extension": "ecommerce",
+                "status": "Não configurado",
+                "enabled": false,
+                "last_check_at": null,
+                "latency_ms": null
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "perPage": 25,
+            "total": 2,
+            "lastPage": 1
+        },
+        "sort": {
+            "key": "fullname",
+            "direction": "asc"
+        },
+        "filters": [
+            {
+                "key": "status",
+                "label": "Status",
+                "type": "select",
+                "options": [
+                    {
+                        "value": "unconfigured",
+                        "label": "Não configurado"
+                    },
+                    {
+                        "value": "configured",
+                        "label": "Configurado"
+                    },
+                    {
+                        "value": "connected",
+                        "label": "Conectado"
+                    },
+                    {
+                        "value": "degraded",
+                        "label": "Degradado"
+                    },
+                    {
+                        "value": "disconnected",
+                        "label": "Desconectado"
+                    }
+                ]
+            },
+            {
+                "key": "connector_type",
+                "label": "Tipo",
+                "type": "select",
+                "options": [
+                    {
+                        "value": "woocommerce",
+                        "label": "WooCommerce"
+                    },
+                    {
+                        "value": "acme",
+                        "label": "Acme"
+                    }
+                ]
+            }
+        ],
+        "search": null,
+        "actions": [
+            {
+                "key": "health_check",
+                "label": "Health Check",
+                "icon": "activity"
+            },
+            {
+                "key": "delete",
+                "label": "Delete",
+                "icon": "trash",
+                "intent": "danger",
+                "requiresConfirmation": true
+            }
+        ],
+        "rowActions": [
+            {
+                "id": "edit",
+                "label": "Editar",
+                "target": {
+                    "kind": "link",
+                    "href": "/app/admin/connectors/{id}/edit"
+                },
+                "intent": "secondary",
+                "icon": "edit"
+            }
+        ]
+    }
+}

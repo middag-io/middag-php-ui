@@ -1,0 +1,10 @@
+{
+    "def": "MetricCardBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/agents.json, block supervisors",
+    "expect": "valid",
+    "data": {
+        "value": 2,
+        "label": "Supervisors",
+        "icon": "shield"
+    }
+}

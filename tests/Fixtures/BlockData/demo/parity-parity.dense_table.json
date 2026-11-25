@@ -1,0 +1,47 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/parity.json, block parity",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "status",
+                "label": "Status",
+                "variant": "status"
+            },
+            {
+                "key": "data_mapper",
+                "label": "Data-mapper"
+            },
+            {
+                "key": "active_record",
+                "label": "Active-record"
+            },
+            {
+                "key": "match",
+                "label": "Match",
+                "variant": "boolean"
+            }
+        ],
+        "rows": [
+            {
+                "status": "new",
+                "data_mapper": 2,
+                "active_record": 2,
+                "match": true
+            },
+            {
+                "status": "open",
+                "data_mapper": 3,
+                "active_record": 3,
+                "match": true
+            },
+            {
+                "status": "pending",
+                "data_mapper": 2,
+                "active_record": 2,
+                "match": true
+            }
+        ]
+    }
+}

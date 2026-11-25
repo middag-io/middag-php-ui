@@ -1,0 +1,14 @@
+{
+    "def": "EmptyStateBlockData",
+    "source": "host plugin, segments area, block no_segments.empty_state (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "variant": "first-use",
+        "description": "Crie segmentos para agrupar seu público por critérios dinâmicos. Direcione automações, mensagens e relatórios para públicos específicos.",
+        "cta": {
+            "label": "Criar primeiro segmento",
+            "href": "/app/segments/create"
+        },
+        "icon": "target"
+    }
+}

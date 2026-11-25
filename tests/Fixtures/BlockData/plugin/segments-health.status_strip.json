@@ -1,0 +1,23 @@
+{
+    "def": "StatusStripBlockData",
+    "source": "host plugin, segments area, block health.status_strip (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/items/0 [required] The required properties (key) are missing",
+        "/items/1 [required] The required properties (key) are missing"
+    ],
+    "data": {
+        "items": [
+            {
+                "label": "Cache",
+                "value": "Expirado",
+                "appearance": "warning"
+            },
+            {
+                "label": "Última avaliação",
+                "value": "Nunca",
+                "appearance": "danger"
+            }
+        ]
+    }
+}

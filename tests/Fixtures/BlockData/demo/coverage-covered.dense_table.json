@@ -1,0 +1,46 @@
+{
+    "def": "DenseTableBlockData",
+    "source": "middag-php-demo-standalone ui/mock/fixtures/coverage.json, block covered",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "symbol",
+                "label": "Symbol"
+            },
+            {
+                "key": "kind",
+                "label": "Kind",
+                "variant": "status"
+            },
+            {
+                "key": "route",
+                "label": "Proof route"
+            },
+            {
+                "key": "note",
+                "label": "Note"
+            }
+        ],
+        "rows": [
+            {
+                "symbol": "shell:basic",
+                "kind": "shell",
+                "route": "/",
+                "note": "login + every help-desk page"
+            },
+            {
+                "symbol": "shell:immersive",
+                "kind": "shell",
+                "route": "/help",
+                "note": "help + coverage pages"
+            },
+            {
+                "symbol": "layout:dashboard",
+                "kind": "layout",
+                "route": "/",
+                "note": "metrics + chart grid"
+            }
+        ]
+    }
+}

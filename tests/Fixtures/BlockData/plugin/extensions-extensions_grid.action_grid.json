@@ -1,0 +1,43 @@
+{
+    "def": "ActionGridBlockData",
+    "source": "host plugin, extensions area, block extensions_grid.action_grid (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "id": "ecommerce",
+                "label": "Desativar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/extensions/ecommerce/toggle",
+                    "method": "post"
+                },
+                "intent": "danger",
+                "confirmation": {
+                    "title": "Desativar extensão",
+                    "message": "Desativar \"E-commerce\"?",
+                    "variant": "danger"
+                },
+                "title": "E-commerce",
+                "description": "Ativo — Vende cursos."
+            },
+            {
+                "id": "webhooks",
+                "label": "Ativar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/extensions/webhooks/toggle",
+                    "method": "post"
+                },
+                "intent": "primary",
+                "confirmation": {
+                    "title": "Ativar extensão",
+                    "message": "Ativar \"Webhooks\"?",
+                    "variant": "default"
+                },
+                "title": "Webhooks",
+                "description": "Inativo — Envia eventos."
+            }
+        ]
+    }
+}

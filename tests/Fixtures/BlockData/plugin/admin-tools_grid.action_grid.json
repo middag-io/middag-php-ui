@@ -1,0 +1,153 @@
+{
+    "def": "ActionGridBlockData",
+    "source": "host plugin, admin area, block tools_grid.action_grid (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "items": [
+            {
+                "id": "purge-cache",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/purge-cache",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "purge-cache",
+                "confirmation": {
+                    "title": "Purge cache",
+                    "message": "Purge cache desc",
+                    "variant": "default"
+                },
+                "title": "Purge cache",
+                "description": "Purge cache desc"
+            },
+            {
+                "id": "clean-logs",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/clean-logs",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "clean-logs",
+                "confirmation": {
+                    "title": "Clean logs",
+                    "message": "Clean logs desc",
+                    "variant": "default"
+                },
+                "title": "Clean logs",
+                "description": "Clean logs desc"
+            },
+            {
+                "id": "check-db",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/check-db",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "check-db",
+                "confirmation": {
+                    "title": "Check db",
+                    "message": "Check db desc",
+                    "variant": "default"
+                },
+                "title": "Check db",
+                "description": "Check db desc"
+            },
+            {
+                "id": "reset-extension-config",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/reset-extension-config",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "reset-extension-config",
+                "confirmation": {
+                    "title": "Reset extension config",
+                    "message": "Reset extension config desc",
+                    "variant": "default"
+                },
+                "title": "Reset extension config",
+                "description": "Reset extension config desc"
+            },
+            {
+                "id": "reindex",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/reindex",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "reindex",
+                "confirmation": {
+                    "title": "Reindex",
+                    "message": "Reindex desc",
+                    "variant": "default"
+                },
+                "title": "Reindex",
+                "description": "Reindex desc"
+            },
+            {
+                "id": "check-license",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/check-license",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "check-license",
+                "confirmation": {
+                    "title": "Check license",
+                    "message": "Check license desc",
+                    "variant": "default"
+                },
+                "title": "Check license",
+                "description": "Check license desc"
+            },
+            {
+                "id": "seed-test-data",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/seed-test-data",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "seed-test-data",
+                "confirmation": {
+                    "title": "Seed test data",
+                    "message": "Seed test data desc",
+                    "variant": "default"
+                },
+                "title": "Seed test data",
+                "description": "Seed test data desc"
+            },
+            {
+                "id": "clean-test-data",
+                "label": "Executar",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/admin/tools/clean-test-data",
+                    "method": "post"
+                },
+                "intent": "secondary",
+                "icon": "clean-test-data",
+                "confirmation": {
+                    "title": "Clean test data",
+                    "message": "Clean test data desc",
+                    "variant": "default"
+                },
+                "title": "Clean test data",
+                "description": "Clean test data desc"
+            }
+        ]
+    }
+}

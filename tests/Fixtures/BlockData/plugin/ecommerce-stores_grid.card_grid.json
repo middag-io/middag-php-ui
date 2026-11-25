@@ -1,0 +1,58 @@
+{
+    "def": "CardGridBlockData",
+    "source": "host plugin, ecommerce area, block stores_grid.card_grid (reconstructed from the producer code; sample values)",
+    "expect": "valid",
+    "data": {
+        "columns": [
+            {
+                "key": "fullname",
+                "label": "Name"
+            },
+            {
+                "key": "provider_type",
+                "label": "Provider"
+            },
+            {
+                "key": "status",
+                "label": "Status",
+                "kind": "status"
+            }
+        ],
+        "rows": [
+            {
+                "id": 1,
+                "fullname": "Loja principal",
+                "idnumber": "loja-principal",
+                "status": "active",
+                "provider_type": "woocommerce"
+            },
+            {
+                "id": 2,
+                "fullname": "Loja Acme",
+                "idnumber": "",
+                "status": "error",
+                "provider_type": ""
+            }
+        ],
+        "variant": "store",
+        "editHref": "/app/ecommerce/stores/{id}/edit",
+        "rowActions": [
+            {
+                "id": "delete",
+                "label": "Excluir",
+                "target": {
+                    "kind": "request",
+                    "endpoint": "/app/ecommerce/stores/{id}/delete",
+                    "method": "post"
+                },
+                "intent": "danger",
+                "icon": "delete",
+                "confirmation": {
+                    "title": "Delete store confirm title",
+                    "message": "Delete store confirm message",
+                    "variant": "default"
+                }
+            }
+        ]
+    }
+}

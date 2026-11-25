@@ -1,0 +1,56 @@
+{
+    "def": "DetailPanelBlockData",
+    "source": "host plugin, segments area, block info.detail_panel (reconstructed from the producer code; sample values)",
+    "expect": "divergent",
+    "divergence": [
+        "/sections/0 [required] The required properties (id) are missing",
+        "/sections/1 [required] The required properties (id) are missing"
+    ],
+    "data": {
+        "sections": [
+            {
+                "title": "Informações gerais",
+                "fields": [
+                    {
+                        "label": "Nome",
+                        "value": "Alunos inativos"
+                    },
+                    {
+                        "label": "Tipo",
+                        "value": "Behavioral",
+                        "variant": "badge"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "Active",
+                        "variant": "badge"
+                    },
+                    {
+                        "label": "Membros",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Criado em",
+                        "value": "2026-10-01",
+                        "variant": "datetime"
+                    },
+                    {
+                        "label": "Atualizado em",
+                        "value": "2026-11-20",
+                        "variant": "datetime"
+                    }
+                ]
+            },
+            {
+                "title": "Critérios",
+                "fields": [
+                    {
+                        "label": "Regras",
+                        "value": "[]",
+                        "variant": "code"
+                    }
+                ]
+            }
+        ]
+    }
+}
